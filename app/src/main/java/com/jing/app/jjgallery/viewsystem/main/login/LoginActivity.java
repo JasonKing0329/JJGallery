@@ -11,7 +11,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
 import com.jing.app.jjgallery.presenter.main.LoginPresenter;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
-import com.jing.app.jjgallery.viewsystem.main.settings.SettingProperties;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 
 /**
@@ -22,6 +22,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     private LoginPresenter loginPresenter;
     private AutoCompleteTextView mUserEdit;
     private EditText mPwdEdit;
+
+    @Override
+    protected boolean isActionBarNeed() {
+        return true;
+    }
 
     @Override
     protected int getContentView() {
