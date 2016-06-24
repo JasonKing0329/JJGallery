@@ -27,12 +27,12 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public void signWithFingerPrint() {
-
+        startFingerPrintDialog();
     }
 
     @Override
-    public void isFingerPrintEnable() {
-        fingerPrintController.isSupported();
+    public boolean isFingerPrintEnable() {
+        return fingerPrintController.isSupported();
     }
 
     private void startFingerPrintDialog() {

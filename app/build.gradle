@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+ext.appVersionName = "1.0.0"
+ext.appReleaseDir="E:/temp/release/jjgallery"
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -11,12 +14,56 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {//签名信息 可以自定义很多
+        releaseConfig {
+            storeFile file("../keystore.jks")
+            storePassword "123456789"
+            keyAlias "FileEncryption"
+            keyPassword "123456789"
+        }
+    }
+
+    //修改生成的apk名字
+    applicationVariants.all{ variant->
+        variant.outputs.each { output->
+            def oldFile = output.outputFile
+            def newName = '';
+            if(variant.buildType.name.equals('release')){
+                // APK输出文件名规则：aiyou-版本名-市场-release.apk
+                // def releaseApkName = 'JJGallery-' + appVersionName + '-' + variant.productFlavors[0].name + '-release-' + getDate() + '.apk'
+                def releaseApkName = 'JJGallery-' + appVersionName + '-release-' + getDate() + '.apk'
+                // appReleaseDir对应local.properties里面定义的路径，再加上日期（格式：201503011230）文件夹
+                output.outputFile = new File(appReleaseDir + '/' + getDay(), releaseApkName)
+            }
+            if(variant.buildType.name.equals('beta')){
+            }
+            if(variant.buildType.name.equals('debug')){
+
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
         }
     }
+}
+
+//获取时间戳
+def getDay() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd')
+    return formattedDate
+}
+//获取时间戳
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmmss')
+    return formattedDate
 }
 
 dependencies {
@@ -24,4 +71,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

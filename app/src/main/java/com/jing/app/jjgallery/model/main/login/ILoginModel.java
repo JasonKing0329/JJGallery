@@ -9,5 +9,5 @@ public interface ILoginModel {
 
     public void signWithFingerPrint();
 
-    public void isFingerPrintEnable();
+    public boolean isFingerPrintEnable();
 }
