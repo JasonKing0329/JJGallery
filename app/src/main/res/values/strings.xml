@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">JJGallery</string>
+
+    <!-- Strings related to login -->
+    <string name="username">User name</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign in</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+</resources>
