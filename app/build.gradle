@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext.appVersionName = "1.0.0"
-ext.appReleaseDir="E:/temp/release/jjgallery"
+ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
     compileSdkVersion 23
@@ -25,20 +25,20 @@ android {
     }
 
     //修改生成的apk名字
-    applicationVariants.all{ variant->
-        variant.outputs.each { output->
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
             def oldFile = output.outputFile
             def newName = '';
-            if(variant.buildType.name.equals('release')){
+            if (variant.buildType.name.equals('release')) {
                 // APK输出文件名规则：aiyou-版本名-市场-release.apk
                 // def releaseApkName = 'JJGallery-' + appVersionName + '-' + variant.productFlavors[0].name + '-release-' + getDate() + '.apk'
                 def releaseApkName = 'JJGallery-' + appVersionName + '-release-' + getDate() + '.apk'
                 // appReleaseDir对应local.properties里面定义的路径，再加上日期（格式：201503011230）文件夹
                 output.outputFile = new File(appReleaseDir + '/' + getDay(), releaseApkName)
             }
-            if(variant.buildType.name.equals('beta')){
+            if (variant.buildType.name.equals('beta')) {
             }
-            if(variant.buildType.name.equals('debug')){
+            if (variant.buildType.name.equals('debug')) {
 
             }
         }
@@ -73,4 +73,5 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
 }

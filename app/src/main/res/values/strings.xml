@@ -1,9 +1,35 @@
 <resources>
     <string name="app_name">JJGallery</string>
 
-    <!-- Strings related to login -->
+    <!-- public -->
+    <string name="back">Back</string>
+
+    <!-- login -->
     <string name="username">User name</string>
     <string name="password">Password</string>
     <string name="signin">Sign in</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- settings -->
+    <string name="pref_header_safety">Safety</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_safety_fingerprint_title">Fingerprint</string>
+    <string name="pref_safety_fingerprint_desc">Use fingerprint</string>
+    <string name="pref_general_home_title">Home</string>
+    <string-array name="pref_general_list_home">
+        <item>@string/filemanager</item>
+        <item>Orders</item>
+        <item>Timeline</item>
+    </string-array>
+    <string name="filemanager">File manager</string>
+    <string name="pref_filemanager_default">Default view</string>
+    <string name="pref_filemanager_originname">Show origin name</string>
+    <string name="pref_filemanager_originname_summary">Encrypted file will display original name</string>
+    <string-array name="pref_filemanager_view_mode">
+        <item>List</item>
+        <item>Thumbfolder</item>
+        <item>Index</item>
+    </string-array>
+
 </resources>
