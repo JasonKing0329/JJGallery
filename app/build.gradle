@@ -10,17 +10,22 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
-    signingConfigs {//签名信息 可以自定义很多
-        releaseConfig {
-            storeFile file("../keystore.jks")
-            storePassword "123456789"
-            keyAlias "FileEncryption"
-            keyPassword "123456789"
+
+    signingConfigs {
+        debug {
+            storeFile file("../debug_myapp_key.keystore")
+        }
+        release {
+            storeFile file("../myapp_key.keystore")
+            storePassword "1010520"
+            keyAlias "android.keystore"
+            keyPassword "1010520"
         }
     }
+
     //修改生成的apk名字
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -44,7 +49,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.releaseConfig
         }
     }
     productFlavors {

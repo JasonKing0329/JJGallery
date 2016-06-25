@@ -22,7 +22,7 @@
         <activity
             android:name=".viewsystem.main.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".viewsystem.main.filesystem.FileManagerActivity"></activity>
+        <activity android:name=".viewsystem.main.filesystem.FileManagerActivity" />
     </application>
 
 </manifest>
