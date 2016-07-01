@@ -1,27 +1,46 @@
 package com.jing.app.jjgallery.viewsystem.main.login;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
 import com.jing.app.jjgallery.presenter.main.LoginPresenter;
+import com.jing.app.jjgallery.service.file.FileDBService;
+import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseActivity implements ILoginView, View.OnClickListener {
+public class LoginActivity extends BaseActivity implements ILoginView, View.OnClickListener
+    , OnServiceProgressListener{
 
     private LoginPresenter loginPresenter;
     private AutoCompleteTextView mUserEdit;
     private EditText mPwdEdit;
+
+    private TextView progressTextView;
+
+    private boolean executeInsertProcess;
 
     @Override
     protected boolean isActionBarNeed() {
@@ -35,6 +54,15 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     protected void initController() {
+        if (!Configuration.init()) {
+            Toast.makeText(this, R.string.error_app_root_create_fail, Toast.LENGTH_LONG).show();
+        }
+        if (!DBInfor.prepare(this)) {
+            Toast.makeText(this, R.string.error_database_create_fail, Toast.LENGTH_LONG).show();
+        }
+        Configuration.initVersionChange();
+        Configuration.initParams(this);
+
         loginPresenter = new LoginPresenter(this, this);
     }
 
@@ -77,8 +105,8 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     public void onSignSuccess() {
         // Application will be considered as initialized only after sign in successfully.
         SettingProperties.setAppInited(this);
-        new HomeSelecter().startHomeActivity(this, null);
-        finish();
+
+        superUser();
     }
 
     @Override
@@ -113,6 +141,89 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         super.onRestart();
 
         showPage();
+    }
+
+    protected void superUser() {
+//		startService(new Intent().setClass(this, FileDBService.class));
+        new DefaultDialogManager().showWarningActionDialog(this
+                , getResources().getString(R.string.login_start_service_insert)
+                , getResources().getString(R.string.yes)
+                , getResources().getString(R.string.allno)
+                , getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            executeInsertProcess = true;
+                            showLoading();
+                            if (!isServiceRunning()) {
+                                bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
+                                        , connection, BIND_AUTO_CREATE);
+                            }
+                        }
+                        else if (which == DialogInterface.BUTTON_NEGATIVE) {
+
+                            showLoading();
+                            if (!isServiceRunning()) {
+                                bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
+                                        , connection, BIND_AUTO_CREATE);
+                            }
+                        }
+                        else {//netrual, all no
+                            onServiceDone();
+                        }
+                    }
+                });
+    }
+
+    private boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("com.king.app.fileencryption.service.FileDBService"
+                    .equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private void showLoading() {
+        setContentView(R.layout.activity_login_loading);
+        progressTextView = (TextView) findViewById(R.id.login_loading_progress_num);
+//        loadingBkView = (ImageView) findViewById(R.id.login_loading_bk);
+//		loadingBkView.startAnimation(getLoadingBkAnimation());
+    }
+
+    ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            FileDBService fileDBService = ((FileDBService.FileDbBinder) service).getService();
+            fileDBService.setOnProgressListener(LoginActivity.this);
+            fileDBService.startWork(executeInsertProcess);
+        }
+    };
+
+    @Override
+    public void onServiceProgress(int progress) {
+        progressTextView.setText(progress + "%");
+    }
+
+    @Override
+    public void onServiceDone() {
+        new HomeSelecter().startHomeActivity(this, null);
+        finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
     }
 }
 

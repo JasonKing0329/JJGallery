@@ -73,13 +73,13 @@
     </string-array>
     
     <string-array name="setting_start_view_key" translatable="false">
-	    <item>setting_start_view_classic</item>
+	    <item>setting_start_view_filemanager</item>
 	    <item>setting_start_view_guide</item>
 	    <item>setting_start_view_timeline</item>
     </string-array>
     
     <string-array name="setting_start_view">
-	    <item>@string/setting_start_view_classic</item>
+	    <item>@string/setting_start_view_filemanager</item>
 	    <item>@string/setting_start_view_guide</item>
 	    <item>@string/setting_start_view_timeline</item>
     </string-array>

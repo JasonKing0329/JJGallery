@@ -32,7 +32,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private ImageView backButton, menuButton, addButton, editButton
 		, titleIcon, saveButton, cancelButton, galleryButton
 		, searchButton, closeButton, refreshButton, changeButton
-		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton;
+		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton, thumbButton;
 	private TextView titleView;
 	private EditText searchEdit;
 	private ActionIconListener actionIconListener;
@@ -68,6 +68,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
 		showButton = (ImageView) view.findViewById(R.id.actionbar_show);
 		titleIcon = (ImageView) view.findViewById(R.id.actionbar_title_icon);
+		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
 		searchEdit = (EditText) view.findViewById(R.id.actionbar_search_edittext);
 		iconContainer = (HorizontalScrollView) view.findViewById(R.id.actionbar_icon_container);
 		backButton.setOnClickListener(this);
@@ -87,6 +88,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		changeButton.setOnClickListener(this);
 		galleryButton.setOnClickListener(this);
 		searchEdit.addTextChangedListener(this);
+		thumbButton.setOnClickListener(this);
 		titleView = (TextView) view.findViewById(R.id.actionbar_title);
 		
 		currentButtons = new ArrayList<View>();
@@ -227,6 +229,11 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		currentButtons.add(searchButton);
 		searchButton.setVisibility(View.VISIBLE);
 	}
+	public void addThumbIcon() {
+		currentButtons.add(thumbButton);
+		thumbButton.setVisibility(View.VISIBLE);
+	}
+
 	public void closeSearch() {
 		
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);

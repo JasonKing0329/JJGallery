@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
 
 /**
@@ -33,4 +34,25 @@ public class SettingProperties {
         editor.putBoolean(PreferenceKey.PREF_APP_INITED, true);
         editor.commit();
     }
+
+    public static boolean isShowFileOriginMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_FM_ORIGIN, false);
+    }
+
+    public static int getStartViewMode(Context context) {
+        String modes[] = context.getResources().getStringArray(R.array.setting_start_view_key);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String loadMode = preferences.getString("setting_start_view", modes[0]);
+        if (loadMode.equals(modes[0])) {
+            return PreferenceKey.START_VIEW_FILEMANAGER;
+        }
+        else if (loadMode.equals(modes[1])) {
+            return PreferenceKey.START_VIEW_GUIDE;
+        }
+        else {
+            return PreferenceKey.START_VIEW_TIMELINE;
+        }
+    }
+
 }

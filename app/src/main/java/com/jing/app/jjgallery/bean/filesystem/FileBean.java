@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.bean;
+package com.jing.app.jjgallery.bean.filesystem;
 
 public class FileBean {
 

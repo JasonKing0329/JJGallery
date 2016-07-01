@@ -3,6 +3,11 @@
     package="com.jing.app.jjgallery">
 
     <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -23,6 +28,8 @@
             android:name=".viewsystem.main.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".viewsystem.main.filesystem.FileManagerActivity" />
+        <service
+            android:name="com.jing.app.jjgallery.service.file.FileDBService"/>
     </application>
 
 </manifest>

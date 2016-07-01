@@ -1,8 +1,9 @@
-package com.jing.app.jjgallery.presenter.main;
+package com.jing.app.jjgallery.presenter.main.filesystem;
 
 import android.content.Context;
 
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.IFileManagerView;
 
 /**

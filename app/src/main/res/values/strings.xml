@@ -266,7 +266,7 @@
     <string name="setas_menubk_land_left">Menu at land-left</string>
     <string name="setas_menubk_land_right">Menu at land-right</string>
     <string name="setting_slidingmenu_enable">Enable in main view</string>
-    <string name="setting_start_view_classic">Classic</string>
+    <string name="setting_start_view_filemanager">File manager</string>
     <string name="setting_start_view_guide">Guide</string>
     <string name="setting_start_view_timeline">Timeline</string>
 
