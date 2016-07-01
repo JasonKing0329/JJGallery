@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "1.0.1"
+ext.appVersionName = "1.0.3"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 4
-        versionName "1.0.3"
+        versionName appVersionName
     }
 
     signingConfigs {
