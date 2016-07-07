@@ -37,19 +37,15 @@ import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
 import com.jing.app.jjgallery.bean.filesystem.PathIndicatorNode;
-import com.jing.app.jjgallery.config.Constants;
-import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.controller.PictureManagerUpdate;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
 public class FileManagerListPage implements IFilePage, FileChangeListener {
@@ -256,40 +252,14 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 		}
 	}
 
-	private void openLoadFromDialog() {
-		new LoadFromDialog(context, LoadFromDialog.DATA_HISTORY, new CustomDialog.OnCustomDialogActionListener() {
-
-			@Override
-			public boolean onSave(Object object) {
-				if (object != null) {
-					File file = (File) object;
-					DBInfor.replaceDatabase(context, file.getPath());
-				}
-				return true;
-			}
-
-			@Override
-			public void onLoadData(HashMap<String, Object> data) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public boolean onCancel() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		}).show();
-	}
-
 	private void decipherCurFolder() {
 		showProgress();
-
+		listController.decipherCurFolder();
 	}
 
 	private void encryptCurFolder() {
 		showProgress();
-
+		listController.encryptCurFolder();
 	}
 
 	protected void reload() {
@@ -388,6 +358,9 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 
 	@Override
 	public boolean onBack() {
+		if (!indicatorView.isBackable()) {
+			return true;
+		}
 		if (parentView.getVisibility() == View.VISIBLE) {
 			indicatorView.backToUpper();
 			if (listController != null) {
@@ -399,8 +372,27 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 	}
 
 	@Override
-	public void onIconClick(View view) {
+	public void onExit() {
 
+	}
+
+	@Override
+	public void onIconClick(View view) {
+		switch (view.getId()) {
+
+			case R.id.actionbar_add:
+				openCreateFolderDialog();
+				break;
+//			case R.id.actionbar_sort:
+//				showSortPopup(v);
+//				break;
+			case R.id.actionbar_thumb:
+				showViewModePopup(view);
+				break;
+			case R.id.actionbar_refresh:
+				refresh();
+				break;
+		}
 	}
 
 	@Override
@@ -415,11 +407,10 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 
 	public void loadMenu(MenuInflater menuInflater, Menu menu) {
 		menu.clear();
-		menuInflater.inflate(R.menu.file_manager_update, menu);
+		menuInflater.inflate(R.menu.home_file_manager, menu);
 		menu.setGroupVisible(R.id.group_file, true);
-		menu.setGroupVisible(R.id.group_sorder, false);
-		menu.setGroupVisible(R.id.group_spicture, false);
-		menu.findItem(R.id.menu_edit).setVisible(true);
+		menu.setGroupVisible(R.id.group_home_public, true);
+//		menu.findItem(R.id.menu_edit).setVisible(true);
 	}
 
 	@Override
@@ -441,34 +432,6 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 			startThumbView();
 			break;
 			*/
-			case R.id.menu_export:
-				DBInfor.export(context);
-				break;
-			case R.id.menu_import:
-				openLoadFromDialog();
-				break;
-			case R.id.menu_change_theme:
-//				new ChangeThemeDialog(context, new CustomDialog.OnCustomDialogActionListener() {
-//
-//					@Override
-//					public boolean onSave(Object object) {
-//						reload();
-//						return false;
-//					}
-//
-//					@Override
-//					public void onLoadData(HashMap<String, Object> data) {
-//						// TODO Auto-generated method stub
-//
-//					}
-//
-//					@Override
-//					public boolean onCancel() {
-//						// TODO Auto-generated method stub
-//						return false;
-//					}
-//				}).show();
-				break;
 		}
 		return  true;
 	}
@@ -681,6 +644,11 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 		public void onClick(View v) {
 			if (v == parentView) {
 				Log.i(TAG, "parent onClick");
+
+				// 正在执行上一个返回动画，不允许执行下一个返回
+				if (!indicatorView.isBackable()) {
+					return;
+				}
 
 				showImageWHView(false);
 				indicatorView.backToUpper();

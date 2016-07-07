@@ -37,6 +37,8 @@ public class FilePathIndicatorView extends HorizontalScrollView
 
 	private Animation appearAnim, disappearAnim;
 
+	private boolean isDisappearing;
+
 	public FilePathIndicatorView(Context context) {
 		super(context);
 		init();
@@ -189,14 +191,27 @@ public class FilePathIndicatorView extends HorizontalScrollView
 	}
 
 	public void backToUpper() {
-		container.getChildAt(0).startAnimation(getDisappearAnimation());
+		if (!isDisappearing) {
+			isDisappearing = true;
+			container.getChildAt(0).startAnimation(getDisappearAnimation());
+		}
+	}
+
+	public boolean isBackable() {
+		return  !isDisappearing;
 	}
 
 	@Override
 	public void onAnimationEnd(Animation arg0) {
 		//must remove it after animation end, otherwise the effect can't be seen
-		container.removeViewAt(0);
-		pathList.remove(pathList.size() - 1);
+		container.getChildAt(0).post(new Runnable() {
+			@Override
+			public void run() {
+				container.removeViewAt(0);
+				pathList.remove(pathList.size() - 1);
+				isDisappearing = false;
+			}
+		});
 	}
 
 	@Override

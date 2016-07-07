@@ -5,6 +5,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**
@@ -13,6 +14,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
  */
 public interface IFilePage {
     boolean onBack();
+    void onExit();
     void onIconClick(View view);
     void createMenu(MenuInflater menuInflater, Menu menu);
     void onPrepareMenu(MenuInflater menuInflater, Menu menu);

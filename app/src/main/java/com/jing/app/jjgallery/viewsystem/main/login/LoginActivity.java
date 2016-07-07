@@ -223,7 +223,13 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
+
+        try {
+            // if select all no, then FC occurs in xiaomi phone(Caused by: java.lang.IllegalArgumentException: Service not registered)
+            unbindService(connection);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 }
 

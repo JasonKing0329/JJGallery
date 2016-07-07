@@ -7,12 +7,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
-import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 
-public class FileManagerActivity extends BaseActivity implements IFileManagerView {
+public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView {
 
     private FileManagerPresenter mPresenter;
 
@@ -102,7 +101,18 @@ public class FileManagerActivity extends BaseActivity implements IFileManagerVie
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        super.onMenuItemClick(item);
         return mCurrentFragment.getFilePage().onMenuItemClick(item);
+    }
+
+    @Override
+    protected boolean needOptionWhenExit() {
+        return false;
+    }
+
+    @Override
+    protected void onExit() {
+        mCurrentFragment.getFilePage().onExit();
     }
 
     @Override

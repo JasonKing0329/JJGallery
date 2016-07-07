@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.presenter.main.filesystem;
 
 import android.content.Context;
 
+import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.IFileManagerView;
@@ -10,7 +11,7 @@ import com.jing.app.jjgallery.viewsystem.main.filesystem.IFileManagerView;
  * Created by JingYang on 2016/6/24 0024.
  * Description:
  */
-public class FileManagerPresenter {
+public class FileManagerPresenter extends BasePresenter {
     private IFileManagerView fileManagerView;
 
     public FileManagerPresenter(IFileManagerView view) {

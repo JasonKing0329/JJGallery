@@ -38,7 +38,6 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private ActionIconListener actionIconListener;
 	private ActionMenuListener actionMenuListener;
 	private ActionSearchListener actionSearchListener;
-	private ActionIconListener actionBarListener;
 	private List<View> currentButtons, tempButotns;
 	private HorizontalScrollView iconContainer;
 	//private Spinner levelSpinner, courtSpinner;
@@ -109,7 +108,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
-		if (actionBarListener != null) {
+		if (actionMenuListener != null) {
 			return  actionMenuListener.onMenuItemClick(item);
 		}
 		return false;
@@ -265,11 +264,11 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	@Override
 	public void onClick(View view) {
 		if (view == backButton) {
-			actionBarListener.onBack();
+			actionIconListener.onBack();
 		}
-		else if (view == addButton) {
-			setEditMode(true);
-		}
+//		else if (view == addButton) {
+//			setEditMode(true);
+//		}
 		else if (view == editButton) {
 			setEditMode(true);
 		}
@@ -296,7 +295,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 			closeSearch();
 		}
 		else {
-			actionBarListener.onIconClick(view);
+			actionIconListener.onIconClick(view);
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
 import android.support.v4.app.Fragment;
 
+import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**

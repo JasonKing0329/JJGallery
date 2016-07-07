@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 public class FileManagerListFragment extends Fragment implements IFragment {
 
-	private final String TAG = "FileManagerFragment";
+	private final String TAG = "FileManagerListFragment";
 	private IFilePage fileListPage;
 	private View contentView;
 

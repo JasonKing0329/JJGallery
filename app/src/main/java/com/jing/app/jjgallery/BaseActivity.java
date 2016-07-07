@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
@@ -22,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
     protected ActionBar mActionBar;
 
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -47,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
         View content = getLayoutInflater().inflate(getContentView(), null);
         mContentGroup.addView(content, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+        progressDialog = new ProgressDialog(this);
         initController();
         initView();
 
@@ -67,6 +71,26 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
     protected abstract void initBackgroundWork();
 
+    protected void showProgress(String text) {
+        progressDialog.setMessage(text);
+        progressDialog.show();
+    }
+
+    protected boolean dismissProgress() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            return true;
+        }
+        return  false;
+    }
+
+    protected void showToastLong(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    protected void showToastShort(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onBack() {
 
