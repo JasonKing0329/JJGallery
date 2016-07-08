@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
 
-import com.jing.app.jjgallery.presenter.main.filesystem.FolderManager;
+import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.encrypt.action.Generater;

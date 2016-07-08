@@ -31,7 +31,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private Context context;
 	private ImageView backButton, menuButton, addButton, editButton
 		, titleIcon, saveButton, cancelButton, galleryButton
-		, searchButton, closeButton, refreshButton, changeButton
+		, searchButton, closeButton, refreshButton, changeButton, colorButton
 		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton, thumbButton;
 	private TextView titleView;
 	private EditText searchEdit;
@@ -67,6 +67,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
 		showButton = (ImageView) view.findViewById(R.id.actionbar_show);
 		titleIcon = (ImageView) view.findViewById(R.id.actionbar_title_icon);
+		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
 		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
 		searchEdit = (EditText) view.findViewById(R.id.actionbar_search_edittext);
 		iconContainer = (HorizontalScrollView) view.findViewById(R.id.actionbar_icon_container);
@@ -87,6 +88,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		changeButton.setOnClickListener(this);
 		galleryButton.setOnClickListener(this);
 		searchEdit.addTextChangedListener(this);
+		colorButton.setOnClickListener(this);
 		thumbButton.setOnClickListener(this);
 		titleView = (TextView) view.findViewById(R.id.actionbar_title);
 		
@@ -104,6 +106,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	public void setActionSearchListener(ActionSearchListener listener) {
 		actionSearchListener = listener;
+	}
+
+	public void updateBackground(int newColor) {
+		layout.setBackgroundColor(newColor);
 	}
 
 	@Override
@@ -182,6 +188,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addAddIcon() {
 		currentButtons.add(addButton);
 		addButton.setVisibility(View.VISIBLE);
+	}
+	public void addColorIcon() {
+		currentButtons.add(colorButton);
+		colorButton.setVisibility(View.VISIBLE);
 	}
 	public void addGalleryIcon() {
 		currentButtons.add(galleryButton);

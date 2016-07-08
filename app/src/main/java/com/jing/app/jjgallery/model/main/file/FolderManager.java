@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.presenter.main.filesystem;
+package com.jing.app.jjgallery.model.main.file;
 
 import com.jing.app.jjgallery.config.Configuration;
 

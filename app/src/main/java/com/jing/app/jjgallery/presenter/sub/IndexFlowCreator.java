@@ -1,6 +1,6 @@
 package com.jing.app.jjgallery.presenter.sub;
 
-import com.jing.app.jjgallery.presenter.main.filesystem.FolderManager;
+import com.jing.app.jjgallery.model.main.file.FolderManager;
 
 import java.io.File;
 import java.util.ArrayList;

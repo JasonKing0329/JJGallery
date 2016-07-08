@@ -6,18 +6,26 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.res.AppResManager;
+import com.jing.app.jjgallery.res.AppResProvider;
+import com.jing.app.jjgallery.res.ColorRes;
+import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.EncryptCheckService;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.king.lib.colorpicker.ColorPicker;
+import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by JingYang on 2016/7/7 0007.
@@ -26,7 +34,8 @@ import java.util.HashMap;
  * 主界面Activity均支持sliding menu模式
  */
 public abstract class AbsHomeActivity extends BaseSlidingActivity implements Handler.Callback
-    , SlidingMenu.OnOpenedListener, SlidingMenu.OnOpenListener, SlidingMenu.OnClosedListener{
+    , SlidingMenu.OnOpenedListener, SlidingMenu.OnOpenListener, SlidingMenu.OnClosedListener
+    , ColorPicker.OnColorPickerListener {
 
     private EncryptCheckService mEncryptCheckService;
 
@@ -36,6 +45,8 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
 
     @Override
     protected void initView() {
+
+        applyExtendColors();
         initSlidingMenu();
         setUpContentView();
         setUpLeftMenu();
@@ -86,6 +97,30 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
             }
         }
     }
+
+    @Override
+    public void onIconClick(View view) {
+        switch (view.getId()) {
+            case R.id.actionbar_color:
+                showColorPicker();
+                break;
+            default:
+                onActionIconClick(view);
+                break;
+        }
+    }
+
+    private void showColorPicker() {
+        ColorPicker colorPicker = null;
+        if (colorPicker == null) {
+            colorPicker = new ColorPicker(this, this);
+            colorPicker.setResourceProvider(new AppResProvider(this));
+        }
+        colorPicker.setSelectionData(new AppResManager().getHomeList(this));
+        colorPicker.show();
+    }
+
+    protected abstract void onActionIconClick(View view);
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -216,4 +251,42 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     public void onOpened() {
 
     }
+
+    @Override
+    public void onColorChanged(String key, int newColor) {
+        if (key.equals(ColorRes.ACTIONBAR_BK)) {
+            mActionBar.updateBackground(newColor);
+        }
+    }
+
+    @Override
+    public void onColorSelected(int color) {
+
+    }
+
+    @Override
+    public void onColorSelected(List<ColorPickerSelectionData> list) {
+        for (ColorPickerSelectionData data:list) {
+            JResource.updateColor(data.getKey(), data.getColor());
+        }
+        JResource.saveColorUpdate(this);
+    }
+
+    @Override
+    public void onColorCancleSelect() {
+        applyExtendColors();
+    }
+
+    @Override
+    public void onApplyDefaultColors() {
+        JResource.removeColor(ColorRes.ACTIONBAR_BK);
+        JResource.saveColorUpdate(this);
+        applyExtendColors();
+    }
+
+    private void applyExtendColors() {
+        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+    }
+
+
 }

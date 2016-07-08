@@ -432,6 +432,7 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 			//actionBar.addSortIcon();
 			actionBar.addAddIcon();
 			actionBar.addRefreshIcon();
+			actionBar.addColorIcon();
 			actionBar.addMenuIcon();
 		}
 	}

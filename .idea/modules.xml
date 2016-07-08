@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JJGallery.iml" filepath="$PROJECT_DIR$/JJGallery.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libcolorpicker/libcolorpicker.iml" filepath="$PROJECT_DIR$/libcolorpicker/libcolorpicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libresmanager/libresmanager.iml" filepath="$PROJECT_DIR$/libresmanager/libresmanager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/prjcolorpicker/prjcolorpicker.iml" filepath="$PROJECT_DIR$/prjcolorpicker/prjcolorpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/slidingmenu/slidingmenu.iml" filepath="$PROJECT_DIR$/slidingmenu/slidingmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/swipebacklayout/swipebacklayout.iml" filepath="$PROJECT_DIR$/swipebacklayout/swipebacklayout.iml" />
     </modules>

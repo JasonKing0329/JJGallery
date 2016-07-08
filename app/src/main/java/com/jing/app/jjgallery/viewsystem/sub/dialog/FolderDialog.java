@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
-import com.jing.app.jjgallery.presenter.main.filesystem.FolderManager;
+import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;

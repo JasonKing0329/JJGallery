@@ -184,7 +184,14 @@
 			    android:layout_height="match_parent"
 				android:visibility="gone"
 			    android:src="@drawable/actionbar_save1"/>
-		    
+
+			<ImageView
+				style="@style/ActionbarIcon_L"
+				android:id="@+id/actionbar_color"
+				android:layout_width="@dimen/actionbar_icon_width"
+				android:layout_height="match_parent"
+				android:visibility="gone"
+				android:src="@drawable/actionbar_color_picker"/>
 	    </LinearLayout>
 	</HorizontalScrollView>
 	

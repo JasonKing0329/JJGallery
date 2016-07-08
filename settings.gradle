@@ -1,1 +1,1 @@
-include ':app', ':swipebacklayout', ':slidingmenu'
+include ':app', ':swipebacklayout', ':slidingmenu', ':libcolorpicker', ':prjcolorpicker', ':libresmanager'

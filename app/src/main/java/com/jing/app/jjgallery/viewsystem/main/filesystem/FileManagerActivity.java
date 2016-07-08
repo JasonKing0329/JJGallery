@@ -139,7 +139,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    public void onIconClick(View view) {
+    public void onActionIconClick(View view) {
         mCurrentFragment.getFilePage().onIconClick(view);
     }
 

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "1.0.5"
+ext.appVersionName = "1.0.6"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 6
+        versionCode 7
         versionName appVersionName
     }
 
@@ -90,4 +90,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile project(':slidingmenu')
     compile project(':swipebacklayout')
+    compile project(':prjcolorpicker')
+    compile project(':libresmanager')
 }

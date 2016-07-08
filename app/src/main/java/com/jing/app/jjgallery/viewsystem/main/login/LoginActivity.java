@@ -21,6 +21,8 @@ import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
 import com.jing.app.jjgallery.presenter.main.LoginPresenter;
+import com.jing.app.jjgallery.res.ColorRes;
+import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.FileDBService;
 import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
@@ -54,6 +56,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     protected void initController() {
+
         if (!Configuration.init()) {
             Toast.makeText(this, R.string.error_app_root_create_fail, Toast.LENGTH_LONG).show();
         }
@@ -63,12 +66,15 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         Configuration.initVersionChange();
         Configuration.initParams(this);
 
+        JResource.initializeColors();
+
         loginPresenter = new LoginPresenter(this, this);
     }
 
     @Override
     protected void initView() {
 
+        applyExtendColors();
         // Open SettingActivity when application is started for the first time.
         // Application will be considered as initialized only after sign in successfully.
         if (SettingProperties.isAppInited(this)) {
@@ -236,5 +242,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
             e.printStackTrace();
         }
     }
+
+    private void applyExtendColors() {
+        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+    }
+
 }
 
