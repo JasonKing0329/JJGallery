@@ -5,9 +5,9 @@ package com.jing.app.jjgallery.model.main.login;
  */
 public interface ILoginModel {
 
-    public void signBasic(String user, String password);
+    void signBasic(String user, String password);
 
-    public void signWithFingerPrint();
+    void signWithFingerPrint();
 
-    public boolean isFingerPrintEnable();
+    boolean isFingerPrintEnable();
 }

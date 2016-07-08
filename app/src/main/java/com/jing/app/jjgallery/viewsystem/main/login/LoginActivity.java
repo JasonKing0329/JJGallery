@@ -218,8 +218,13 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     public void onServiceDone() {
         new HomeSelecter().startHomeActivity(this, null);
         finish();
+        applyAnimation();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

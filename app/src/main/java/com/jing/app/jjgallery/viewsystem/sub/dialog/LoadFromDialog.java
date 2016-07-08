@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.main.filesystem;
+package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;

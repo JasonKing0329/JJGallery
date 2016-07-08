@@ -30,4 +30,16 @@ public class FileManagerPresenter extends BasePresenter {
             fileManagerView.onListPage();
         }
     }
+
+    public void switchToIndexPage() {
+        fileManagerView.onIndexPage();
+    }
+
+    public void switchToThumbPage() {
+        fileManagerView.onThumbPage();
+    }
+
+    public void switchToListPage() {
+        fileManagerView.onListPage();
+    }
 }

@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.jing.app.jjgallery.BaseActivity;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.service.file.EncryptCheckService;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.LoadFromDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
@@ -23,10 +23,70 @@ import java.util.HashMap;
  * Created by JingYang on 2016/7/7 0007.
  * Description:
  * 将主界面通用的功能在该类实现，比如：检查全部加密文件、导出数据、导入数据、切换主题
+ * 主界面Activity均支持sliding menu模式
  */
-public abstract class AbsHomeActivity extends BaseActivity implements Handler.Callback {
+public abstract class AbsHomeActivity extends BaseSlidingActivity implements Handler.Callback
+    , SlidingMenu.OnOpenedListener, SlidingMenu.OnOpenListener, SlidingMenu.OnClosedListener{
 
     private EncryptCheckService mEncryptCheckService;
+
+    private SlidingMenu mSlidingMenu;
+
+    private long lastTime = 0L;
+
+    @Override
+    protected void initView() {
+        initSlidingMenu();
+        setUpContentView();
+        setUpLeftMenu();
+        setUpRightMenu();
+    }
+
+    private void initSlidingMenu() {
+        mSlidingMenu = getSlidingMenu();
+        mSlidingMenu.setShadowWidth((int) (getResources().getDisplayMetrics().density * 8));// 设置阴影宽度
+        mSlidingMenu.setBehindOffset(getResources().getDisplayMetrics().widthPixels / 3);// 设置菜单宽度
+        mSlidingMenu.setShadowDrawable(R.drawable.slidingmenu_left_shadow);
+        mSlidingMenu.setSecondaryShadowDrawable(R.drawable.slidingmenu_right_shadow);
+        mSlidingMenu.setFadeEnabled(true);
+        mSlidingMenu.setFadeDegree(0.35f);
+        mSlidingMenu.setBehindScrollScale(0.333f);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        mSlidingMenu.setOnOpenedListener(this);
+        mSlidingMenu.setSecondaryOnOpenListner(this);
+        mSlidingMenu.setOnClosedListener(this);
+        setSlidingActionBarEnabled(false);
+        setBehindContentView(getLeftMenu());
+        setSecondaryMenu(getRightMenu());
+        mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+    }
+
+    protected abstract int getLeftMenu();
+    protected abstract int getRightMenu();
+    protected abstract void setUpContentView();
+    protected abstract void setUpLeftMenu();
+    protected abstract void setUpRightMenu();
+
+
+    @Override
+    public void onBackPressed() {
+        if (mSlidingMenu.isMenuShowing()) {
+            mSlidingMenu.showContent();
+        } else if (mSlidingMenu.isSecondaryMenuShowing()) {
+            mSlidingMenu.showContent();
+        } else {
+            // 双击返回
+//            if (System.currentTimeMillis() - lastTime < 1000) {
+//                finish();
+//            } else {
+//                lastTime = System.currentTimeMillis();
+//            }
+            if (!handleBack()) {
+                super.onBackPressed();
+            }
+        }
+    }
+
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -46,6 +106,7 @@ public abstract class AbsHomeActivity extends BaseActivity implements Handler.Ca
                 break;
             case R.id.menu_edit:
                 startActivity(new Intent().setClass(this, SettingsActivity.class));
+                applyAnimation();
                 break;
             case R.id.menu_change_theme:
 //				new ChangeThemeDialog(context, new CustomDialog.OnCustomDialogActionListener() {
@@ -79,6 +140,7 @@ public abstract class AbsHomeActivity extends BaseActivity implements Handler.Ca
         return false;
     }
 
+    protected abstract boolean handleBack();
     protected abstract boolean needOptionWhenExit();
     protected abstract void onExit();
 
@@ -138,5 +200,20 @@ public abstract class AbsHomeActivity extends BaseActivity implements Handler.Ca
 
         dismissProgress();
         return false;
+    }
+
+    @Override
+    public void onClosed() {
+
+    }
+
+    @Override
+    public void onOpen() {
+
+    }
+
+    @Override
+    public void onOpened() {
+
     }
 }

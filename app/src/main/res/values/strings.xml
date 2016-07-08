@@ -100,8 +100,10 @@
     <string name="menu_view_current_folder">Current Folder</string>
     <string name="menu_encrypt_current_folder">Encrypt current folder</string>
     <string name="menu_decipher_current_folder">Decipher current folder</string>
+    <string name="menu_list_view" translatable="false">List view</string>
     <string name="menu_thumb_folder" translatable="false">Thumb view</string>
     <string name="menu_book_view" translatable="false">Book view</string>
+    <string name="menu_index_view" translatable="false">Index view</string>
     <string name="menu_create_order">Add new order</string>
     <string name="menu_by_name">Order by name</string>
     <string name="menu_by_date">Order by date</string>

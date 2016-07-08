@@ -19,6 +19,7 @@ public class FileManagerListFragment extends Fragment implements IFragment {
 	private View contentView;
 
 	private ActionBar mActionbar;
+	private FileManagerPresenter mPresenter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,9 +28,10 @@ public class FileManagerListFragment extends Fragment implements IFragment {
 		Log.d(TAG, "onCreateView");
 		if (contentView == null) {
 			Log.d(TAG, "reload view & page");
-			contentView = inflater.inflate(R.layout.page_file_manager, null);
+			contentView = inflater.inflate(R.layout.page_file_manager_folder, null);
 			fileListPage = new FileManagerListPage(getActivity(), contentView);
 			fileListPage.initActionbar(mActionbar);
+			fileListPage.setPresenter(mPresenter);
 		}
 		return contentView;
 	}
@@ -55,5 +57,10 @@ public class FileManagerListFragment extends Fragment implements IFragment {
 	@Override
 	public IFilePage getFilePage() {
 		return fileListPage;
+	}
+
+	@Override
+	public void setPresenter(BasePresenter presenter) {
+		mPresenter = (FileManagerPresenter) presenter;
 	}
 }

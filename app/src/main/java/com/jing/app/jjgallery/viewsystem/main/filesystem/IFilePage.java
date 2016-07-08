@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.BasePresenter;
@@ -22,4 +23,7 @@ public interface IFilePage {
     void onTextChanged(String text, int start, int before, int count);
     void initActionbar(ActionBar actionBar);
     void onConfigurationChanged(android.content.res.Configuration newConfig);
+    void onTouchEvent(MotionEvent event);
+
+    void setPresenter(BasePresenter presenter);
 }

@@ -13,4 +13,5 @@ public interface IFragment {
     void setActionbar(ActionBar actionbar);
     Fragment getFragment();
     IFilePage getFilePage();
+    void setPresenter(BasePresenter presenter);
 }

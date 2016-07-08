@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;

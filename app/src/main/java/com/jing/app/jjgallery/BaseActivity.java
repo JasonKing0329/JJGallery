@@ -2,6 +2,7 @@ package com.jing.app.jjgallery;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -119,5 +120,14 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     @Override
     public void onTextChanged(String text, int start, int before, int count){
 
+    }
+
+    public void applyFragmentAnimatin(FragmentTransaction ft) {
+        ft.setCustomAnimations(R.anim.activity_left_in, R.anim.activity_right_out);
+    }
+
+    public void applyAnimation() {
+        //不知道为啥不管用
+//        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
 }

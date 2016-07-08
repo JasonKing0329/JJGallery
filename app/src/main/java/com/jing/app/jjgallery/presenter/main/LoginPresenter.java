@@ -40,4 +40,5 @@ public class LoginPresenter implements LoginCallback {
     public void onLoginFailed(int type, String msg) {
         loginView.onSignFailed(type, msg);
     }
+
 }

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
+import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
 import com.jing.app.jjgallery.bean.filesystem.PathIndicatorNode;
@@ -41,6 +43,7 @@ import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.controller.PictureManagerUpdate;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
+import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -65,6 +68,7 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 	private RadioButton allRadio, encryptedRadio, unencryptedRadio;
 	private FileListAction listAction;
 	private FileListController listController;
+	private FileManagerPresenter mPresenter;
 	private ProgressDialog progressDialog;
 	private ActionBar actionBar;
 
@@ -274,27 +278,6 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 		activity.startActivity(intent);
 	}
 
-	private void startThumbView() {
-//		Intent intent = new Intent();
-//		Bundle bundle = new Bundle();
-//		bundle.putInt(Constants.KEY_THUMBFOLDER_INIT_MODE, ThumbFolderActivity.SRC_MODE_FOLDER);
-//		intent.putExtras(bundle);
-//		intent.setClass(context, ThumbFolderActivity.class);
-//		((Activity) context).startActivityForResult(intent, 0);
-	}
-
-	private void startBookView(String folder) {
-//		Intent intent = new Intent();
-//		Bundle bundle = new Bundle();
-//		bundle.putInt(Constants.KEY_BOOK_INIT_MODE, BookActivity.FOLDER);
-//		if (folder != null) {
-//			bundle.putString(Constants.KEY_BOOK_INIT_FOLDER, folder);
-//		}
-//		intent.putExtras(bundle);
-//		intent.setClass(context, BookActivity.class);
-//		((Activity) context).startActivity(intent);
-	}
-
 	private void openCreateFolderDialog() {
 		new DefaultDialogManager().openCreateFolderDialog(context
 				, new DefaultDialogManager.OnDialogActionListener() {
@@ -450,7 +433,6 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 			actionBar.addAddIcon();
 			actionBar.addRefreshIcon();
 			actionBar.addMenuIcon();
-			actionBar.setActionIconListener(actionIconListener);
 		}
 	}
 
@@ -567,7 +549,7 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 									startFullScreenActivity(item.getFile().getPath());
 								}
 								else if (which == 3) {//book view
-									startBookView(item.getFile().getPath());
+//									startBookView(item.getFile().getPath());
 								}
 							}
 						}).show();
@@ -757,36 +739,20 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 //		}
 	}
 
-	ActionBar.ActionIconListener actionIconListener = new ActionBar.ActionIconListener() {
+	@Override
+	public void onTouchEvent(MotionEvent event) {
 
-		@Override
-		public void onBack() {
+	}
 
-		}
-
-		@Override
-		public void onIconClick(View v) {
-			switch (v.getId()) {
-				case R.id.actionbar_add:
-					openCreateFolderDialog();
-					break;
-				case R.id.actionbar_thumb:
-					showViewModePopup(v);
-					break;
-				case R.id.actionbar_refresh:
-					refresh();
-					break;
-
-				default:
-					break;
-			}
-		}
-
-	};
+	@Override
+	public void setPresenter(BasePresenter presenter) {
+		mPresenter = (FileManagerPresenter) presenter;
+	}
 
 	protected void showViewModePopup(View v) {
 		PopupMenu menu = new PopupMenu(context, v);
 		menu.getMenuInflater().inflate(R.menu.filemanager_view_mode, menu.getMenu());
+		menu.getMenu().findItem(R.id.menu_list_view).setVisible(false);
 		menu.show();
 		menu.setOnMenuItemClickListener(viewModeListener);
 	}
@@ -797,11 +763,11 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 		public boolean onMenuItemClick(MenuItem item) {
 
 			switch (item.getItemId()) {
-				case R.id.menu_cover_thumb:
-					startThumbView();
+				case R.id.menu_thumb_view:
+					mPresenter.switchToThumbPage();
 					break;
-				case R.id.menu_book_view:
-					startBookView(null);
+				case R.id.menu_index_view:
+					mPresenter.switchToIndexPage();
 					break;
 			}
 			return true;
