@@ -48,7 +48,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	
 	public ActionBar(Context context, View view) {
 		this.context = context;
-		layout = (LinearLayout) view;
+		layout = (LinearLayout) view.findViewById(R.id.actionbar_content);
 		searchLayout = (RelativeLayout) view.findViewById(R.id.actionbar_search_layout);
 		backButton = (ImageView) view.findViewById(R.id.actionbar_back);
 		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);

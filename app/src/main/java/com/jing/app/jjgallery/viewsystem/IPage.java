@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.main.filesystem;
+package com.jing.app.jjgallery.viewsystem;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +13,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
  * Created by JingYang on 2016/7/1 0001.
  * Description:
  */
-public interface IFilePage {
+public interface IPage {
     boolean onBack();
     void onExit();
     void onIconClick(View view);

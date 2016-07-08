@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
+import com.jing.app.jjgallery.viewsystem.IFragment;
+import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**
@@ -19,7 +21,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 public class FileManagerIndexFragment extends Fragment implements IFragment {
 
     private final String TAG = "IndexFragment";
-    private IFilePage fileIndexPage;
+    private IPage fileIndexPage;
     private View contentView;
 
     private ActionBar mActionbar;
@@ -50,7 +52,7 @@ public class FileManagerIndexFragment extends Fragment implements IFragment {
     }
 
     @Override
-    public IFilePage getFilePage() {
+    public IPage getPage() {
         return fileIndexPage;
     }
 

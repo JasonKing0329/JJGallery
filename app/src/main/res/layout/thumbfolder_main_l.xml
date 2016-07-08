@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/thumbfolder_recyclerview"
+                    android:layout_width="@dimen/thumbfolder_folderlist_width"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:scrollbars="none" />
+
+                <GridView
+                    android:id="@+id/thumbfolder_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:columnWidth="@dimen/thumbfolder_grid_item_width"
+                    android:numColumns="auto_fit" />
+
+                <TextView
+                    android:id="@+id/thumbfolder_noitemview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="No item"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/thumbfolder_indexview_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <!--com.king.app.fileencryption.thumbfolder.IndexView
+                    android:id="@+id/thumbfolder_indexview"
+                    android:layout_width="@dimen/thumbfolder_index_width"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" /-->
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.jing.app.jjgallery.viewsystem.publicview.DragImageView
+        android:id="@+id/thumbfolder_indexview_control"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

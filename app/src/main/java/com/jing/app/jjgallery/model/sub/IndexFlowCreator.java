@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.presenter.sub;
+package com.jing.app.jjgallery.model.sub;
 
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 

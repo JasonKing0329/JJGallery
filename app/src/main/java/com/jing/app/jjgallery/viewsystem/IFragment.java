@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.main.filesystem;
+package com.jing.app.jjgallery.viewsystem;
 
 import android.support.v4.app.Fragment;
 
@@ -12,6 +12,6 @@ import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 public interface IFragment {
     void setActionbar(ActionBar actionbar);
     Fragment getFragment();
-    IFilePage getFilePage();
+    IPage getPage();
     void setPresenter(BasePresenter presenter);
 }

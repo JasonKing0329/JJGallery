@@ -45,13 +45,15 @@ import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 
 import java.io.File;
 import java.util.List;
 
-public class FileManagerListPage implements IFilePage, FileChangeListener {
+public class FileManagerListPage implements IPage, FileChangeListener {
 
 	private final String TAG = "FileManagerPage";
 
@@ -305,12 +307,14 @@ public class FileManagerListPage implements IFilePage, FileChangeListener {
 		}
 	}
 
+	private ShowImageDialog imageDialog;
+
 	private void showImage(String path) {
-//		if (imageDialog == null) {
-//			imageDialog = new ShowImageDialog(context, null, context.getResources().getDimensionPixelSize(R.dimen.actionbar_height));
-//		}
-//		imageDialog.setImagePath(path);
-//		imageDialog.show();
+		if (imageDialog == null) {
+			imageDialog = new ShowImageDialog(context, null, 0);
+		}
+		imageDialog.setImagePath(path);
+		imageDialog.show();
 	}
 
 	private void openByWall(String path) {

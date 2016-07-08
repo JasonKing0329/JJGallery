@@ -55,4 +55,10 @@ public class SettingProperties {
         }
     }
 
+    public static void savePreference(Context context, String key, String value) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
 }

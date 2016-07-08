@@ -10,14 +10,16 @@ import android.view.View;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
+import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
+import com.jing.app.jjgallery.viewsystem.IFragment;
 
 public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView {
 
     private FileManagerPresenter mPresenter;
 
     private IFragment mCurrentFragment;
-    private IFragment mListFragment, mIndexFragment;
+    private IFragment mListFragment, mIndexFragment, mThumbFragment;
 
     @Override
     protected boolean isActionBarNeed() {
@@ -75,8 +77,42 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
             mListFragment.setActionbar(mActionBar);
             mListFragment.setPresenter(mPresenter);
         }
+        else {
+            mListFragment.getPage().initActionbar(mActionBar);
+        }
 
         setCurrentFragment(ft, mListFragment, "FileManagerListFragment");
+    }
+
+    @Override
+    public void onThumbPage() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mThumbFragment == null) {
+            mThumbFragment = new FileManagerThumbFragment();
+            mThumbFragment.setActionbar(mActionBar);
+            mThumbFragment.setPresenter(new ThumbPresenter());
+        }
+        else {
+            mThumbFragment.getPage().initActionbar(mActionBar);
+        }
+
+        setCurrentFragment(ft, mThumbFragment, "FileManagerThumbFragment");
+    }
+
+    @Override
+    public void onIndexPage() {
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mIndexFragment == null) {
+            mIndexFragment = new FileManagerIndexFragment();
+            mIndexFragment.setActionbar(mActionBar);
+            mIndexFragment.setPresenter(mPresenter);
+        }
+        else {
+            mIndexFragment.getPage().initActionbar(mActionBar);
+        }
+
+        setCurrentFragment(ft, mIndexFragment, "FileManagerIndexFragment");
     }
 
     private void setCurrentFragment(FragmentTransaction ft, IFragment fragment, String tag) {
@@ -114,24 +150,6 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    public void onThumbPage() {
-
-    }
-
-    @Override
-    public void onIndexPage() {
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (mIndexFragment == null) {
-            mIndexFragment = new FileManagerIndexFragment();
-            mIndexFragment.setActionbar(mActionBar);
-            mIndexFragment.setPresenter(mPresenter);
-        }
-
-        setCurrentFragment(ft, mIndexFragment, "FileManagerIndexFragment");
-    }
-
-    @Override
     public void onBack() {
         if (!handleBack()) {
             onBackPressed();
@@ -140,28 +158,28 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     public void onActionIconClick(View view) {
-        mCurrentFragment.getFilePage().onIconClick(view);
+        mCurrentFragment.getPage().onIconClick(view);
     }
 
     @Override
     public void createMenu(MenuInflater menuInflater, Menu menu) {
-        mCurrentFragment.getFilePage().createMenu(menuInflater, menu);
+        mCurrentFragment.getPage().createMenu(menuInflater, menu);
     }
 
     @Override
     public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
-        mCurrentFragment.getFilePage().onPrepareMenu(menuInflater, menu);
+        mCurrentFragment.getPage().onPrepareMenu(menuInflater, menu);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         super.onMenuItemClick(item);
-        return mCurrentFragment.getFilePage().onMenuItemClick(item);
+        return mCurrentFragment.getPage().onMenuItemClick(item);
     }
 
     @Override
     protected boolean handleBack() {
-        return mCurrentFragment.getFilePage().onBack();
+        return mCurrentFragment.getPage().onBack();
     }
 
     @Override
@@ -171,17 +189,17 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     protected void onExit() {
-        mCurrentFragment.getFilePage().onExit();
+        mCurrentFragment.getPage().onExit();
     }
 
     @Override
     public void onTextChanged(String text, int start, int before, int count) {
-        mCurrentFragment.getFilePage().onTextChanged(text, start, before, count);
+        mCurrentFragment.getPage().onTextChanged(text, start, before, count);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mCurrentFragment.getFilePage().onTouchEvent(event);
+        mCurrentFragment.getPage().onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 }

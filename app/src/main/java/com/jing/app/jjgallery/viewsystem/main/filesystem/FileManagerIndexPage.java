@@ -13,7 +13,8 @@ import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
-import com.jing.app.jjgallery.presenter.sub.IndexFlowCreator;
+import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
+import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
@@ -22,7 +23,7 @@ import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
  * Created by JingYang on 2016/7/7 0007.
  * Description:
  */
-public class FileManagerIndexPage implements IFilePage, View.OnClickListener {
+public class FileManagerIndexPage implements IPage, View.OnClickListener {
 
     private Context context;
     private View view;

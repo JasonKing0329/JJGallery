@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity">
-    <include layout="@layout/actionbar_l"
-        android:id="@+id/actionbar"/>
     <RelativeLayout
         android:id="@+id/fm_fragment_container"
         android:layout_width="match_parent"
