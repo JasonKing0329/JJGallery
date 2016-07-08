@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jing.app.jjgallery.viewsystem.sub.thumb.OnThumbItemListener;
+import com.jing.app.jjgallery.viewsystem.sub.thumb.OnThumbFolderItemListener;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
 
 import java.io.File;
@@ -18,9 +18,8 @@ public class FileThumbFolderAdapter extends ThumbFolderAdapter {
 
     private List<File> folderList;
 
-    public FileThumbFolderAdapter(Context context, OnThumbItemListener listener, List<File> folderList) {
+    public FileThumbFolderAdapter(Context context, OnThumbFolderItemListener listener) {
         super(context, listener);
-        this.folderList = folderList;
     }
 
     @Override
@@ -31,5 +30,9 @@ public class FileThumbFolderAdapter extends ThumbFolderAdapter {
     @Override
     public int getItemCount() {
         return folderList == null ? 0:folderList.size();
+    }
+
+    public void setDatas(List<File> folderList) {
+        this.folderList = folderList;
     }
 }

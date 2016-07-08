@@ -438,6 +438,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 			actionBar.addRefreshIcon();
 			actionBar.addColorIcon();
 			actionBar.addMenuIcon();
+			actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
 		}
 	}
 
@@ -746,6 +747,11 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
+
+	}
+
+	@Override
+	public void initData() {
 
 	}
 

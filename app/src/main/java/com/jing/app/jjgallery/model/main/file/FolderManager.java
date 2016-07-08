@@ -1,8 +1,11 @@
 package com.jing.app.jjgallery.model.main.file;
 
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
+import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,6 +22,26 @@ public class FolderManager {
 			for (File f:files) {
 				list.add(f);
 			}
+		}
+		return list;
+	}
+
+	public List<String> loadPathList(String path) {
+		List<String> list = new ArrayList<>();
+		File[] files = new File(path).listFiles(new FileFilter() {
+
+			private Encrypter encrypter;
+			@Override
+			public boolean accept(File file) {
+				if (encrypter == null) {
+					encrypter = EncrypterFactory.create();
+				}
+				return encrypter.isEncrypted(file) || file.isDirectory();
+			}
+
+		});
+		for (File f:files) {
+			list.add(f.getPath());
 		}
 		return list;
 	}

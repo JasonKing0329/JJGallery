@@ -19,9 +19,9 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
 
     private Context mContext;
 
-    private OnThumbItemListener mListener;
+    private OnThumbFolderItemListener mListener;
 
-    public ThumbFolderAdapter(Context context, OnThumbItemListener listener) {
+    public ThumbFolderAdapter(Context context, OnThumbFolderItemListener listener) {
         mListener = listener;
         mContext = context;
     }
@@ -43,6 +43,7 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
         holder.position = position;
         holder.container.setOnClickListener(this);
         holder.container.setOnLongClickListener(this);
+        holder.container.setTag(holder);
 
         bindDataToView(position, holder.image, holder.text);
     }
@@ -51,12 +52,19 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
 
     @Override
     public void onClick(View v) {
-
+        if (mListener != null) {
+            int position = ((ViewHolder) v.getTag()).position;
+            mListener.onThumbFolderItemClick(v, position);
+        }
     }
 
     @Override
     public boolean onLongClick(View v) {
-        return false;
+        if (mListener != null) {
+            int position = ((ViewHolder) v.getTag()).position;
+            mListener.onThumbFolderItemLongClick(v, position);
+        }
+        return true;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

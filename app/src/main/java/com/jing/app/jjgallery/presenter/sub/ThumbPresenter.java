@@ -13,9 +13,11 @@ import java.util.List;
  */
 public class ThumbPresenter extends BasePresenter {
 
-    private FolderManager folderManager;
-
     public List<File> loadSubFolders(String path) {
         return  new FolderManager().loadList(path);
+    }
+
+    public List<String> loadFolderItems(String path) {
+        return  new FolderManager().loadPathList(path);
     }
 }

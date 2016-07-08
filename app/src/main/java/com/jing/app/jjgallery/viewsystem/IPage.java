@@ -14,6 +14,8 @@ import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
  * Description:
  */
 public interface IPage {
+    void initData();
+    void setPresenter(BasePresenter presenter);
     boolean onBack();
     void onExit();
     void onIconClick(View view);
@@ -25,5 +27,4 @@ public interface IPage {
     void onConfigurationChanged(android.content.res.Configuration newConfig);
     void onTouchEvent(MotionEvent event);
 
-    void setPresenter(BasePresenter presenter);
 }

@@ -202,4 +202,8 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
         mCurrentFragment.getPage().onTouchEvent(event);
         return super.onTouchEvent(event);
     }
+
+    public FileManagerPresenter getPresenter() {
+        return mPresenter;
+    }
 }

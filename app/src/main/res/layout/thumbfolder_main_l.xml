@@ -21,16 +21,13 @@
                     android:id="@+id/thumbfolder_recyclerview"
                     android:layout_width="@dimen/thumbfolder_folderlist_width"
                     android:layout_height="match_parent"
-                    android:divider="@null"
                     android:scrollbars="none" />
 
-                <GridView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/thumbfolder_gridview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:columnWidth="@dimen/thumbfolder_grid_item_width"
-                    android:numColumns="auto_fit" />
+                    android:layout_marginLeft="10dp" />
 
                 <TextView
                     android:id="@+id/thumbfolder_noitemview"

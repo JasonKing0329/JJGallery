@@ -13,7 +13,7 @@ import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFragment;
 public class FileManagerThumbFragment extends ThumbFragment {
     @Override
     protected IPage createThumbPage(View contentView) {
-        return new FileManagerThumbPage(getActivity(), contentView
+        return new FileManagerThumbFolderPage(getActivity(), contentView
                 , getActivity().getIntent().getBooleanExtra(Constants.KEY_THUMBFOLDER_CHOOSER_MODE, false));
     }
 }

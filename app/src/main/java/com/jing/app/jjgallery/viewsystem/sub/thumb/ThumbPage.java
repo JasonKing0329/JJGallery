@@ -1,8 +1,10 @@
 package com.jing.app.jjgallery.viewsystem.sub.thumb;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,11 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -26,7 +31,7 @@ import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
  * Created by JingYang on 2016/7/8 0008.
  * Description:
  */
-public abstract class ThumbPage implements IPage, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnThumbFolderItemListener {
 
     /**
      * 删除时的透明过程
@@ -46,25 +51,26 @@ public abstract class ThumbPage implements IPage, AdapterView.OnItemClickListene
     private ActionBar actionBar;
 
     private RecyclerView folderRecyclerView;
-    private GridView gridView;
+    private RecyclerView imageRecyclerView;
 
     private ShowImageDialog imageDialog;
     private DragImageView dragView;
 
     private FolderDialog folderDialog;
+    private ThumbImageAdapter mImageAdapter;
+
+    private View lastChosedFolder;
 
     public ThumbPage(Context context, View contentView, boolean isChooserMode) {
         mContext = context;
         this.isChooserMode = isChooserMode;
         folderRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_recyclerview);
-        gridView = (GridView) contentView.findViewById(R.id.thumbfolder_gridview);
+        imageRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_gridview);
         dragView = (DragImageView) contentView.findViewById(R.id.thumbfolder_indexview_control);
-        gridView.setOnItemClickListener(this);
-        gridView.setOnItemLongClickListener(this);
 
         //orientation
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //		layoutManager.setRecycleChildrenOnDetach(true);
         folderRecyclerView.setLayoutManager(layoutManager);
         //animation
@@ -73,12 +79,27 @@ public abstract class ThumbPage implements IPage, AdapterView.OnItemClickListene
         animator.setMoveDuration(TIME_GALLERY_ANIM_MOVE);
         folderRecyclerView.setItemAnimator(animator);
         folderRecyclerView.setAdapter(getFolderAdapter());
+
+        int column = mContext.getResources().getInteger(R.integer.thumb_column);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, column);
+        imageRecyclerView.setLayoutManager(gridLayoutManager);
+        imageRecyclerView.setAdapter(getFolderAdapter());
+        mImageAdapter = new ThumbImageAdapter(mContext, this);
+        imageRecyclerView.setAdapter(mImageAdapter);
     }
 
+    public Context getContext() {
+        return mContext;
+    }
     protected abstract ThumbFolderAdapter getFolderAdapter();
 
     @Override
     public boolean onBack() {
+        if (mImageAdapter.isActionMode()) {
+            mImageAdapter.showActionMode(false);
+            mImageAdapter.notifyDataSetChanged();
+            return true;
+        }
         return false;
     }
 
@@ -115,19 +136,14 @@ public abstract class ThumbPage implements IPage, AdapterView.OnItemClickListene
     @Override
     public void initActionbar(ActionBar actionBar) {
 
+        actionBar.clearActionIcon();
         if (!isChooserMode) {
             actionBar.addMenuIcon();
             actionBar.addGalleryIcon();
             actionBar.addRefreshIcon();
         }
         actionBar.addSearchIcon();
-
-        if (mContext.getResources().getConfiguration().orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
-            actionBar.onLandscape();
-        }
-        else {
-            actionBar.onVertical();
-        }
+        actionBar.onConfiguration(mContext.getResources().getConfiguration().orientation);
     }
 
     @Override
@@ -145,13 +161,78 @@ public abstract class ThumbPage implements IPage, AdapterView.OnItemClickListene
         mPresenter = (ThumbPresenter) presenter;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    protected void focusFolderItem(View view) {
+        if (lastChosedFolder == null) {
+            lastChosedFolder = view;
+        }
+        else {
+            if (view != lastChosedFolder) {
+                if (mImageAdapter.isActionMode()) {
+                    mImageAdapter.showActionMode(false);
+                }
+            }
+            lastChosedFolder.setBackground(null);
+        }
+        view.setBackgroundResource(R.drawable.gallery_border_choose);
+        lastChosedFolder = view;
 
+        view.findViewById(R.id.thumb_folder_item_image).startAnimation(getFolderAnimation());
+    }
+    protected void showFolderImage(String path) {
+        mImageAdapter.setDatas(mPresenter.loadFolderItems(path));
+        mImageAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * origin codes issue: LinearInterpolator is not working in xml definition
+     * must use java codes to set it
+     * @return
+     */
+    private Animation getFolderAnimation() {
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.thumb_folder_click);
+        LinearInterpolator interpolator = new LinearInterpolator();
+        animation.setInterpolator(interpolator);
+        return animation;
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
+    public void onThumbImageItemClick(View view, int position) {
+
+        if (isChooserMode) {
+            Activity activity = (Activity) getContext();
+            activity.getIntent().putExtra(Constants.KEY_THUMBFOLDER_CHOOSE_CONTENT, mImageAdapter.getImagePath(position));
+            activity.setResult(0, activity.getIntent());
+            activity.finish();
+        }
+        else {
+            view.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.thumb_item_longclick));
+            //showImage(view, position);
+            showImage(mImageAdapter.getImagePath(position));
+        }
+    }
+
+    private void showImage(String path) {
+        if (imageDialog == null) {
+            imageDialog = new ShowImageDialog(mContext, null, 0);
+        }
+        imageDialog.setImagePath(path);
+        imageDialog.fitImageView();
+        imageDialog.show();
+    }
+
+    @Override
+    public void onThumbImageItemLongClick(View view, int position) {
+        if (!isChooserMode) {
+            if (mImageAdapter.isActionMode()) {
+                mImageAdapter.showActionMode(false);
+            }
+            else {
+                mImageAdapter.notifyShowAnimation(position);
+                mImageAdapter.resetMap();
+                mImageAdapter.getCheckMap().put(position, true);
+                mImageAdapter.showActionMode(true);
+            }
+            mImageAdapter.notifyDataSetChanged();
+        }
     }
 }

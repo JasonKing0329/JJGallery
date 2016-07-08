@@ -38,6 +38,7 @@ public abstract class ThumbFragment extends Fragment implements IFragment {
             mPage = createThumbPage(contentView);
             mPage.initActionbar(mActionbar);
             mPage.setPresenter(mPresenter);
+            mPage.initData();
         }
         return contentView;
     }

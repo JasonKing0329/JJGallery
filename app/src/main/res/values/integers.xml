@@ -15,5 +15,6 @@
     <integer name="preview_row">5</integer>
     <integer name="rgame_table_text_zoom">8</integer>
     <integer name="sorder_menudlg_anim_time">400</integer><!-- =1000-600(anim sorder_longclick放大部分后剩下的时间) -->
-    
+
+    <integer name="thumb_column">3</integer>
 </resources>

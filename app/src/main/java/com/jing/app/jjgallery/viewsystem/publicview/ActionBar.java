@@ -43,9 +43,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	//private Spinner levelSpinner, courtSpinner;
 	private LinearLayout layout;
 	private RelativeLayout searchLayout;
-	
+
 	private PopupMenu popupMenu;
-	
+
 	public ActionBar(Context context, View view) {
 		this.context = context;
 		layout = (LinearLayout) view.findViewById(R.id.actionbar_content);
@@ -91,9 +91,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		colorButton.setOnClickListener(this);
 		thumbButton.setOnClickListener(this);
 		titleView = (TextView) view.findViewById(R.id.actionbar_title);
-		
+
 		currentButtons = new ArrayList<View>();
-		
+
 	}
 
 	public void setActionIconListener(ActionIconListener listener) {
@@ -134,7 +134,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public interface ActionSearchListener {
 		public void onTextChanged(String text, int start, int before, int count);
 	}
-	
+
 	public interface ActionSpinnerListener {
 		public void onTitleFilterListener(int indexLevel, int indexCourt);
 	}
@@ -142,7 +142,16 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public int getHeight() {
 		return context.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
 	}
-	
+
+	public void onConfiguration(int orientation) {
+		if (orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
+			onLandscape();
+		}
+		else {
+			onVertical();
+		}
+	}
+
 	public void onLandscape() {
 		LayoutParams params = (LayoutParams) iconContainer.getLayoutParams();
 		int iconNumber = currentButtons.size();
@@ -170,7 +179,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 			params.width = context.getResources().getDimensionPixelSize(R.dimen.actionbar_icon_max_width);
 		}
 	}
-	
+
 	public void clearActionIcon() {
 		for (View v:currentButtons) {
 			v.setVisibility(View.GONE);
@@ -244,11 +253,11 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	public void closeSearch() {
-		
+
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
 		searchLayout.startAnimation(animation);
 		searchLayout.setVisibility(View.GONE);
-		
+
 		animation = AnimationUtils.loadAnimation(context, R.anim.appear);
 		iconContainer.startAnimation(animation);
 		iconContainer.setVisibility(View.VISIBLE);
@@ -270,7 +279,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public String getTitle() {
 		return titleView.getText().toString();
 	}
-	
+
 	@Override
 	public void onClick(View view) {
 		if (view == backButton) {
@@ -284,7 +293,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		}
 		else if (view == menuButton) {
 			if (popupMenu == null) {
-				
+
 				createMenu();
 			}
 			else {

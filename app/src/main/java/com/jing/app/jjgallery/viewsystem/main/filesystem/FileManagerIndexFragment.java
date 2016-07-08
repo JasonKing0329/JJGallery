@@ -37,6 +37,7 @@ public class FileManagerIndexFragment extends Fragment implements IFragment {
             fileIndexPage = new FileManagerIndexPage(getActivity(), contentView);
             fileIndexPage.initActionbar(mActionbar);
             fileIndexPage.setPresenter(mPresenter);
+            fileIndexPage.initData();
         }
         return contentView;
     }

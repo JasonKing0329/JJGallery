@@ -34,6 +34,7 @@ public class FileManagerListFragment extends Fragment implements IFragment {
 			fileListPage = new FileManagerListPage(getActivity(), contentView);
 			fileListPage.initActionbar(mActionbar);
 			fileListPage.setPresenter(mPresenter);
+			fileListPage.initData();
 		}
 		return contentView;
 	}

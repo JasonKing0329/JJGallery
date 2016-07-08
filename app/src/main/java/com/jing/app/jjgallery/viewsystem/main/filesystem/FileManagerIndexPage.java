@@ -37,7 +37,6 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
         this.context = context;
         this.view = view;
         keywordsFlow = (KeywordsFlow) view.findViewById(R.id.view_keyword_flow);
-        startKeywordsFlow();
     }
 
     private void startKeywordsFlow() {
@@ -51,6 +50,11 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
     @Override
     public void onTouchEvent(MotionEvent event) {
         mKeyAdapter.onTouchEvent(event);
+    }
+
+    @Override
+    public void initData() {
+        startKeywordsFlow();
     }
 
     @Override
@@ -136,6 +140,7 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
             actionBar.clearActionIcon();
             actionBar.addThumbIcon();
             actionBar.addMenuIcon();
+            actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
         }
     }
 
