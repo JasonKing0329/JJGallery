@@ -31,7 +31,8 @@ import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
  * Created by JingYang on 2016/7/8 0008.
  * Description:
  */
-public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnThumbFolderItemListener {
+public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnThumbFolderItemListener
+    , View.OnClickListener{
 
     /**
      * 删除时的透明过程
@@ -50,7 +51,9 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
     private boolean isChooserMode;
     private ActionBar actionBar;
 
+    private View upperView;
     private RecyclerView folderRecyclerView;
+    private LinearLayoutManager folderLayoutManager;
     private RecyclerView imageRecyclerView;
 
     private ShowImageDialog imageDialog;
@@ -59,20 +62,20 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
     private FolderDialog folderDialog;
     private ThumbImageAdapter mImageAdapter;
 
-    private View lastChosedFolder;
-
     public ThumbPage(Context context, View contentView, boolean isChooserMode) {
         mContext = context;
         this.isChooserMode = isChooserMode;
+        upperView = contentView.findViewById(R.id.thumb_folder_upper);
         folderRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_recyclerview);
         imageRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_gridview);
         dragView = (DragImageView) contentView.findViewById(R.id.thumbfolder_indexview_control);
+        upperView.setOnClickListener(this);
 
         //orientation
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        folderLayoutManager = new LinearLayoutManager(mContext);
+        folderLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //		layoutManager.setRecycleChildrenOnDetach(true);
-        folderRecyclerView.setLayoutManager(layoutManager);
+        folderRecyclerView.setLayoutManager(folderLayoutManager);
         //animation
         DefaultItemAnimator animator = new DefaultItemAnimator();
         animator.setRemoveDuration(TIME_GALLERY_ANIM_REMOVE);
@@ -161,21 +164,17 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
         mPresenter = (ThumbPresenter) presenter;
     }
 
-    protected void focusFolderItem(View view) {
-        if (lastChosedFolder == null) {
-            lastChosedFolder = view;
+    protected void focusFolderItem(View view, int position) {
+        // no effect with repeat click
+        if (position == getFolderAdapter().getFocusPosition()) {
+            return;
         }
-        else {
-            if (view != lastChosedFolder) {
-                if (mImageAdapter.isActionMode()) {
-                    mImageAdapter.showActionMode(false);
-                }
-            }
-            lastChosedFolder.setBackground(null);
-        }
-        view.setBackgroundResource(R.drawable.gallery_border_choose);
-        lastChosedFolder = view;
 
+        getFolderAdapter().setFocusPosition(position);
+        getFolderAdapter().notifyDataSetChanged();
+        if (mImageAdapter.isActionMode()) {
+            mImageAdapter.showActionMode(false);
+        }
         view.findViewById(R.id.thumb_folder_item_image).startAnimation(getFolderAnimation());
     }
     protected void showFolderImage(String path) {
@@ -235,4 +234,21 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
             mImageAdapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == upperView) {
+            onUpperClicked();
+        }
+    }
+
+    protected void showUpperView(boolean show) {
+        upperView.setVisibility(show ? View.VISIBLE:View.GONE);
+    }
+
+    protected void scrollFolderToPosition(int position) {
+        folderLayoutManager.scrollToPosition(position);
+    }
+
+    protected abstract void onUpperClicked();
 }

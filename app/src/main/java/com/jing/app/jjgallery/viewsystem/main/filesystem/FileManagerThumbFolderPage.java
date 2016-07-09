@@ -7,6 +7,7 @@ import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.OnThumbFolderItemListener;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
@@ -15,6 +16,7 @@ import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbPage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by JingYang on 2016/7/8 0008.
@@ -26,13 +28,20 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 
     private List<File> folderList;
     private List<File> tempFileList;
+    private File currentFolder;
+    private Stack<Integer> focusStack;
+
+    private int sortMode;
 
     public FileManagerThumbFolderPage(Context context, View contentView, boolean isChooserMode) {
         super(context, contentView, isChooserMode);
+        sortMode = ThumbPresenter.SORT_NAME;
+        focusStack = new Stack<>();
     }
 
     @Override
     public void initData() {
+        mFolderAdapter.setPresenter(mPresenter);
         loadRootFolder();
     }
 
@@ -44,17 +53,37 @@ public class FileManagerThumbFolderPage extends ThumbPage {
         actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
 
+    @Override
+    protected void onUpperClicked() {
+        if (currentFolder != null) {
+            currentFolder = currentFolder.getParentFile();
+
+            // 设置上级目录选中状态
+            mFolderAdapter.setFocusPosition(focusStack.pop());
+
+            loadCurrentFolder();
+
+            // 滚动到上级目录选中位置
+            scrollFolderToPosition(mFolderAdapter.getFocusPosition());
+        }
+    }
+
     private void loadRootFolder() {
-        folderList = mPresenter.loadSubFolders(Configuration.APP_DIR_IMG);
+        folderList = mPresenter.loadSubFolders(Configuration.APP_DIR_IMG, sortMode);
+        tempFileList = new ArrayList<>();
+        fillTempList();
+
+        mFolderAdapter.setDatas(tempFileList);
+        mFolderAdapter.notifyDataSetChanged();
+    }
+
+    private void fillTempList() {
         if (folderList != null) {
-            tempFileList = new ArrayList<>();
+            tempFileList.clear();
             for (File file:folderList) {
                 tempFileList.add(file);
             }
         }
-
-        mFolderAdapter.setDatas(tempFileList);
-        mFolderAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -116,9 +145,43 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 
     @Override
     public void onThumbFolderItemClick(View view, int position) {
+
         String path = tempFileList.get(position).getPath();
-        focusFolderItem(view);
-        showFolderImage(path);
+
+        if (mPresenter.hasChildFolder(path)) {// 点击包含子目录的父目录
+            currentFolder = tempFileList.get(position);
+            // 记录当前选中位置
+            focusStack.push(position);
+            // 进入下级目录，清空focus状态，并滚动到列表顶部
+            mFolderAdapter.clearFocus();
+
+            loadCurrentFolder();
+
+            // 滚动到列表顶部
+            scrollFolderToPosition(0);
+        }
+        else {// 点击不包含子目录的目录
+            // 设置选中状态
+            focusFolderItem(view, position);
+
+            // 显示当前目录内容
+            showFolderImage(path);
+        }
+    }
+
+    private void loadCurrentFolder() {
+        folderList = mPresenter.loadSubFolders(currentFolder.getPath(), sortMode);
+        fillTempList();
+        mFolderAdapter.notifyDataSetChanged();
+
+        // 设置“返回上级”显示状态
+        if (currentFolder.getPath().equals(Configuration.APP_DIR_IMG)) {
+            currentFolder = null;
+            showUpperView(false);
+        }
+        else {
+            showUpperView(true);
+        }
     }
 
     @Override

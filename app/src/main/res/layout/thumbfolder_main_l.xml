@@ -17,11 +17,42 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/thumbfolder_recyclerview"
+                <LinearLayout
                     android:layout_width="@dimen/thumbfolder_folderlist_width"
                     android:layout_height="match_parent"
-                    android:scrollbars="none" />
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/thumb_folder_upper"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/thumbfolder_upper_height"
+                        android:clickable="true"
+                        android:background="@drawable/ripple_rect_grey"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/thumbfolder_upper_icon_size"
+                            android:layout_height="@dimen/thumbfolder_upper_icon_size"
+                            android:src="@drawable/arrow_back"
+                            android:layout_marginLeft="15dp"
+                            android:scaleType="fitXY"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thumb_folder_upper"
+                            android:layout_marginLeft="10dp"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/vertical_divider"
+                        android:background="@color/divider"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/thumbfolder_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none" />
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/thumbfolder_gridview"

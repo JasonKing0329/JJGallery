@@ -11,7 +11,7 @@
 	    android:layout_width="@dimen/thumbfolder_folderlist_cover_image_width"
 	    android:layout_height="@dimen/thumbfolder_folderlist_cover_image_width"
 	    android:scaleType="centerCrop"
-	    android:src="?attr/default_folder"/>
+	    android:src="@drawable/ic_folder_sub"/>
     <TextView 
         android:id="@+id/thumb_folder_item_name"
 	    android:layout_width="match_parent"

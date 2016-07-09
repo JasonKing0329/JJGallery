@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "1.1.0"
+ext.appVersionName = "1.1.1"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 9
+        versionCode 10
         versionName appVersionName
     }
 

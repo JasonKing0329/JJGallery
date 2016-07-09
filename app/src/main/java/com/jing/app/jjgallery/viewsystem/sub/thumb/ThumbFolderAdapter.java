@@ -21,9 +21,24 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
 
     private OnThumbFolderItemListener mListener;
 
+    private int mFocusPosition;
+
     public ThumbFolderAdapter(Context context, OnThumbFolderItemListener listener) {
         mListener = listener;
         mContext = context;
+        mFocusPosition = -1;
+    }
+
+    public int getFocusPosition() {
+        return mFocusPosition;
+    }
+
+    public void setFocusPosition(int position) {
+        mFocusPosition = position;
+    }
+
+    public void clearFocus() {
+        mFocusPosition = -1;
     }
 
     @Override
@@ -44,6 +59,13 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
         holder.container.setOnClickListener(this);
         holder.container.setOnLongClickListener(this);
         holder.container.setTag(holder);
+
+        if (mFocusPosition == position) {
+            holder.container.setBackgroundResource(R.drawable.gallery_border_choose);
+        }
+        else {
+            holder.container.setBackground(null);
+        }
 
         bindDataToView(position, holder.image, holder.text);
     }
