@@ -26,5 +26,4 @@ public interface IPage {
     void initActionbar(ActionBar actionBar);
     void onConfigurationChanged(android.content.res.Configuration newConfig);
     void onTouchEvent(MotionEvent event);
-
 }

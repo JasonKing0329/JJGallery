@@ -29,7 +29,7 @@ import java.util.List;
 public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickListener {
 
 	private Context context;
-	private ImageView backButton, menuButton, addButton, editButton
+	private ImageView backButton, menuButton, menuLeftButton, addButton, editButton
 		, titleIcon, saveButton, cancelButton, galleryButton
 		, searchButton, closeButton, refreshButton, changeButton, colorButton
 		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton, thumbButton;
@@ -52,6 +52,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		searchLayout = (RelativeLayout) view.findViewById(R.id.actionbar_search_layout);
 		backButton = (ImageView) view.findViewById(R.id.actionbar_back);
 		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);
+		menuLeftButton = (ImageView) view.findViewById(R.id.actionbar_menu_left);
 		addButton = (ImageView) view.findViewById(R.id.actionbar_add);
 		editButton = (ImageView) view.findViewById(R.id.actionbar_edit);
 		saveButton = (ImageView) view.findViewById(R.id.actionbar_save);
@@ -73,6 +74,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		iconContainer = (HorizontalScrollView) view.findViewById(R.id.actionbar_icon_container);
 		backButton.setOnClickListener(this);
 		menuButton.setOnClickListener(this);
+		menuLeftButton.setOnClickListener(this);
 		addButton.setOnClickListener(this);
 		refreshButton.setOnClickListener(this);
 		editButton.setOnClickListener(this);
@@ -186,6 +188,12 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		}
 		currentButtons.clear();
 	}
+
+	public void useMenuLeftIcon() {
+		backButton.setVisibility(View.GONE);
+		menuLeftButton.setVisibility(View.VISIBLE);
+	}
+
 	public void addEditIcon() {
 		currentButtons.add(editButton);
 		editButton.setVisibility(View.VISIBLE);

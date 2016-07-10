@@ -140,6 +140,7 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
             actionBar.clearActionIcon();
             actionBar.addThumbIcon();
             actionBar.addMenuIcon();
+            actionBar.addColorIcon();
             actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
         }
     }

@@ -72,7 +72,7 @@
     <dimen name="thumbfolder_index_width">40dp</dimen>
     <dimen name="thumbfolder_index_height">40dp</dimen>
     <dimen name="thumbfolder_index_min_height">30dp</dimen>
-    <dimen name="thumbfolder_index_margin">1dp</dimen>
+    <dimen name="thumbfolder_index_margin">1px</dimen>
     <dimen name="thumbfolder_index_control_width">40dp</dimen>
     <dimen name="thumbfolder_upper_height">70dp</dimen>
     <dimen name="thumbfolder_upper_icon_size">50dp</dimen>

@@ -15,6 +15,13 @@
 			android:layout_width="@dimen/actionbar_icon_width"
 			android:layout_height="match_parent"
 			android:src="@drawable/actionbar_back"/>
+		<ImageView
+			style="@style/ActionbarIcon_L"
+			android:id="@+id/actionbar_menu_left"
+			android:layout_width="@dimen/actionbar_icon_width"
+			android:layout_height="match_parent"
+			android:src="@drawable/actionbar_menu_left"
+			android:visibility="gone"/>
 
 		<ImageView
 			android:id="@+id/actionbar_title_icon"

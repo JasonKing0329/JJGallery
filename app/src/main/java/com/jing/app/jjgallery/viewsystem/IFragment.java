@@ -13,5 +13,6 @@ public interface IFragment {
     void setActionbar(ActionBar actionbar);
     Fragment getFragment();
     IPage getPage();
+    IColorPage getColorPage();
     void setPresenter(BasePresenter presenter);
 }

@@ -43,6 +43,10 @@ public class FileManagerThumbFolderPage extends ThumbPage {
     public void initData() {
         mFolderAdapter.setPresenter(mPresenter);
         loadRootFolder();
+
+        getIndexCreator().createFromFileList(tempFileList);
+        showIndexView();
+        initIndexStateController();
     }
 
     @Override
@@ -75,6 +79,7 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 
         mFolderAdapter.setDatas(tempFileList);
         mFolderAdapter.notifyDataSetChanged();
+
     }
 
     private void fillTempList() {

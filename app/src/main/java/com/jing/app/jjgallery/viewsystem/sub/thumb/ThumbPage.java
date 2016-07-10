@@ -2,11 +2,11 @@ package com.jing.app.jjgallery.viewsystem.sub.thumb;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,24 +15,35 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.AdapterView;
+import android.widget.ScrollView;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
+import com.jing.app.jjgallery.model.pub.IndexCreator;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
+import com.jing.app.jjgallery.res.AppResManager;
+import com.jing.app.jjgallery.res.AppResProvider;
+import com.jing.app.jjgallery.res.ColorRes;
+import com.jing.app.jjgallery.res.JResource;
+import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.viewsystem.IColorPage;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DragImageView;
+import com.jing.app.jjgallery.viewsystem.publicview.IndexView;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.FolderDialog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
+import com.king.lib.colorpicker.ColorPickerSelectionData;
+
+import java.util.List;
 
 /**
  * Created by JingYang on 2016/7/8 0008.
  * Description:
  */
-public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnThumbFolderItemListener
-    , View.OnClickListener{
+public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemListener, OnThumbFolderItemListener
+    , View.OnClickListener, IndexView.OnIndexSelectListener {
 
     /**
      * 删除时的透明过程
@@ -49,7 +60,6 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
     protected ThumbPresenter mPresenter;
 
     private boolean isChooserMode;
-    private ActionBar actionBar;
 
     private View upperView;
     private RecyclerView folderRecyclerView;
@@ -58,6 +68,9 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
 
     private ShowImageDialog imageDialog;
     private DragImageView dragView;
+    private ScrollView indexViewParent;
+    private IndexView indexView;
+    private IndexCreator indexCreator;
 
     private FolderDialog folderDialog;
     private ThumbImageAdapter mImageAdapter;
@@ -68,8 +81,30 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
         upperView = contentView.findViewById(R.id.thumb_folder_upper);
         folderRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_recyclerview);
         imageRecyclerView = (RecyclerView) contentView.findViewById(R.id.thumbfolder_gridview);
+        indexView = (IndexView) contentView.findViewById(R.id.thumbfolder_indexview);
+        indexViewParent = (ScrollView) contentView.findViewById(R.id.thumbfolder_indexview_parent);
         dragView = (DragImageView) contentView.findViewById(R.id.thumbfolder_indexview_control);
+
         upperView.setOnClickListener(this);
+        indexView.setOnIndexSelectListener(this);
+
+        indexCreator = new IndexCreator(indexView);
+
+        int size = mContext.getResources().getDimensionPixelSize(R.dimen.thumbfolder_index_control_width);
+        dragView.setImageResource(R.drawable.index_control);
+        dragView.fitImageSize(size, size);
+        dragView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if (indexViewParent.getVisibility() == View.GONE) {
+                    indexViewParent.setVisibility(View.VISIBLE);
+                }
+                else {
+                    indexViewParent.setVisibility(View.GONE);
+                }
+            }
+        });
 
         //orientation
         folderLayoutManager = new LinearLayoutManager(mContext);
@@ -89,11 +124,47 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
         imageRecyclerView.setAdapter(getFolderAdapter());
         mImageAdapter = new ThumbImageAdapter(mContext, this);
         imageRecyclerView.setAdapter(mImageAdapter);
+
+    }
+
+    protected void initIndexStateController() {
+
+        Log.d("ThumbPage", "initIndexStateController");
+        //notice use indexViewParent or indexView
+        //position should use indexView, but visibility should base on its parent
+        if (indexViewParent.getVisibility() != View.VISIBLE) {//when change orientation need consider about this
+            //show in the right-bottom corner of screen
+            dragView.setPosition(ScreenUtils.getScreenWidth(mContext) - dragView.getImageWidth() - 100
+                    , ScreenUtils.getScreenHeight(mContext) - dragView.getImageWidth() - 100);
+            return;
+        }
+
+        indexView.post(new Runnable() {
+            @Override
+            public void run() {
+                int pos[] = new int[2];
+                indexView.getLocationOnScreen(pos);//position should use indexView
+                Log.d("ThumbPage", "pos[" + pos[0] + "," + pos[1] + "]");
+                int offset = dragView.getImageWidth();
+                dragView.setPosition(pos[0] - offset, pos[1]);
+                dragView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public Context getContext() {
         return mContext;
     }
+
+    public IndexCreator getIndexCreator() {
+        return  indexCreator;
+    }
+
+    protected void showIndexView() {
+        Log.d("ThumbPage", "showIndexView");
+        indexViewParent.setVisibility(View.VISIBLE);
+    }
+
     protected abstract ThumbFolderAdapter getFolderAdapter();
 
     @Override
@@ -101,6 +172,12 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
         if (mImageAdapter.isActionMode()) {
             mImageAdapter.showActionMode(false);
             mImageAdapter.notifyDataSetChanged();
+            return true;
+        }
+        //To fix: showImageDialog>click setasslidingmenubk icon>popup listwindow
+        //>back>show image dialog again>click setasslidingmenubk, there is no action
+        if (imageDialog != null) {
+            imageDialog.dismiss();
             return true;
         }
         return false;
@@ -113,7 +190,8 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
 
     @Override
     public void onIconClick(View view) {
-
+        switch (view.getId()) {
+        }
     }
 
     @Override
@@ -138,20 +216,40 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
 
     @Override
     public void initActionbar(ActionBar actionBar) {
-
         actionBar.clearActionIcon();
         if (!isChooserMode) {
             actionBar.addMenuIcon();
             actionBar.addGalleryIcon();
             actionBar.addRefreshIcon();
+            actionBar.addColorIcon();
         }
         actionBar.addSearchIcon();
         actionBar.onConfiguration(mContext.getResources().getConfiguration().orientation);
+
+        applyExtendColors();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
 
+        if (imageDialog != null) {
+            imageDialog.setOrientationChanged();
+            if (imageDialog.isShowing()) {
+                imageDialog.onConfigChange();
+            }
+        }
+        if (folderDialog != null) {
+            folderDialog.updateHeight();
+        }
+
+//        if (newConfig.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
+//            actionBar.onLandscape();
+//        }
+//        else {
+//            actionBar.onVertical();
+//        }
+
+        initIndexStateController();
     }
 
     @Override
@@ -251,4 +349,38 @@ public abstract class ThumbPage implements IPage, OnThumbImageItemListener, OnTh
     }
 
     protected abstract void onUpperClicked();
+
+    @Override
+    public void onSelect(String index) {
+        folderRecyclerView.scrollToPosition(indexCreator.getIndexPosition(index));
+    }
+
+    @Override
+    public void onColorChanged(String key, int newColor) {
+        if (key.equals(ColorRes.FM_THUMB_INDEX_NORMAL_COLOR)) {
+            indexView.updateNormalColor(newColor);
+        }
+        else if (key.equals(ColorRes.FM_THUMB_TEXT_COLOR)) {
+            indexView.updateTextColor(newColor);
+        }
+    }
+
+    @Override
+    public void onApplyDefaultColors() {
+        JResource.removeColor(ColorRes.ACTIONBAR_BK);
+        JResource.saveColorUpdate(mContext);
+        applyExtendColors();
+    }
+
+    @Override
+    public void applyExtendColors() {
+        indexView.updateNormalColor(JResource.getColor(mContext, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, R.color.actionbar_bk_blue));
+        indexView.updateTextColor(JResource.getColor(mContext, ColorRes.FM_THUMB_TEXT_COLOR, R.color.white));
+    }
+
+    @Override
+    public List<ColorPickerSelectionData> getColorPickerSelectionData() {
+        return new AppResManager().getThumbList(mContext);
+    }
+
 }

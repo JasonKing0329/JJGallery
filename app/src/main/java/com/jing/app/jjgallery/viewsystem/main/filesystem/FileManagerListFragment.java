@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
+import com.jing.app.jjgallery.viewsystem.IColorPage;
 import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -60,6 +61,14 @@ public class FileManagerListFragment extends Fragment implements IFragment {
 	@Override
 	public IPage getPage() {
 		return fileListPage;
+	}
+
+	@Override
+	public IColorPage getColorPage() {
+		if (fileListPage instanceof IColorPage) {
+			return (IColorPage) fileListPage;
+		}
+		return null;
 	}
 
 	@Override

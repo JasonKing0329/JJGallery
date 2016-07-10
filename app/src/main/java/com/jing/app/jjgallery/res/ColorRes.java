@@ -24,4 +24,7 @@ public class ColorRes {
 	public static final String TAB_ACTIONBAR_BK = "tab_actionbar_bk";
 	public static final String TAB_ACTIONBAR_TEXT = "tab_actionbar_text";
 	public static final String TAB_ACTIONBAR_TEXT_FOCUS = "tab_actionbar_text_focus";
+
+	public static final String FM_THUMB_INDEX_NORMAL_COLOR = "fm_thumb_index_normal_color";
+	public static final String FM_THUMB_TEXT_COLOR = "fm_thumb_text_color";
 }

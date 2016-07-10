@@ -11,8 +11,12 @@ import android.view.View;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
+import com.jing.app.jjgallery.res.AppResManager;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.IFragment;
+import com.king.lib.colorpicker.ColorPickerSelectionData;
+
+import java.util.List;
 
 public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView {
 
@@ -48,6 +52,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     protected void setUpContentView() {
+        mActionBar.useMenuLeftIcon();
         mActionBar.addMenuIcon();
         mActionBar.setTitle(getString(R.string.tab_filemanager));
         mPresenter.startFileManagerPage(this);
@@ -158,7 +163,12 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     public void onActionIconClick(View view) {
-        mCurrentFragment.getPage().onIconClick(view);
+        if (view.getId() == R.id.actionbar_menu_left) {
+            showMenu();
+        }
+        else {
+            mCurrentFragment.getPage().onIconClick(view);
+        }
     }
 
     @Override
@@ -205,5 +215,39 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     public FileManagerPresenter getPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    protected List<ColorPickerSelectionData> getListSelectionData() {
+        if (mCurrentFragment.getColorPage() != null) {
+            return mCurrentFragment.getColorPage().getColorPickerSelectionData();
+        }
+        else {
+            return new AppResManager().getHomeList(this);
+        }
+    }
+
+    @Override
+    public void onColorChanged(String key, int newColor) {
+        if (mCurrentFragment.getColorPage() != null) {
+            mCurrentFragment.getColorPage().onColorChanged(key, newColor);
+        }
+        super.onColorChanged(key, newColor);
+    }
+
+    @Override
+    public void onApplyDefaultColors() {
+        if (mCurrentFragment.getColorPage() != null) {
+            mCurrentFragment.getColorPage().onApplyDefaultColors();
+        }
+        super.onApplyDefaultColors();
+    }
+
+    @Override
+    protected void applyExtendColors() {
+        if (mCurrentFragment.getColorPage() != null) {
+            mCurrentFragment.getColorPage().applyExtendColors();
+        }
+        super.applyExtendColors();
     }
 }

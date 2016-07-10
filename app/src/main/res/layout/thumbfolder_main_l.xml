@@ -79,11 +79,11 @@
                 android:scrollbars="none"
                 android:visibility="gone">
 
-                <!--com.king.app.fileencryption.thumbfolder.IndexView
+                <com.jing.app.jjgallery.viewsystem.publicview.IndexView
                     android:id="@+id/thumbfolder_indexview"
                     android:layout_width="@dimen/thumbfolder_index_width"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" /-->
+                    android:orientation="vertical" />
             </ScrollView>
         </RelativeLayout>
     </LinearLayout>

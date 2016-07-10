@@ -46,11 +46,11 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     @Override
     protected void initView() {
 
-        applyExtendColors();
         initSlidingMenu();
         setUpContentView();
         setUpLeftMenu();
         setUpRightMenu();
+        applyExtendColors();
     }
 
     private void initSlidingMenu() {
@@ -116,9 +116,11 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
             colorPicker = new ColorPicker(this, this);
             colorPicker.setResourceProvider(new AppResProvider(this));
         }
-        colorPicker.setSelectionData(new AppResManager().getHomeList(this));
+        colorPicker.setSelectionData(getListSelectionData());
         colorPicker.show();
     }
+
+    protected abstract List<ColorPickerSelectionData> getListSelectionData();
 
     protected abstract void onActionIconClick(View view);
 
@@ -284,7 +286,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         applyExtendColors();
     }
 
-    private void applyExtendColors() {
+    protected void applyExtendColors() {
         mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
     }
 
