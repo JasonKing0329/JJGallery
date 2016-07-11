@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.sub.thumb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +17,10 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.PictureManagerUpdate;
 import com.jing.app.jjgallery.model.sub.RecycleAdapterLoadController;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -54,10 +58,20 @@ public class ThumbImageAdapter extends RecyclerView.Adapter<ThumbImageAdapter.Vi
         checkMap.clear();
     }
 
+    /**
+     * select all
+     */
     public void selectAll() {
         for (int i = 0; i < imageFileList.size(); i ++) {
             checkMap.put(i, true);
         }
+    }
+
+    /**
+     * deselect all
+     */
+    public void deSelectAll() {
+        checkMap.clear();
     }
 
     public HashMap<Integer, Boolean> getCheckMap() {
@@ -180,6 +194,32 @@ public class ThumbImageAdapter extends RecyclerView.Adapter<ThumbImageAdapter.Vi
 
     public String getImagePath(int position) {
         return imageFileList.get(position);
+    }
+
+    public List<String> getSelectedList() {
+        Iterator<Integer> iterator = checkMap.keySet().iterator();
+        List<String> list = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            list.add(imageFileList.get(iterator.next()));
+        }
+        return list;
+    }
+
+    public List<Integer> getSelectedIndex() {
+        Iterator<Integer> iterator = checkMap.keySet().iterator();
+        List<Integer> list = new ArrayList<>();
+
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+        }
+
+        Collections.sort(list);
+        return list;
+    }
+
+    public String getSlectedImagePath() {
+        return imageFileList.get(checkMap.keySet().iterator().next());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -27,13 +27,14 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.PictureManagerUpdate;
 import com.jing.app.jjgallery.model.main.file.MoveController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
+import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.CropHelper;
@@ -41,18 +42,15 @@ import com.jing.app.jjgallery.viewsystem.publicview.CropInforView;
 import com.jing.app.jjgallery.viewsystem.publicview.CropView;
 import com.jing.app.jjgallery.service.image.ZoomListener;
 import com.jing.app.jjgallery.util.DisplayHelper;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.gifview.MyGifManager;
 import com.king.lib.saveas.SaveAsDialog;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ShowImageDialog extends Dialog implements View.OnClickListener
-		, CropView.OnCropAreaChangeListener, Callback, OnSeekBarChangeListener{
+		, CropView.OnCropAreaChangeListener, Callback, OnSeekBarChangeListener, SOrderProviderCallback{
 
 	private final String TAG = "ShowImageDialog";
 	private final boolean DEBUG = Application.DEBUG;
@@ -86,6 +84,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 	private MyGifManager gifManager;
 	private SeekBar gifSeekBar;
 
+	private SOrderProvider sOrderProvider;
 	/**
 	 *
 	 * @param context
@@ -97,6 +96,9 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		setContentView(R.layout.dialog_showimage_l);
 		this.actionListener = listener;
 		this.actionbarHeight = actionbarHeight;
+
+		sOrderProvider = new SOrderProvider(context, this);
+
 		addButton = (ImageView) findViewById(R.id.actionbar_add);
 		moveButton = (ImageView) findViewById(R.id.actionbar_movetofolder);
 		closeButton = (ImageView) findViewById(R.id.actionbar_close);
@@ -341,7 +343,9 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			dismiss();
 		}
 		else if (v == addButton) {
-			openOrderChooserToAddItem();
+			List<String> list = new ArrayList<>();
+			list.add(displayImagePath);
+			sOrderProvider.openOrderChooserToAddItem(list);
 			if (actionListener != null) {
 				actionListener.onAddToOrder();
 			}
@@ -350,16 +354,18 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			if (actionListener != null) {
 				actionListener.onMoveToFolder();
 			}
-			openFolderDialog();
+			List<String> list = new ArrayList<>();
+			list.add(displayImagePath);
+			sOrderProvider.openFolderDialogToMoveFiles(list);
 		}
 		else if (v == detailsButton) {
-			viewDetails();
+			sOrderProvider.viewDetails(displayImagePath);
 			if (actionListener != null) {
 				actionListener.onDetails();
 			}
 		}
 		else if (v == setCoverButton) {
-			openOrderChooserToSetCover();
+			sOrderProvider.openOrderChooserToSetCover(displayImagePath);
 			if (actionListener != null) {
 				actionListener.onSetCover();
 			}
@@ -412,46 +418,6 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		else if (v == cropAreaSizeButton) {
 			showCropAreaSizePopup();
 		}
-	}
-
-	private void openFolderDialog() {
-		folderDialog = new FolderDialog(getContext(), new CustomDialog.OnCustomDialogActionListener() {
-
-			@Override
-			public boolean onSave(Object object) {
-				final File targetFile = (File) object;
-				List<String> list = new ArrayList<String>();
-				list.add(imagePath);
-				if (moveController == null) {
-					moveController = new MoveController(getContext(), ShowImageDialog.this);
-				}
-				final List<String> pList = list;
-				moveController.showProgress();
-
-				//imagePath changed
-				String name = imagePath.substring(imagePath.lastIndexOf("/"));//include '/' symbol
-				moveObjectPath = targetFile.getPath() + name;
-
-				new Thread() {
-					public void run() {
-						moveController.moveToFolder(pList, targetFile, moveController.getHandler());
-					}
-				}.start();
-				return true;
-			}
-
-			@Override
-			public void onLoadData(HashMap<String, Object> data) {
-				data.put(Constants.KEY_FOLDERDLG_ROOT, Configuration.APP_DIR_IMG);
-			}
-
-			@Override
-			public boolean onCancel() {
-				return false;
-			}
-		});
-		folderDialog.setTitle(getContext().getResources().getString(R.string.move_to_folder));
-		folderDialog.show();
 	}
 
 	private void setCropArea(int left, int top, int right, int bottom) {
@@ -654,127 +620,36 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		super.dismiss();
 	}
 
+	@Override
+	public void onMoveFinish(String folderPath) {
+		String[] array = displayImagePath.split("/");
+		String name = array[array.length - 1];
+		if (folderPath.endsWith("/")) {
+			displayImagePath = folderPath  + name;
+		}
+		else {
+			displayImagePath = folderPath + "/" + name;
+		}
+		imagePath = displayImagePath;
+		Toast.makeText(getContext(), R.string.success, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onAddToOrderFinished() {
+
+	}
+
+	@Override
+	public void onDeleteFinished(int count) {
+
+	}
+
 	public interface ActionListener {
 		public void onAddToOrder();
 		public void onMoveToFolder();
 		public void onDetails();
 		public void onSetCover();
 		public void onSetAsMenuBk();
-	}
-
-	private void openOrderChooserToSetCover() {
-
-//		SOrderChooserUpdate chooser = new SOrderChooserUpdate(getContext(), new CustomDialog.OnCustomDialogActionListener() {
-//
-//			@Override
-//			public boolean onSave(Object object) {
-//				if (object != null) {
-//					SOrder order = (SOrder) object;
-//					if (displayImagePath != null && new File(displayImagePath).exists()) {
-//						order.setCoverPath(displayImagePath);
-//						String msg = null;
-//						if (controller.setOrderCover(order)) {
-//							msg = getContext().getResources().getString(R.string.spicture_myorders_set_cover_ok);
-//						}
-//						else {
-//							msg = getContext().getResources().getString(R.string.spicture_myorders_set_cover_fail);
-//						}
-//						if (order.getName() != null) {
-//							msg = msg.replace("%s", order.getName());
-//						}
-//						if (controller.setOrderCover(order)) {
-//
-//						}
-//						Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-//					}
-//				}
-//				return true;
-//			}
-//
-//			@Override
-//			public void onLoadData(HashMap<String, Object> data) {
-//
-//			}
-//
-//			@Override
-//			public boolean onCancel() {
-//				return false;
-//			}
-//		});
-//		chooser.setTitle(getContext().getResources().getString(R.string.set_as_cover));
-//		chooser.show();
-	}
-
-	private void openOrderChooserToAddItem() {
-
-//		SOrderChooserUpdate chooser = new SOrderChooserUpdate(getContext(), new CustomDialog.OnCustomDialogActionListener() {
-//
-//			@Override
-//			public boolean onSave(Object object) {
-//				if (object != null) {
-//					final SOrder order = (SOrder) object;
-//					if (displayImagePath != null) {
-//						if (controller.isItemExist(displayImagePath, order.getId())) {
-//							String title = getContext().getResources().getString(R.string.spicture_myorders_item_exist);
-//							title = String.format(title, order.getName());
-//							new AlertDialog.Builder(getContext())
-//									.setMessage(title)
-//									.setPositiveButton(R.string.ok, new OnClickListener() {
-//
-//										@Override
-//										public void onClick(DialogInterface dialog, int which) {
-//											addToOrder(displayImagePath, order, true);
-//										}
-//									})
-//									.setNegativeButton(R.string.cancel, null)
-//									.show();
-//						}
-//						else {
-//							addToOrder(displayImagePath, order, false);
-//						}
-//					}
-//					else {
-//						Toast.makeText(getContext(), R.string.login_pwd_error, Toast.LENGTH_LONG).show();
-//					}
-//				}
-//				return true;
-//			}
-//
-//			@Override
-//			public void onLoadData(HashMap<String, Object> data) {
-//
-//			}
-//
-//			@Override
-//			public boolean onCancel() {
-//				return false;
-//			}
-//		});
-//		chooser.setTitle(getContext().getResources().getString(R.string.add_to_order));
-//		chooser.show();
-	}
-
-	private void addToOrder(String path, SOrder order, boolean showResult) {
-//		String msg = null;
-//		if (controller.addItemToOrder(path, order)) {
-//			msg = getContext().getResources().getString(R.string.spicture_myorders_add_ok);
-//		}
-//		else {
-//			msg = getContext().getResources().getString(R.string.spicture_myorders_add_fail);
-//		}
-//		if (order.getName() != null) {
-//			msg = msg.replace("%s", order.getName());
-//		}
-//		if (showResult) {
-//			Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-//		}
-	}
-
-	private void viewDetails() {
-		File file = new File(displayImagePath);
-		if (file != null && file.exists()) {
-			new DefaultDialogManager().openDetailDialog(getContext(), file);
-		}
 	}
 
 	@Override

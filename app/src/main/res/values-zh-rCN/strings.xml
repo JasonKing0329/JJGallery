@@ -22,6 +22,7 @@
     <string name="success">成功！</string>
     <string name="failed">失败！</string>
     <string name="warning">警告</string>
+    <string name="processing">进行中，请稍后&#8230;</string>
     <string name="restart_need_unlock">重新进入应用程序需要验证身份，验证成功后方可重新进入“完全开放”模式！</string>
     <string name="encrypt_check_service_isexist">%d个文件未加密，点击确定以加密！</string>
     <string name="encrypt_check_service_encryptok">加密任务完成！</string>

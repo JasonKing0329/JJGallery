@@ -20,22 +20,19 @@ public class IndexView extends LinearLayout implements OnClickListener {
 	}
 	
 	private OnIndexSelectListener listener;
-	
-	public IndexView(Context context) {
-		super(context);
-	}
+
+	private int mNormalColor;
+	private int mTextColor;
+	private int mPressColor;
+
 	public IndexView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		mNormalColor = getResources().getColor(R.color.actionbar_bk_blue);
+		mPressColor = getResources().getColor(R.color.toolbar_item_pressed_bk);
+		mTextColor = getResources().getColor(R.color.white);
 	}
 
-	public IndexView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
-
-	public IndexView(Context context, AttributeSet attrs, int defStyleAttr,
-					 int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-	}
 
 	public void clearAllIndex() {
 		removeAllViews();
@@ -70,8 +67,8 @@ public class IndexView extends LinearLayout implements OnClickListener {
 
 		for (int i = 0; i < size; i ++) {
 			child = (TextView) getChildAt(i);
-			child.setBackgroundResource(Application.isLollipop() ? R.drawable.index_item_bk_l : R.drawable.index_item_bk);
-			child.setTextColor(getResources().getColor(R.color.white));
+			child.setTextColor(mTextColor);
+			child.setBackground(DrawableUtils.getColorStateDrawable(getContext(), mNormalColor, mPressColor));
 			params = (LayoutParams) child.getLayoutParams();
 			params.height = height;
 			mParams = params;
@@ -81,19 +78,19 @@ public class IndexView extends LinearLayout implements OnClickListener {
 	}
 
 	public void updateNormalColor(int color) {
-		TextView child = null;
-		int pressColor = getResources().getColor(R.color.toolbar_item_pressed_bk);
-		for (int i = 0; i < getChildCount(); i ++) {
-			child = (TextView) getChildAt(i);
-			child.setBackground(DrawableUtils.getColorStateDrawable(getContext(), color, pressColor));
-		}
+		mNormalColor = color;
 	}
 
 	public void updateTextColor(int color) {
+		mTextColor = color;
+	}
+
+	public void refresh() {
 		TextView child = null;
 		for (int i = 0; i < getChildCount(); i ++) {
 			child = (TextView) getChildAt(i);
-			child.setTextColor(color);
+			child.setTextColor(mTextColor);
+			child.setBackground(DrawableUtils.getColorStateDrawable(getContext(), mNormalColor, mPressColor));
 		}
 	}
 

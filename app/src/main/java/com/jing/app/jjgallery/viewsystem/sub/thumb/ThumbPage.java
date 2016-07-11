@@ -21,9 +21,10 @@ import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.model.pub.IndexCreator;
+import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
+import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
-import com.jing.app.jjgallery.res.AppResProvider;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.util.ScreenUtils;
@@ -43,7 +44,7 @@ import java.util.List;
  * Description:
  */
 public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemListener, OnThumbFolderItemListener
-    , View.OnClickListener, IndexView.OnIndexSelectListener {
+    , View.OnClickListener, IndexView.OnIndexSelectListener, SOrderProviderCallback {
 
     /**
      * 删除时的透明过程
@@ -75,6 +76,8 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     private FolderDialog folderDialog;
     private ThumbImageAdapter mImageAdapter;
 
+    protected SOrderProvider sOrderProvider;
+
     public ThumbPage(Context context, View contentView, boolean isChooserMode) {
         mContext = context;
         this.isChooserMode = isChooserMode;
@@ -85,9 +88,12 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         indexViewParent = (ScrollView) contentView.findViewById(R.id.thumbfolder_indexview_parent);
         dragView = (DragImageView) contentView.findViewById(R.id.thumbfolder_indexview_control);
 
+        applyExtendColors();
+
         upperView.setOnClickListener(this);
         indexView.setOnIndexSelectListener(this);
 
+        sOrderProvider = new SOrderProvider(context, this);
         indexCreator = new IndexCreator(indexView);
 
         int size = mContext.getResources().getDimensionPixelSize(R.dimen.thumbfolder_index_control_width);
@@ -191,28 +197,116 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     @Override
     public void onIconClick(View view) {
         switch (view.getId()) {
+            case R.id.actionbar_refresh:
+                refreshCurrent();
+                break;
         }
     }
 
     @Override
     public void createMenu(MenuInflater menuInflater, Menu menu) {
-
+        loadMenu(menuInflater, menu);
     }
 
     @Override
     public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
+        loadMenu(menuInflater, menu);
+    }
 
+    private void loadMenu(MenuInflater menuInflater, Menu menu) {
+        menu.clear();
+        if (mImageAdapter.isActionMode()) {
+            menuInflater.inflate(R.menu.thumbfolder_actionmode, menu);
+            int checkedItemNum = mImageAdapter.getCheckMap().size();
+            if (checkedItemNum == 0) {
+                menu.findItem(R.id.menu_thumb_addtooder).setVisible(false);
+                menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
+                menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
+                menu.findItem(R.id.menu_thumb_delete).setVisible(false);
+                menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
+                menu.findItem(R.id.menu_thumb_deselectall).setVisible(false);
+            }
+            else if (checkedItemNum == 1) {
+                menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
+                menu.findItem(R.id.menu_thumb_setascover).setVisible(true);
+                menu.findItem(R.id.menu_thumb_viewdetail).setVisible(true);
+                menu.findItem(R.id.menu_thumb_delete).setVisible(true);
+                menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
+                menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
+            }
+            else if (checkedItemNum == mImageAdapter.getItemCount()) {
+                menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
+                menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
+                menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
+                menu.findItem(R.id.menu_thumb_delete).setVisible(true);
+                menu.findItem(R.id.menu_thumb_selectall).setVisible(false);
+                menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
+            }
+            else {
+                menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
+                menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
+                menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
+                menu.findItem(R.id.menu_thumb_delete).setVisible(true);
+                menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
+                menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
+            }
+        }
+        else {
+            if (!isChooserMode) {
+                menuInflater.inflate(R.menu.home_file_manager, menu);
+                menu.setGroupVisible(R.id.group_file, false);
+            }
+        }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_thumb_addtooder:
+                sOrderProvider.openOrderChooserToAddItem(mImageAdapter.getSelectedList());
+                break;
+            case R.id.menu_thumb_setascover:
+                sOrderProvider.openOrderChooserToSetCover(mImageAdapter.getSlectedImagePath());
+                break;
+            case R.id.menu_thumb_viewdetail:
+                sOrderProvider.viewDetails(mImageAdapter.getSlectedImagePath());
+                break;
+            case R.id.menu_move_to_folder:
+                sOrderProvider.openFolderDialogToMoveFiles(mImageAdapter.getSelectedList());
+                break;
+            case R.id.menu_thumb_delete:
+                deleteSelectedFiles();
+                break;
+            case R.id.menu_thumb_selectall:
+                mImageAdapter.selectAll();
+                mImageAdapter.notifyDataSetChanged();
+                break;
+            case R.id.menu_thumb_deselectall:
+                mImageAdapter.deSelectAll();
+                mImageAdapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
+        }
         return false;
+    }
+
+    protected abstract void deleteSelectedFiles();
+
+    protected List<Integer> getSelectedIndex() {
+        return mImageAdapter.getSelectedIndex();
+    }
+
+    protected List<String> getSelectedPath() {
+        return mImageAdapter.getSelectedList();
     }
 
     @Override
     public void onTextChanged(String text, int start, int before, int count) {
-
+        onTextFilterChanged(text);
     }
+
+    protected abstract void onTextFilterChanged(String text);
 
     @Override
     public void initActionbar(ActionBar actionBar) {
@@ -275,8 +369,9 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         }
         view.findViewById(R.id.thumb_folder_item_image).startAnimation(getFolderAnimation());
     }
-    protected void showFolderImage(String path) {
-        mImageAdapter.setDatas(mPresenter.loadFolderItems(path));
+
+    protected void showImages(List<String> pathList) {
+        mImageAdapter.setDatas(pathList);
         mImageAdapter.notifyDataSetChanged();
     }
 
@@ -359,9 +454,11 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     public void onColorChanged(String key, int newColor) {
         if (key.equals(ColorRes.FM_THUMB_INDEX_NORMAL_COLOR)) {
             indexView.updateNormalColor(newColor);
+            indexView.refresh();
         }
         else if (key.equals(ColorRes.FM_THUMB_TEXT_COLOR)) {
             indexView.updateTextColor(newColor);
+            indexView.refresh();
         }
     }
 
@@ -376,11 +473,31 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     public void applyExtendColors() {
         indexView.updateNormalColor(JResource.getColor(mContext, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, R.color.actionbar_bk_blue));
         indexView.updateTextColor(JResource.getColor(mContext, ColorRes.FM_THUMB_TEXT_COLOR, R.color.white));
+        indexView.refresh();
     }
 
     @Override
     public List<ColorPickerSelectionData> getColorPickerSelectionData() {
         return new AppResManager().getThumbList(mContext);
+    }
+
+    @Override
+    public void onMoveFinish(String folderPath) {
+        mImageAdapter.showActionMode(false);
+        refreshCurrent();
+    }
+
+    protected abstract void refreshCurrent();
+
+    @Override
+    public void onAddToOrderFinished() {
+
+    }
+
+    @Override
+    public void onDeleteFinished(int count) {
+        mImageAdapter.showActionMode(false);
+        refreshCurrent();
     }
 
 }

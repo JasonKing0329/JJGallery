@@ -17,7 +17,7 @@ import com.jing.app.jjgallery.R;
 public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolderAdapter.ViewHolder>
     implements View.OnClickListener, View.OnLongClickListener{
 
-    private Context mContext;
+    protected Context mContext;
 
     private OnThumbFolderItemListener mListener;
 

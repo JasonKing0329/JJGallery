@@ -78,7 +78,7 @@
     <dimen name="thumbfolder_index_margin">1dp</dimen>
     <dimen name="thumbfolder_index_control_width">30dp</dimen>
     <dimen name="thumbfolder_upper_height">50dp</dimen>
-    <dimen name="thumbfolder_upper_icon_size">30dp</dimen>
+    <dimen name="thumbfolder_upper_icon_size">20dp</dimen>
 
     <dimen name="spicture_view_height">600dp</dimen>
     <dimen name="spicture_view_width">330dp</dimen>

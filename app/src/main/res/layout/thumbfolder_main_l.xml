@@ -34,7 +34,7 @@
                             android:layout_width="@dimen/thumbfolder_upper_icon_size"
                             android:layout_height="@dimen/thumbfolder_upper_icon_size"
                             android:src="@drawable/arrow_back"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="10dp"
                             android:scaleType="fitXY"/>
                         <TextView
                             android:layout_width="wrap_content"

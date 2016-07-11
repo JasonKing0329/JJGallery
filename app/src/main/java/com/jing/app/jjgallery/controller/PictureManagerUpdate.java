@@ -271,6 +271,23 @@ public class PictureManagerUpdate {
 		return bitmap;
 	}
 
+	public Bitmap createOrderCircleCover(String path, Context context) {
+		Bitmap bitmap = null;
+		if (path == null) {
+			bitmap = getDefaultOrderCover(context);
+		}
+		else {
+			if (new File(path).exists()) {
+				bitmap = loadCoverBitmap(path);
+			}
+			if (bitmap == null) {
+				bitmap = getDefaultOrderCover(context);
+			}
+		}
+		bitmap = ImageFactory.getCircleBitmap(bitmap);
+		return  bitmap;
+	}
+
 	public Bitmap getOrderPreview(String path, Context context) {
 		Bitmap bitmap = orderPreviewPool.get(path);
 		if (bitmap == null) {

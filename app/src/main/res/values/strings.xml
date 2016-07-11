@@ -53,6 +53,7 @@
     <string name="failed">Failed!</string>
     <string name="warning">Warning</string>
     <string name="checking">checking&#8230;</string>
+    <string name="processing">Processing, please wait&#8230;</string>
     <string name="restart_need_unlock">Restart application need check identity, after check right, you could reback public mode!</string>
     <string name="encrypt_check_service_isexist">There are %d files not encrypted, choose ok to encrypt them!</string>
     <string name="encrypt_check_service_encryptok">Encryption completed!</string>

@@ -1,10 +1,13 @@
 package com.jing.app.jjgallery.presenter.sub;
 
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
+import com.jing.app.jjgallery.model.main.order.SOrderCallback;
+import com.jing.app.jjgallery.model.main.order.SOrderManager;
+import com.jing.app.jjgallery.viewsystem.main.order.ISOrderView;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,14 +16,23 @@ import java.util.List;
  * Created by JingYang on 2016/7/8 0008.
  * Description:
  */
-public class ThumbPresenter extends BasePresenter {
+public class ThumbPresenter extends BasePresenter implements SOrderCallback {
 
     public static final int SORT_NAME = 0;
     public static final int SORT_TIME = 1;
+
     private FolderManager folderManager;
+    private SOrderManager sorderManager;
+
+    private ISOrderView sorderView;
 
     public ThumbPresenter() {
         folderManager = new FolderManager();
+        sorderManager = new SOrderManager(this);
+    }
+
+    public void setSOrderView(ISOrderView sorderView) {
+        this.sorderView = sorderView;
     }
 
     /**
@@ -50,6 +62,22 @@ public class ThumbPresenter extends BasePresenter {
         return folderManager.hasFolderChild(new File(path));
     }
 
+    // 异步操作
+    public void loadAllOrders() {
+        sorderManager.loadAllOrders();
+    }
+
+    @Override
+    public void onQueryAllOrders(List<SOrder> list) {
+        Collections.sort(list, new SOrderComparator());
+        sorderView.onQueryAllOrders(list);
+    }
+
+    // 同步操作
+    public void loadOrderItems(SOrder sOrder) {
+        sorderManager.loadOrderItems(sOrder);
+    }
+
     private class NameComparator implements Comparator<File> {
 
         @Override
@@ -65,4 +93,13 @@ public class ThumbPresenter extends BasePresenter {
             return (int) (lhs.lastModified() - rhs.lastModified());
         }
     }
+
+    private class SOrderComparator implements Comparator<SOrder> {
+
+        @Override
+        public int compare(SOrder lhs, SOrder rhs) {
+            return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+        }
+    }
+
 }

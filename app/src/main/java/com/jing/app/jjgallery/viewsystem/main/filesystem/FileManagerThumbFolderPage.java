@@ -28,7 +28,10 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 
     private List<File> folderList;
     private List<File> tempFileList;
+    /** 当前目录所处的父目录 **/
     private File currentFolder;
+    /** 选中显示内容的目录 **/
+    private File currentSelectedFolder;
     private Stack<Integer> focusStack;
 
     private int sortMode;
@@ -70,6 +73,12 @@ public class FileManagerThumbFolderPage extends ThumbPage {
             // 滚动到上级目录选中位置
             scrollFolderToPosition(mFolderAdapter.getFocusPosition());
         }
+    }
+
+    @Override
+    protected void refreshCurrent() {
+        // 发生了delete/move事件，重新刷新当前文件内容
+        showImages(mPresenter.loadFolderItems(currentSelectedFolder.getPath()));
     }
 
     private void loadRootFolder() {
@@ -114,6 +123,42 @@ public class FileManagerThumbFolderPage extends ThumbPage {
                 showViewModePopup(view);
                 break;
         }
+    }
+
+    @Override
+    protected void deleteSelectedFiles() {
+        sOrderProvider.deleteItemFromFolder(getSelectedPath());
+    }
+
+    @Override
+    protected void onTextFilterChanged(String text) {
+
+        tempFileList.clear();
+        if (text.toString().trim().length() == 0) {
+            for (int i = 0; i < folderList.size(); i ++) {
+                tempFileList.add(folderList.get(i));
+            }
+            mFolderAdapter.notifyDataSetChanged();
+        }
+        else {
+            //startWith排在前面，contains排在后面
+            String target = null, prefix = text.toString().toLowerCase();
+            for (int i = 0; i < folderList.size(); i ++) {
+                target = folderList.get(i).getName().toLowerCase();
+                if (target.startsWith(prefix)) {
+                    tempFileList.add(folderList.get(i));
+                }
+            }
+            for (int i = 0; i < folderList.size(); i ++) {
+                target = folderList.get(i).getName().toLowerCase();
+                if (!target.startsWith(prefix) && target.contains(prefix)) {
+                    tempFileList.add(folderList.get(i));
+                }
+            }
+            mFolderAdapter.notifyDataSetChanged();
+        }
+
+        getIndexCreator().createFromFileList(tempFileList);
     }
 
     protected void showViewModePopup(View v) {
@@ -166,11 +211,13 @@ public class FileManagerThumbFolderPage extends ThumbPage {
             scrollFolderToPosition(0);
         }
         else {// 点击不包含子目录的目录
+            currentSelectedFolder = tempFileList.get(position);
+
             // 设置选中状态
             focusFolderItem(view, position);
 
             // 显示当前目录内容
-            showFolderImage(path);
+            showImages(mPresenter.loadFolderItems(path));
         }
     }
 

@@ -3,11 +3,18 @@ package com.jing.app.jjgallery.model.main.file;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
+import android.os.Message;
 import android.util.Log;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Constants;
+import com.jing.app.jjgallery.model.main.order.SOrderManager;
+import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
+import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.file.FileIO;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -89,9 +96,36 @@ public class MoveController {
 		return moveEventHandler;
 	}
 
-	public void moveToFolder(List<String> pathList, File targetFile, Handler handler) {
+	public void moveToFolder(List<String> pathList, File targetFile, final Handler handler) {
 		if (pathList != null && targetFile.exists() && targetFile.isDirectory()) {
-//			SOrderPictureBridge.getInstance(mContext).moveToFolder(pathList, targetFile, handler);
+			new SOrderManager(null).moveToFolder(pathList, targetFile, handler, new OnOrderItemMoveTrigger() {
+
+				@Override
+				public void onTrigger(String src, String target, boolean isAllFinish) {
+					FileIO fileIO = new FileIO();
+					Encrypter encrypter = EncrypterFactory.create();
+					fileIO.moveFile(src, target);
+
+					src = src.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
+					target = target.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
+					fileIO.moveFile(src, target);
+
+					Message msg = new Message();
+					msg.what = isAllFinish ? Constants.STATUS_MOVE_FILE_FINISH:Constants.STATUS_MOVE_FILE_DONE;
+					handler.sendMessage(msg);
+				}
+
+				@Override
+				public void onNotSupport(String src, boolean allFinish) {
+					Message msg = new Message();
+					msg.what = Constants.STATUS_MOVE_FILE_UNSUPORT;
+					Bundle bundle = new Bundle();
+					bundle.putBoolean(Constants.KEY_MOVETO_UNSUPPORT_FINISH, allFinish);
+					bundle.putString(Constants.KEY_MOVETO_UNSUPPORT_SRC, src);
+					msg.setData(bundle);
+					handler.sendMessage(msg);
+				}
+			});
 		}
 	}
 
