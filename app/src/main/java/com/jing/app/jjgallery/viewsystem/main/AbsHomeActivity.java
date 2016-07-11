@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -40,6 +41,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     private EncryptCheckService mEncryptCheckService;
 
     private SlidingMenu mSlidingMenu;
+    private SlidingViewManager slidingViewManager;
 
     private long lastTime = 0L;
 
@@ -67,8 +69,15 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         mSlidingMenu.setSecondaryOnOpenListner(this);
         mSlidingMenu.setOnClosedListener(this);
         setSlidingActionBarEnabled(false);
-        setBehindContentView(getLeftMenu());
-        setSecondaryMenu(getRightMenu());
+        slidingViewManager = new SlidingViewManager(this, getLeftMenu(), getRightMenu());
+        slidingViewManager.setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        setBehindContentView(slidingViewManager.getSlidingLeftView());
+        setSecondaryMenu(slidingViewManager.getSlidingRightView());
         mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
     }
 

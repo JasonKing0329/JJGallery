@@ -72,4 +72,11 @@
         <item name="android:padding">5dp</item>
     </style>
 
+    <style name="SlidingItemText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/sliding_item_text_size</item>
+        <item name="android:background">@drawable/ripple_rect_white</item>
+        <item name="android:padding">@dimen/sliding_item_text_padding</item>
+    </style>
+
 </resources>

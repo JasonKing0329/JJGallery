@@ -42,8 +42,8 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
     public static final int LOCATION_TO_CENTER = 4;
     public static final long ANIM_DURATION = 800l;
     public static int MAX = 15;
-    public static final int TEXT_SIZE_MAX = 25;
-    public static final int TEXT_SIZE_MIN = 15;
+    public static final int TEXT_SIZE_MAX = 32;
+    public static final int TEXT_SIZE_MIN = 20;
     private OnClickListener itemClickListener;
     private static Interpolator interpolator;
     private static AlphaAnimation animAlpha2Opaque;

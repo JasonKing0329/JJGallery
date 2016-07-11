@@ -23,7 +23,7 @@ public class FileIndexAdapter extends AbsKeyAdapter {
     protected List<Keyword> createKeywordList() {
         List<Keyword> list = new ArrayList<>();
         Keyword keyword = null;
-        for (int i = 0; i < KeywordsFlow.MAX && i < mPathList.size(); i ++) {
+        for (int i = 0; i < mPathList.size(); i ++) {
             keyword = new Keyword();
             String[] array = mPathList.get(i).split("/");
             keyword.setDisplayName(array[array.length - 1]);

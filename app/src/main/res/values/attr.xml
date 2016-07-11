@@ -5,13 +5,16 @@
     <attr name="default_folder" format="reference"/>
     <attr name="path_indicator_bk" format="reference"/>
     <attr name="path_indicator_press" format="reference"/>
-    
-    <attr name="rightPadding" format="dimension" />
-    <attr name="leftPadding" format="dimension" />
 
-    <declare-styleable name="SlidingMenuLeft">
-        <attr name="rightPadding" />
-        <attr name="leftPadding" />
+    <!-- 圆形头像 -->
+    <declare-styleable name="CircleImageView">
+
+        <!-- 边框宽度 -->
+        <attr name="civ_border_width" format="dimension" />
+        <!-- 边框颜色 -->
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <!-- 头像内填充色 -->
+        <attr name="civ_fill_color" format="color" />
     </declare-styleable>
-    
 </resources>
