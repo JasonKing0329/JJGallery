@@ -30,4 +30,6 @@ public interface SOrderDao {
     boolean updateOrderItemPath(List<String> originPathList, String targetPath
             , OnOrderItemMoveTrigger trigger, Connection connection);
     boolean deleteItemFromAllOrders(String path, Connection connection);
+    SOrder queryOrder(int orderId, Connection connection);
+    SOrder queryOrderByName(String name, Connection connection);
 }

@@ -32,6 +32,7 @@
         <service android:name=".service.file.FileDBService" />
 
         <activity android:name=".viewsystem.sub.thumb.ThumbActivity"></activity>
+        <activity android:name=".viewsystem.sub.surf.SurfActivity"></activity>
     </application>
 
 </manifest>

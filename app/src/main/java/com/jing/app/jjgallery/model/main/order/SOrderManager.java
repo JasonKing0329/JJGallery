@@ -245,6 +245,26 @@ public class SOrderManager {
         return result;
     }
 
+    /**
+     * query order by id
+     * @param orderId
+     * @return
+     */
+    public SOrder queryOrder(int orderId) {
+        SOrder order = null;
+        try {
+            SqlConnection.getInstance().connect(DBInfor.DB_PATH);
+            SOrderDao dao = new SOrderDaoImpl();
+
+            order = dao.queryOrder(orderId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return order;
+    }
+
     private class QueryTask extends AsyncTask<Void, Void, List<SOrder>> {
 
         @Override

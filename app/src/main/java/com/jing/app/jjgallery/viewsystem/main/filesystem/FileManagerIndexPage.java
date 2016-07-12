@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.view.Menu;
@@ -14,16 +15,21 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
+import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
+import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
+import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
+import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
 /**
  * Created by JingYang on 2016/7/7 0007.
  * Description:
  */
-public class FileManagerIndexPage implements IPage, View.OnClickListener {
+public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
 
     private Context context;
     private View view;
@@ -40,7 +46,7 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
     }
 
     private void startKeywordsFlow() {
-        keywordsFlow.setOnItemClickListener(this);
+        keywordsFlow.setOnKeywordClickListener(this);
         mKeyAdapter = new FileIndexAdapter(keywordsFlow, IndexFlowCreator.createFolderIndex());
         mKeyAdapter.prepareKeyword();
         mKeyAdapter.feedKeyword();
@@ -151,7 +157,8 @@ public class FileManagerIndexPage implements IPage, View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void onKeywordClick(View view, Keyword keyword) {
+        String path = (String) keyword.getObject();
+        ActivityManager.startSurfActivity((Activity) context, UiController.SRC_MODE_FOLDER, path);
     }
 }

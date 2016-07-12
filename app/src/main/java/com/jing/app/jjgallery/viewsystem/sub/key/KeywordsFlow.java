@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
-public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
+public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener, View.OnClickListener{
     public static final int IDX_X = 0;
     public static final int IDX_Y = 1;
     public static final int IDX_TXT_LENGTH = 2;
@@ -44,7 +44,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
     public static int MAX = 15;
     public static final int TEXT_SIZE_MAX = 32;
     public static final int TEXT_SIZE_MIN = 20;
-    private OnClickListener itemClickListener;
+    private OnKeywordClickListener onKeywordClickListener;
     private static Interpolator interpolator;
     private static AlphaAnimation animAlpha2Opaque;
     private static AlphaAnimation animAlpha2Transparent;
@@ -213,7 +213,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
                 int txtSize = TEXT_SIZE_MIN + random.nextInt(TEXT_SIZE_MAX - TEXT_SIZE_MIN + 1);
                 // 实例化TextView
                 final KeywordTextView txt = new KeywordTextView(getContext());
-                txt.setOnClickListener(itemClickListener);
+                txt.setOnClickListener(this);
                 txt.setText(keyword.getDisplayName());
                 txt.setKeyword(keyword);
                 txt.setTextColor(ranColor);
@@ -405,8 +405,18 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener{
         removeAllViews();
     }
 
-    public void setOnItemClickListener(OnClickListener listener) {
-        itemClickListener = listener;
+    public void setOnKeywordClickListener(OnKeywordClickListener listener) {
+        onKeywordClickListener = listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v instanceof KeywordTextView) {
+            if (onKeywordClickListener != null) {
+                KeywordTextView ktv = (KeywordTextView) v;
+                onKeywordClickListener.onKeywordClick(v, ktv.getKeyword());
+            }
+        }
     }
 
     // public void onDraw(Canvas canvas) {  

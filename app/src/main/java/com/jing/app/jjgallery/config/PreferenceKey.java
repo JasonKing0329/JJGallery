@@ -24,4 +24,8 @@ public class PreferenceKey {
     public static final int START_VIEW_GUIDE = 1;
     public static final int START_VIEW_TIMELINE = 2;
 
+    public static final int AUTOPLAY_MODE_SEQUENCE = 0;
+    public static final int AUTOPLAY_MODE_RANDOM = 1;
+    public static final int AUTOPLAY_MODE_REPEATABLE = 2;
+
 }

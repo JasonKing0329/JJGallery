@@ -45,10 +45,12 @@ import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
+import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
 import java.io.File;
 import java.util.List;
@@ -325,13 +327,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	}
 
 	private void startFullScreenActivity(String path) {
-//		Bundle bundle = new Bundle();
-//		bundle.putInt("src_mode", UiController.SRC_MODE_FOLDER);
-//		bundle.putString("path", path);
-//		Intent intent = new Intent();
-//		intent.putExtras(bundle);
-//		intent.setClass(context, SurfActivity.class);
-//		context.startActivity(intent);
+		ActivityManager.startSurfActivity((Activity) context, UiController.SRC_MODE_FOLDER, path);
 	}
 	@Override
 	public void onFindFileFinish() {

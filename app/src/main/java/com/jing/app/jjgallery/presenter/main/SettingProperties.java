@@ -61,4 +61,42 @@ public class SettingProperties {
         editor.putString(key, value);
         editor.commit();
     }
+
+    public static int getAutoPlayMode(Context context) {
+        String[] modes = context.getResources().getStringArray(R.array.setting_auto_play_mode_key);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString("setting_auto_play_mode", modes[0]);
+        if (mode.equals(modes[0])) {
+            return PreferenceKey.AUTOPLAY_MODE_SEQUENCE;
+        }
+        else if (mode.equals(modes[1])) {
+            return PreferenceKey.AUTOPLAY_MODE_RANDOM;
+        }
+        else {
+            return PreferenceKey.AUTOPLAY_MODE_SEQUENCE;
+        }
+    }
+
+    public static int getMinNumberToPlay(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String text = preferences.getString("setting_min_items", "7");
+        int min_number = Integer.parseInt(text);
+        return min_number;
+    }
+
+    public static int getAnimationSpeed(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String[] speeds = context.getResources().getStringArray(R.array.setting_auto_play_time_key);
+        String text = preferences.getString("setting_auto_play_speed", speeds[0]);
+        int speed = context.getResources().getInteger(R.integer.autoplay_speed_fast);
+        if (text.equals(speeds[1])) {//normal
+            speed = context.getResources().getInteger(R.integer.autoplay_speed_normal);
+        }
+        else if (text.equals(speeds[2])) {//slow
+            speed = context.getResources().getInteger(R.integer.autoplay_speed_slow);
+        }
+        return speed;
+    }
 }

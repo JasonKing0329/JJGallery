@@ -606,4 +606,70 @@ public class SOrderDaoImpl implements SOrderDao {
         }
         return false;
     }
+
+    @Override
+    public SOrder queryOrder(int orderId, Connection connection) {
+        Statement stmt = null;
+        SOrder order = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = null;
+
+            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER
+                    + " WHERE " + DBInfor.TO_COL_ID + " = " + orderId);
+
+            if (set.next()) {
+                order = new SOrder();
+                order.setId(orderId);
+                order.setName(set.getString(DBInfor.NUM_TO_COL_NAME));
+                order.setCoverPath(set.getString(DBInfor.NUM_TO_COL_COVER));
+                order.setTag(new STag(set.getInt(DBInfor.NUM_TO_COL_TAGID), null));
+            }
+            set.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return order;
+    }
+
+    @Override
+    public SOrder queryOrderByName(String name, Connection connection) {
+        Statement stmt = null;
+        SOrder order = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = null;
+
+            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER
+                    + " WHERE " + DBInfor.TO_COL_NAME + " = '" + name + "'");
+
+            if (set.next()) {
+                order = new SOrder();
+                order.setId(set.getInt(DBInfor.NUM_TO_COL_ID));
+                order.setName(set.getString(DBInfor.NUM_TO_COL_NAME));
+                order.setCoverPath(set.getString(DBInfor.NUM_TO_COL_COVER));
+                order.setTag(new STag(set.getInt(DBInfor.NUM_TO_COL_TAGID), null));
+            }
+            set.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return order;
+    }
 }

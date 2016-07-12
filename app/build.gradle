@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "1.1.4"
+ext.appVersionName = "1.2.0"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 13
+        versionCode 14
         versionName appVersionName
     }
 
@@ -94,4 +94,5 @@ dependencies {
     compile project(':prjcolorpicker')
     compile project(':libresmanager')
     compile project(':prjsaveasdialog')
+    compile project(':libgifimageview')
 }

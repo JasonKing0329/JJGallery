@@ -15,7 +15,7 @@
         android:layout_height="@dimen/sliding_circle_size"
         app:civ_border_color="@color/white"
         app:civ_border_width="1dp"
-        android:src="@drawable/wall_bk3"
+        android:src="@drawable/icon_loading"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="30dp"/>
     <LinearLayout
