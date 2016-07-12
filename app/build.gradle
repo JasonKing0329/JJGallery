@@ -61,6 +61,7 @@ android {
 
     lintOptions {
         disable 'MissingTranslation'
+        abortOnError false
     }
 
     productFlavors {
@@ -93,4 +94,5 @@ dependencies {
     compile project(':prjcolorpicker')
     compile project(':libresmanager')
     compile project(':prjsaveasdialog')
+    compile project(':libgifimageview')
 }
