@@ -7,7 +7,7 @@ import android.util.Log;
 import android.util.SparseBooleanArray;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.viewsystem.sub.surf.GalleryAdapter;
 
 /**

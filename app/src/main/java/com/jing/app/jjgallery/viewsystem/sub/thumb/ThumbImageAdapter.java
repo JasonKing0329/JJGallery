@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.sub.thumb;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.model.sub.RecycleAdapterLoadController;
 
 import java.util.ArrayList;

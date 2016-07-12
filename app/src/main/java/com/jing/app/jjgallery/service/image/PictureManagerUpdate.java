@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.controller;
+package com.jing.app.jjgallery.service.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,10 +8,9 @@ import android.util.Log;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.image.ImageFactory;
-import com.jing.app.jjgallery.service.image.ImageValueController;
 
 import java.io.File;
 import java.util.HashMap;

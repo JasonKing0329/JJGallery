@@ -8,7 +8,7 @@ import android.os.Message;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 
 import java.util.ArrayList;
 import java.util.List;

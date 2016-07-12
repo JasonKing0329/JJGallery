@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 

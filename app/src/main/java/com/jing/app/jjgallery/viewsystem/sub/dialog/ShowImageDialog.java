@@ -29,15 +29,14 @@ import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.Constants;
-import com.jing.app.jjgallery.config.PreferenceKey;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.model.main.file.MoveController;
-import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.CropHelper;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.CropInforView;
 import com.jing.app.jjgallery.viewsystem.publicview.CropView;
 import com.jing.app.jjgallery.service.image.ZoomListener;
@@ -497,16 +496,16 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 										int position, long arg3) {
 					if (position == 0) {//left
-						SettingProperties.savePreference(getContext(), PreferenceKey.PREF_SLIDING_BK_LEFT, displayImagePath);
+						BackgroundManager.getInstance().setSlidingLeftBg(getContext(), displayImagePath);
 					}
 					else if (position == 1) {//right
-						SettingProperties.savePreference(getContext(), PreferenceKey.PREF_SLIDING_BK_RIGHT, displayImagePath);
+						BackgroundManager.getInstance().setSlidingRightBg(getContext(), displayImagePath);
 					}
 					else if (position == 2) {//left-land
-						SettingProperties.savePreference(getContext(), PreferenceKey.PREF_SLIDING_BK_LEFT_LAND, displayImagePath);
+						BackgroundManager.getInstance().setSlidingLeftLandBg(getContext(), displayImagePath);
 					}
 					else if (position == 3) {//right-land
-						SettingProperties.savePreference(getContext(), PreferenceKey.PREF_SLIDING_BK_RIGHT_LAND, displayImagePath);
+						BackgroundManager.getInstance().setSlidingRightLandBg(getContext(), displayImagePath);
 					}
 					Toast.makeText(getContext(), R.string.success, Toast.LENGTH_LONG).show();
 					setAsMenuBkPopup.dismiss();

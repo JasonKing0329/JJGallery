@@ -62,6 +62,11 @@ public class SettingProperties {
         editor.commit();
     }
 
+    public static String getPreference(Context context, String key) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
+
     public static int getAutoPlayMode(Context context) {
         String[] modes = context.getResources().getStringArray(R.array.setting_auto_play_mode_key);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

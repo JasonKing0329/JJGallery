@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.bean.order.SOrder;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.OnThumbFolderItemListener;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
 

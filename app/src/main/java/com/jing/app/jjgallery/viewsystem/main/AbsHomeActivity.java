@@ -16,6 +16,7 @@ import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.EncryptCheckService;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.lib.colorpicker.ColorPicker;
@@ -76,6 +77,14 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         setBehindContentView(slidingViewManager.getSlidingLeftView());
         setSecondaryMenu(slidingViewManager.getSlidingRightView());
         mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
+
+        BackgroundManager.getInstance().addSlidingSubscriber(slidingViewManager);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BackgroundManager.getInstance().removeSlidingSubscriber(slidingViewManager);
     }
 
     protected abstract int getLeftMenu();

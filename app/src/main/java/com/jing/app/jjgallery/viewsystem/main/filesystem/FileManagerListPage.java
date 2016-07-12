@@ -40,7 +40,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
 import com.jing.app.jjgallery.bean.filesystem.PathIndicatorNode;
 import com.jing.app.jjgallery.controller.AccessController;
-import com.jing.app.jjgallery.controller.PictureManagerUpdate;
+import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
