@@ -159,9 +159,11 @@
     <dimen name="slidingmenu_margin_left">10dp</dimen>
     <!-- home -->
     <dimen name="sliding_left_item_margin_top">140dp</dimen>
-    <dimen name="sliding_item_text_size">25dp</dimen>
-    <dimen name="sliding_item_text_padding">15dp</dimen>
-    <dimen name="sliding_circle_size">100dp</dimen>
+    <dimen name="sliding_item_text_size">20dp</dimen>
+    <dimen name="sliding_item_text_padding">10dp</dimen>
+    <dimen name="sliding_circle_margin_top">20dp</dimen>
+    <dimen name="sliding_circle_size">80dp</dimen>
+    <dimen name="sliding_circle_margin_left">10dp</dimen>
     <!-- cropview -->
     <dimen name="crop_boarder_size">2dp</dimen>
     <dimen name="crop_boarder_point_size">7dp</dimen>

@@ -57,6 +57,7 @@
 
     <color name="slidingmenu_item_bk_color1">#00ffffff</color>
     <color name="slidingmenu_item_bk_color2">#ccffffff</color>
+    <color name="sliding_menu_divider">#88ffffff</color>
     <color name="sorder_bk">#f5f5f5</color>
     <color name="crop_stroke">#FFA500</color>
     <color name="crop_position_frame_bk">#66000000</color>

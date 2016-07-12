@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ public class SlidingViewManager implements SlidingSubscriber {
 
     private ImageView leftBkView, rightBkView;
     private CircleImageView circleView;
+    private ViewPager viewPager;
 
     public SlidingViewManager(Context context, int leftLayoutRes, int rightLayoutRes){
         mContext = context;
@@ -62,6 +64,8 @@ public class SlidingViewManager implements SlidingSubscriber {
 
         leftBkView = (ImageView) slidingLeftView.findViewById(R.id.sliding_left_bk);
         circleView = (CircleImageView) slidingLeftView.findViewById(R.id.sliding_left_circle);
+        viewPager = (ViewPager) slidingLeftView.findViewById(R.id.sliding_home_select);
+        viewPager.setAdapter(new SlidingSelectorAdapter(mContext, new String[]{"文件管理器", "SOrder"}));
 
         String bkPath = getLeftBkPath(mContext.getResources().getConfiguration().orientation);
         String circlePath = SettingProperties.getPreference(mContext, PreferenceKey.PREF_SLIDING_CIRCLE);

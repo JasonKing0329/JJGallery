@@ -15,6 +15,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/FileManagerBlue">
+
+        <meta-data android:name="com.samsung.android.sdk.multiwindow.enable" android:value="true"/>
+        <meta-data android:name="com.samsung.android.sdk.multiwindow.multiinstance.enable" android:value="true"/>
+        <meta-data android:name="com.sec.android.multiwindow.STYLE" android:value="fixedRatio"/>
+        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true"/>
+
         <activity
             android:name=".viewsystem.main.login.LoginActivity"
             android:label="@string/app_name">
@@ -22,6 +28,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
