@@ -36,7 +36,7 @@ public class BackgroundManager implements SlidingObserver {
         slidingSubscriberList.remove(subscriber);
     }
 
-    public void setSlidingLeftBg(Context context, String newPath) {
+    private void setSlidingLeftBg(Context context, String newPath) {
         String path = SettingProperties.getPreference(context, PreferenceKey.PREF_SLIDING_BK_LEFT);
         if (!newPath.equals(path)) {
             SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_BK_LEFT, newPath);
@@ -44,7 +44,7 @@ public class BackgroundManager implements SlidingObserver {
         }
     }
 
-    public void setSlidingLeftLandBg(Context context, String newPath) {
+    private void setSlidingLeftLandBg(Context context, String newPath) {
         String path = SettingProperties.getPreference(context, PreferenceKey.PREF_SLIDING_BK_LEFT_LAND);
         if (!newPath.equals(path)) {
             SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_BK_LEFT_LAND, newPath);
@@ -52,7 +52,7 @@ public class BackgroundManager implements SlidingObserver {
         }
     }
 
-    public void setSlidingRightBg(Context context, String newPath) {
+    private void setSlidingRightBg(Context context, String newPath) {
         String path = SettingProperties.getPreference(context, PreferenceKey.PREF_SLIDING_BK_RIGHT);
         if (!newPath.equals(path)) {
             SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_BK_RIGHT, newPath);
@@ -60,7 +60,7 @@ public class BackgroundManager implements SlidingObserver {
         }
     }
 
-    public void setSlidingRightLandBg(Context context, String newPath) {
+    private void setSlidingRightLandBg(Context context, String newPath) {
         String path = SettingProperties.getPreference(context, PreferenceKey.PREF_SLIDING_BK_RIGHT_LAND);
         if (!newPath.equals(path)) {
             SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_BK_RIGHT_LAND, newPath);
@@ -68,14 +68,32 @@ public class BackgroundManager implements SlidingObserver {
         }
     }
 
-    public void setSlidingCircle(Context context, String newPath) {
+    private void setSlidingCircle(Context context, String newPath) {
         String path = SettingProperties.getPreference(context, PreferenceKey.PREF_SLIDING_CIRCLE);
         if (!newPath.equals(path)) {
-            SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_CIRCLE, path);
+            SettingProperties.savePreference(context, PreferenceKey.PREF_SLIDING_CIRCLE, newPath);
             notifySlidingCircleChanged(newPath);
         }
     }
 
+    public void setBackground(Context context, String key, String path) {
+        if (key.equals(PreferenceKey.PREF_SLIDING_BK_LEFT)) {
+            setSlidingLeftBg(context, path);
+        }
+        else if (key.equals(PreferenceKey.PREF_SLIDING_BK_LEFT_LAND)) {
+            setSlidingLeftLandBg(context, path);
+        }
+        else if (key.equals(PreferenceKey.PREF_SLIDING_BK_RIGHT)) {
+            setSlidingRightBg(context, path);
+        }
+        else if (key.equals(PreferenceKey.PREF_SLIDING_BK_RIGHT_LAND)) {
+            setSlidingRightLandBg(context, path);
+        }
+        else if (key.equals(PreferenceKey.PREF_SLIDING_CIRCLE)) {
+            setSlidingCircle(context, path);
+        }
+    }
+    
     @Override
     public void notifySlidingBkChanged(int type, String path) {
         for (SlidingSubscriber subscriber:slidingSubscriberList) {
@@ -98,6 +116,35 @@ public class BackgroundManager implements SlidingObserver {
 
     @Override
     public void notifySlidingCircleChanged(String path) {
-
+        for (SlidingSubscriber subscriber:slidingSubscriberList) {
+            subscriber.onSlidingCircleChanged(path);
+        }
     }
+
+    public List<BkBean> getItemList() {
+        List<BkBean> list = new ArrayList<>();
+        BkBean bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_SLIDING_BK_LEFT);
+        bean.setDetailName("Home -> Sliding menu -> Left -> Background");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_SLIDING_BK_LEFT_LAND);
+        bean.setDetailName("Home -> Sliding menu -> Left(Landscape) -> Background");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_SLIDING_BK_RIGHT);
+        bean.setDetailName("Home -> Sliding menu -> Right -> Background");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_SLIDING_BK_RIGHT_LAND);
+        bean.setDetailName("Home -> Sliding menu -> Right(Landscape) -> Background");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_SLIDING_CIRCLE);
+        bean.setDetailName("Home -> Sliding menu -> Left -> Circle");
+        list.add(bean);
+        return list;
+    }
+
+
 }

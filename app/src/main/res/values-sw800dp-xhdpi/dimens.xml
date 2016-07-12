@@ -136,12 +136,13 @@
     <dimen name="slidingmenu_margin_left">15dp</dimen>
 
     <!-- home -->
-    <dimen name="sliding_left_item_margin_top">200dp</dimen>
+    <dimen name="sliding_left_item_margin_top">300dp</dimen>
     <dimen name="sliding_item_text_size">35dp</dimen>
     <dimen name="sliding_item_text_padding">25dp</dimen>
-    <dimen name="sliding_circle_size">160dp</dimen>
+    <dimen name="sliding_circle_size">180dp</dimen>
     <dimen name="sliding_circle_margin_top">25dp</dimen>
     <dimen name="sliding_circle_margin_left">25dp</dimen>
+    <dimen name="sliding_left_bottom_height">80dp</dimen>
 
     <!-- cropview -->
     <dimen name="crop_boarder_size">3dp</dimen>
@@ -200,4 +201,8 @@
     <dimen name="surf_toobar_icon_margin">10dp</dimen>
     <dimen name="surf_gallery_margin_bottom">10dp</dimen>
     <dimen name="surf_gallery_margin_right">10dp</dimen>
+
+    <!-- bg selector -->
+    <dimen name="dialog_bg_selector_height">600dp</dimen>
+    <dimen name="dialog_bg_selector_item_height">200dp</dimen>
 </resources>

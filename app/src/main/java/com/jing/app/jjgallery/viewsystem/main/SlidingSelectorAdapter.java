@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -54,10 +55,10 @@ public class SlidingSelectorAdapter extends PagerAdapter {
 		TextView textView = new TextView(context);
 		textView.setBackgroundResource(R.drawable.ripple_rect_white);
 		textView.setTextColor(context.getResources().getColor(R.color.actionbar_bk_orange));
-		textView.setPadding(30, 30, 30, 30);
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
 		textView.setText(texts[position]);
-		container.addView(textView);
+		textView.setGravity(Gravity.CENTER);
+		container.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		return textView;
 		
 	}

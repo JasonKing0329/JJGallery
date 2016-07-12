@@ -11,4 +11,5 @@ public interface SlidingObserver {
     int TYPE_RIGHT_LAND = 3;
     void notifySlidingBkChanged(int type, String path);
     void notifySlidingCircleChanged(String path);
+
 }

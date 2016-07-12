@@ -37,15 +37,18 @@ import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.CropHelper;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.publicview.CropInforView;
 import com.jing.app.jjgallery.viewsystem.publicview.CropView;
 import com.jing.app.jjgallery.service.image.ZoomListener;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.sub.gifview.MyGifManager;
 import com.king.lib.saveas.SaveAsDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ShowImageDialog extends Dialog implements View.OnClickListener
@@ -370,7 +373,23 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			}
 		}
 		else if (v == setAsMenuBkButton) {
-			showSetAsMenuBKPopup();
+			new BackgroundSelector(getContext(), new CustomDialog.OnCustomDialogActionListener() {
+				@Override
+				public boolean onSave(Object object) {
+					return false;
+				}
+
+				@Override
+				public boolean onCancel() {
+					return false;
+				}
+
+				@Override
+				public void onLoadData(HashMap<String, Object> data) {
+					data.put("imagePath", displayImagePath);
+				}
+			}).show();
+//			showSetAsMenuBKPopup();
 		}
 		else if (v == seizeButton) {
 			cropActionLayout.setVisibility(View.VISIBLE);
@@ -478,46 +497,6 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		}
 		cropAreaSizePopup.show();
 		cropAreaSizePopup.getListView().setDivider(null);//getListView只有在show之后才不为null
-	}
-
-	private void showSetAsMenuBKPopup() {
-		if (setAsMenuBkPopup == null) {
-			setAsMenuBkPopup = new ListPopupWindow(getContext());
-			setAsMenuBkPopup.setAnchorView(setAsMenuBkButton);
-			setAsMenuBkPopup.setWidth(600);
-			setAsMenuBkPopup.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.shape_slidingmenuitem_bk_pressed));
-			String[] menuItems = getContext().getResources().getStringArray(R.array.setas_menubk_mode);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext()
-					, android.R.layout.simple_dropdown_item_1line, menuItems);
-			setAsMenuBkPopup.setAdapter(adapter);
-			setAsMenuBkPopup.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-										int position, long arg3) {
-					if (position == 0) {//left
-						BackgroundManager.getInstance().setSlidingLeftBg(getContext(), displayImagePath);
-					}
-					else if (position == 1) {//right
-						BackgroundManager.getInstance().setSlidingRightBg(getContext(), displayImagePath);
-					}
-					else if (position == 2) {//left-land
-						BackgroundManager.getInstance().setSlidingLeftLandBg(getContext(), displayImagePath);
-					}
-					else if (position == 3) {//right-land
-						BackgroundManager.getInstance().setSlidingRightLandBg(getContext(), displayImagePath);
-					}
-					Toast.makeText(getContext(), R.string.success, Toast.LENGTH_LONG).show();
-					setAsMenuBkPopup.dismiss();
-
-					if (actionListener != null) {
-						actionListener.onSetAsMenuBk();
-					}
-				}
-			});
-		}
-		setAsMenuBkPopup.show();
-		setAsMenuBkPopup.getListView().setDivider(null);//getListView只有在show之后才不为null
 	}
 
 	private void closeCropMode() {

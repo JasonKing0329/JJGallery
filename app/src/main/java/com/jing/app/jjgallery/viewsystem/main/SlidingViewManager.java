@@ -122,14 +122,14 @@ public class SlidingViewManager implements SlidingSubscriber {
 
     @Override
     public void onSlidingLeftLandBgChanged(String path) {
-        if (path != null && !isLandscape()) {
+        if (path != null && isLandscape()) {
             ImageLoader.getInstance().loadImage(path, leftBkView);
         }
     }
 
     @Override
     public void onSlidingRightBgChanged(String path) {
-        if (path != null && isLandscape()) {
+        if (path != null && !isLandscape()) {
             ImageLoader.getInstance().loadImage(path, rightBkView);
         }
     }

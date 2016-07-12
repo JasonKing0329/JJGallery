@@ -31,7 +31,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/sliding_home_select"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/sliding_left_bottom_height"
             android:layout_alignParentBottom="true"/>
         <ScrollView
             android:layout_width="match_parent"

@@ -26,11 +26,14 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.presenter.sub.SurfPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -268,16 +271,28 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 	public boolean onMenuItemClick(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_slidingmenu_left:
-				BackgroundManager.getInstance().setSlidingLeftBg(surfActivity, currentImagePath);
+				new BackgroundSelector(surfActivity, new CustomDialog.OnCustomDialogActionListener() {
+					@Override
+					public boolean onSave(Object object) {
+						return false;
+					}
+
+					@Override
+					public boolean onCancel() {
+						return false;
+					}
+
+					@Override
+					public void onLoadData(HashMap<String, Object> data) {
+						data.put("imagePath", currentImagePath);
+					}
+				}).show();
 				break;
 			case R.id.menu_slidingmenu_right:
-				BackgroundManager.getInstance().setSlidingRightBg(surfActivity, currentImagePath);
 				break;
 			case R.id.menu_slidingmenu_left_land:
-				BackgroundManager.getInstance().setSlidingLeftLandBg(surfActivity, currentImagePath);
 				break;
 			case R.id.menu_slidingmenu_right_land:
-				BackgroundManager.getInstance().setSlidingRightLandBg(surfActivity, currentImagePath);
 				break;
 			default:
 				break;

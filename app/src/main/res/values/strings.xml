@@ -342,4 +342,7 @@
     <string name="surf_delete_fail">Delete failed</string>
     <string name="surf_seize_not_support">Gif image is not supported to seize</string>
     <string name="title_activity_test_settings">Settings</string>
+
+    <!--************************** bg selector **************************-->
+    <string name="bg_selector_title">Set as background</string>
 </resources>

@@ -307,4 +307,7 @@
     <string name="surf_delete_success">删除成功</string>
     <string name="surf_delete_fail">删除失败</string>
     <string name="surf_seize_not_support">Gif图片不支持裁剪</string>
+
+    <!--************************** bg selector **************************-->
+    <string name="bg_selector_title">背景设置器</string>
 </resources>
