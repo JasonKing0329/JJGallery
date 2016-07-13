@@ -43,6 +43,7 @@ public class HomeSelecter implements  HomeProvider {
 
     @Override
     public void startDefaultHome(Activity from, Object datas) {
+        AccessController.getInstance().changeAccessMode(AccessController.ACCESS_MODE_SUPERUSER);
         int startViewMode = SettingProperties.getStartViewMode(from);
         startHome(from, startViewMode, datas);
     }

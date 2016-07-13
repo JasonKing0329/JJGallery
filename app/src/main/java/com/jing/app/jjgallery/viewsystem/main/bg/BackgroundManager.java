@@ -155,6 +155,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         bean.setDetailName("Home -> Sliding menu -> Left -> Circle");
         list.add(bean);
         bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_BG_FM_INDEX);
+        bean.setDetailName("Home -> File manager -> Index page");
+        list.add(bean);
+        bean = new BkBean();
         bean.setPreferenceKey(PreferenceKey.PREF_BG_SORDER_INDEX);
         bean.setDetailName("Home -> SOrder page -> Index page");
         list.add(bean);
