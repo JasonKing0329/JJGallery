@@ -19,11 +19,21 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.jing.app.jjgallery.util.ColorUtils;
+
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Vector;
 
 public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener, View.OnClickListener{
+
+    /** 文字颜色无要求 **/
+    public static final int TEXT_COLOR_ALL = 0;
+    /** 文字颜色要求亮色 **/
+    public static final int TEXT_COLOR_LIGHT = 1;
+    /** 文字颜色要求暗色 **/
+    public static final int TEXT_COLOR_DARK = 2;
+
     public static final int IDX_X = 0;
     public static final int IDX_Y = 1;
     public static final int IDX_TXT_LENGTH = 2;
@@ -75,6 +85,8 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener,
     /** 动画运行时间。 */
     private long animDuration;
 
+    private int textColorMode;
+
     public KeywordsFlow(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -95,6 +107,7 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener,
     }
 
     private void init() {
+        textColorMode = TEXT_COLOR_ALL;
         lastStartAnimationTime = 0l;
         animDuration = ANIM_DURATION;
         random = new Random();
@@ -107,6 +120,14 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener,
         animScaleNormal2Large = new ScaleAnimation(1, 2, 1, 2);
         animScaleZero2Normal = new ScaleAnimation(0, 1, 0, 1);
         animScaleNormal2Zero = new ScaleAnimation(1, 0, 1, 0);
+    }
+
+    /**
+     * 设置文字颜色要求
+     * @param textColorMode TEXT_COLOR_ALL or TEXT_COLOR_LIGHT or TEXT_COLOR_DARK
+     */
+    public void setTextColorMode(int textColorMode) {
+        this.textColorMode = textColorMode;
     }
 
     public long getDuration() {
@@ -206,7 +227,14 @@ public class KeywordsFlow extends FrameLayout implements OnGlobalLayoutListener,
             for (int i = 0; i < size; i++) {
                 Keyword keyword = vecKeywords.get(i);
                 // 随机颜色
-                int ranColor = 0xff000000 | random.nextInt(0x0077ffff);
+                int ranColor = 0;
+                if (textColorMode == TEXT_COLOR_LIGHT) {
+                    ranColor = ColorUtils.randomLightColor();
+                }
+                else {
+                    textColorMode = 0xff000000 | random.nextInt(0x00ffffff);
+                }
+
                 // 随机位置，糙值
                 int xy[] = randomXY(random, listX, listY, xItem);
                 // 随机字体大小

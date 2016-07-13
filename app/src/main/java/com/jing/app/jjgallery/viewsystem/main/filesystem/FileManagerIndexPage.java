@@ -3,18 +3,23 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
+import com.jing.app.jjgallery.service.image.lru.ImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -32,8 +37,8 @@ import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
 
     private Context context;
-    private View view;
 
+    private ImageView bkView;
     private KeywordsFlow keywordsFlow;
     private AbsKeyAdapter mKeyAdapter;
 
@@ -41,8 +46,15 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
 
     public FileManagerIndexPage(Context context, View view) {
         this.context = context;
-        this.view = view;
+        bkView = (ImageView) view.findViewById(R.id.fm_index_bk);
         keywordsFlow = (KeywordsFlow) view.findViewById(R.id.view_keyword_flow);
+        keywordsFlow.setBackgroundColor(Color.TRANSPARENT);
+        keywordsFlow.setTextColorMode(KeywordsFlow.TEXT_COLOR_LIGHT);
+
+        String bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_FM_INDEX);
+        if (bkPath != null) {
+            ImageLoader.getInstance().loadImage(bkPath, bkView);
+        }
     }
 
     private void startKeywordsFlow() {
@@ -160,5 +172,9 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
     public void onKeywordClick(View view, Keyword keyword) {
         String path = (String) keyword.getObject();
         ActivityManager.startSurfActivity((Activity) context, UiController.SRC_MODE_FOLDER, path);
+    }
+
+    public void onIndexBackgroundChanged(String path) {
+        ImageLoader.getInstance().loadImage(path, bkView);
     }
 }

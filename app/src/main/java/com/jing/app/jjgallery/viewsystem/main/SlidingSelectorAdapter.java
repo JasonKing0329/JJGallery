@@ -55,7 +55,7 @@ public class SlidingSelectorAdapter extends PagerAdapter {
 		TextView textView = new TextView(context);
 		textView.setBackgroundResource(R.drawable.ripple_rect_white);
 		textView.setTextColor(context.getResources().getColor(R.color.actionbar_bk_orange));
-		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, context.getResources().getInteger(R.integer.sliding_left_bottom_text_size));
 		textView.setText(texts[position]);
 		textView.setGravity(Gravity.CENTER);
 		container.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

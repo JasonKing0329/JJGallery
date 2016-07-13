@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import android.graphics.BitmapFactory.Options;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 /**
@@ -13,6 +14,7 @@ import android.widget.ImageView;
  */
 public class ImageSizeUtil
 {
+	private static final String TAG = "ImageSizeUtil";
 	/**
 	 * 根据需求的宽和高以及图片实际的宽和高计算SampleSize
 	 * 
@@ -87,6 +89,7 @@ public class ImageSizeUtil
 		imageSize.width = width;
 		imageSize.height = height;
 
+		Log.d(TAG, "getImageViewSize " + width + "," + height);
 		return imageSize;
 	}
 

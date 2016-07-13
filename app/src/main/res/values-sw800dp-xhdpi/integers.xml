@@ -10,4 +10,5 @@
     <integer name="rgame_table_text_zoom">6</integer>
 
     <integer name="thumb_column">4</integer>
+    <integer name="sliding_left_bottom_text_size">35</integer>
 </resources>

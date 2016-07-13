@@ -50,9 +50,8 @@ public class DisplayHelper {
 		return point;
 	}
 	
-	public static void enableFullScreen(Activity activity) {
+	public static void enableFullScreen() {
 		fullscreen = true;
-		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
 	public static boolean isFullScreen() {
 		return fullscreen;

@@ -14,12 +14,14 @@ import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.IFragment;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
+import com.jing.app.jjgallery.viewsystem.main.bg.FMBgSubscriber;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderThumbFragment;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.util.List;
 
-public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView {
+public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView, FMBgSubscriber {
 
     private FileManagerPresenter mPresenter;
 
@@ -39,6 +41,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     @Override
     protected void initController() {
         mPresenter = new FileManagerPresenter(this);
+        BackgroundManager.getInstance().addFMBgSubscriber(this);
     }
 
     @Override
@@ -251,5 +254,18 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
             mCurrentFragment.getColorPage().applyExtendColors();
         }
         super.applyExtendColors();
+    }
+
+    @Override
+    public void onIndexBackgroundChanged(String path) {
+        if (mCurrentFragment == mIndexFragment) {
+            ((FileManagerIndexPage) mIndexFragment.getPage()).onIndexBackgroundChanged(path);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BackgroundManager.getInstance().removeFMBgSubscriber(this);
     }
 }

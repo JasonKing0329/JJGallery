@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:id="@+id/bg_selector_container"
-    android:padding="15dp">
+    android:padding="@dimen/dialog_bg_selector_item_padding">
     <TextView
         android:id="@+id/bg_selector_item_name"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dialog_bg_selector_item_height"
         android:textColor="@color/darkgrey"
-        android:padding="15dp"
+        android:padding="@dimen/dialog_bg_selector_item_inner_padding"
         android:gravity="center"
         android:background="@color/white"/>
 </LinearLayout>

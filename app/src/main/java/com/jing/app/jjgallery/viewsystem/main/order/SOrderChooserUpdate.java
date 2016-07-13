@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		, OnItemLongClickListener, ColorPicker.OnColorPickerListener, SOrderCallback {
 
 	public interface OnOrderSelectListener {
-		public void onSelect(SOrder order);
+		void onSelect(SOrder order);
 	}
 	private OnOrderSelectListener onOrderSelectListener;
 
@@ -75,15 +76,30 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 
 	public SOrderChooserUpdate(Context context, OnCustomDialogActionListener listener) {
 		super(context, listener);
-		themeBasicColor = new ThemeManager(context).getBasicColorResId();
+		requestSaveAction(true);
+		init();
+	}
+
+	/**
+	 * outside call this to only get chosen order
+	 * @param context
+	 * @param listener
+	 */
+	public SOrderChooserUpdate(Context context, OnOrderSelectListener listener) {
+		super(context, null);
+		onOrderSelectListener = listener;
+		init();
+	}
+
+	public void init() {
 		priorityController = new PriorityController(context);
 		controller = new SOrderChooserController();
 		controller.setSOrderCallback(this);
 		requestCancelAction(true);
-		requestSaveAction(true);
 		requestSearchAction(true);
-		//FIXME 需要考虑转屏
-		//setHeight(context.getResources().getDimensionPixelSize(R.dimen.dialog_sorderchooser_height));
+		computeHeight();
+		enableZoom(false);
+
 		initOrders();
 	}
 
@@ -111,22 +127,6 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		}
 	}
 
-	/**
-	 * outside call this to only get chosen order
-	 * @param context
-	 * @param listener
-	 */
-	public SOrderChooserUpdate(Context context, OnOrderSelectListener listener) {
-		super(context, null);
-		onOrderSelectListener = listener;
-		priorityController = new PriorityController(context);
-		controller = new SOrderChooserController();
-		controller.setSOrderCallback(this);
-		requestCancelAction(true);
-		requestSearchAction(true);
-		initOrders();
-	}
-
 	private void initOrders() {
 		controller.loadAllOrders();
 	}
@@ -147,8 +147,6 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		else {
 			noOrderText.setVisibility(View.VISIBLE);
 		}
-		computeHeight();
-		enableZoom(true);
 	}
 
 	public void computeHeight() {
@@ -300,35 +298,6 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 				}
 			});
 			creater.show();
-			/*
-			SOrderCreater creater = new SOrderCreater(context, new OnOrderCreateListener() {
-
-				@Override
-				public void onReceiveError(Object object) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void onOk(SOrder order) {
-					if (orderList == null) {
-						orderList = new ArrayList<SOrder>();
-					}
-					orderList.add(order);
-					orderNames.add(order.getName());
-					adapter.notifyDataSetChanged();
-					listView.setSelected(true);
-					listView.setSelection(orderList.size() - 1);
-				}
-
-				@Override
-				public void onCancel() {
-					// TODO Auto-generated method stub
-
-				}
-			});
-			creater.show();
-			*/
 		}
 		else if (v == colorButton) {
 			if (colorPicker == null) {

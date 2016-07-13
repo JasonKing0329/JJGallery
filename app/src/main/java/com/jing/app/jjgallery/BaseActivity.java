@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**
@@ -31,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
         if (isFullScreen()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            DisplayHelper.enableFullScreen();
         }
         super.onCreate(savedInstanceState);
 

@@ -16,6 +16,7 @@ public class PreferenceKey {
     public static final String PREF_SLIDING_BK_LEFT_LAND = "pref_sliding_bk_left_land";
     public static final String PREF_SLIDING_BK_RIGHT_LAND = "pref_sliding_bk_right_land";
     public static final String PREF_SLIDING_CIRCLE = "pref_sliding_circle";
+    public static final String PREF_BG_FM_INDEX = "pref_bg_fm_index";
 
     public static final String VALUE_FM_VIEW_LIST = "List";
     public static final String VALUE_FM_VIEW_THUMB = "Thumbfolder";

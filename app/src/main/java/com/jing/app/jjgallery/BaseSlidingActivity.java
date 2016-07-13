@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
+import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**
@@ -34,6 +35,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     public void onCreate(Bundle savedInstanceState) {
         if (isFullScreen()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            DisplayHelper.enableFullScreen();
         }
 
         super.onCreate(savedInstanceState);
