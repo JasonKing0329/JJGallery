@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.view.ViewPager;
@@ -11,13 +12,22 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.lru.ImageLoader;
+import com.jing.app.jjgallery.viewsystem.HomeBean;
+import com.jing.app.jjgallery.viewsystem.HomeProvider;
+import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.viewsystem.main.bg.SlidingSubscriber;
 import com.jing.app.jjgallery.viewsystem.publicview.CircleImageView;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/7/11 0011.
  */
-public class SlidingViewManager implements SlidingSubscriber {
+public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAdapter.OnPageSelectListener {
+
+    public interface SlidingCallback {
+        void onSwitchHome();
+    }
 
     private Context mContext;
 
@@ -29,6 +39,9 @@ public class SlidingViewManager implements SlidingSubscriber {
     private ImageView leftBkView, rightBkView;
     private CircleImageView circleView;
     private ViewPager viewPager;
+
+    private List<HomeBean> homeList;
+    private HomeProvider homeProvider;
 
     public SlidingViewManager(Context context, int leftLayoutRes, int rightLayoutRes){
         mContext = context;
@@ -65,7 +78,10 @@ public class SlidingViewManager implements SlidingSubscriber {
         leftBkView = (ImageView) slidingLeftView.findViewById(R.id.sliding_left_bk);
         circleView = (CircleImageView) slidingLeftView.findViewById(R.id.sliding_left_circle);
         viewPager = (ViewPager) slidingLeftView.findViewById(R.id.sliding_home_select);
-        viewPager.setAdapter(new SlidingSelectorAdapter(mContext, new String[]{"文件管理器", "SOrder"}));
+
+        homeProvider = new HomeSelecter(mContext);
+        homeList = homeProvider.getHomeList();
+        viewPager.setAdapter(new SlidingSelectorAdapter(mContext, homeList, this));
 
         String bkPath = getLeftBkPath(mContext.getResources().getConfiguration().orientation);
         String circlePath = SettingProperties.getPreference(mContext, PreferenceKey.PREF_SLIDING_CIRCLE);
@@ -146,6 +162,12 @@ public class SlidingViewManager implements SlidingSubscriber {
         if (path != null) {
             ImageLoader.getInstance().loadImage(path, circleView);
         }
+    }
+
+    @Override
+    public void onSelectPage(int index) {
+        homeProvider.startHome((Activity) mContext, homeList.get(index).getPreferenceKey(), null);
+        ((Activity) mContext).finish();
     }
 
 }

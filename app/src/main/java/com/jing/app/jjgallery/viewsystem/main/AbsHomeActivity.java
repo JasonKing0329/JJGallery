@@ -67,7 +67,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         mSlidingMenu.setSecondaryOnOpenListner(this);
         mSlidingMenu.setOnClosedListener(this);
         setSlidingActionBarEnabled(false);
-        slidingViewManager = new SlidingViewManager(this, getLeftMenu(), getRightMenu());
+        slidingViewManager = new SlidingViewManager(this, R.layout.layout_sliding_left, R.layout.layout_sliding_right);
         slidingViewManager.setLeftOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,12 +87,9 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         BackgroundManager.getInstance().removeSlidingSubscriber(slidingViewManager);
     }
 
-    protected abstract int getLeftMenu();
-    protected abstract int getRightMenu();
     protected abstract void setUpContentView();
     protected abstract void setUpLeftMenu();
     protected abstract void setUpRightMenu();
-
 
     @Override
     public void onBackPressed() {

@@ -18,9 +18,16 @@
     <string name="pref_safety_fingerprint_desc">Use fingerprint</string>
     <string name="pref_general_home_title">Home</string>
     <string-array name="pref_general_list_home">
-        <item>@string/filemanager</item>
-        <item>Orders</item>
-        <item>Timeline</item>
+        <item>@string/tab_filemanager</item>
+        <item>@string/tab_sorder</item>
+        <item>@string/setting_start_view_timeline</item>
+        <item>Guide</item>
+    </string-array>
+    <string-array name="pref_general_list_home_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
     <string name="filemanager">File manager</string>
     <string name="pref_filemanager_default">Default view</string>

@@ -16,7 +16,7 @@ import java.util.List;
  * Created by JingYang on 2016/7/11 0011.
  * Description:
  */
-public class SOrderThumbPage extends ThumbPage implements ISOrderView {
+public class SOrderThumbPage extends ThumbPage implements ISOrderPage {
 
     private SOrderThumbFolderAdapter mAdapter;
     

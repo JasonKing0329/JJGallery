@@ -5,7 +5,7 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
  * Description:
  */
 public interface IFileManagerView {
-    public void onListPage();
-    public void onThumbPage();
-    public void onIndexPage();
+    void onListPage();
+    void onThumbPage();
+    void onIndexPage();
 }

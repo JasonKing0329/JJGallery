@@ -16,27 +16,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.viewsystem.HomeBean;
 
 /**
  * left sliding menu of home
  * the bottom bar to select file manager or sorder
  */
-public class SlidingSelectorAdapter extends PagerAdapter {
+public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClickListener {
 
-	private String[] texts;
+	public interface OnPageSelectListener {
+		void onSelectPage(int index);
+	}
+
+	private List<HomeBean> homeList;
 	private Context context;
 	private List<TextView> mTextViews ;
 	public int index;
+
+	private OnPageSelectListener onPageSelectListener;
 	
-	public SlidingSelectorAdapter(Context context, String[] texts) {
-		this.texts = texts;
+	public SlidingSelectorAdapter(Context context, List<HomeBean> list, OnPageSelectListener listener) {
+		homeList = list;
 		mTextViews= new ArrayList<>();
 		this.context = context;
+		onPageSelectListener = listener;
 	}
 
 	@Override
 	public int getCount() {
-		return texts.length;
+		return homeList.size();
 	}
 
 	@Override
@@ -56,11 +64,21 @@ public class SlidingSelectorAdapter extends PagerAdapter {
 		textView.setBackgroundResource(R.drawable.ripple_rect_white);
 		textView.setTextColor(context.getResources().getColor(R.color.actionbar_bk_orange));
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, context.getResources().getInteger(R.integer.sliding_left_bottom_text_size));
-		textView.setText(texts[position]);
+		textView.setText(homeList.get(position).getName());
 		textView.setGravity(Gravity.CENTER);
+		textView.setTag(position);
+		textView.setOnClickListener(this);
 		container.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		return textView;
 		
+	}
+
+	@Override
+	public void onClick(View v) {
+		int position = (Integer) v.getTag();
+		if (onPageSelectListener != null) {
+			onPageSelectListener.onSelectPage(position);
+		}
 	}
 
 }

@@ -4,6 +4,6 @@ package com.jing.app.jjgallery.viewsystem.main.bg;
  * Created by JingYang on 2016/7/13 0013.
  * Description:
  */
-public interface FMBgObserver {
-    void notifyFMIndexBackgroundChanged(String path);
+public interface SOrderSubscriber {
+    void onIndexBackgroundChanged(String path);
 }

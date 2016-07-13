@@ -28,6 +28,11 @@ public class SettingProperties {
         return preferences.getString(PreferenceKey.PREF_FM_VIEW, PreferenceKey.VALUE_FM_VIEW_LIST);
     }
 
+    public static String getSOrderDefaultMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(PreferenceKey.PREF_SORDER_VIEW, PreferenceKey.VALUE_SORDER_VIEW_GRID);
+    }
+
     public static void setAppInited(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
@@ -41,18 +46,17 @@ public class SettingProperties {
     }
 
     public static int getStartViewMode(Context context) {
-        String modes[] = context.getResources().getStringArray(R.array.setting_start_view_key);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String loadMode = preferences.getString("setting_start_view", modes[0]);
-        if (loadMode.equals(modes[0])) {
-            return PreferenceKey.START_VIEW_FILEMANAGER;
+        String home = preferences.getString(PreferenceKey.PREF_HOME_VIEW, null);
+        if (home != null) {
+            try {
+                return Integer.parseInt(home);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return  0;
+            }
         }
-        else if (loadMode.equals(modes[1])) {
-            return PreferenceKey.START_VIEW_GUIDE;
-        }
-        else {
-            return PreferenceKey.START_VIEW_TIMELINE;
-        }
+        return 0;
     }
 
     public static void savePreference(Context context, String key, String value) {

@@ -15,11 +15,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/FileManagerBlue">
-
-        <meta-data android:name="com.samsung.android.sdk.multiwindow.enable" android:value="true"/>
-        <meta-data android:name="com.samsung.android.sdk.multiwindow.multiinstance.enable" android:value="true"/>
-        <meta-data android:name="com.sec.android.multiwindow.STYLE" android:value="fixedRatio"/>
-        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true"/>
+        <meta-data
+            android:name="com.samsung.android.sdk.multiwindow.enable"
+            android:value="true" />
+        <meta-data
+            android:name="com.samsung.android.sdk.multiwindow.multiinstance.enable"
+            android:value="true" />
+        <meta-data
+            android:name="com.sec.android.multiwindow.STYLE"
+            android:value="fixedRatio" />
+        <meta-data
+            android:name="com.sec.android.support.multiwindow"
+            android:value="true" />
 
         <activity
             android:name=".viewsystem.main.login.LoginActivity"
@@ -38,8 +45,9 @@
 
         <service android:name=".service.file.FileDBService" />
 
-        <activity android:name=".viewsystem.sub.thumb.ThumbActivity"></activity>
-        <activity android:name=".viewsystem.sub.surf.SurfActivity"></activity>
+        <activity android:name=".viewsystem.sub.thumb.ThumbActivity" />
+        <activity android:name=".viewsystem.sub.surf.SurfActivity" />
+        <activity android:name=".viewsystem.main.order.SOrderActivity"></activity>
     </application>
 
 </manifest>

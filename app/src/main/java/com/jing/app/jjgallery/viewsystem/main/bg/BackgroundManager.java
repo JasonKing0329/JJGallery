@@ -12,15 +12,17 @@ import java.util.List;
  * Created by JingYang on 2016/7/12 0012.
  * Description:
  */
-public class BackgroundManager implements SlidingObserver, FMBgObserver {
+public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderBgObserver {
 
     private static BackgroundManager instance;
     private List<SlidingSubscriber> slidingSubscriberList;
     private List<FMBgSubscriber> fmBgSubscriberList;
+    private List<SOrderSubscriber> sorderSubscriberList;
 
     private BackgroundManager() {
         slidingSubscriberList = new ArrayList<>();
         fmBgSubscriberList = new ArrayList<>();
+        sorderSubscriberList = new ArrayList<>();
     }
 
     public static BackgroundManager getInstance() {
@@ -44,6 +46,14 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver {
 
     public void removeFMBgSubscriber(FMBgSubscriber subscriber) {
         fmBgSubscriberList.remove(subscriber);
+    }
+
+    public void addSOrderSubscriber(SOrderSubscriber subscriber) {
+        sorderSubscriberList.add(subscriber);
+    }
+
+    public void removeSOrderSubscriber(SOrderSubscriber subscriber) {
+        sorderSubscriberList.remove(subscriber);
     }
 
     private boolean saveVale(Context context, String key, String newPath) {
@@ -73,7 +83,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver {
                 notifySlidingCircleChanged(path);
             }
             else if (key.equals(PreferenceKey.PREF_BG_FM_INDEX)) {
-                notifyIndexBackgroundChanged(path);
+                notifyFMIndexBackgroundChanged(path);
+            }
+            else if (key.equals(PreferenceKey.PREF_BG_SORDER_INDEX)) {
+                notifySOrderIndexBackgroundChanged(path);
             }
         }
     }
@@ -106,8 +119,15 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver {
     }
 
     @Override
-    public void notifyIndexBackgroundChanged(String path) {
+    public void notifyFMIndexBackgroundChanged(String path) {
         for (FMBgSubscriber subscriber:fmBgSubscriberList) {
+            subscriber.onIndexBackgroundChanged(path);
+        }
+    }
+
+    @Override
+    public void notifySOrderIndexBackgroundChanged(String path) {
+        for (SOrderSubscriber subscriber:sorderSubscriberList) {
             subscriber.onIndexBackgroundChanged(path);
         }
     }
@@ -135,8 +155,8 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver {
         bean.setDetailName("Home -> Sliding menu -> Left -> Circle");
         list.add(bean);
         bean = new BkBean();
-        bean.setPreferenceKey(PreferenceKey.PREF_BG_FM_INDEX);
-        bean.setDetailName("Home -> File manager -> Index page");
+        bean.setPreferenceKey(PreferenceKey.PREF_BG_SORDER_INDEX);
+        bean.setDetailName("Home -> SOrder page -> Index page");
         list.add(bean);
         return list;
     }

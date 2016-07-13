@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.main.filesystem;
+package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,23 +9,22 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
+import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
-import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.IFragment;
+import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
-import com.jing.app.jjgallery.viewsystem.main.bg.FMBgSubscriber;
+import com.jing.app.jjgallery.viewsystem.main.bg.SOrderSubscriber;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.util.List;
 
-public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView, FMBgSubscriber {
+public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrderSubscriber {
 
-    private FileManagerPresenter mPresenter;
-
+    private SOrderPresenter mPresenter;
     private IFragment mCurrentFragment;
-    private IFragment mListFragment, mIndexFragment, mThumbFragment;
+    private IFragment mGridFragment, mIndexFragment, mThumbFragment;
 
     @Override
     protected boolean isActionBarNeed() {
@@ -34,21 +33,25 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_file_manager;
+        return R.layout.activity_sorder;
     }
 
     @Override
     protected void initController() {
-        mPresenter = new FileManagerPresenter(this);
-        BackgroundManager.getInstance().addFMBgSubscriber(this);
+        mPresenter = new SOrderPresenter(this);
+        BackgroundManager.getInstance().addSOrderSubscriber(this);
     }
 
+    @Override
+    protected void initBackgroundWork() {
+
+    }
     @Override
     protected void setUpContentView() {
         mActionBar.useMenuLeftIcon();
         mActionBar.addMenuIcon();
-        mActionBar.setTitle(getString(R.string.tab_filemanager));
-        mPresenter.startFileManagerPage(this);
+        mActionBar.setTitle(getString(R.string.tab_sorder));
+        mPresenter.startSOrderPage(this);
     }
 
     @Override
@@ -62,32 +65,15 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void onGridPage() {
 
-    }
-
-    @Override
-    public void onListPage() {
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (mListFragment == null) {
-            mListFragment = new FileManagerListFragment();
-            mListFragment.setActionbar(mActionBar);
-            mListFragment.setPresenter(mPresenter);
-        }
-        else {
-            mListFragment.getPage().initActionbar(mActionBar);
-        }
-
-        setCurrentFragment(ft, mListFragment, "FileManagerListFragment");
     }
 
     @Override
     public void onThumbPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (mThumbFragment == null) {
-            mThumbFragment = new FileManagerThumbFragment();
-//            mThumbFragment = new SOrderThumbFragment();
+            mThumbFragment = new SOrderThumbFragment();
             mThumbFragment.setActionbar(mActionBar);
             mThumbFragment.setPresenter(new ThumbPresenter());
         }
@@ -95,29 +81,18 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
             mThumbFragment.getPage().initActionbar(mActionBar);
         }
 
-        setCurrentFragment(ft, mThumbFragment, "FileManagerThumbFragment");
+        setCurrentFragment(ft, mThumbFragment, "SOrderThumbFragment");
     }
 
     @Override
     public void onIndexPage() {
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (mIndexFragment == null) {
-            mIndexFragment = new FileManagerIndexFragment();
-            mIndexFragment.setActionbar(mActionBar);
-            mIndexFragment.setPresenter(mPresenter);
-        }
-        else {
-            mIndexFragment.getPage().initActionbar(mActionBar);
-        }
-
-        setCurrentFragment(ft, mIndexFragment, "FileManagerIndexFragment");
     }
 
     private void setCurrentFragment(FragmentTransaction ft, IFragment fragment, String tag) {
         // no animation at first time
         if (mCurrentFragment != null) {
-            if (mCurrentFragment == mListFragment) {// current fragment is list fragment
+            if (mCurrentFragment == mGridFragment) {// current fragment is list fragment
                 if (fragment == mIndexFragment) {// index view
                     applyAnimatinLeftIn(ft);
                 }
@@ -126,7 +101,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
                 }
             }
             else if (mCurrentFragment == mIndexFragment) {// current fragment is index fragment
-                if (fragment == mListFragment) {// list view
+                if (fragment == mGridFragment) {// list view
                     applyAnimatinRightIn(ft);
                 }
                 else {// thumb view
@@ -134,7 +109,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
                 }
             }
             else {// current fragment is thumb fragment
-                if (fragment == mListFragment) {// list view
+                if (fragment == mGridFragment) {// list view
                     applyAnimatinLeftIn(ft);
                 }
                 else {// index view
@@ -142,43 +117,20 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
                 }
             }
         }
-        ft.replace(R.id.fm_fragment_container, (Fragment) fragment, tag);
+        ft.replace(R.id.sorder_fragment_container, (Fragment) fragment, tag);
         ft.commit();
 
         mCurrentFragment = fragment;
     }
 
     @Override
-    public void onBack() {
-        if (!handleBack()) {
-            onBackPressed();
-        }
-    }
-
-    @Override
-    public void onActionIconClick(View view) {
+    protected void onActionIconClick(View view) {
         if (view.getId() == R.id.actionbar_menu_left) {
             showMenu();
         }
         else {
             mCurrentFragment.getPage().onIconClick(view);
         }
-    }
-
-    @Override
-    public void createMenu(MenuInflater menuInflater, Menu menu) {
-        mCurrentFragment.getPage().createMenu(menuInflater, menu);
-    }
-
-    @Override
-    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
-        mCurrentFragment.getPage().onPrepareMenu(menuInflater, menu);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        super.onMenuItemClick(item);
-        return mCurrentFragment.getPage().onMenuItemClick(item);
     }
 
     @Override
@@ -207,8 +159,20 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
         return super.onTouchEvent(event);
     }
 
-    public FileManagerPresenter getPresenter() {
-        return mPresenter;
+    @Override
+    public void createMenu(MenuInflater menuInflater, Menu menu) {
+        mCurrentFragment.getPage().createMenu(menuInflater, menu);
+    }
+
+    @Override
+    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
+        mCurrentFragment.getPage().onPrepareMenu(menuInflater, menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        super.onMenuItemClick(item);
+        return mCurrentFragment.getPage().onMenuItemClick(item);
     }
 
     @Override
@@ -247,14 +211,12 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     @Override
     public void onIndexBackgroundChanged(String path) {
-        if (mCurrentFragment == mIndexFragment) {
-            ((FileManagerIndexPage) mIndexFragment.getPage()).onIndexBackgroundChanged(path);
-        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BackgroundManager.getInstance().removeFMBgSubscriber(this);
+        BackgroundManager.getInstance().removeSOrderSubscriber(this);
     }
 }
