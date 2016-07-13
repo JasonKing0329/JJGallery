@@ -9,8 +9,8 @@ android {
     defaultConfig {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
-        targetSdkVersion 24
-        versionCode 17
+        targetSdkVersion 23
+        versionCode 18
         versionName appVersionName
     }
 
