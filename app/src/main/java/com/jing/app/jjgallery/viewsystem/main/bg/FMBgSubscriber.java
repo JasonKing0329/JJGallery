@@ -5,5 +5,6 @@ package com.jing.app.jjgallery.viewsystem.main.bg;
  * Description:
  */
 public interface FMBgSubscriber {
-    void onIndexBackgroundChanged(String path);
+    void onIndexBgChanged(String path);
+    void onIndexBgLandChanged(String path);
 }

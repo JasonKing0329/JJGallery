@@ -1,10 +1,13 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.content.Context;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbPage;
@@ -94,7 +97,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderPage {
 
                 break;
             case R.id.actionbar_thumb:
-//                showViewModePopup(view);
+                showViewModePopup(view);
                 break;
         }
     }
@@ -141,6 +144,38 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderPage {
     protected void onUpperClicked() {
 
     }
+
+    protected void showViewModePopup(View v) {
+        PopupMenu menu = new PopupMenu(getContext(), v);
+        menu.getMenuInflater().inflate(R.menu.sorder_view_mode, menu.getMenu());
+        menu.getMenu().findItem(R.id.menu_thumb_view).setVisible(false);
+        menu.show();
+        menu.setOnMenuItemClickListener(viewModeListener);
+    }
+
+    PopupMenu.OnMenuItemClickListener viewModeListener = new PopupMenu.OnMenuItemClickListener() {
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+
+            switch (item.getItemId()) {
+                case R.id.menu_grid_view:
+                    if (getContext() instanceof SOrderActivity) {
+                        SOrderActivity instance = (SOrderActivity) getContext();
+                        instance.getPresenter().switchToGridPage();
+                    }
+                    break;
+                case R.id.menu_index_view:
+                    if (getContext() instanceof SOrderActivity) {
+                        SOrderActivity instance = (SOrderActivity) getContext();
+                        instance.getPresenter().switchToIndexPage();
+                    }
+                    break;
+            }
+            return true;
+        }
+
+    };
 
     @Override
     public void onThumbFolderItemClick(View view, int position) {

@@ -21,10 +21,15 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
     private ISOrderView sorderView;
     private SOrderManager sOrderManager;
+    private SOrderCallback mCallback;
 
     public SOrderPresenter(ISOrderView sorderView) {
         this.sorderView = sorderView;
         sOrderManager = new SOrderManager(this);
+    }
+
+    public void setCallback(SOrderCallback callback) {
+        mCallback = callback;
     }
 
     // 异步操作
@@ -34,7 +39,9 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
     @Override
     public void onQueryAllOrders(List<SOrder> list) {
-
+        if (mCallback != null) {
+            mCallback.onQueryAllOrders(list);
+        }
     }
 
     public void startSOrderPage(Context context) {
@@ -49,5 +56,17 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 //            sorderView.onGridPage();
             sorderView.onThumbPage();
         }
+    }
+
+    public void switchToIndexPage() {
+        sorderView.onIndexPage();
+    }
+
+    public void switchToThumbPage() {
+        sorderView.onThumbPage();
+    }
+
+    public void switchToGridPage() {
+        sorderView.onGridPage();
     }
 }

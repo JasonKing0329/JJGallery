@@ -5,5 +5,6 @@ package com.jing.app.jjgallery.viewsystem.main.bg;
  * Description:
  */
 public interface SOrderBgObserver {
-    void notifySOrderIndexBackgroundChanged(String path);
+    void notifySOrderIndexBgChanged(String path);
+    void notifySOrderIndexBgLandChanged(String path);
 }

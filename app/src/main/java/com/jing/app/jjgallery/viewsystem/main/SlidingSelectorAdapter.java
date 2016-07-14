@@ -1,18 +1,13 @@
 package com.jing.app.jjgallery.viewsystem.main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
@@ -30,14 +25,12 @@ public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClick
 
 	private List<HomeBean> homeList;
 	private Context context;
-	private List<TextView> mTextViews ;
 	public int index;
 
 	private OnPageSelectListener onPageSelectListener;
 	
 	public SlidingSelectorAdapter(Context context, List<HomeBean> list, OnPageSelectListener listener) {
 		homeList = list;
-		mTextViews= new ArrayList<>();
 		this.context = context;
 		onPageSelectListener = listener;
 	}
@@ -54,7 +47,7 @@ public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClick
 	
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		container.removeView(mTextViews.get(position));
+//		container.removeView(mTextViews.get(position));
 	}
 	
 	@Override

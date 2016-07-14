@@ -83,10 +83,16 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
                 notifySlidingCircleChanged(path);
             }
             else if (key.equals(PreferenceKey.PREF_BG_FM_INDEX)) {
-                notifyFMIndexBackgroundChanged(path);
+                notifyFMIndexBgChanged(path);
+            }
+            else if (key.equals(PreferenceKey.PREF_BG_FM_INDEX_LAND)) {
+                notifyFMIndexBgLandChanged(path);
             }
             else if (key.equals(PreferenceKey.PREF_BG_SORDER_INDEX)) {
-                notifySOrderIndexBackgroundChanged(path);
+                notifySOrderIndexBgChanged(path);
+            }
+            else if (key.equals(PreferenceKey.PREF_BG_SORDER_INDEX_LAND)) {
+                notifySOrderIndexBgLandChanged(path);
             }
         }
     }
@@ -119,16 +125,30 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
     }
 
     @Override
-    public void notifyFMIndexBackgroundChanged(String path) {
+    public void notifyFMIndexBgChanged(String path) {
         for (FMBgSubscriber subscriber:fmBgSubscriberList) {
-            subscriber.onIndexBackgroundChanged(path);
+            subscriber.onIndexBgChanged(path);
         }
     }
 
     @Override
-    public void notifySOrderIndexBackgroundChanged(String path) {
+    public void notifyFMIndexBgLandChanged(String path) {
+        for (FMBgSubscriber subscriber:fmBgSubscriberList) {
+            subscriber.onIndexBgLandChanged(path);
+        }
+    }
+
+    @Override
+    public void notifySOrderIndexBgChanged(String path) {
         for (SOrderSubscriber subscriber:sorderSubscriberList) {
-            subscriber.onIndexBackgroundChanged(path);
+            subscriber.onIndexBgChanged(path);
+        }
+    }
+
+    @Override
+    public void notifySOrderIndexBgLandChanged(String path) {
+        for (SOrderSubscriber subscriber:sorderSubscriberList) {
+            subscriber.onIndexBgLandChanged(path);
         }
     }
 
@@ -159,8 +179,16 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         bean.setDetailName("Home -> File manager -> Index page");
         list.add(bean);
         bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_BG_FM_INDEX_LAND);
+        bean.setDetailName("Home -> File manager -> Index page(Landscape)");
+        list.add(bean);
+        bean = new BkBean();
         bean.setPreferenceKey(PreferenceKey.PREF_BG_SORDER_INDEX);
         bean.setDetailName("Home -> SOrder page -> Index page");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_BG_SORDER_INDEX_LAND);
+        bean.setDetailName("Home -> SOrder page -> Index page(Landscape)");
         list.add(bean);
         return list;
     }

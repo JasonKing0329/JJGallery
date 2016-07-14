@@ -14,25 +14,30 @@ import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
-import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
+import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.service.image.lru.ImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.main.order.SOrderIndexAdapter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
 import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
 
+import java.util.List;
+
 /**
- * Created by JingYang on 2016/7/7 0007.
+ * Created by JingYang on 2016/7/14 0014.
  * Description:
  */
-public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
+public class SOrderIndexPage implements IPage, OnKeywordClickListener {
 
     private Context context;
 
@@ -40,42 +45,39 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
     private KeywordsFlow keywordsFlow;
     private AbsKeyAdapter mKeyAdapter;
 
-    private FileManagerPresenter mPresenter;
+    private SOrderPresenter mPresenter;
 
-    public FileManagerIndexPage(Context context, View view) {
+    public SOrderIndexPage(Context context, View view) {
         this.context = context;
         bkView = (ImageView) view.findViewById(R.id.fm_index_bk);
         keywordsFlow = (KeywordsFlow) view.findViewById(R.id.view_keyword_flow);
         keywordsFlow.setBackgroundColor(Color.TRANSPARENT);
         keywordsFlow.setTextColorMode(KeywordsFlow.TEXT_COLOR_LIGHT);
+        keywordsFlow.setOnKeywordClickListener(this);
 
-        String bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_FM_INDEX);
+        String bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_SORDER_INDEX);
         if (bkPath != null) {
             ImageLoader.getInstance().loadImage(bkPath, bkView);
         }
     }
 
-    private void startKeywordsFlow() {
-        keywordsFlow.setOnKeywordClickListener(this);
-        mKeyAdapter = new FileIndexAdapter(keywordsFlow, IndexFlowCreator.createFolderIndex());
-        mKeyAdapter.prepareKeyword();
-        mKeyAdapter.feedKeyword();
-        mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
-    }
-
-    @Override
-    public void onTouchEvent(MotionEvent event) {
-        mKeyAdapter.onTouchEvent(event);
-    }
-
     @Override
     public void initData() {
-        startKeywordsFlow();
+        mPresenter.setCallback(new SOrderCallback() {
+            @Override
+            public void onQueryAllOrders(List<SOrder> list) {
+                mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
+                mKeyAdapter.prepareKeyword();
+                mKeyAdapter.feedKeyword();
+                mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+            }
+        });
+        mPresenter.loadAllOrders();
     }
 
     @Override
     public void setPresenter(BasePresenter presenter) {
-        mPresenter = (FileManagerPresenter) presenter;
+        mPresenter = (SOrderPresenter) presenter;
     }
 
     @Override
@@ -112,8 +114,8 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
         public boolean onMenuItemClick(MenuItem item) {
 
             switch (item.getItemId()) {
-                case R.id.menu_list_view:
-                    mPresenter.switchToListPage();
+                case R.id.menu_grid_view:
+                    mPresenter.switchToGridPage();
                     break;
                 case R.id.menu_thumb_view:
                     mPresenter.switchToThumbPage();
@@ -135,10 +137,11 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
 
     public void loadMenu(MenuInflater menuInflater, Menu menu) {
         menu.clear();
-        menuInflater.inflate(R.menu.home_file_manager, menu);
-        menu.setGroupVisible(R.id.group_file, false);
+        menuInflater.inflate(R.menu.home_sorder, menu);
+        menu.setGroupVisible(R.id.group_sorder, false);
         menu.setGroupVisible(R.id.group_home_public, true);
     }
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -167,9 +170,14 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
     }
 
     @Override
+    public void onTouchEvent(MotionEvent event) {
+        mKeyAdapter.onTouchEvent(event);
+    }
+
+    @Override
     public void onKeywordClick(View view, Keyword keyword) {
-        String path = (String) keyword.getObject();
-        ActivityManager.startSurfActivity((Activity) context, path);
+        SOrder order = (SOrder) keyword.getObject();
+        ActivityManager.startSurfActivity((Activity) context, order);
     }
 
     public void onIndexBgChanged(String path) {
@@ -177,7 +185,6 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
             ImageLoader.getInstance().loadImage(path, bkView);
         }
     }
-
     public void onIndexBgLandChanged(String path) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ImageLoader.getInstance().loadImage(path, bkView);

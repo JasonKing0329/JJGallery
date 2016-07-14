@@ -5,5 +5,6 @@ package com.jing.app.jjgallery.viewsystem.main.bg;
  * Description:
  */
 public interface FMBgObserver {
-    void notifyFMIndexBackgroundChanged(String path);
+    void notifyFMIndexBgChanged(String path);
+    void notifyFMIndexBgLandChanged(String path);
 }

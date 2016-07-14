@@ -16,6 +16,7 @@ import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.main.bg.SOrderSubscriber;
+import com.jing.app.jjgallery.viewsystem.main.filesystem.SOrderIndexPage;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.util.List;
@@ -86,7 +87,17 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
 
     @Override
     public void onIndexPage() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mIndexFragment == null) {
+            mIndexFragment = new SOrderIndexFragment();
+            mIndexFragment.setActionbar(mActionBar);
+            mIndexFragment.setPresenter(mPresenter);
+        }
+        else {
+            mIndexFragment.getPage().initActionbar(mActionBar);
+        }
 
+        setCurrentFragment(ft, mIndexFragment, "SOrderIndexFragment");
     }
 
     private void setCurrentFragment(FragmentTransaction ft, IFragment fragment, String tag) {
@@ -210,13 +221,26 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     }
 
     @Override
-    public void onIndexBackgroundChanged(String path) {
+    public void onIndexBgChanged(String path) {
+        if (mCurrentFragment == mIndexFragment) {
+            ((SOrderIndexPage) mIndexFragment.getPage()).onIndexBgChanged(path);
+        }
+    }
 
+    @Override
+    public void onIndexBgLandChanged(String path) {
+        if (mCurrentFragment == mIndexFragment) {
+            ((SOrderIndexPage) mIndexFragment.getPage()).onIndexBgLandChanged(path);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         BackgroundManager.getInstance().removeSOrderSubscriber(this);
+    }
+
+    public SOrderPresenter getPresenter() {
+        return mPresenter;
     }
 }

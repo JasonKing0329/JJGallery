@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
+import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
 /**
  * Created by JingYang on 2016/7/12 0012.
@@ -22,10 +24,19 @@ public class ActivityManager {
         activity.overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
 
-    public static void startSurfActivity(Activity from, int mode, String path) {
+    public static void startSurfActivity(Activity from, String path) {
         Bundle bundle = new Bundle();
-		bundle.putInt("src_mode", mode);
+		bundle.putInt("src_mode", UiController.SRC_MODE_FOLDER);
 		bundle.putString("path", path);
+        Intent intent = new Intent().setClass(from, SurfActivity.class);
+        intent.putExtras(bundle);
+        from.startActivity(intent);
+        applyAnimation(from);
+    }
+    public static void startSurfActivity(Activity from, SOrder order) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("src_mode", UiController.SRC_MODE_ORDER);
+        bundle.putInt("orderId", order.getId());
         Intent intent = new Intent().setClass(from, SurfActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);

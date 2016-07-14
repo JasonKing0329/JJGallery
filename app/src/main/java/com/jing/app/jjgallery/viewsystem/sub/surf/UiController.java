@@ -205,12 +205,30 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 	};
 
 	protected void showMenu() {
-		if (popupMenu == null) {
-			popupMenu = new PopupMenu(surfActivity, moreButton);
-			popupMenu.getMenuInflater().inflate(R.menu.surf_gallery, popupMenu.getMenu());
-			popupMenu.setOnMenuItemClickListener(this);
-		}
-		popupMenu.show();
+
+//		if (popupMenu == null) {
+//			popupMenu = new PopupMenu(surfActivity, moreButton);
+//			popupMenu.getMenuInflater().inflate(R.menu.surf_gallery, popupMenu.getMenu());
+//			popupMenu.setOnMenuItemClickListener(this);
+//		}
+//		popupMenu.show();
+
+		new BackgroundSelector(surfActivity, new CustomDialog.OnCustomDialogActionListener() {
+			@Override
+			public boolean onSave(Object object) {
+				return false;
+			}
+
+			@Override
+			public boolean onCancel() {
+				return false;
+			}
+
+			@Override
+			public void onLoadData(HashMap<String, Object> data) {
+				data.put("imagePath", currentImagePath);
+			}
+		}).show();
 	}
 
 	protected void showDeleteWarning() {
@@ -271,22 +289,6 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 	public boolean onMenuItemClick(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_slidingmenu_left:
-				new BackgroundSelector(surfActivity, new CustomDialog.OnCustomDialogActionListener() {
-					@Override
-					public boolean onSave(Object object) {
-						return false;
-					}
-
-					@Override
-					public boolean onCancel() {
-						return false;
-					}
-
-					@Override
-					public void onLoadData(HashMap<String, Object> data) {
-						data.put("imagePath", currentImagePath);
-					}
-				}).show();
 				break;
 			case R.id.menu_slidingmenu_right:
 				break;

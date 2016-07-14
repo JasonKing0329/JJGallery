@@ -327,7 +327,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	}
 
 	private void startFullScreenActivity(String path) {
-		ActivityManager.startSurfActivity((Activity) context, UiController.SRC_MODE_FOLDER, path);
+		ActivityManager.startSurfActivity((Activity) context, path);
 	}
 	@Override
 	public void onFindFileFinish() {

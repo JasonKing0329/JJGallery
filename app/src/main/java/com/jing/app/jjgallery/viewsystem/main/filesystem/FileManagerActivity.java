@@ -246,9 +246,16 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    public void onIndexBackgroundChanged(String path) {
+    public void onIndexBgChanged(String path) {
         if (mCurrentFragment == mIndexFragment) {
-            ((FileManagerIndexPage) mIndexFragment.getPage()).onIndexBackgroundChanged(path);
+            ((FileManagerIndexPage) mIndexFragment.getPage()).onIndexBgChanged(path);
+        }
+    }
+
+    @Override
+    public void onIndexBgLandChanged(String path) {
+        if (mCurrentFragment == mIndexFragment) {
+            ((FileManagerIndexPage) mIndexFragment.getPage()).onIndexBgLandChanged(path);
         }
     }
 
