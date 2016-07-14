@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -31,6 +32,8 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     private ProgressDialog progressDialog;
 
+    private int curOrientation;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isFullScreen()) {
@@ -39,6 +42,8 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         }
 
         super.onCreate(savedInstanceState);
+
+        curOrientation = getResources().getConfiguration().orientation;
 
         getSupportActionBar().hide();
         setContentView(R.layout.activity_base_sliding);
@@ -140,4 +145,16 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         //不知道为啥不管用
 //        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation != curOrientation) {
+            curOrientation = newConfig.orientation;
+            mActionBar.onConfiguration(newConfig.orientation);
+            onOrentaionChanged(newConfig);
+        }
+        super.onConfigurationChanged(newConfig);
+    }
+
+    protected abstract void onOrentaionChanged(Configuration newConfig);
 }

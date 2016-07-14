@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -209,6 +210,12 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
 
     public FileManagerPresenter getPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    protected void onOrentaionChanged(Configuration newConfig) {
+        super.onOrentaionChanged(newConfig);
+        mCurrentFragment.getPage().onConfigurationChanged(newConfig);
     }
 
     @Override

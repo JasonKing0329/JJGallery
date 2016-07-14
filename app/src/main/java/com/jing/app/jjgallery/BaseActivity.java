@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery;
 
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     protected ActionBar mActionBar;
 
     private ProgressDialog progressDialog;
+    private int curOrientation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,6 +38,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
             DisplayHelper.enableFullScreen();
         }
         super.onCreate(savedInstanceState);
+
+        curOrientation = getResources().getConfiguration().orientation;
 
         getSupportActionBar().hide();
         setContentView(R.layout.activity_base);
@@ -132,4 +137,14 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
         //不知道为啥不管用
 //        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation != curOrientation) {
+            curOrientation = newConfig.orientation;
+            mActionBar.onConfiguration(newConfig.orientation);
+        }
+        super.onConfigurationChanged(newConfig);
+    }
+
 }

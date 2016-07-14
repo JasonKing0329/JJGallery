@@ -44,6 +44,8 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     private SOrderPresenter mPresenter;
 
+    private List<SOrder> orderList;
+
     public SOrderIndexPage(Context context, View view) {
         this.context = context;
         bkView = (ImageView) view.findViewById(R.id.fm_index_bk);
@@ -52,7 +54,17 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         keywordsFlow.setTextColorMode(KeywordsFlow.TEXT_COLOR_LIGHT);
         keywordsFlow.setOnKeywordClickListener(this);
 
-        String bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_SORDER_INDEX);
+        updateBackground(context.getResources().getConfiguration().orientation);
+    }
+
+    private void updateBackground(int orientation) {
+        String bkPath = null;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_SORDER_INDEX_LAND);
+        }
+        else {
+            bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_SORDER_INDEX);
+        }
         if (bkPath != null) {
             ImageLoader.getInstance().loadImage(bkPath, bkView);
         }
@@ -66,6 +78,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     @Override
     public void onQueryAllOrders(List<SOrder> list) {
+        orderList = list;
         mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
         mKeyAdapter.prepareKeyword();
         mKeyAdapter.feedKeyword();
@@ -157,13 +170,29 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
             actionBar.addThumbIcon();
             actionBar.addMenuIcon();
             actionBar.addColorIcon();
-            actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
         }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        updateBackground(newConfig.orientation);
+        // keywordsFlow的item坐标是根据width/height计算的，转屏发生了变化所以必须重布局
+        // 并且在布局完成后post重新feedKeyword进行重计算
+        keywordsFlow.requestLayout();
+        keywordsFlow.invalidate();
 
+        // 防止第一次进入由于加载目录时间过长，转屏过程发生空指针异常
+        if (orderList != null) {
+            // 必须重新刷新
+            keywordsFlow.post(new Runnable() {
+                @Override
+                public void run() {
+                    keywordsFlow.rubKeywords();
+                    mKeyAdapter.feedKeyword();
+                    keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT);
+                }
+            });
+        }
     }
 
     @Override

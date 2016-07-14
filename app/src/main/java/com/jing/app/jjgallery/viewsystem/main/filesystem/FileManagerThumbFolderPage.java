@@ -57,7 +57,6 @@ public class FileManagerThumbFolderPage extends ThumbPage {
         super.initActionbar(actionBar);
         actionBar.addThumbIcon();
         actionBar.addAddIcon();
-        actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
 
     @Override

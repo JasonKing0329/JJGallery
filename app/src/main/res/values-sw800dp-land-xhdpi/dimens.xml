@@ -38,4 +38,6 @@
     <dimen name="slidingmenu_rightpadding">700dp</dimen>
     <dimen name="slidingmenu_text_size_small">10dp</dimen>
     <dimen name="slidingmenu_margin_top_small">5dp</dimen>
+
+    <integer name="thumb_column">8</integer>
 </resources>

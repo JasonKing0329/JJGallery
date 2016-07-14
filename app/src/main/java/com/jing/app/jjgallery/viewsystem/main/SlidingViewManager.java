@@ -170,4 +170,15 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         ((Activity) mContext).finish();
     }
 
+    public void onOrentaionChanged(int orientation) {
+        String path = getLeftBkPath(orientation);
+        if (path != null) {
+            ImageLoader.getInstance().loadImage(path, leftBkView);
+        }
+        path = getRightBkPath(orientation);
+        if (path != null) {
+            ImageLoader.getInstance().loadImage(path, rightBkView);
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -184,6 +185,12 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     public boolean onMenuItemClick(MenuItem item) {
         super.onMenuItemClick(item);
         return mCurrentFragment.getPage().onMenuItemClick(item);
+    }
+
+    @Override
+    protected void onOrentaionChanged(Configuration newConfig) {
+        super.onOrentaionChanged(newConfig);
+        mCurrentFragment.getPage().onConfigurationChanged(newConfig);
     }
 
     @Override

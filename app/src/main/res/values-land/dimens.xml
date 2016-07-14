@@ -34,4 +34,6 @@
     <dimen name="tabactionbar_icon_max_width">150dp</dimen><!-- actionbar_icon_width * 3 -->
     
     <dimen name="slidingmenu_rightpadding">300dp</dimen>
+
+    <integer name="thumb_column">7</integer>
 </resources>

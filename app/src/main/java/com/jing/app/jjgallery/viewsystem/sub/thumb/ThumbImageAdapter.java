@@ -45,7 +45,7 @@ public class ThumbImageAdapter extends RecyclerView.Adapter<ThumbImageAdapter.Vi
     public ThumbImageAdapter(Context context, OnThumbImageItemListener listener) {
         mListener = listener;
         mContext = context;
-        checkMap = new HashMap<Integer, Boolean>();
+        checkMap = new HashMap<>();
         loadController = new RecycleAdapterLoadController(this);
     }
 

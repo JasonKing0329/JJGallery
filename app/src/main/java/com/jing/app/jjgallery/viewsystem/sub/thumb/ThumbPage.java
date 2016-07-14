@@ -66,6 +66,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     private RecyclerView folderRecyclerView;
     private LinearLayoutManager folderLayoutManager;
     private RecyclerView imageRecyclerView;
+    private GridLayoutManager imageLayoutManager;
 
     private ShowImageDialog imageDialog;
     private DragImageView dragView;
@@ -125,8 +126,8 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         folderRecyclerView.setAdapter(getFolderAdapter());
 
         int column = mContext.getResources().getInteger(R.integer.thumb_column);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, column);
-        imageRecyclerView.setLayoutManager(gridLayoutManager);
+        imageLayoutManager = new GridLayoutManager(mContext, column);
+        imageRecyclerView.setLayoutManager(imageLayoutManager);
         imageRecyclerView.setAdapter(getFolderAdapter());
         mImageAdapter = new ThumbImageAdapter(mContext, this);
         imageRecyclerView.setAdapter(mImageAdapter);
@@ -318,7 +319,6 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
             actionBar.addColorIcon();
         }
         actionBar.addSearchIcon();
-        actionBar.onConfiguration(mContext.getResources().getConfiguration().orientation);
 
         applyExtendColors();
     }
@@ -336,14 +336,10 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
             folderDialog.updateHeight();
         }
 
-//        if (newConfig.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
-//            actionBar.onLandscape();
-//        }
-//        else {
-//            actionBar.onVertical();
-//        }
-
         initIndexStateController();
+
+        int column = mContext.getResources().getInteger(R.integer.thumb_column);
+        imageLayoutManager.setSpanCount(column);
     }
 
     @Override

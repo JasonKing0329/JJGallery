@@ -30,6 +30,7 @@ public class FileManagerPresenter extends BasePresenter implements FileCallback 
     public FileManagerPresenter(IFileManagerView view) {
         fileManagerView = view;
         folderManager = new FolderManager();
+        folderManager.setFileCallback(this);
     }
 
     public void setFileDataCallback(IFileDataCallback fileDataCallback) {

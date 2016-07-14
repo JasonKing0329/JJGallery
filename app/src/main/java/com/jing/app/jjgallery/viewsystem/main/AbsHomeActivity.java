@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MenuItem;
@@ -263,6 +264,13 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     @Override
     public void onOpened() {
 
+    }
+
+    @Override
+    protected void onOrentaionChanged(Configuration newConfig) {
+        if (slidingViewManager != null) {
+            slidingViewManager.onOrentaionChanged(newConfig.orientation);
+        }
     }
 
     @Override
