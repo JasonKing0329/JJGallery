@@ -5,7 +5,7 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
-import com.jing.app.jjgallery.viewsystem.main.order.ISOrderPage;
+import com.jing.app.jjgallery.viewsystem.main.order.ISOrderDataCallback;
 
 import java.io.File;
 import java.util.Collections;
@@ -24,15 +24,15 @@ public class ThumbPresenter extends BasePresenter implements SOrderCallback {
     private FolderManager folderManager;
     private SOrderManager sorderManager;
 
-    private ISOrderPage sorderView;
+    private ISOrderDataCallback sorderDataCallback;
 
     public ThumbPresenter() {
         folderManager = new FolderManager();
         sorderManager = new SOrderManager(this);
     }
 
-    public void setSOrderView(ISOrderPage sorderView) {
-        this.sorderView = sorderView;
+    public void setSOrderDataCallback(ISOrderDataCallback callback) {
+        this.sorderDataCallback = callback;
     }
 
     /**
@@ -72,7 +72,7 @@ public class ThumbPresenter extends BasePresenter implements SOrderCallback {
         if (list != null) {
             Collections.sort(list, new SOrderComparator());
         }
-        sorderView.onQueryAllOrders(list);
+        sorderDataCallback.onQueryAllOrders(list);
     }
 
     // 同步操作

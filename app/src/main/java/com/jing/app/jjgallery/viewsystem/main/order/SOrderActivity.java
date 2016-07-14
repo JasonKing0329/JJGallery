@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
@@ -16,7 +17,6 @@ import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.main.bg.SOrderSubscriber;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.SOrderIndexPage;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.util.List;

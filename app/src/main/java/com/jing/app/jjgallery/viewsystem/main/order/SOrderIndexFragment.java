@@ -12,7 +12,6 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.viewsystem.IColorPage;
 import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.IPage;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.SOrderIndexPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
 /**

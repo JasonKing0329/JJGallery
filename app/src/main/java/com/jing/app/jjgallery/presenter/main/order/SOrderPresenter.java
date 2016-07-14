@@ -8,6 +8,7 @@ import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.main.order.ISOrderDataCallback;
 import com.jing.app.jjgallery.viewsystem.main.order.ISOrderView;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 
@@ -20,16 +21,17 @@ import java.util.List;
 public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
     private ISOrderView sorderView;
+    private ISOrderDataCallback dataCallback;
+
     private SOrderManager sOrderManager;
-    private SOrderCallback mCallback;
 
     public SOrderPresenter(ISOrderView sorderView) {
         this.sorderView = sorderView;
         sOrderManager = new SOrderManager(this);
     }
 
-    public void setCallback(SOrderCallback callback) {
-        mCallback = callback;
+    public void setDataCallback(ISOrderDataCallback dataCallback) {
+        this.dataCallback = dataCallback;
     }
 
     // 异步操作
@@ -39,8 +41,8 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
     @Override
     public void onQueryAllOrders(List<SOrder> list) {
-        if (mCallback != null) {
-            mCallback.onQueryAllOrders(list);
+        if (dataCallback != null) {
+            dataCallback.onQueryAllOrders(list);
         }
     }
 
@@ -69,4 +71,5 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
     public void switchToGridPage() {
         sorderView.onGridPage();
     }
+
 }

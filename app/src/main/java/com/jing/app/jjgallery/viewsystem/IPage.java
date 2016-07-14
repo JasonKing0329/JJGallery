@@ -7,7 +7,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+
+import java.util.List;
 
 /**
  * Created by JingYang on 2016/7/1 0001.

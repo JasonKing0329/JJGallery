@@ -19,7 +19,7 @@ import java.util.List;
  * Created by JingYang on 2016/7/11 0011.
  * Description:
  */
-public class SOrderThumbPage extends ThumbPage implements ISOrderPage {
+public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
 
     private SOrderThumbFolderAdapter mAdapter;
     
@@ -35,7 +35,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderPage {
     @Override
     public void initData() {
         tempList = new ArrayList<>();
-        mPresenter.setSOrderView(this);
+        mPresenter.setSOrderDataCallback(this);
         loadAllOrders();
     }
 

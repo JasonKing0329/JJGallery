@@ -1,5 +1,7 @@
 package com.jing.app.jjgallery.model.main.file;
 
+import android.os.AsyncTask;
+
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
@@ -12,6 +14,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class FolderManager {
+
+	private FileCallback mCallback;
+
+	public void setFileCallback(FileCallback callback) {
+		mCallback = callback;
+	}
 
 	public List<File> loadList(String rootPath) {
 		List<File> list = null;
@@ -140,5 +148,31 @@ public class FolderManager {
 		
 		file.mkdir();
 		return file;
+	}
+
+	/**
+	 * 加载所有的有内容的目录（IndexPage)
+	 * 异步方法，FileCallback -> onLoadAllFolders回调
+	 */
+	public void loadAllFolders() {
+		new LoadTask().execute();
+	}
+
+	private class LoadTask extends AsyncTask<Void, Void, List<String>> {
+		@Override
+		protected List<String> doInBackground(Void... params) {
+			List<String> list = new ArrayList<>();
+			List<File> fileList = new FolderManager().collectAllFolders();;
+			for (int i = 0; i < fileList.size(); i ++) {
+				list.add(fileList.get(i).getPath());
+			}
+			return list;
+		}
+
+		@Override
+		protected void onPostExecute(List<String> list) {
+			mCallback.onLoadAllFolders(list);
+			super.onPostExecute(list);
+		}
 	}
 }

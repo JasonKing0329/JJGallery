@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.main.filesystem;
+package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,14 +17,11 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
-import com.jing.app.jjgallery.model.main.order.SOrderCallback;
-import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.service.image.lru.ImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
-import com.jing.app.jjgallery.viewsystem.main.order.SOrderIndexAdapter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
@@ -37,7 +34,7 @@ import java.util.List;
  * Created by JingYang on 2016/7/14 0014.
  * Description:
  */
-public class SOrderIndexPage implements IPage, OnKeywordClickListener {
+public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordClickListener {
 
     private Context context;
 
@@ -63,16 +60,16 @@ public class SOrderIndexPage implements IPage, OnKeywordClickListener {
 
     @Override
     public void initData() {
-        mPresenter.setCallback(new SOrderCallback() {
-            @Override
-            public void onQueryAllOrders(List<SOrder> list) {
-                mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
-                mKeyAdapter.prepareKeyword();
-                mKeyAdapter.feedKeyword();
-                mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
-            }
-        });
+        mPresenter.setDataCallback(this);
         mPresenter.loadAllOrders();
+    }
+
+    @Override
+    public void onQueryAllOrders(List<SOrder> list) {
+        mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
+        mKeyAdapter.prepareKeyword();
+        mKeyAdapter.feedKeyword();
+        mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
     }
 
     @Override
@@ -171,7 +168,9 @@ public class SOrderIndexPage implements IPage, OnKeywordClickListener {
 
     @Override
     public void onTouchEvent(MotionEvent event) {
-        mKeyAdapter.onTouchEvent(event);
+        if (mKeyAdapter != null) {
+            mKeyAdapter.onTouchEvent(event);
+        }
     }
 
     @Override

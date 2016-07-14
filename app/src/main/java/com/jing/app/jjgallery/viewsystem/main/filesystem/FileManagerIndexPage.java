@@ -14,11 +14,11 @@ import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
-import com.jing.app.jjgallery.model.sub.IndexFlowCreator;
 import com.jing.app.jjgallery.service.image.lru.ImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
@@ -28,11 +28,13 @@ import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
 import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
 
+import java.util.List;
+
 /**
  * Created by JingYang on 2016/7/7 0007.
  * Description:
  */
-public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
+public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeywordClickListener {
 
     private Context context;
 
@@ -48,6 +50,7 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
         keywordsFlow = (KeywordsFlow) view.findViewById(R.id.view_keyword_flow);
         keywordsFlow.setBackgroundColor(Color.TRANSPARENT);
         keywordsFlow.setTextColorMode(KeywordsFlow.TEXT_COLOR_LIGHT);
+        keywordsFlow.setOnKeywordClickListener(this);
 
         String bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_FM_INDEX);
         if (bkPath != null) {
@@ -55,9 +58,15 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
         }
     }
 
-    private void startKeywordsFlow() {
-        keywordsFlow.setOnKeywordClickListener(this);
-        mKeyAdapter = new FileIndexAdapter(keywordsFlow, IndexFlowCreator.createFolderIndex());
+    @Override
+    public void initData() {
+        mPresenter.setFileDataCallback(this);
+        mPresenter.loadAllFolders();
+    }
+
+    @Override
+    public void onLoadAllFolders(List<String> folders) {
+        mKeyAdapter = new FileIndexAdapter(keywordsFlow, folders);
         mKeyAdapter.prepareKeyword();
         mKeyAdapter.feedKeyword();
         mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
@@ -65,12 +74,9 @@ public class FileManagerIndexPage implements IPage, OnKeywordClickListener {
 
     @Override
     public void onTouchEvent(MotionEvent event) {
-        mKeyAdapter.onTouchEvent(event);
-    }
-
-    @Override
-    public void initData() {
-        startKeywordsFlow();
+        if (mKeyAdapter != null) {
+            mKeyAdapter.onTouchEvent(event);
+        }
     }
 
     @Override
