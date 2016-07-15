@@ -158,6 +158,7 @@
     <dimen name="slidingmenu_margin_top_small">7dp</dimen>
     <dimen name="slidingmenu_margin_left">10dp</dimen>
     <!-- home -->
+    <dimen name="progress_size">200dp</dimen>
     <dimen name="sliding_left_item_margin_top">140dp</dimen>
     <dimen name="sliding_item_text_size">20dp</dimen>
     <dimen name="sliding_item_text_padding">10dp</dimen>

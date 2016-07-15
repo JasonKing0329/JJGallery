@@ -14,7 +14,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 
 /**
  * Created by Administrator on 2016/6/23 0023.
@@ -30,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     private ProgressDialog progressDialog;
     private int curOrientation;
 
+    private ProgressManager progressManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,6 +49,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
         mActionbarGroup = (ViewGroup) findViewById(R.id.actionbar);
         mContentGroup = (ViewGroup) findViewById(R.id.content);
+        progressManager = new ProgressManager(this);
+        BackgroundManager.getInstance().addProgressSubscriber(progressManager);
 
         if (isActionBarNeed()) {
             View view = getLayoutInflater().inflate(R.layout.actionbar_l, null);
@@ -99,6 +104,15 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     protected void showToastShort(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
+
+    public void showProgressCycler() {
+        progressManager.showProgressCycler();
+    }
+
+    public void dismissProgressCycler() {
+        progressManager.dismissProgressCycler();
+    }
+
     @Override
     public void onBack() {
 
@@ -136,6 +150,12 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     public void applyAnimation() {
         //不知道为啥不管用
 //        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 
     @Override

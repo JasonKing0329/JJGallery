@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
@@ -72,6 +73,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     @Override
     public void initData() {
+        ((BaseSlidingActivity) context).showProgressCycler();
         mPresenter.setDataCallback(this);
         mPresenter.loadAllOrders();
     }
@@ -83,6 +85,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         mKeyAdapter.prepareKeyword();
         mKeyAdapter.feedKeyword();
         mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        ((BaseSlidingActivity) context).dismissProgressCycler();
     }
 
     @Override

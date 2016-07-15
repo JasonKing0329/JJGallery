@@ -23,6 +23,7 @@ public class PreferenceKey {
     public static final String PREF_BG_FM_INDEX_LAND = "pref_bg_fm_index_land";
     public static final String PREF_BG_SORDER_INDEX = "pref_bg_sorder_index";
     public static final String PREF_BG_SORDER_INDEX_LAND = "pref_bg_sorder_index_land";
+    public static final String PREF_BG_PROGRESS = "pref_bg_progress";
 
     public static final String VALUE_FM_VIEW_LIST = "List";
     public static final String VALUE_FM_VIEW_THUMB = "Thumbfolder";

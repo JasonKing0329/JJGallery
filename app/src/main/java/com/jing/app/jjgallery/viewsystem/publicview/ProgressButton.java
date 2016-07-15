@@ -20,7 +20,9 @@ package com.jing.app.jjgallery.viewsystem.publicview;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -30,6 +32,7 @@ import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.CompoundButton;
 
 import com.jing.app.jjgallery.R;
@@ -86,6 +89,9 @@ public class ProgressButton extends CompoundButton {
   private RectF mTempRectF = new RectF();
   private int mDrawableSize;
   private int mInnerSize;
+
+  private Bitmap bitmap;
+  private Matrix matrix;//实现imageview的fit效果
 
   private Handler mAnimationHandler = new Handler() {
     /**
@@ -153,7 +159,7 @@ public class ProgressButton extends CompoundButton {
     mShadowDrawable = res.getDrawable(shadowDrawable);
     mShadowDrawable.setCallback(this);
 
-    mInnerSize = res.getDimensionPixelSize(R.dimen.progress_inner_size);
+    mInnerSize = res.getDimensionPixelSize(R.dimen.progress_size);
     mInnerSize = a.getDimensionPixelSize(R.styleable.ProgressButton_innerSize, mInnerSize);
 
     setChecked(a.getBoolean(R.styleable.ProgressButton_pinned, false));
@@ -169,7 +175,8 @@ public class ProgressButton extends CompoundButton {
 
     a.recycle();
 
-    mDrawableSize = mShadowDrawable.getIntrinsicWidth();
+    mDrawableSize = getContext().getResources().getDimensionPixelSize(R.dimen.progress_size);
+//    mDrawableSize = mShadowDrawable.getIntrinsicWidth();
 
     mCirclePaint = new Paint();
     mCirclePaint.setColor(circleColor);
@@ -364,6 +371,30 @@ public class ProgressButton extends CompoundButton {
     }
   }
 
+  public void setImageBitmap(Bitmap bitmap) {
+    this.bitmap = bitmap;
+    initRect();
+  }
+
+  /**
+   * 缩放图片
+   */
+  public void initRect() {
+    post(new Runnable() {
+      @Override
+      public void run() {
+        if (bitmap != null) {
+          if (matrix == null) {
+            matrix = new Matrix();
+          }
+          float sx = (float) mDrawableSize / (float) bitmap.getWidth();
+          float sy = (float) mDrawableSize / (float) bitmap.getHeight();
+          matrix.postScale(sx, sy);
+        }
+      }
+    });
+  }
+
   /** Stop animating the button. */
   public void stopAnimating() {
     mAnimating = false;
@@ -393,26 +424,30 @@ public class ProgressButton extends CompoundButton {
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
 
-    mTempRect.set(0, 0, mDrawableSize, mDrawableSize);
-    mTempRect.offset((getWidth() - mDrawableSize) / 2, (getHeight() - mDrawableSize) / 2);
-
-    mTempRectF.set(-0.5f, -0.5f, mInnerSize + 0.5f, mInnerSize + 0.5f);
-    mTempRectF.offset((getWidth() - mInnerSize) / 2, (getHeight() - mInnerSize) / 2);
+    mTempRectF.set(0, 0, mDrawableSize, mDrawableSize);
 
     canvas.drawArc(mTempRectF, 0, 360, true, mCirclePaint);
-    canvas.drawArc(mTempRectF, -90, 360 * mProgress / mMax, true, mProgressPaint);
 
     if (mAnimating) {
       canvas.drawArc(mTempRectF, -90 + (360 * mAnimationProgress / mMax), mAnimationStripWidth,
           true, mProgressPaint);
     }
+    else {
+      canvas.drawArc(mTempRectF, -90, 360 * mProgress / mMax, true, mProgressPaint);
+    }
 
-    Drawable iconDrawable = isChecked() ? mPinnedDrawable : mUnpinnedDrawable;
-    iconDrawable.setBounds(mTempRect);
-    iconDrawable.draw(canvas);
+    if (bitmap == null) {
+      Drawable iconDrawable = isChecked() ? mPinnedDrawable : mUnpinnedDrawable;
+      iconDrawable.setBounds(mTempRect);
+      iconDrawable.draw(canvas);
+    }
+    else {
+      canvas.drawBitmap(bitmap, matrix, mCirclePaint);
+    }
 
-    mShadowDrawable.setBounds(mTempRect);
-    mShadowDrawable.draw(canvas);
+//    mTempRect.set(0, 0, mDrawableSize, mDrawableSize);
+//    mShadowDrawable.setBounds(mTempRect);
+//    mShadowDrawable.draw(canvas);
   }
 
   @Override public Parcelable onSaveInstanceState() {

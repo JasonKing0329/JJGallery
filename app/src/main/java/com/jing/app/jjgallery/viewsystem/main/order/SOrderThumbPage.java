@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
@@ -47,6 +48,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
     }
 
     private void loadAllOrders() {
+        ((BaseSlidingActivity) getContext()).showProgressCycler();
         // 异步操作
         mPresenter.loadAllOrders();
     }
@@ -61,6 +63,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
         getIndexCreator().createFromOrderList(tempList);
         showIndexView();
         initIndexStateController();
+        ((BaseSlidingActivity) getContext()).dismissProgressCycler();
     }
 
     private void fillTempList() {

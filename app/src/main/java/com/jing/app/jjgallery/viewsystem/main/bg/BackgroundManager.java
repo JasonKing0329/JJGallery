@@ -12,17 +12,20 @@ import java.util.List;
  * Created by JingYang on 2016/7/12 0012.
  * Description:
  */
-public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderBgObserver {
+public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderBgObserver
+    , ProgressObserver{
 
     private static BackgroundManager instance;
     private List<SlidingSubscriber> slidingSubscriberList;
     private List<FMBgSubscriber> fmBgSubscriberList;
     private List<SOrderSubscriber> sorderSubscriberList;
+    private List<ProgressSubscriber> progressSubscriberList;
 
     private BackgroundManager() {
         slidingSubscriberList = new ArrayList<>();
         fmBgSubscriberList = new ArrayList<>();
         sorderSubscriberList = new ArrayList<>();
+        progressSubscriberList = new ArrayList<>();
     }
 
     public static BackgroundManager getInstance() {
@@ -54,6 +57,14 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
 
     public void removeSOrderSubscriber(SOrderSubscriber subscriber) {
         sorderSubscriberList.remove(subscriber);
+    }
+
+    public void addProgressSubscriber(ProgressSubscriber subscriber) {
+        progressSubscriberList.add(subscriber);
+    }
+
+    public void removeProgressSubscriber(ProgressSubscriber subscriber) {
+        progressSubscriberList.remove(subscriber);
     }
 
     private boolean saveVale(Context context, String key, String newPath) {
@@ -93,6 +104,9 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
             }
             else if (key.equals(PreferenceKey.PREF_BG_SORDER_INDEX_LAND)) {
                 notifySOrderIndexBgLandChanged(path);
+            }
+            else if (key.equals(PreferenceKey.PREF_BG_PROGRESS)) {
+                notifyProgressSrcChanged(path);
             }
         }
     }
@@ -152,6 +166,13 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         }
     }
 
+    @Override
+    public void notifyProgressSrcChanged(String path) {
+        for (ProgressSubscriber subscriber:progressSubscriberList) {
+            subscriber.onProgressSrcChanged(path);
+        }
+    }
+
     public List<BkBean> getItemList() {
         List<BkBean> list = new ArrayList<>();
         BkBean bean = new BkBean();
@@ -189,6 +210,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         bean = new BkBean();
         bean.setPreferenceKey(PreferenceKey.PREF_BG_SORDER_INDEX_LAND);
         bean.setDetailName("Home -> SOrder page -> Index page(Landscape)");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_BG_PROGRESS);
+        bean.setDetailName("Progress view");
         list.add(bean);
         return list;
     }
