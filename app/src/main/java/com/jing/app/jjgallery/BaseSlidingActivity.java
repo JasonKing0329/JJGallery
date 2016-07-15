@@ -2,6 +2,7 @@ package com.jing.app.jjgallery;
 
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.ProgressButton;
 
 /**
  * Created by JingYang on 2016/7/7 0007.
@@ -34,6 +36,8 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     private int curOrientation;
 
+    private ProgressButton progressButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isFullScreen()) {
@@ -50,6 +54,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
         mActionbarGroup = (ViewGroup) findViewById(R.id.actionbar);
         mContentGroup = (ViewGroup) findViewById(R.id.frame_content);
+        progressButton = (ProgressButton) findViewById(R.id.progress);
 
         if (isActionBarNeed()) {
             View view = getLayoutInflater().inflate(R.layout.actionbar_l, null);
@@ -103,6 +108,53 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     protected void showToastShort(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
+
+    private ProgressTask progressTask;
+
+    protected void showProgressCycler() {
+        progressButton.setVisibility(View.VISIBLE);
+        if (progressTask != null) {
+            progressTask.cancel(true);
+        }
+        progressTask = new ProgressTask();
+        progressTask.execute();
+    }
+
+    protected void dismissProgressCycler() {
+        progressButton.setVisibility(View.GONE);
+        progressTask.cancel(true);
+        progressTask = null;
+    }
+
+    private class ProgressTask extends AsyncTask<Void, Void, Void> {
+        private int progress;
+
+        public ProgressTask() {
+            progress = 0;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            progress += 4;
+            if (progress > 100) {
+                progress = 0;
+            }
+            progressButton.setProgress(progress);
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Thread.sleep(100);
+                publishProgress();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     @Override
     public void onBack() {
 

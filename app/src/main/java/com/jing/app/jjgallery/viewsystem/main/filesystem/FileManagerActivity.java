@@ -159,9 +159,11 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     @Override
     public void onActionIconClick(View view) {
         if (view.getId() == R.id.actionbar_menu_left) {
+            showProgressCycler();
             showMenu();
         }
         else {
+            dismissProgressCycler();
             mCurrentFragment.getPage().onIconClick(view);
         }
     }
