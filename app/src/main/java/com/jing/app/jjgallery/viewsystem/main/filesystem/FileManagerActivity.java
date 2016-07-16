@@ -195,6 +195,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     @Override
     protected void onExit() {
         mCurrentFragment.getPage().onExit();
+        finish();
     }
 
     @Override

@@ -20,6 +20,10 @@ import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 
 /**
  * Created by Administrator on 2016/6/23 0023.
+ * full screen
+ * actionbar
+ * progress view
+ * activity/fragment animation
  */
 public abstract class BaseActivity extends AppCompatActivity implements ActionBar.ActionIconListener
     , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener {
@@ -149,7 +153,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
     public void applyAnimation() {
         //不知道为啥不管用
-//        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.main.bg;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -10,7 +11,10 @@ import java.util.List;
 
 /**
  * Created by JingYang on 2016/7/12 0012.
- * Description:
+ * Description: 背景设置器，通过设置图片路径以preference key的形式存储
+ * getItemList增加需要设置的背景项
+ * XXXObserver绑定相应的设置功能（notifyXXXChanged）
+ * XXXSubScriber注册要实时变化的位置(onXXXChanged)（要注意add和remove的时机）
  */
 public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderBgObserver
     , ProgressObserver{
@@ -35,6 +39,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         return instance;
     }
 
+    /**
+     * sliding menu background of home
+     * @param subscriber
+     */
     public void addSlidingSubscriber(SlidingSubscriber subscriber) {
         slidingSubscriberList.add(subscriber);
     }
@@ -43,6 +51,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         slidingSubscriberList.remove(subscriber);
     }
 
+    /**
+     * background of file manager related page
+     * @param subscriber
+     */
     public void addFMBgSubscriber(FMBgSubscriber subscriber) {
         fmBgSubscriberList.add(subscriber);
     }
@@ -51,6 +63,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         fmBgSubscriberList.remove(subscriber);
     }
 
+    /**
+     * background of sorder related page
+     * @param subscriber
+     */
     public void addSOrderSubscriber(SOrderSubscriber subscriber) {
         sorderSubscriberList.add(subscriber);
     }
@@ -59,6 +75,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         sorderSubscriberList.remove(subscriber);
     }
 
+    /**
+     * background of progress view
+     * @param subscriber
+     */
     public void addProgressSubscriber(ProgressSubscriber subscriber) {
         progressSubscriberList.add(subscriber);
     }
@@ -67,6 +87,13 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         progressSubscriberList.remove(subscriber);
     }
 
+    /**
+     * save by SharedPreference
+     * @param context
+     * @param key
+     * @param newPath
+     * @return
+     */
     private boolean saveVale(Context context, String key, String newPath) {
         String path = SettingProperties.getPreference(context, key);
         if (!newPath.equals(path)) {
@@ -76,6 +103,12 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         return false;
     }
 
+    /**
+     * save background related to the key
+     * @param context
+     * @param key Preference key
+     * @param path image path
+     */
     public void setBackground(Context context, String key, String path) {
         if (saveVale(context, key, path)) {
             if (key.equals(PreferenceKey.PREF_SLIDING_BK_LEFT)) {

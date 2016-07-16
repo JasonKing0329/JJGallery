@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by JingYang on 2016/7/7 0007.
  * Description:
- * 将主界面通用的功能在该类实现，比如：检查全部加密文件、导出数据、导入数据、切换主题
+ * 将主界面通用的功能在该类实现，比如：检查全部加密文件、导出数据、导入数据、切换主题、actionbar颜色、sliding menu功能
  * 主界面Activity均支持sliding menu模式
  */
 public abstract class AbsHomeActivity extends BaseSlidingActivity implements Handler.Callback
@@ -47,10 +47,15 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     @Override
     protected void initView() {
 
+        // initialize sliding menu
         initSlidingMenu();
+        // initialize content view
         setUpContentView();
+        // custom left sliding menu
         setUpLeftMenu();
+        // custom right sliding menu
         setUpRightMenu();
+        // apply color saved in disk file
         applyExtendColors();
     }
 
@@ -69,10 +74,30 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         mSlidingMenu.setOnClosedListener(this);
         setSlidingActionBarEnabled(false);
         slidingViewManager = new SlidingViewManager(this, R.layout.layout_sliding_left, R.layout.layout_sliding_right);
-        slidingViewManager.setLeftOnClickListener(new View.OnClickListener() {
+        slidingViewManager.setSlidingLeftCallback(new SlidingViewManager.SlidingLeftCallback() {
             @Override
-            public void onClick(View v) {
+            public void onCheckAllService() {
+                checkkAllService();
+            }
 
+            @Override
+            public void onExport() {
+                export();
+            }
+
+            @Override
+            public void onImport() {
+                importFrom();
+            }
+
+            @Override
+            public void onSetting() {
+                openSetting();
+            }
+
+            @Override
+            public void onExit() {
+                exit();
             }
         });
         setBehindContentView(slidingViewManager.getSlidingLeftView());
@@ -142,20 +167,16 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         switch (item.getItemId()) {
 
             case R.id.menu_check_all_unencrypted:
-                showProgress(getString(R.string.checking));
-                if (mEncryptCheckService == null) {
-                    mEncryptCheckService = new EncryptCheckService(this);
-                }
-                mEncryptCheckService.check();
+                checkkAllService();
                 break;
             case R.id.menu_export:
-                DBInfor.export(this);
+                export();
                 break;
             case R.id.menu_import:
-                openLoadFromDialog();
+                importFrom();
                 break;
             case R.id.menu_edit:
-                ActivityManager.startSettingActivity(this);
+                openSetting();
                 break;
             case R.id.menu_change_theme:
 //				new ChangeThemeDialog(context, new CustomDialog.OnCustomDialogActionListener() {
@@ -178,15 +199,39 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
 //				}).show();
                 break;
             case R.id.menu_exit:
-                if (needOptionWhenExit()) {
-
-                }
-                else {
-                    onExit();
-                }
+                exit();
                 break;
         }
         return false;
+    }
+
+    private void exit() {
+        if (needOptionWhenExit()) {
+
+        }
+        else {
+            onExit();
+        }
+    }
+
+    private void openSetting() {
+        ActivityManager.startSettingActivity(this);
+    }
+
+    private void importFrom() {
+        openLoadFromDialog();
+    }
+
+    private void export() {
+        DBInfor.export(this);
+    }
+
+    private void checkkAllService() {
+        showProgress(getString(R.string.checking));
+        if (mEncryptCheckService == null) {
+            mEncryptCheckService = new EncryptCheckService(this);
+        }
+        mEncryptCheckService.check();
     }
 
     protected abstract boolean handleBack();

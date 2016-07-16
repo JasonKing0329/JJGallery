@@ -162,7 +162,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     public void applyAnimation() {
         //不知道为啥不管用
-//        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+        overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
 
     @Override

@@ -73,6 +73,12 @@
                     android:text="@string/menu_change_theme"/>
                 <TextView
                     style="@style/SlidingItemText"
+                    android:id="@+id/sliding_menu_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_activity_test_settings"/>
+                <TextView
+                    style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_exit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

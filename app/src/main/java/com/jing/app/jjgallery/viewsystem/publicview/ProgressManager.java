@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.publicview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,6 +14,7 @@ import com.jing.app.jjgallery.viewsystem.main.bg.ProgressSubscriber;
 
 /**
  * Created by Administrator on 2016/7/16 0016.
+ * manager of ProgressButton
  */
 public class ProgressManager implements ProgressSubscriber {
 
@@ -33,6 +35,9 @@ public class ProgressManager implements ProgressSubscriber {
 
     }
 
+    /**
+     * show progress with auto-run style
+     */
     public void showProgressCycler() {
         progressView.setVisibility(View.VISIBLE);
         progressButton.startAnimating();
@@ -44,7 +49,7 @@ public class ProgressManager implements ProgressSubscriber {
     }
 
     @Override
-    public void onProgressSrcChanged(String path) {
+    public void onProgressSrcChanged(@NonNull String path) {
         progressButton.setImageBitmap(PictureManagerUpdate.getInstance().createCircleBitmap(
                 path, context));
     }

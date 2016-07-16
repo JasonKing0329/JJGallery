@@ -23,17 +23,25 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/11 0011.
  */
-public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAdapter.OnPageSelectListener {
+public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAdapter.OnPageSelectListener
+    , View.OnClickListener{
 
-    public interface SlidingCallback {
-        void onSwitchHome();
+    public interface SlidingLeftCallback {
+        void onCheckAllService();
+        void onExport();
+        void onImport();
+        void onSetting();
+        void onExit();
     }
 
     private Context mContext;
 
+    // left menu defines common function of home
     private View slidingLeftView;
+    // right menu apply custom function
     private View slidingRightView;
-    private View.OnClickListener leftListener;
+
+    private SlidingLeftCallback slidingLeftCallback;
     private View.OnClickListener rightListener;
 
     private ImageView leftBkView, rightBkView;
@@ -51,8 +59,8 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         initRightView();
     }
 
-    public void setLeftOnClickListener(View.OnClickListener listener) {
-        leftListener = listener;
+    public void setSlidingLeftCallback(SlidingLeftCallback callback) {
+        slidingLeftCallback = callback;
     }
 
     public void setRightOnClickListener(View.OnClickListener listener) {
@@ -68,12 +76,13 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     }
 
     private void initLeftView() {
-        slidingLeftView.findViewById(R.id.sliding_menu_switch).setOnClickListener(leftListener);
-        slidingLeftView.findViewById(R.id.sliding_menu_checkall).setOnClickListener(leftListener);
-        slidingLeftView.findViewById(R.id.sliding_menu_export).setOnClickListener(leftListener);
-        slidingLeftView.findViewById(R.id.sliding_menu_import).setOnClickListener(leftListener);
-        slidingLeftView.findViewById(R.id.sliding_menu_theme).setOnClickListener(leftListener);
-        slidingLeftView.findViewById(R.id.sliding_menu_exit).setOnClickListener(leftListener);
+        slidingLeftView.findViewById(R.id.sliding_menu_switch).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_checkall).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_export).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_import).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_theme).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_setting).setOnClickListener(this);
+        slidingLeftView.findViewById(R.id.sliding_menu_exit).setOnClickListener(this);
 
         leftBkView = (ImageView) slidingLeftView.findViewById(R.id.sliding_left_bk);
         circleView = (CircleImageView) slidingLeftView.findViewById(R.id.sliding_left_circle);
@@ -127,6 +136,29 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     public void onConfigurationChanged(int newOrientation) {
         ImageLoader.getInstance().loadImage(getLeftBkPath(newOrientation), leftBkView);
         ImageLoader.getInstance().loadImage(getRightBkPath(newOrientation), rightBkView);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (slidingLeftCallback != null) {
+            switch (v.getId()) {
+                case R.id.sliding_menu_checkall:
+                    slidingLeftCallback.onCheckAllService();
+                    break;
+                case R.id.sliding_menu_import:
+                    slidingLeftCallback.onImport();
+                    break;
+                case R.id.sliding_menu_export:
+                    slidingLeftCallback.onExport();
+                    break;
+                case R.id.sliding_menu_setting:
+                    slidingLeftCallback.onSetting();
+                    break;
+                case R.id.sliding_menu_exit:
+                    slidingLeftCallback.onExit();
+                    break;
+            }
+        }
     }
 
     @Override
