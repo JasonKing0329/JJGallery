@@ -491,6 +491,11 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     }
 
     @Override
+    public void onDeleteIndex(int index) {
+
+    }
+
+    @Override
     public void onDeleteFinished(int count) {
         mImageAdapter.showActionMode(false);
         refreshCurrent();

@@ -13,6 +13,7 @@ public class PreferenceKey {
     public static final String PREF_FM_VIEW = "pref_filemanager_view";
     public static final String PREF_FM_ORIGIN = "pref_filemanager_origin";
     public static final String PREF_SORDER_VIEW = "pref_sorder_view";
+    public static final String PREF_CASUAL_NUMBER = "setting_edit_casual";
 
     public static final String PREF_SLIDING_BK_LEFT = "pref_sliding_bk_left";
     public static final String PREF_SLIDING_BK_RIGHT = "pref_sliding_bk_right";

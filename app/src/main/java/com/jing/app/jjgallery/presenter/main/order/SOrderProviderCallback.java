@@ -9,5 +9,6 @@ public interface SOrderProviderCallback {
 
     void onAddToOrderFinished();
 
+    void onDeleteIndex(int index);
     void onDeleteFinished(int count);
 }

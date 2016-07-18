@@ -618,6 +618,11 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 	}
 
 	@Override
+	public void onDeleteIndex(int index) {
+
+	}
+
+	@Override
 	public void onDeleteFinished(int count) {
 
 	}

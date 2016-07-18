@@ -366,6 +366,11 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 	}
 
 	@Override
+	public void onDeleteIndex(int index) {
+
+	}
+
+	@Override
 	public void onDeleteFinished(int count) {
 		deleteItem(true);
 	}

@@ -33,6 +33,12 @@ public class SettingProperties {
         return preferences.getString(PreferenceKey.PREF_SORDER_VIEW, PreferenceKey.VALUE_SORDER_VIEW_GRID);
     }
 
+    public static int getCasualLookNumber(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String text = preferences.getString(PreferenceKey.PREF_CASUAL_NUMBER, "20");
+        return Integer.parseInt(text);
+    }
+
     public static void setAppInited(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();

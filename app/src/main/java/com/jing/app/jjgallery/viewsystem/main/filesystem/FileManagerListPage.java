@@ -320,10 +320,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	}
 
 	private void openByWall(String path) {
-//		Bundle bundle = new Bundle();
-//		bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_FOLDER);
-//		bundle.putString(WallActivity.MODE_VALUE_KEY, path);
-//		((MainViewActivity) context).openWallGallery(bundle);
+		ActivityManager.startWallActivity((Activity) context, path);
 	}
 
 	private void startFullScreenActivity(String path) {

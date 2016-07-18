@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.util.DisplayHelper;
@@ -169,6 +170,19 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
             mActionBar.onConfiguration(newConfig.orientation);
         }
         super.onConfigurationChanged(newConfig);
+    }
+
+    /**
+     * 设置actionbar浮于content之上
+     */
+    protected void requestActionbarFloating() {
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
+        params.removeRule(RelativeLayout.BELOW);
+        container.removeView(mContentGroup);
+        container.removeView(mActionbarGroup);
+        container.addView(mContentGroup, 0);
+        container.addView(mActionbarGroup, 1);
     }
 
 }

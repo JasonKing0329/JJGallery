@@ -313,7 +313,7 @@ public class SOrderProvider implements Handler.Callback {
         }
     }
 
-    private class DeleteFromOrderTask extends AsyncTask<Object, Void, Integer> {
+    private class DeleteFromOrderTask extends AsyncTask<Object, Integer, Integer> {
         @Override
         protected void onPostExecute(Integer count) {
             super.onPostExecute(count);
@@ -330,12 +330,21 @@ public class SOrderProvider implements Handler.Callback {
             for (int i = posList.size() - 1; i > -1; i --) {
                 index = posList.get(i);
                 sOrderManager.deleteItemFromOrder(index, order);
+                publishProgress(index);
+                order.getImgPathIdList().remove(index);
+                order.getImgPathList().remove(index);
             }
             return posList.size();
         }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            mCallback.onDeleteIndex(values[0]);
+            super.onProgressUpdate(values);
+        }
     }
 
-    private class DeleteFromFolderTask extends AsyncTask<List<String>, Void, Integer> {
+    private class DeleteFromFolderTask extends AsyncTask<List<String>, Integer, Integer> {
         @Override
         protected void onPostExecute(Integer count) {
             super.onPostExecute(count);
@@ -377,6 +386,12 @@ public class SOrderProvider implements Handler.Callback {
                 SqlConnection.getInstance().close();
             }
             return pathList.size();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            mCallback.onDeleteIndex(values[0]);
+            super.onProgressUpdate(values);
         }
     }
 }

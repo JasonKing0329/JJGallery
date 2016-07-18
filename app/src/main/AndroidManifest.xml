@@ -53,6 +53,8 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".viewsystem.main.order.SOrderActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".viewsystem.sub.wall.WallActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
