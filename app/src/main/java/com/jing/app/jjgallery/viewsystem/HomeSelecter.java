@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class HomeSelecter implements  HomeProvider {
     public void startHome(Activity from, int key, Object datas) {
         switch (key) {
             case PreferenceKey.START_VIEW_TIMELINE:
-//                activity.startActivity(new Intent().setClass(activity, TimeLineUpdateActivity.class));
+                from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
                 break;
             case PreferenceKey.START_VIEW_GUIDE:
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));

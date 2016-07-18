@@ -15,12 +15,11 @@ import android.widget.PopupMenu;
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
-import com.jing.app.jjgallery.service.image.lru.ImageLoader;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -67,7 +66,7 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
             bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_FM_INDEX);
         }
         if (bkPath != null) {
-            ImageLoader.getInstance().loadImage(bkPath, bkView);
+            SImageLoader.getInstance().displayImage(bkPath, bkView);
         }
     }
 
@@ -214,13 +213,13 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
 
     public void onIndexBgChanged(String path) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ImageLoader.getInstance().loadImage(path, bkView);
+            SImageLoader.getInstance().displayImage(path, bkView);
         }
     }
 
     public void onIndexBgLandChanged(String path) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ImageLoader.getInstance().loadImage(path, bkView);
+            SImageLoader.getInstance().displayImage(path, bkView);
         }
     }
 }

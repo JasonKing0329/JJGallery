@@ -111,6 +111,53 @@ public class SOrderDaoImpl implements SOrderDao {
         }
         return false;
     }
+
+    @Override
+    public List<String> queryOrderItemsByName(String name, Connection connection) {
+
+        SOrder order = queryOrderByName(name, connection);
+        if (order == null) {
+            return null;
+        }
+
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = null;
+
+            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER_LIST + " WHERE "
+                    + DBInfor.TOL_COL_OID + " = " + order.getId());
+
+            if (order.getImgPathIdList() != null) {
+                order.getImgPathList().clear();
+                order.getImgPathIdList().clear();
+            }
+            while (set.next()) {
+                if (order.getImgPathList() == null) {
+                    order.setImgPathList(new ArrayList<String>());
+                    order.setImgPathIdList(new ArrayList<Integer>());
+                }
+                order.getImgPathIdList().add(set.getInt(DBInfor.NUM_TOL_COL_ID));
+                order.getImgPathList().add(set.getString(DBInfor.NUM_TOL_COL_PATH));
+            }
+            if (order.getImgPathList() != null) {
+                order.setItemNumber(order.getImgPathList().size());
+            }
+            set.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return order.getImgPathList();
+    }
+
     @Override
     public List<STag> loadTagList(Connection connection) {
         List<STag> list = null;

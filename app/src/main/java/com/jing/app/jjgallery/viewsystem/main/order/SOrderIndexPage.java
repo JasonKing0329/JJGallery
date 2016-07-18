@@ -20,7 +20,7 @@ import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
-import com.jing.app.jjgallery.service.image.lru.ImageLoader;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -67,7 +67,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
             bkPath = SettingProperties.getPreference(context, PreferenceKey.PREF_BG_SORDER_INDEX);
         }
         if (bkPath != null) {
-            ImageLoader.getInstance().loadImage(bkPath, bkView);
+            SImageLoader.getInstance().displayImage(bkPath, bkView);
         }
     }
 
@@ -213,12 +213,12 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     public void onIndexBgChanged(String path) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ImageLoader.getInstance().loadImage(path, bkView);
+            SImageLoader.getInstance().displayImage(path, bkView);
         }
     }
     public void onIndexBgLandChanged(String path) {
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ImageLoader.getInstance().loadImage(path, bkView);
+            SImageLoader.getInstance().displayImage(path, bkView);
         }
     }
 }

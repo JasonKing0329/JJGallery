@@ -20,14 +20,15 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
+import com.jing.app.jjgallery.service.image.ISImageLoader;
 
 /**
  * 图片加载类
  * http://blog.csdn.net/lmj623565791/article/details/41874561
  * @author zhy
- * 
+ * 直接采用ImageLoader.getInstance().loadImage(String path, ImageView)的方式加载图片
  */
-public class ImageLoader
+public class ImageLoader implements ISImageLoader
 {
 	private static ImageLoader mInstance;
 
@@ -64,6 +65,11 @@ public class ImageLoader
 	private boolean isDiskCacheEnable = true;
 
 	private static final String TAG = "ImageLoader";
+
+	/**
+	 * bitmap加载为null的时候显示默认资源
+	 */
+	private static int defaultResId = -1;
 
 	public enum Type
 	{
@@ -171,12 +177,18 @@ public class ImageLoader
 		return mInstance;
 	}
 
-	public void loadImage(final String path, final ImageView imageView) {
+	@Override
+	public void setDefaultImgRes(int resId) {
+		defaultResId = resId;
+	}
+
+	@Override
+	public void displayImage(final String path, final ImageView imageView) {
 		if (path == null) {
 			Log.e(TAG, "loadImage: path is null!");
 			return;
 		}
-		loadImage(path, imageView, false);
+		displayImage(path, imageView, false);
 	}
 	/**
 	 * 根据path为imageview设置图片
@@ -184,7 +196,7 @@ public class ImageLoader
 	 * @param path
 	 * @param imageView
 	 */
-	public void loadImage(final String path, final ImageView imageView,
+	public void displayImage(final String path, final ImageView imageView,
 			final boolean isFromNet)
 	{
 		if (path == null) {
@@ -206,7 +218,15 @@ public class ImageLoader
 					// 将path与getTag存储路径进行比较
 					if (imageview.getTag().toString().equals(path))
 					{
-						imageview.setImageBitmap(bm);
+						if (bm == null) {
+							Log.e(TAG, "bitmap is null:" + holder.path);
+							if (defaultResId != -1) {
+								imageview.setImageResource(defaultResId);
+							}
+						}
+						else {
+							imageview.setImageBitmap(bm);
+						}
 					}
 				};
 			};
@@ -404,20 +424,23 @@ public class ImageLoader
 	protected Bitmap decodeSampledBitmapFromPath(String path, int width,
 			int height)
 	{
+		Bitmap bitmap = null;
 		byte[] datas = EncrypterFactory.create().decipherToByteArray(new File(path));
-		// 获得图片的宽和高，并不把图片加载到内存中
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeByteArray(datas, 0, datas.length, options);
+		if (datas != null) {
+			// 获得图片的宽和高，并不把图片加载到内存中
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeByteArray(datas, 0, datas.length, options);
 //		BitmapFactory.decodeFile(path, options);
 
-		options.inSampleSize = ImageSizeUtil.caculateInSampleSize(options,
-				width, height);
+			options.inSampleSize = ImageSizeUtil.caculateInSampleSize(options,
+					width, height);
 
-		// 使用获得到的InSampleSize再次解析图片
-		options.inJustDecodeBounds = false;
-		Bitmap bitmap = BitmapFactory.decodeByteArray(datas, 0, datas.length, options);
+			// 使用获得到的InSampleSize再次解析图片
+			options.inJustDecodeBounds = false;
+			bitmap = BitmapFactory.decodeByteArray(datas, 0, datas.length, options);
 //		Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+		}
 		return bitmap;
 	}
 

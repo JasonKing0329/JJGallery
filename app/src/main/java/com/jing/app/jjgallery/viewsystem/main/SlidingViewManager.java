@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.service.image.lru.ImageLoader;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.HomeBean;
 import com.jing.app.jjgallery.viewsystem.HomeProvider;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
@@ -96,10 +96,10 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         String circlePath = SettingProperties.getPreference(mContext, PreferenceKey.PREF_SLIDING_CIRCLE);
 
         if (bkPath != null) {
-            ImageLoader.getInstance().loadImage(bkPath, leftBkView);
+            SImageLoader.getInstance().displayImage(bkPath, leftBkView);
         }
         if (circlePath != null) {
-            ImageLoader.getInstance().loadImage(circlePath, circleView);
+            SImageLoader.getInstance().displayImage(circlePath, circleView);
         }
     }
 
@@ -107,7 +107,7 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         rightBkView = (ImageView) slidingRightView.findViewById(R.id.sliding_right_bk);
         String bkPath = getRightBkPath(mContext.getResources().getConfiguration().orientation);
         if (bkPath != null) {
-            ImageLoader.getInstance().loadImage(bkPath, rightBkView);
+            SImageLoader.getInstance().displayImage(bkPath, rightBkView);
         }
     }
 
@@ -134,8 +134,8 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     }
 
     public void onConfigurationChanged(int newOrientation) {
-        ImageLoader.getInstance().loadImage(getLeftBkPath(newOrientation), leftBkView);
-        ImageLoader.getInstance().loadImage(getRightBkPath(newOrientation), rightBkView);
+        SImageLoader.getInstance().displayImage(getLeftBkPath(newOrientation), leftBkView);
+        SImageLoader.getInstance().displayImage(getRightBkPath(newOrientation), rightBkView);
     }
 
     @Override
@@ -164,35 +164,35 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     @Override
     public void onSlidingLeftBgChanged(String path) {
         if (path != null && !isLandscape()) {
-            ImageLoader.getInstance().loadImage(path, leftBkView);
+            SImageLoader.getInstance().displayImage(path, leftBkView);
         }
     }
 
     @Override
     public void onSlidingLeftLandBgChanged(String path) {
         if (path != null && isLandscape()) {
-            ImageLoader.getInstance().loadImage(path, leftBkView);
+            SImageLoader.getInstance().displayImage(path, leftBkView);
         }
     }
 
     @Override
     public void onSlidingRightBgChanged(String path) {
         if (path != null && !isLandscape()) {
-            ImageLoader.getInstance().loadImage(path, rightBkView);
+            SImageLoader.getInstance().displayImage(path, rightBkView);
         }
     }
 
     @Override
     public void onSlidingRightLandBgChanged(String path) {
         if (path != null && isLandscape()) {
-            ImageLoader.getInstance().loadImage(path, rightBkView);
+            SImageLoader.getInstance().displayImage(path, rightBkView);
         }
     }
 
     @Override
     public void onSlidingCircleChanged(String path) {
         if (path != null) {
-            ImageLoader.getInstance().loadImage(path, circleView);
+            SImageLoader.getInstance().displayImage(path, circleView);
         }
     }
 
@@ -205,11 +205,11 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     public void onOrentaionChanged(int orientation) {
         String path = getLeftBkPath(orientation);
         if (path != null) {
-            ImageLoader.getInstance().loadImage(path, leftBkView);
+            SImageLoader.getInstance().displayImage(path, leftBkView);
         }
         path = getRightBkPath(orientation);
         if (path != null) {
-            ImageLoader.getInstance().loadImage(path, rightBkView);
+            SImageLoader.getInstance().displayImage(path, rightBkView);
         }
     }
 

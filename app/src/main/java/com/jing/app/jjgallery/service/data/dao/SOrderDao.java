@@ -14,6 +14,7 @@ import java.util.List;
 public interface SOrderDao {
     List<SOrder> queryAllOrders(Connection connection);
     boolean queryOrderItems(SOrder order, Connection connection);
+    List<String> queryOrderItemsByName(String name, Connection connection);
     List<STag> loadTagList(Connection connection);
     STag queryTag(String tName, Connection connection);
     boolean insertTag(String tName, Connection connection);

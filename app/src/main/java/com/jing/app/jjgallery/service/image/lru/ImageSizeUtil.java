@@ -95,8 +95,8 @@ public class ImageSizeUtil
 
 	public static class ImageSize
 	{
-		int width;
-		int height;
+		public int width;
+		public int height;
 	}
 	
 	/**
