@@ -73,8 +73,6 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 
 	public UiController(SurfActivity activity) {
 		surfActivity = activity;
-		surfActivity.setTheme(new ThemeManager(surfActivity).getDefaultTheme());
-		DisplayHelper.disableScreenshot(surfActivity);
 		DisplayHelper.keepScreenOn(surfActivity);
 
 		mPresenter = new SurfPresenter();

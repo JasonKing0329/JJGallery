@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 
@@ -23,15 +24,15 @@ public class HomeSelecter implements  HomeProvider {
         mContext = context;
         list = new ArrayList<>();
         HomeBean bean = new HomeBean();
-        bean.setPreferenceKey(PreferenceKey.START_VIEW_FILEMANAGER);
+        bean.setPreferenceKey(PreferenceValue.START_VIEW_FILEMANAGER);
         bean.setName(context.getString(R.string.tab_filemanager));
         list.add(bean);
         bean = new HomeBean();
-        bean.setPreferenceKey(PreferenceKey.START_VIEW_SORDER);
+        bean.setPreferenceKey(PreferenceValue.START_VIEW_SORDER);
         bean.setName(context.getString(R.string.tab_sorder));
         list.add(bean);
         bean = new HomeBean();
-        bean.setPreferenceKey(PreferenceKey.START_VIEW_TIMELINE);
+        bean.setPreferenceKey(PreferenceValue.START_VIEW_TIMELINE);
         bean.setName(context.getString(R.string.setting_start_view_timeline));
         list.add(bean);
     }
@@ -46,13 +47,13 @@ public class HomeSelecter implements  HomeProvider {
     @Override
     public void startHome(Activity from, int key, Object datas) {
         switch (key) {
-            case PreferenceKey.START_VIEW_TIMELINE:
+            case PreferenceValue.START_VIEW_TIMELINE:
                 ActivityManager.startTimeLineActivity(from);
                 break;
-            case PreferenceKey.START_VIEW_GUIDE:
+            case PreferenceValue.START_VIEW_GUIDE:
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));
                 break;
-            case PreferenceKey.START_VIEW_SORDER:
+            case PreferenceValue.START_VIEW_SORDER:
                 ActivityManager.startSOrderActivity(from);
                 break;
             default:

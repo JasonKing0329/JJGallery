@@ -4,7 +4,7 @@
          when checked/unchecked. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="@string/filemanager"
+        android:defaultValue="@string/tab_filemanager"
         android:entries="@array/pref_general_list_home"
         android:entryValues="@array/pref_general_list_home_value"
         android:key="pref_general_list_home"
@@ -12,4 +12,12 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_general_home_title"/>
 
+    <EditTextPreference
+        android:defaultValue="@integer/setting_casual_number"
+        android:inputType="number"
+        android:key="pref_casual_number"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/setting_edit_casual_number" />
 </PreferenceScreen>

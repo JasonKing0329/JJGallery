@@ -19,4 +19,6 @@
     <integer name="thumb_column">3</integer>
     <integer name="sliding_left_bottom_text_size">20</integer>
     <integer name="progress_arc_sweep">15</integer>
+
+    <integer name="setting_casual_number">20</integer>
 </resources>

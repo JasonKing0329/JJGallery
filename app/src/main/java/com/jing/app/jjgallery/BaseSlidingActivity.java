@@ -48,6 +48,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             DisplayHelper.enableFullScreen();
         }
+        DisplayHelper.disableScreenshot(this);
 
         super.onCreate(savedInstanceState);
 

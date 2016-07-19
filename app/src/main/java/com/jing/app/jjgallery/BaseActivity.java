@@ -45,6 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             DisplayHelper.enableFullScreen();
         }
+        DisplayHelper.disableScreenshot(this);
         super.onCreate(savedInstanceState);
 
         curOrientation = getResources().getConfiguration().orientation;

@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
 
 import java.util.List;
@@ -153,26 +154,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_safety);
         if (!new FingerPrintController(this).isSupported()) {
-            findPreference("pref_safety_fingerprint").setEnabled(false);
+            findPreference(PreferenceKey.PREF_SAFETY_FP).setEnabled(false);
         }
 
-        // Add 'notifications' preferences, and a corresponding header.
+        // Add 'general' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_general);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_general);
 
-        // Add 'data and sync' preferences, and a corresponding header.
+        // Add 'file manager' preferences, and a corresponding header.
         fakeHeader = new PreferenceCategory(this);
-        fakeHeader.setTitle(R.string.filemanager);
+        fakeHeader.setTitle(R.string.tab_filemanager);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_filemanager);
+
+        // Add 'sorder' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.tab_sorder);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_sorder);
+
+        // Add 'surf' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.setting_title_surf);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_surf);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference("pref_general_list_home"));
-        bindPreferenceSummaryToValue(findPreference("pref_filemanager_view"));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
     }
 
     /**
@@ -227,10 +244,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_safety);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
+            if (!new FingerPrintController(getActivity()).isSupported()) {
+                findPreference(PreferenceKey.PREF_SAFETY_FP).setEnabled(false);
+            }
+
         }
 
     }
@@ -247,19 +264,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-//            bindPreferenceSummaryToValue(findPreference("pref_general_list_home"));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
         }
 
     }
 
-    /**
-     * This fragment shows data and sync preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class FileMnagerPreferenceFragment extends PreferenceFragment {
         @Override
@@ -268,11 +278,34 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_filemanager);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-//            bindPreferenceSummaryToValue(findPreference("pref_filemanager_view"));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class SOrderPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_sorder);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class SurfPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_surf);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
         }
 
     }

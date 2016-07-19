@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FileCallback;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -39,10 +40,10 @@ public class FileManagerPresenter extends BasePresenter implements FileCallback 
 
     public void startFileManagerPage(Context context) {
         String mode = SettingProperties.getFileManagerDefaultMode(context);
-        if (mode.equals(PreferenceKey.VALUE_FM_VIEW_THUMB)) {
+        if (mode.equals(PreferenceValue.VALUE_FM_VIEW_THUMB)) {
             fileManagerView.onThumbPage();
         }
-        else if (mode.equals(PreferenceKey.VALUE_FM_VIEW_INDEX)) {
+        else if (mode.equals(PreferenceValue.VALUE_FM_VIEW_INDEX)) {
             fileManagerView.onIndexPage();
         }
         else {

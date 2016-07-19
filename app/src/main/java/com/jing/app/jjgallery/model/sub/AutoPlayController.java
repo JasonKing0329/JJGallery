@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class AutoPlayController {
 					Message msg = new Message();
 					msg.what = AUTO_SPECIFIED_LIST;
 					Bundle bundle = new Bundle();
-					if (mode == PreferenceKey.AUTOPLAY_MODE_SEQUENCE) {//sequence
+					if (mode == PreferenceValue.AUTOPLAY_MODE_SEQUENCE) {//sequence
 						if (historyList.size() == 0) {
 							bundle.putString("autoplay_finish", "true");
 						}
@@ -122,7 +123,7 @@ public class AutoPlayController {
 							historyList.remove(0);
 						}
 					}
-					else if (mode == PreferenceKey.AUTOPLAY_MODE_RANDOM) {//random
+					else if (mode == PreferenceValue.AUTOPLAY_MODE_RANDOM) {//random
 						if (historyList.size() == 0) {
 							bundle.putString("autoplay_finish", "true");
 						}

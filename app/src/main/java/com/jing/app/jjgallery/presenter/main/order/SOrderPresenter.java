@@ -5,6 +5,7 @@ import android.content.Context;
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -48,10 +49,10 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
     public void startSOrderPage(Context context) {
         String mode = SettingProperties.getSOrderDefaultMode(context);
-        if (mode.equals(PreferenceKey.VALUE_SORDER_VIEW_THUMB)) {
+        if (mode.equals(PreferenceValue.VALUE_SORDER_VIEW_THUMB)) {
             sorderView.onThumbPage();
         }
-        else if (mode.equals(PreferenceKey.VALUE_SORDER_VIEW_INDEX)) {
+        else if (mode.equals(PreferenceValue.VALUE_SORDER_VIEW_INDEX)) {
             sorderView.onIndexPage();
         }
         else {

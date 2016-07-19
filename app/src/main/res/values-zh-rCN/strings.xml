@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- public -->
+    <string name="back">返回</string>
     <string name="action_settings">设置</string>
-    
     <string name="save">保存</string>
     <string name="no_content">无内容</string>
     <string name="save_success">保存成功</string>
+
+    <!-- login -->
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="signin">登录</string>
+    <string name="error_incorrect_password">密码错误</string>
+    <string name="title_activity_settings">设置</string>
+
     <!--************************** mainview public **************************-->
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -203,6 +212,18 @@
     <string name="rgame_random_scene">随机场景</string>
     
     <!--************************** setting preference **************************-->
+    <string name="pref_header_safety">安全性</string>
+    <string name="pref_header_general">常规</string>
+    <string name="pref_safety_fingerprint_title">指纹</string>
+    <string name="pref_safety_fingerprint_desc">使用指纹验证</string>
+    <string name="pref_general_home_title">主页</string>
+    <string name="pref_filemanager_default">默认打开视图</string>
+    <string name="pref_filemanager_originname">显示原文件名</string>
+    <string name="pref_filemanager_originname_summary">加密文件将会显示原文件名</string>
+    <string name="setting_surf_auto_play_speed">自动播放速度</string>
+    <string name="setting_surf_auto_play_mode">自动播放播放模式</string>
+    <string name="setting_title_surf">目录/列表浏览器</string>
+
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>
     <string name="setting_enable_private">激活私密模式</string>
@@ -216,8 +237,6 @@
     <string name="setting_show_animation">显示动画效果</string>
     <string name="setting_min_items">最低图片数量</string>
     <string name="setting_min_items_summary">当图库包含图片达到该值，程序才支持自动播放功能。</string>
-    <string name="setting_auto_play_speed">速度</string>
-    <string name="setting_auto_play_mode">播放模式</string>
     <string name="setting_sorder_mode">显示顺序</string>
     <string name="setting_sorder_mode_summary">当加载列表时,决定列表的显示顺序。</string>
     <string name="setting_sorder_enable_page">启用翻页模式</string>

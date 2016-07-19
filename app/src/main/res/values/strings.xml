@@ -11,35 +11,6 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- settings -->
-    <string name="pref_header_safety">Safety</string>
-    <string name="pref_header_general">General</string>
-    <string name="pref_safety_fingerprint_title">Fingerprint</string>
-    <string name="pref_safety_fingerprint_desc">Use fingerprint</string>
-    <string name="pref_general_home_title">Home</string>
-    <string-array name="pref_general_list_home">
-        <item>@string/tab_filemanager</item>
-        <item>@string/tab_sorder</item>
-        <item>@string/setting_start_view_timeline</item>
-        <item>Guide</item>
-    </string-array>
-    <string-array name="pref_general_list_home_value">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-    <string name="filemanager">File manager</string>
-    <string name="pref_filemanager_default">Default view</string>
-    <string name="pref_filemanager_originname">Show origin name</string>
-    <string name="pref_filemanager_originname_summary">Encrypted file will display original name</string>
-    <string-array name="pref_filemanager_view_mode">
-        <item>List</item>
-        <item>Thumbfolder</item>
-        <item>Index</item>
-    </string-array>
-
-
     <string name="action_settings">Settings</string>
     <string name="save">Save</string>
     <string name="no_content">No content</string>
@@ -246,6 +217,18 @@
     <string name="rgame_check_error_exit">Wrong password, auto exit!</string>
 
     <!--************************** setting preference **************************-->
+    <string name="pref_header_safety">Safety</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_safety_fingerprint_title">Fingerprint</string>
+    <string name="pref_safety_fingerprint_desc">Use fingerprint</string>
+    <string name="pref_general_home_title">Home</string>
+    <string name="pref_filemanager_default">Default view</string>
+    <string name="pref_filemanager_originname">Show origin name</string>
+    <string name="pref_filemanager_originname_summary">Encrypted file will display original name</string>
+    <string name="setting_surf_auto_play_speed">Auto-play speed</string>
+    <string name="setting_surf_auto_play_mode">Auto-play mode</string>
+    <string name="setting_title_surf">Folder/Order explorer</string>
+
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
     <string name="setting_enable_private">Enable private mode</string>
@@ -259,8 +242,6 @@
     <string name="setting_show_animation">Show animation</string>
     <string name="setting_min_items">Minimum picture number</string>
     <string name="setting_min_items_summary">The gallery need include at least this number, then the auto-play function will be supported.</string>
-    <string name="setting_auto_play_speed">Speed</string>
-    <string name="setting_auto_play_mode">Play mode</string>
     <string name="setting_sorder_mode">Show order</string>
     <string name="setting_sorder_mode_summary">Decide the order when load the SOrder page.</string>
     <string name="setting_sorder_enable_page">Enable page mode.</string>

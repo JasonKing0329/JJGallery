@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- A 'parent' preference, which enables/disables child preferences (below)
+         when checked/unchecked. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <ListPreference
+        android:defaultValue="Sequence"
+        android:entries="@array/setting_auto_play_mode"
+        android:entryValues="@array/setting_auto_play_mode_key"
+        android:key="setting_auto_play_mode"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_surf_auto_play_mode"/>
+    <ListPreference
+        android:defaultValue="middle"
+        android:entries="@array/setting_auto_play_time"
+        android:entryValues="@array/setting_auto_play_time_key"
+        android:key="setting_auto_play_speed"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_surf_auto_play_speed"/>
+
+</PreferenceScreen>
