@@ -67,7 +67,9 @@
     <color name="timeline_indicator_text_bk">#99000000</color>
     <color name="timeline_indicator_text_num">#ff6633</color>
     <color name="timeline_menu_main_bk">#9900a5c4</color>
-    <color name="timeline_menu_order_bk">#99197ba9</color>
+    <color name="timeline_menu_fm_bk">#9900a5c4</color>
+    <color name="timeline_menu_order_bk">#99419814</color>
+    <color name="timeline_menu_guide_bk">#99197ba9</color>
     <color name="timeline_menu_setting_bk">#99ef9801</color>
     <color name="timeline_menu_close_bk">#99a91980</color>
 

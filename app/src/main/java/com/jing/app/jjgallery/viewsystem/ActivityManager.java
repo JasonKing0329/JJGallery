@@ -6,7 +6,10 @@ import android.os.Bundle;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
+import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
@@ -16,13 +19,29 @@ import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
  * Description:
  */
 public class ActivityManager {
-    public static void startSettingActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, SettingsActivity.class));
-        applyAnimation(from);
-    }
 
     private static void applyAnimation(Activity activity) {
         activity.overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
+    }
+
+    public static void startFileManagerActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startTimeLineActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startSOrderActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, SOrderActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startSettingActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, SettingsActivity.class));
+        applyAnimation(from);
     }
 
     public static void startSurfActivity(Activity from, String path) {

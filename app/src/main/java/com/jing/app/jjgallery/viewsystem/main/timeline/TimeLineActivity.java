@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.viewsystem.main.timeline;
 
-import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
@@ -18,15 +17,16 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.timeline.TimeLinePresenter;
-import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
 public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnClickListener
 		, OnItemClickListener, OnHeadImageClickListener {
 
-	private TextView mainButton;
-	private TextView orderButton;
+	private TextView fmButton;
+	private TextView sorderButton;
+	private TextView guideButton;
 	private TextView settingButton;
 	private TextView closeButton;
 
@@ -54,15 +54,17 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 
 	@Override
 	protected void initView() {
-		mainButton = (TextView) findViewById(R.id.timeline_indicator_main);
-		orderButton = (TextView) findViewById(R.id.timeline_indicator_guide);
+		fmButton = (TextView) findViewById(R.id.timeline_indicator_fm);
+		sorderButton = (TextView) findViewById(R.id.timeline_indicator_sorder);
+		guideButton = (TextView) findViewById(R.id.timeline_indicator_guide);
 		settingButton = (TextView) findViewById(R.id.timeline_indicator_setting);
 		closeButton = (TextView) findViewById(R.id.timeline_indicator_close);
 		mGridView = (StickyGridHeadersGridView) findViewById(R.id.timeline_gridview);
 		noContentView = findViewById(R.id.timeline_nocontent);
 
-		mainButton.setOnClickListener(this);
-		orderButton.setOnClickListener(this);
+		fmButton.setOnClickListener(this);
+		sorderButton.setOnClickListener(this);
+		guideButton.setOnClickListener(this);
 		closeButton.setOnClickListener(this);
 		settingButton.setOnClickListener(this);
 
@@ -72,8 +74,9 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 		//必须设置这个header背景才会透明
 		mGridView.setStickyHeaderIsTranscluent(true);
 
-		mainButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_main_bk)));
-		orderButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_order_bk)));
+		fmButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_fm_bk)));
+		sorderButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_order_bk)));
+		guideButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_guide_bk)));
 		closeButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_setting_bk)));
 		settingButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_close_bk)));
 
@@ -92,13 +95,15 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 		mGridView.setAdapter(timeLineAdapter);
 		if (mPresenter.getFileBeanList() == null || mPresenter.getFileBeanList().size() == 0) {
 			noContentView.setVisibility(View.VISIBLE);
-			mainButton.setVisibility(View.VISIBLE);
-			orderButton.setVisibility(View.VISIBLE);
+			fmButton.setVisibility(View.VISIBLE);
+			sorderButton.setVisibility(View.VISIBLE);
+			guideButton.setVisibility(View.VISIBLE);
 			settingButton.setVisibility(View.VISIBLE);
 //			closeButton.setVisibility(View.VISIBLE);
-			mainButton.startAnimation(getMenuAppearAnimation(0));
-			orderButton.startAnimation(getMenuAppearAnimation(1));
-			settingButton.startAnimation(getMenuAppearAnimation(2));
+			fmButton.startAnimation(getMenuAppearAnimation(0));
+			sorderButton.startAnimation(getMenuAppearAnimation(1));
+			guideButton.startAnimation(getMenuAppearAnimation(2));
+			settingButton.startAnimation(getMenuAppearAnimation(3));
 //			closeButton.startAnimation(getMenuAppearAnimation(3));
 		}
 		dismissProgressCycler();
@@ -113,29 +118,33 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 
 	@Override
 	public void onClick(View v) {
-		if (v == mainButton) {
-//			Intent intent = new Intent().setClass(this, MainViewActivity.class);
-//			startActivity(intent);
-//			finish();
+		if (v == fmButton) {
+			ActivityManager.startFileManagerActivity(this);
+			finish();
 		}
-		else if (v == orderButton) {
+		else if (v == sorderButton) {
+			ActivityManager.startSOrderActivity(this);
+			finish();
+		}
+		else if (v == guideButton) {
 //			Intent intent = new Intent().setClass(this, GuideActivity.class);
 //			startActivity(intent);
 //			finish();
 		}
 		else if (v == settingButton) {
-			Intent intent = new Intent().setClass(this, SettingsActivity.class);
-			startActivity(intent);
+			ActivityManager.startSettingActivity(this);
 		}
 		else if (v == closeButton) {
-			mainButton.setVisibility(View.GONE);
-			orderButton.setVisibility(View.GONE);
+			fmButton.setVisibility(View.GONE);
+			sorderButton.setVisibility(View.GONE);
+			guideButton.setVisibility(View.GONE);
 			settingButton.setVisibility(View.GONE);
 			closeButton.setVisibility(View.GONE);
 			closeButton.startAnimation(getMenuDisappearAnimation(0));
 			settingButton.startAnimation(getMenuDisappearAnimation(1));
-			orderButton.startAnimation(getMenuDisappearAnimation(2));
-			mainButton.startAnimation(getMenuDisappearAnimation(3));
+			guideButton.startAnimation(getMenuDisappearAnimation(2));
+			sorderButton.startAnimation(getMenuDisappearAnimation(3));
+			fmButton.startAnimation(getMenuDisappearAnimation(4));
 		}
 	}
 
@@ -192,14 +201,16 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 		if (parent == mGridView.getStickiedHeader()) {
 
 //			view.startAnimation(getRotateAnimation());
-			mainButton.setVisibility(View.VISIBLE);
-			orderButton.setVisibility(View.VISIBLE);
+			fmButton.setVisibility(View.VISIBLE);
+			sorderButton.setVisibility(View.VISIBLE);
+			guideButton.setVisibility(View.VISIBLE);
 			settingButton.setVisibility(View.VISIBLE);
 			closeButton.setVisibility(View.VISIBLE);
-			mainButton.startAnimation(getMenuAppearAnimation(0));
-			orderButton.startAnimation(getMenuAppearAnimation(1));
-			settingButton.startAnimation(getMenuAppearAnimation(2));
-			closeButton.startAnimation(getMenuAppearAnimation(3));
+			fmButton.startAnimation(getMenuAppearAnimation(0));
+			sorderButton.startAnimation(getMenuAppearAnimation(1));
+			guideButton.startAnimation(getMenuAppearAnimation(2));
+			settingButton.startAnimation(getMenuAppearAnimation(3));
+			closeButton.startAnimation(getMenuAppearAnimation(4));
 		}
 	}
 

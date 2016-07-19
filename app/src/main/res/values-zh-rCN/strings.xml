@@ -292,7 +292,6 @@
     <string name="team_game_turndata_file">文件名</string>
     <string name="team_game_turndata_success">数据转换成功！</string>
     <!--************************** time line **************************-->
-    <string name="time_line_main">主界面</string>
     <string name="time_line_guide">导视</string>
     <string name="time_line_setting">设置</string>
     <string name="time_line_close">收起</string>

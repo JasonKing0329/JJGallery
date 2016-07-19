@@ -334,7 +334,8 @@
     <string name="team_game_turndata_file">File name</string>
     <string name="team_game_turndata_success">Turn data successfully!</string>
     <!--************************** time line **************************-->
-    <string name="time_line_main">Main</string>
+    <string name="time_line_fm">@string/tab_filemanager</string>
+    <string name="time_line_sorder">@string/tab_sorder</string>
     <string name="time_line_guide">Guide</string>
     <string name="time_line_setting">Setting</string>
     <string name="time_line_close">Close</string>

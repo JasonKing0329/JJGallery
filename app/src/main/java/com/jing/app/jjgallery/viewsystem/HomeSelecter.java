@@ -2,17 +2,11 @@ package com.jing.app.jjgallery.viewsystem;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
-import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
-import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
-import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +47,16 @@ public class HomeSelecter implements  HomeProvider {
     public void startHome(Activity from, int key, Object datas) {
         switch (key) {
             case PreferenceKey.START_VIEW_TIMELINE:
-                from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+                ActivityManager.startTimeLineActivity(from);
                 break;
             case PreferenceKey.START_VIEW_GUIDE:
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));
                 break;
             case PreferenceKey.START_VIEW_SORDER:
-                from.startActivity(new Intent().setClass(from, SOrderActivity.class));
+                ActivityManager.startSOrderActivity(from);
                 break;
             default:
-                from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
+                ActivityManager.startFileManagerActivity(from);
                 break;
         }
     }
