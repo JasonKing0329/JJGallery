@@ -46,6 +46,7 @@
             android:configChanges="orientation|screenSize"/>
 
         <service android:name=".service.file.FileDBService" />
+        <service android:name=".service.file.PreferenceService" />
 
         <activity android:name=".viewsystem.sub.thumb.ThumbActivity"
             android:configChanges="orientation|screenSize" />

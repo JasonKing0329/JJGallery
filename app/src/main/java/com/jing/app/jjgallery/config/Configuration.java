@@ -40,6 +40,9 @@ public class Configuration {
 	public static final String ASSETS_RES_COLOR = "res/color.xml";
 	public static final String ASSETS_RES_DIMEN = "res/dimens.xml";
 
+	public static final String APP_DIR_CONF = APP_ROOT + "/conf";
+	public static final String APP_DIR_CONF_PREF = APP_ROOT + "/shared_prefs";
+
 	private static int screenWidth;
 	private static int screenHeight;
 	
@@ -48,7 +51,7 @@ public class Configuration {
 	private static int expandSorderCoverMaxPixel;
 	private static int chooserItemWidth;
 	private static int sorderCoverPreviewSize;
-	
+
 	public static boolean init() {
 		File file = new File(APP_ROOT);
 		try {
@@ -83,16 +86,22 @@ public class Configuration {
 			if (!file.exists()) {
 				file.mkdir();
 			}
+			file = new File(APP_DIR_CONF);
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			file = new File(APP_DIR_CONF_PREF);
+			if (!file.exists()) {
+				file.mkdir();
+			}
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	public static void initParams(Context context) {
-        FileIO.copyResFromAssets(context, ASSETS_RES_COLOR, EXTEND_RES_COLOR);
-        FileIO.copyResFromAssets(context, ASSETS_RES_DIMEN, EXTEND_RES_DIMEN);
-        
+
 		int width = context.getResources().getDimensionPixelSize(R.dimen.sorder_grid_cover_width);
 		int height = context.getResources().getDimensionPixelSize(R.dimen.sorder_grid_cover_height);
 		sorderCoverMaxPixel = width * height;

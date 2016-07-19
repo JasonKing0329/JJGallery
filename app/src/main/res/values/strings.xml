@@ -52,6 +52,7 @@
 
     <string name="login_loading_text">Service updating&#8230;&#8230;</string>
     <string name="login_start_service_insert">Start insert file service?</string>
+    <string name="login_extend_pref_exist">Extend preference file existed, replace it with application preference?</string>
     <!--************************** mode init **************************-->
     <string name="mode_init_title">Access Mode</string>
     <string name="mode_init_next">Next -></string>

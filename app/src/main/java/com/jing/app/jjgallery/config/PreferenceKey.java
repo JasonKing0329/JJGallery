@@ -11,6 +11,7 @@ public class PreferenceKey {
      */
     // 是否第一次登录APP
     public static final String PREF_APP_INITED = "pref_app_inited";
+    public static final String PREF_VERSION = "pref_version";
 
     /**
      * public

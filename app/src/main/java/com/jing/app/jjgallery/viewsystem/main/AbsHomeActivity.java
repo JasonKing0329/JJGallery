@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Message;
@@ -11,11 +12,13 @@ import android.view.View;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.res.AppResProvider;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.EncryptCheckService;
+import com.jing.app.jjgallery.service.file.PreferenceService;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
@@ -57,6 +60,8 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         setUpRightMenu();
         // apply color saved in disk file
         applyExtendColors();
+
+//        startService(new Intent(this, PreferenceService.class));
     }
 
     private void initSlidingMenu() {
@@ -223,7 +228,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     }
 
     private void export() {
-        DBInfor.export(this);
+        ConfManager.exportDatabase(this);
     }
 
     private void checkkAllService() {
@@ -245,7 +250,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
             public boolean onSave(Object object) {
                 if (object != null) {
                     File file = (File) object;
-                    DBInfor.replaceDatabase(AbsHomeActivity.this, file.getPath());
+                    ConfManager.replaceDatabase(AbsHomeActivity.this, file.getPath());
                 }
                 return true;
             }

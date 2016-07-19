@@ -52,6 +52,7 @@
     
     <string name="login_loading_text">服务更新中&#8230;&#8230;</string>
     <string name="login_start_service_insert">是否检查新增文件？全部否则跳过所有服务。</string>
+    <string name="login_extend_pref_exist">检测到扩展配置文件，是否取代程序当前配置文件？(preference)</string>
     <!--************************** mode init **************************-->
     <string name="mode_init_title">登陆模式</string>
     <string name="mode_init_next">下一步 -></string>

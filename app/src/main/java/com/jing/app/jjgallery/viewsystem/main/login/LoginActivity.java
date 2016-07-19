@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
@@ -57,11 +58,12 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         if (!Configuration.init()) {
             Toast.makeText(this, R.string.error_app_root_create_fail, Toast.LENGTH_LONG).show();
         }
-        if (!DBInfor.prepare(this)) {
+        if (!DBInfor.prepareDatabase(this)) {
             Toast.makeText(this, R.string.error_database_create_fail, Toast.LENGTH_LONG).show();
         }
         Configuration.initVersionChange();
         Configuration.initParams(this);
+        ConfManager.initParams(this);
 
         JResource.initializeColors();
 
@@ -72,6 +74,33 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     protected void initView() {
 
         applyExtendColors();
+
+        if (ConfManager.checkExtendConf(this)) {
+            new DefaultDialogManager().showWarningActionDialog(this
+                    , getResources().getString(R.string.login_extend_pref_exist)
+                    , getResources().getString(R.string.yes)
+                    , null
+                    , getResources().getString(R.string.no)
+                    , new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
+                                ConfManager.replaceExtendPref(LoginActivity.this);
+                                afterPrefCheck();
+                            }
+                            else {
+                                afterPrefCheck();
+                            }
+                        }
+                    });
+        }
+        else {
+            afterPrefCheck();
+        }
+    }
+
+    private void afterPrefCheck() {
         // Open SettingActivity when application is started for the first time.
         // Application will be considered as initialized only after sign in successfully.
         if (SettingProperties.isAppInited(this)) {

@@ -15,6 +15,28 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 public class SettingProperties {
 
     /**
+     * shaprePreference文件版本(com.jing.app.jjgallery_preferences.xml)
+     * @param context
+     * @return
+     */
+    public static String getPrefVersion(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(PreferenceKey.PREF_VERSION, null);
+    }
+
+    /**
+     * shaprePreference文件版本(com.jing.app.jjgallery_preferences.xml)
+     * @param context
+     * @return
+     */
+    public static void setPrefVersion(Context context, String version) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_VERSION, version);
+        editor.commit();
+    }
+
+    /**
      * 指纹验证
      * @param context
      * @return
