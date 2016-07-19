@@ -61,6 +61,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         // apply color saved in disk file
         applyExtendColors();
 
+//        ConfManager.saveDefaultPref(this);
 //        startService(new Intent(this, PreferenceService.class));
     }
 

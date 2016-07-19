@@ -132,10 +132,12 @@ public class ConfManager {
             if (file.getName().startsWith(PREF_NAME)) {
                 try {
                     String[] arr = file.getName().split("__");
-                    String version = arr[1];
-                    if (!version.equals(SettingProperties.getPrefVersion(context))) {
+                    String version = arr[1].split("\\.")[0];
+
+                    String curVersion = SettingProperties.getPrefVersion(context);
+                    Log.e(TAG, "checkExtendConf version:" + version + " curVersion:" + curVersion);
+                    if (!version.equals(curVersion)) {
                         DISK_PREF_DEFAULT_PATH = file.getPath();
-                        Log.e(TAG, "checkExtendConf existed " + DISK_PREF_DEFAULT_PATH);
                         return true;
                     }
                 } catch (Exception e) {
@@ -149,7 +151,10 @@ public class ConfManager {
 
     public static void replaceExtendPref(Context context) {
         File src = new File(DISK_PREF_DEFAULT_PATH);
-        File target = new File(context.getFilesDir().getParent() + "/" + PREF_NAME + ".xml");
+        File target = new File(context.getFilesDir().getParent() + "/shared_prefs/" + PREF_NAME + ".xml");
+        if (target.exists()) {
+            target.delete();
+        }
         Log.e(TAG, "replaceExtendPref src:" + src.getPath() + ", target:" + target.getPath());
         try {
             copyFile(src, target);
@@ -162,7 +167,7 @@ public class ConfManager {
         String version = String.valueOf(System.currentTimeMillis());
         SettingProperties.setPrefVersion(context, version);
 
-        File src = new File(context.getFilesDir().getParent() + "/" + PREF_NAME + ".xml");
+        File src = new File(context.getFilesDir().getParent() + "/shared_prefs/" + PREF_NAME + ".xml");
         File target = null;
         if (DISK_PREF_DEFAULT_PATH != null) {
             target = new File(DISK_PREF_DEFAULT_PATH);

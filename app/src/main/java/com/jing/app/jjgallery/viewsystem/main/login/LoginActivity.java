@@ -23,6 +23,7 @@ import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.FileDBService;
 import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
+import com.jing.app.jjgallery.util.DBExportor;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
@@ -70,6 +71,16 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         loginPresenter = new LoginPresenter(this, this);
     }
 
+    protected void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
     @Override
     protected void initView() {
 
@@ -87,7 +98,8 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == DialogInterface.BUTTON_POSITIVE) {
                                 ConfManager.replaceExtendPref(LoginActivity.this);
-                                afterPrefCheck();
+                                finish();
+//                                afterPrefCheck();
                             }
                             else {
                                 afterPrefCheck();
