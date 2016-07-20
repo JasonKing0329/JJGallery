@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.timeline;
 
+import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnClickListener
 		, OnItemClickListener, OnHeadImageClickListener {
 
+	private final int REQUEST_SETTING = 10;
 	private TextView fmButton;
 	private TextView sorderButton;
 	private TextView guideButton;
@@ -132,7 +134,7 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 //			finish();
 		}
 		else if (v == settingButton) {
-			ActivityManager.startSettingActivity(this);
+			ActivityManager.startSettingActivity(this, REQUEST_SETTING);
 		}
 		else if (v == closeButton) {
 			fmButton.setVisibility(View.GONE);
@@ -214,4 +216,11 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_SETTING) {
+			ActivityManager.onSettingResult(this);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

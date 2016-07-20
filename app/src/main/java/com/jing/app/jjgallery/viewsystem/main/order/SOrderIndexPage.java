@@ -82,9 +82,11 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     public void onQueryAllOrders(List<SOrder> list) {
         orderList = list;
         mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
-        mKeyAdapter.prepareKeyword();
-        mKeyAdapter.feedKeyword();
-        mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        if (list != null) {
+            mKeyAdapter.prepareKeyword();
+            mKeyAdapter.feedKeyword();
+            mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        }
         ((BaseSlidingActivity) context).dismissProgressCycler();
     }
 

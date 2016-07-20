@@ -40,6 +40,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     , SlidingMenu.OnOpenedListener, SlidingMenu.OnOpenListener, SlidingMenu.OnClosedListener
     , ColorPicker.OnColorPickerListener {
 
+    private final int REQUEST_SETTING = 10;
     private EncryptCheckService mEncryptCheckService;
 
     private SlidingMenu mSlidingMenu;
@@ -61,7 +62,6 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         // apply color saved in disk file
         applyExtendColors();
 
-//        ConfManager.saveDefaultPref(this);
 //        startService(new Intent(this, PreferenceService.class));
     }
 
@@ -221,7 +221,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     }
 
     private void openSetting() {
-        ActivityManager.startSettingActivity(this);
+        ActivityManager.startSettingActivity(this, REQUEST_SETTING);
     }
 
     private void importFrom() {
@@ -360,5 +360,11 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SETTING) {
+            ActivityManager.onSettingResult(this);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -81,10 +81,12 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void onLoadAllFolders(List<String> folders) {
         folderList = folders;
-        mKeyAdapter = new FileIndexAdapter(keywordsFlow, folders);
-        mKeyAdapter.prepareKeyword();
-        mKeyAdapter.feedKeyword();
-        mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        if (folders != null) {
+            mKeyAdapter = new FileIndexAdapter(keywordsFlow, folders);
+            mKeyAdapter.prepareKeyword();
+            mKeyAdapter.feedKeyword();
+            mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        }
         ((BaseSlidingActivity) context).dismissProgressCycler();
     }
 

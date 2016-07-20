@@ -49,6 +49,7 @@
     <string name="login_pwd_error">错误</string>
     <string name="login_fingerprint">指纹解锁</string>
     <string name="login_finger_not_register">设备尚未注册任何指纹，请先注册指纹！</string>
+    <string name="app_init">程序初始化&#8230;&#8230;</string>
     
     <string name="login_loading_text">服务更新中&#8230;&#8230;</string>
     <string name="login_start_service_insert">是否检查新增文件？全部否则跳过所有服务。</string>

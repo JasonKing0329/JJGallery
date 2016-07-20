@@ -1,10 +1,14 @@
 package com.jing.app.jjgallery.config;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.file.FileIO;
+import com.king.lib.resmanager.JPrefManager;
+import com.king.lib.resmanager.action.JPrefAction;
+import com.king.lib.resmanager.exception.JResParseException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -14,7 +18,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by JingYang on 2016/7/19 0019.
@@ -126,24 +132,26 @@ public class ConfManager {
      * @return
      */
     public static boolean checkExtendConf(Context context) {
-        File[] files = new File(Configuration.APP_DIR_CONF_PREF).listFiles();
+        File[] files = new File(Configuration.APP_DIR_CONF_PREF_DEF).listFiles();
 
-        for (File file:files) {
-            if (file.getName().startsWith(PREF_NAME)) {
-                try {
-                    String[] arr = file.getName().split("__");
-                    String version = arr[1].split("\\.")[0];
+        if (files.length > 0) {
+            for (File file:files) {
+                if (file.getName().startsWith(PREF_NAME)) {
+                    try {
+                        String[] arr = file.getName().split("__");
+                        String version = arr[1].split("\\.")[0];
 
-                    String curVersion = SettingProperties.getPrefVersion(context);
-                    Log.e(TAG, "checkExtendConf version:" + version + " curVersion:" + curVersion);
-                    if (!version.equals(curVersion)) {
-                        DISK_PREF_DEFAULT_PATH = file.getPath();
-                        return true;
+                        String curVersion = SettingProperties.getPrefVersion(context);
+                        Log.e(TAG, "checkExtendConf version:" + version + " curVersion:" + curVersion);
+                        if (!version.equals(curVersion)) {
+                            DISK_PREF_DEFAULT_PATH = file.getPath();
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    break;
                 }
-                break;
             }
         }
         return false;
@@ -151,29 +159,41 @@ public class ConfManager {
 
     public static void replaceExtendPref(Context context) {
         File src = new File(DISK_PREF_DEFAULT_PATH);
-        File target = new File(context.getFilesDir().getParent() + "/shared_prefs/" + PREF_NAME + ".xml");
-        if (target.exists()) {
-            target.delete();
-        }
-        Log.e(TAG, "replaceExtendPref src:" + src.getPath() + ", target:" + target.getPath());
+
+        // 直接copy到data目录下替换的方法不可行，猜想是程序加载preference的机制所致
+//        File target = new File(context.getFilesDir().getParent() + "/shared_prefs/" + PREF_NAME + ".xml");
+//        if (target.exists()) {
+//            target.delete();
+//        }
+//        Log.e(TAG, "replaceExtendPref src:" + src.getPath() + ", target:" + target.getPath());
+//        try {
+//            copyFile(src, target);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        // 采用解析外部xml文件，以key value的方式重新put进preference中的方法
         try {
-            copyFile(src, target);
-        } catch (IOException e) {
+            new JPrefManager().loadExtendPreference(DISK_PREF_DEFAULT_PATH, PreferenceManager.getDefaultSharedPreferences(context));
+        } catch (JResParseException e) {
             e.printStackTrace();
         }
     }
 
     public static void saveDefaultPref(Context context) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+        String date = sdf.format(new Date());
         String version = String.valueOf(System.currentTimeMillis());
         SettingProperties.setPrefVersion(context, version);
 
         File src = new File(context.getFilesDir().getParent() + "/shared_prefs/" + PREF_NAME + ".xml");
-        File target = null;
-        if (DISK_PREF_DEFAULT_PATH != null) {
-            target = new File(DISK_PREF_DEFAULT_PATH);
-            target.delete();
+        File[] files = new File(Configuration.APP_DIR_CONF_PREF_DEF).listFiles();
+        if (files.length > 0) {
+            for (File file:files) {
+                file.delete();
+            }
         }
-        target = new File(Configuration.APP_DIR_CONF_PREF + "/" + PREF_NAME + "__" + version + ".xml");
+        File target = new File(Configuration.APP_DIR_CONF_PREF_DEF + "/" + PREF_NAME + "_" + date + "__" + version + ".xml");
         Log.e(TAG, "saveDefaultPref src:" + src.getPath() + ", target:" + target.getPath());
         try {
             copyFile(src, target);

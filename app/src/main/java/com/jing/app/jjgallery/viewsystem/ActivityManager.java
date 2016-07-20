@@ -1,11 +1,13 @@
 package com.jing.app.jjgallery.viewsystem;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
@@ -39,8 +41,8 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
-    public static void startSettingActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, SettingsActivity.class));
+    public static void startSettingActivity(Activity from, int requestCode) {
+        from.startActivityForResult(new Intent().setClass(from, SettingsActivity.class), requestCode);
         applyAnimation(from);
     }
 
@@ -80,5 +82,9 @@ public class ActivityManager {
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);
+    }
+
+    public static void onSettingResult(Context context) {
+        SettingProperties.saveAsDefaultPreference(context);
     }
 }

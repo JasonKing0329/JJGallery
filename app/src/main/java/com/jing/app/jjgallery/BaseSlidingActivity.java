@@ -2,7 +2,6 @@ package com.jing.app.jjgallery;
 
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -14,13 +13,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
-import com.jing.app.jjgallery.config.PreferenceKey;
-import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.ProgressButton;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 
 /**

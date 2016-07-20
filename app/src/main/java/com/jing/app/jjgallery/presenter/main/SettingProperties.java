@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 
@@ -13,6 +14,14 @@ import com.jing.app.jjgallery.config.PreferenceValue;
  * Description:
  */
 public class SettingProperties {
+
+    /**
+     * 保存默认配置到扩展目录作为备份
+     * @param context
+     */
+    public static void saveAsDefaultPreference(Context context) {
+        ConfManager.saveDefaultPref(context);
+    }
 
     /**
      * shaprePreference文件版本(com.jing.app.jjgallery_preferences.xml)
@@ -65,6 +74,7 @@ public class SettingProperties {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(PreferenceKey.PREF_APP_INITED, true);
         editor.commit();
+        saveAsDefaultPreference(context);
     }
 
     /**
@@ -138,6 +148,7 @@ public class SettingProperties {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.commit();
+        saveAsDefaultPreference(context);
     }
 
     /**

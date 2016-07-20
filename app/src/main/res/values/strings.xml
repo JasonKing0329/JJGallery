@@ -49,6 +49,7 @@
     <string name="login_pwd_error">error</string>
     <string name="login_fingerprint">Fingerprint Unlock</string>
     <string name="login_finger_not_register">Fingerprint has never been registered in device, please register first!</string>
+    <string name="app_init">Initializing application&#8230;&#8230;</string>
 
     <string name="login_loading_text">Service updating&#8230;&#8230;</string>
     <string name="login_start_service_insert">Start insert file service?</string>
