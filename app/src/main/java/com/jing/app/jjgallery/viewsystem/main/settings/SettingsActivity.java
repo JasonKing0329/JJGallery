@@ -220,7 +220,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || SafetyPreferenceFragment.class.getName().equals(fragmentName)
                 || FileMnagerPreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName);
+                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+                || SOrderPreferenceFragment.class.getName().equals(fragmentName)
+                || SurfPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     @Override
