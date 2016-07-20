@@ -58,6 +58,8 @@
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".viewsystem.main.timeline.TimeLineActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".viewsystem.sub.surf.RandomSurfActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>

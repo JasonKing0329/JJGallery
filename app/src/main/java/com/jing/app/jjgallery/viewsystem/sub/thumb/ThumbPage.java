@@ -28,6 +28,7 @@ import com.jing.app.jjgallery.res.AppResManager;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IColorPage;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -200,6 +201,9 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         switch (view.getId()) {
             case R.id.actionbar_refresh:
                 refreshCurrent();
+                break;
+            case R.id.actionbar_gallery:
+                ActivityManager.startRandomSettingActivity((Activity) mContext);
                 break;
         }
     }

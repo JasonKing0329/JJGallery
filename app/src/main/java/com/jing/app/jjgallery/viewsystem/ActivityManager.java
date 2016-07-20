@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
+import com.jing.app.jjgallery.viewsystem.sub.surf.RandomSurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
@@ -62,6 +63,11 @@ public class ActivityManager {
         Intent intent = new Intent().setClass(from, SurfActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
+        applyAnimation(from);
+    }
+
+    public static void startRandomSettingActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, RandomSurfActivity.class));
         applyAnimation(from);
     }
 

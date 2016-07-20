@@ -17,23 +17,15 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
-import com.jing.app.jjgallery.config.PreferenceKey;
-import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.sub.AutoPlayController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.presenter.sub.SurfPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -211,22 +203,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 //		}
 //		popupMenu.show();
 
-		new BackgroundSelector(surfActivity, new CustomDialog.OnCustomDialogActionListener() {
-			@Override
-			public boolean onSave(Object object) {
-				return false;
-			}
-
-			@Override
-			public boolean onCancel() {
-				return false;
-			}
-
-			@Override
-			public void onLoadData(HashMap<String, Object> data) {
-				data.put("imagePath", currentImagePath);
-			}
-		}).show();
+		sOrderProvider.openBackgroundSelector(currentImagePath);
 	}
 
 	protected void showDeleteWarning() {

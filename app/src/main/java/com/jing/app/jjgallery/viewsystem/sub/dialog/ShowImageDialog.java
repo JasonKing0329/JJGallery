@@ -36,19 +36,15 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.CropHelper;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.publicview.CropInforView;
 import com.jing.app.jjgallery.viewsystem.publicview.CropView;
 import com.jing.app.jjgallery.service.image.ZoomListener;
 import com.jing.app.jjgallery.util.DisplayHelper;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.sub.gifview.MyGifManager;
 import com.king.lib.saveas.SaveAsDialog;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ShowImageDialog extends Dialog implements View.OnClickListener
@@ -373,23 +369,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			}
 		}
 		else if (v == setAsMenuBkButton) {
-			new BackgroundSelector(getContext(), new CustomDialog.OnCustomDialogActionListener() {
-				@Override
-				public boolean onSave(Object object) {
-					return false;
-				}
-
-				@Override
-				public boolean onCancel() {
-					return false;
-				}
-
-				@Override
-				public void onLoadData(HashMap<String, Object> data) {
-					data.put("imagePath", displayImagePath);
-				}
-			}).show();
-//			showSetAsMenuBKPopup();
+			sOrderProvider.openBackgroundSelector(displayImagePath);
 		}
 		else if (v == seizeButton) {
 			cropActionLayout.setVisibility(View.VISIBLE);

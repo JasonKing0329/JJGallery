@@ -23,6 +23,7 @@ import com.jing.app.jjgallery.service.data.dao.SOrderDao;
 import com.jing.app.jjgallery.service.data.impl.SOrderDaoImpl;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderChooserUpdate;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -298,6 +299,25 @@ public class SOrderProvider implements Handler.Callback {
         return true;
     }
 
+    public void openBackgroundSelector(final String imagePath) {
+        new BackgroundSelector(mContext, new CustomDialog.OnCustomDialogActionListener() {
+            @Override
+            public boolean onSave(Object object) {
+                return false;
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+                data.put("imagePath", imagePath);
+            }
+        }).show();
+    }
+
     private class MoveTask extends AsyncTask<Object, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -313,6 +333,9 @@ public class SOrderProvider implements Handler.Callback {
         }
     }
 
+    /**
+     * 仅仅从列表中删除
+     */
     private class DeleteFromOrderTask extends AsyncTask<Object, Integer, Integer> {
         @Override
         protected void onPostExecute(Integer count) {
@@ -344,6 +367,9 @@ public class SOrderProvider implements Handler.Callback {
         }
     }
 
+    /**
+     * 除了从磁盘删除外，还有删除数据库中关联的记录
+     */
     private class DeleteFromFolderTask extends AsyncTask<List<String>, Integer, Integer> {
         @Override
         protected void onPostExecute(Integer count) {

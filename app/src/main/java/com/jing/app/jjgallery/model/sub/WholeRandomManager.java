@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.model.sub;
 import android.util.Log;
 
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 
 import java.io.File;
@@ -29,8 +30,8 @@ public class WholeRandomManager {
 	
 	private int total;
 
-	public WholeRandomManager(Encrypter encrypter) {
-		this.encrypter = encrypter;
+	public WholeRandomManager() {
+		encrypter = EncrypterFactory.create();
 		countAvailableRandom();
 	}
 	

@@ -31,10 +31,8 @@ import com.jing.app.jjgallery.model.sub.WholeRandomManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
-import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
@@ -644,7 +642,7 @@ public class WallActivity extends BaseActivity implements Callback
 				imagePathList.clear();
 			}
 
-			WholeRandomManager manager = new WholeRandomManager(EncrypterFactory.create());
+			WholeRandomManager manager = new WholeRandomManager();
 			int total = SettingProperties.getCasualLookNumber(WallActivity.this);
 			int max = manager.getTotal();
 			if (max < total) {
