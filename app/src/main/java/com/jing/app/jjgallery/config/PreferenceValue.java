@@ -27,4 +27,11 @@ public class PreferenceValue {
     public static final int ORDERBY_DATE = 2;
     public static final int ORDERBY_ITEMNUMBER =3;
 
+    public static final int SORDER_COVER_SINGLE =0;
+    public static final int SORDER_COVER_CASCADE =1;
+    public static final int SORDER_COVER_CASCADE_ROTATE =2;
+    public static final int SORDER_COVER_GRID =3;
+
+    public static final int SORDER_CASECADE_NUM_DEFAULT = 3;
+    public static final int SORDER_PAGE_NUM_DEFAULT = 16;
 }

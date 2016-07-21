@@ -24,32 +24,21 @@ public class SOrderHorIndexCreator {
 		PAGE_MAX_ITEM = num;
 	}
 
-	public void setDefaultMode(int mode) {
-		defaultMode = mode;
-	}
-
 	public List<HorizontalIndexView.IndexItem> createIndex(List<SOrder> orderList) {
 		return createIndex(orderList, defaultMode);
 	}
 
 	public List<HorizontalIndexView.IndexItem> createIndex(List<SOrder> orderList, int mode) {
-		
+
+		defaultMode = mode;
 		List<HorizontalIndexView.IndexItem> list = null;
 		totalPages = (orderList.size() - 1) / PAGE_MAX_ITEM + 1;
 		if (totalPages > 1) {
 			list = new ArrayList<>();
 			HorizontalIndexView.IndexItem indexItem = null;
 			SOrder order = null;
-			
-			if (mode == PreferenceValue.ORDERBY_DATE) {
 
-				for (int i = 1; i <= totalPages; i ++) {
-					indexItem = new HorizontalIndexView.IndexItem();
-					indexItem.index = "" + i;
-					list.add(indexItem);
-				}
-			}
-			else if (mode == PreferenceValue.ORDERBY_NAME) {
+			if (mode == PreferenceValue.ORDERBY_NAME) {
 				for (int i = 1; i <= totalPages; i ++) {
 					indexItem = new HorizontalIndexView.IndexItem();
 					order = orderList.get((i - 1) * PAGE_MAX_ITEM);
@@ -59,6 +48,13 @@ public class SOrderHorIndexCreator {
 					else {
 						indexItem.index = order.getName().substring(0, 2).toLowerCase();
 					}
+					list.add(indexItem);
+				}
+			}
+			else {
+				for (int i = 1; i <= totalPages; i ++) {
+					indexItem = new HorizontalIndexView.IndexItem();
+					indexItem.index = "" + i;
 					list.add(indexItem);
 				}
 			}

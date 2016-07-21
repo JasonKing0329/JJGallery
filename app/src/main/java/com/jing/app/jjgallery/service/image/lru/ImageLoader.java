@@ -184,10 +184,6 @@ public class ImageLoader implements ISImageLoader
 
 	@Override
 	public void displayImage(final String path, final ImageView imageView) {
-		if (path == null) {
-			Log.e(TAG, "loadImage: path is null!");
-			return;
-		}
 		displayImage(path, imageView, false);
 	}
 	/**
@@ -201,6 +197,9 @@ public class ImageLoader implements ISImageLoader
 	{
 		if (path == null) {
 			Log.e(TAG, "loadImage: path is null!");
+			if (defaultResId != -1) {
+				imageView.setImageResource(defaultResId);
+			}
 			return;
 		}
 		imageView.setTag(path);

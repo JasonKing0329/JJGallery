@@ -224,4 +224,9 @@
         <item>Thumbfolder</item>
         <item>Index</item>
     </string-array>
+    <string-array name="pref_sorder_cascade_number" translatable="false">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

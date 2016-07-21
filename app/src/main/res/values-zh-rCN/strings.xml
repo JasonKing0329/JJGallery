@@ -86,6 +86,8 @@
     <string name="menu_create_order">添加新列表</string>
     <string name="menu_by_name">按名称排序</string>
     <string name="menu_by_date">按时间排序</string>
+    <string name="menu_by_itemnum">按内容数量排序</string>
+    <string name="menu_by_none">无序</string>
     <string name="menu_shuffle_gallery">随机排序</string>
     <string name="menu_random_game">Random game</string>
     <string name="menu_auto_play">自动播放</string>
@@ -225,6 +227,9 @@
     <string name="setting_surf_auto_play_speed">自动播放速度</string>
     <string name="setting_surf_auto_play_mode">自动播放播放模式</string>
     <string name="setting_title_surf">目录/列表浏览器</string>
+    <string name="setting_sorder_cover_cascade_num">层叠封面数量</string>
+    <string name="setting_sorder_set_page_numbers">翻页模式每页数量</string>
+    <string name="setting_sorder_enable_page">启用翻页模式</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>
@@ -241,9 +246,6 @@
     <string name="setting_min_items_summary">当图库包含图片达到该值，程序才支持自动播放功能。</string>
     <string name="setting_sorder_mode">显示顺序</string>
     <string name="setting_sorder_mode_summary">当加载列表时,决定列表的显示顺序。</string>
-    <string name="setting_sorder_enable_page">启用翻页模式</string>
-    <string name="setting_sorder_set_page_numbers">设置每页数量</string>
-    <string name="setting_sorder_cover_cascade_num">层叠封面数量</string>
     <string name="setting_waterfall">瀑布流视图</string>
     <string name="setting_waterfall_colnumber">竖屏列数</string>
     <string name="setting_waterfall_colnumber_hor">横屏列数</string>

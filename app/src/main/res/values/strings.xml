@@ -89,6 +89,8 @@
     <string name="menu_create_order">Add new order</string>
     <string name="menu_by_name">Order by name</string>
     <string name="menu_by_date">Order by date</string>
+    <string name="menu_by_itemnum">Order by item number</string>
+    <string name="menu_by_none">No order</string>
     <string name="menu_shuffle_gallery">Shuffle gallery</string>
     <string name="menu_random_game">Random game</string>
     <string name="menu_team_game" translatable="false">Team game</string>
@@ -230,6 +232,9 @@
     <string name="setting_surf_auto_play_speed">Auto-play speed</string>
     <string name="setting_surf_auto_play_mode">Auto-play mode</string>
     <string name="setting_title_surf">Folder/Order explorer</string>
+    <string name="setting_sorder_set_page_numbers">Set order numbers per page in page mode.</string>
+    <string name="setting_sorder_cover_cascade_num">Cascade cover numbers</string>
+    <string name="setting_sorder_enable_page">Enable page mode.</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -246,9 +251,6 @@
     <string name="setting_min_items_summary">The gallery need include at least this number, then the auto-play function will be supported.</string>
     <string name="setting_sorder_mode">Show order</string>
     <string name="setting_sorder_mode_summary">Decide the order when load the SOrder page.</string>
-    <string name="setting_sorder_enable_page">Enable page mode.</string>
-    <string name="setting_sorder_set_page_numbers">Set item numbers per page.</string>
-    <string name="setting_sorder_cover_cascade_num">Cascade cover numbers</string>
     <string name="setting_waterfall">Waterfall view</string>
     <string name="setting_waterfall_colnumber">Column in portrait</string>
     <string name="setting_waterfall_colnumber_hor">Column in landscape</string>

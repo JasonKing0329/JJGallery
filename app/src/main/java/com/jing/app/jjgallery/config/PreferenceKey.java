@@ -64,6 +64,16 @@ public class PreferenceKey {
     public static final String PREF_BG_SORDER_INDEX = "pref_bg_sorder_index";
     // SOrder Index page横屏背景
     public static final String PREF_BG_SORDER_INDEX_LAND = "pref_bg_sorder_index_land";
+    // Grid page默认排序类型
+    public static final String PREF_SORDER_GRID_ORDER = "pref_sorder_grid_order";
+    // 翻页模式每页数量
+    public static final String PREF_SORDER_PAGE_MODE = "pref_sorder_page_mode";
+    // 翻页模式每页数量
+    public static final String PREF_SORDER_PAGE_NUM = "pref_sorder_page_number";
+    // 封面类型
+    public static final String PREF_SORDER_COVER_MODE = "pref_sorder_cover_mode";
+    // 层叠封面张数
+    public static final String PREF_SORDER_CASCADE_NUM = "pref_sorder_cascade_number";
 
     /**
      * surf

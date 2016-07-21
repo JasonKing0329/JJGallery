@@ -31,8 +31,7 @@ public class JDom4jPrefImpl implements JPrefAction {
      */
     protected Document load(String filename) throws DocumentException {
         SAXReader saxReader = new SAXReader();
-        Document document = saxReader.read(new File(filename));
-        return document;
+        return saxReader.read(new File(filename));
     }
 
     @Override
@@ -53,6 +52,18 @@ public class JDom4jPrefImpl implements JPrefAction {
                 else if (type.equals("boolean")) {
                     boolean value = Boolean.parseBoolean(item.attributeValue("value"));
                     editor.putBoolean(key, value);
+                }
+                else if (type.equals("int")) {
+                    int value = Integer.parseInt(item.getTextTrim());
+                    editor.putInt(key, value);
+                }
+                else if (type.equals("long")) {
+                    long value = Long.parseLong(item.getTextTrim());
+                    editor.putLong(key, value);
+                }
+                else if (type.equals("float")) {
+                    float value = Float.parseFloat(item.getTextTrim());
+                    editor.putFloat(key, value);
                 }
             }
             editor.commit();

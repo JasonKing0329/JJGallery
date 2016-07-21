@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.InputType;
@@ -38,8 +37,6 @@ import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
-import com.jing.app.jjgallery.presenter.main.order.ScrollController;
-import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
@@ -59,7 +56,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         , HorizontalIndexView.OnPageSelectListener {
 
     private SOrderPresenter mPresenter;
-    private final String TAG = "SOrderPage";
+    private final String TAG = "SOrderGridPage";
     private Context context;
 
     private View view;
@@ -67,13 +64,14 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     private final int VIEW_LIST = 1;
     private int currentView;
 
-    private ActionBar actionBar;
     private GridView gridView;
     private SOrderGridAdapter gridAdapter;
     private ProgressDialog progressDialog;
     private List<SOrder> currentPageOrders;
     private int currentPage;
     private ImageView previousPageView, nextPageView;
+
+    private HorizontalIndexView horizontalIndexView;
 
     private View pageItemContainer;
     private ImageView switchAnimView;
@@ -87,10 +85,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
 
     private int currentOrderBy = -1;
 
-    private HorizontalIndexView horizontalIndexView;
-
-    private ScrollController scrollController;
-
+    private boolean needNewAdapter;
 
     public SOrderGridPage(Context context, View view) {
         this.context = context;
@@ -110,7 +105,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     public void setPresenter(BasePresenter presenter) {
         mPresenter = (SOrderPresenter) presenter;
         mPresenter.setDataCallback(this);
-        scrollController = new ScrollController(context, mPresenter);
         mPresenter.initIndexCreator(context);
     }
 
@@ -165,7 +159,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_view_grid:
-                PictureManagerUpdate.getInstance().recycleExpandOrderCovers();
                 showGridView();
                 break;
             case R.id.menu_view_list:
@@ -208,7 +201,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         gridView = (GridView) view.findViewById(R.id.sorder_gridview);
         gridView.setOnItemClickListener(this);
         gridView.setOnItemLongClickListener(this);
-        gridView.setOnScrollListener(scrollController);
 
         previousPageView = (ImageView) view.findViewById(R.id.sorder_previous_page);
         nextPageView = (ImageView) view.findViewById(R.id.sorder_next_page);
@@ -259,7 +251,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     public void onQueryAllOrders(List<SOrder> list) {
         if (SettingProperties.isPageModeEnable(context) && currentView == VIEW_GRID) {
             if (SettingProperties.isPageModeEnable(context) && currentView == VIEW_GRID) {
-                horizontalIndexView.setIndexList(mPresenter.createIndexBydate());
+                horizontalIndexView.setIndexList(mPresenter.createIndex(SettingProperties.getOrderMode(context)));
                 horizontalIndexView.select(1);
                 //choosePage(1);
                 initPagePreNextGuid();
@@ -300,21 +292,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         Log.d(TAG, "notifyUpdate");
         if (currentView == VIEW_GRID) {
             notifyGridViewUpdate();
-			/*
-			if (gridAdapter == null) {
-				gridAdapter = new SOrderGridAdapter(context, bridge.getOrderList());
-				gridView.setAdapter(gridAdapter);
-			}
-			else {
-				gridAdapter.setSorderList(bridge.getOrderList());
-				if (gridView.getAdapter() == null) {
-					gridView.setAdapter(gridAdapter);
-				}
-				else {
-					gridAdapter.notifyDataSetChanged();
-				}
-			}
-			*/
         }
         else {
             if (horizontalIndexView != null) {
@@ -325,6 +302,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             suitExpandList();
             if (expandableAdapter == null) {
                 expandableAdapter = new SOrderExpandableListAdapter(context, orderListInExpandable, tagList);
+                expandableAdapter.setPresenter(mPresenter);
                 expandableView.setAdapter(expandableAdapter);
             }
             else {
@@ -357,19 +335,14 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             }
         }
 
-        if (gridAdapter == null) {
+        if (gridAdapter == null || needNewAdapter) {
+            needNewAdapter = false;
             gridAdapter = new SOrderGridAdapter(context, currentPageOrders);
-            gridView.setAdapter(gridAdapter);
-            scrollController.setGridAdapter(gridAdapter);
-        }
-
-        gridAdapter.setSorderList(currentPageOrders);
-        scrollController.notifyCoverDataChanged();//adapt covers
-
-        if (gridView.getAdapter() == null) {
+            gridAdapter.setPresenter(mPresenter);
             gridView.setAdapter(gridAdapter);
         }
         else {
+            gridAdapter.setSorderList(currentPageOrders);
             gridAdapter.notifyDataSetChanged();
         }
 
@@ -481,11 +454,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         showAnimation = true;
     }
 
-    public void recycleResource() {
-        PictureManagerUpdate.getInstance().recycleOrderPreview();
-        PictureManagerUpdate.getInstance().recycleOrderCovers();
-    }
-
     private void showExpandableView() {
         if (currentView != VIEW_LIST) {
             currentView = VIEW_LIST;
@@ -572,9 +540,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     }
 
     public void openCreateOrderDialog() {
-//		EditText edit = new EditText(context);
-//		edit.setInputType(InputType.TYPE_CLASS_TEXT);
-//		final EditText ed = edit;
 
         SOrderCreaterUpdate creater = new SOrderCreaterUpdate(context, new CustomDialog.OnCustomDialogActionListener() {
 
@@ -603,24 +568,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             }
         });
         creater.show();
-		/*
-		new SOrderCreater(context, new OnOrderCreateListener() {
-
-			@Override
-			public void onReceiveError(Object object) {
-				Toast.makeText(context, R.string.sorder_create_fail, Toast.LENGTH_LONG).show();
-			}
-
-			@Override
-			public void onOk(SOrder order) {
-				Toast.makeText(context, R.string.sorder_success, Toast.LENGTH_LONG).show();
-				refresh();
-
-			@Override
-			public void onCancel() {
-
-			}
-		}).show();*/
     }
 
     @Override
@@ -951,43 +898,44 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         public boolean onMenuItemClick(MenuItem item) {
 
             switch (item.getItemId()) {
+                case R.id.menu_index_view:
+                    mPresenter.switchToIndexPage();
+                    break;
+                case R.id.menu_thumb_view:
+                    mPresenter.switchToThumbPage();
+                    break;
                 case R.id.menu_cover_single:
-                    if (currentView == VIEW_GRID) {
-                        if (gridAdapter != null) {
-                            gridAdapter.setCoverMode(SOrderGridAdapter.CoverMode.SINGLE);
-                            notifyUpdate();
-                        }
-                    }
+                    changeCoverMode(PreferenceValue.SORDER_COVER_SINGLE);
                     break;
                 case R.id.menu_cover_cascade:
-                    if (currentView == VIEW_GRID) {
-                        if (gridAdapter != null) {
-                            gridAdapter.setCoverMode(SOrderGridAdapter.CoverMode.CASCADE);
-                            notifyUpdate();
-                        }
-                    }
+                    changeCoverMode(PreferenceValue.SORDER_COVER_CASCADE);
                     break;
                 case R.id.menu_cover_cascade_rotate:
-                    if (currentView == VIEW_GRID) {
-                        if (gridAdapter != null) {
-                            gridAdapter.setCoverMode(SOrderGridAdapter.CoverMode.CASCADE_ROTATE);
-                            notifyUpdate();
-                        }
-                    }
+                    changeCoverMode(PreferenceValue.SORDER_COVER_CASCADE_ROTATE);
                     break;
                 case R.id.menu_cover_grid:
-                    if (currentView == VIEW_GRID) {
-                        if (gridAdapter != null) {
-                            gridAdapter.setCoverMode(SOrderGridAdapter.CoverMode.GRID);
-                            notifyUpdate();
-                        }
-                    }
+                    changeCoverMode(PreferenceValue.SORDER_COVER_GRID);
                     break;
             }
             return true;
         }
 
     };
+
+    private void changeCoverMode(int targetValue) {
+        if (currentView == VIEW_GRID) {
+            int coverMode = SettingProperties.getSOrderCoverMode(context);
+            if (coverMode != targetValue) {
+                // 切换封面模式需要重新加载coverView
+                SettingProperties.setSOrderCoverMode(context, targetValue);
+                if (gridAdapter != null) {
+                    needNewAdapter = true;
+                    gridAdapter.setCoverMode(targetValue);
+                    refresh();
+                }
+            }
+        }
+    }
 
     private void showSortPopup(View v) {
         PopupMenu menu = new PopupMenu(context, v);
@@ -1004,12 +952,28 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                 case R.id.menu_by_date:
                     if (currentOrderBy != PreferenceValue.ORDERBY_DATE) {
                         currentOrderBy = PreferenceValue.ORDERBY_DATE;
+                        SettingProperties.setOrderMode(context, currentOrderBy);
                         mPresenter.loadAllOrders(currentOrderBy);
                     }
                     break;
                 case R.id.menu_by_name:
                     if (currentOrderBy != PreferenceValue.ORDERBY_NAME) {
                         currentOrderBy = PreferenceValue.ORDERBY_NAME;
+                        SettingProperties.setOrderMode(context, currentOrderBy);
+                        mPresenter.loadAllOrders(currentOrderBy);
+                    }
+                    break;
+                case R.id.menu_by_itemnum:
+                    if (currentOrderBy != PreferenceValue.ORDERBY_ITEMNUMBER) {
+                        currentOrderBy = PreferenceValue.ORDERBY_ITEMNUMBER;
+                        SettingProperties.setOrderMode(context, currentOrderBy);
+                        mPresenter.loadAllOrders(currentOrderBy);
+                    }
+                    break;
+                case R.id.menu_by_none:
+                    if (currentOrderBy != PreferenceValue.ORDERBY_NONE) {
+                        currentOrderBy = PreferenceValue.ORDERBY_NONE;
+                        SettingProperties.setOrderMode(context, currentOrderBy);
                         mPresenter.loadAllOrders(currentOrderBy);
                     }
                     break;
@@ -1020,9 +984,4 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             return true;
         }
     };
-
-    public void reloadCascadeNumber() {
-        scrollController.reloadCascadeNum(context);
-    }
-
 }

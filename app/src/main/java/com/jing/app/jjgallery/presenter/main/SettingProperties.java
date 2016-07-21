@@ -17,7 +17,6 @@ public class SettingProperties {
 
     /**
      * 保存默认配置到扩展目录作为备份
-     * @param context
      */
     public static void saveAsDefaultPreference(Context context) {
         ConfManager.saveDefaultPref(context);
@@ -25,8 +24,6 @@ public class SettingProperties {
 
     /**
      * shaprePreference文件版本(com.jing.app.jjgallery_preferences.xml)
-     * @param context
-     * @return
      */
     public static String getPrefVersion(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -35,8 +32,7 @@ public class SettingProperties {
 
     /**
      * shaprePreference文件版本(com.jing.app.jjgallery_preferences.xml)
-     * @param context
-     * @return
+     * @param version version name
      */
     public static void setPrefVersion(Context context, String version) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -47,8 +43,6 @@ public class SettingProperties {
 
     /**
      * 指纹验证
-     * @param context
-     * @return
      */
     public static boolean isFingerPrintEnable(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -57,8 +51,6 @@ public class SettingProperties {
 
     /**
      * 程序是否第一次打开（第一次登录成功前均属于第一次）
-     * @param context
-     * @return
      */
     public static boolean isAppInited(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -67,7 +59,6 @@ public class SettingProperties {
 
     /**
      * 设置程序第一次登陆成功
-     * @param context
      */
     public static void setAppInited(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -79,8 +70,6 @@ public class SettingProperties {
 
     /**
      * 文件管理器默认打开视图
-     * @param context
-     * @return
      */
     public static String getFileManagerDefaultMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -89,8 +78,6 @@ public class SettingProperties {
 
     /**
      * SOrder默认打开视图
-     * @param context
-     * @return
      */
     public static String getSOrderDefaultMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -99,8 +86,6 @@ public class SettingProperties {
 
     /**
      * 随便看看数量
-     * @param context
-     * @return
      */
     public static int getCasualLookNumber(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -110,8 +95,6 @@ public class SettingProperties {
 
     /**
      * 文件管理器--显示原文件名
-     * @param context
-     * @return
      */
     public static boolean isShowFileOriginMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -120,8 +103,6 @@ public class SettingProperties {
 
     /**
      * 主界面
-     * @param context
-     * @return
      */
     public static int getStartViewMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -139,9 +120,8 @@ public class SettingProperties {
 
     /**
      * 保存key value
-     * @param context
-     * @param key
-     * @param value
+     * @param key preference key
+     * @param value preference value
      */
     public static void savePreference(Context context, String key, String value) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -153,9 +133,8 @@ public class SettingProperties {
 
     /**
      * get value by key
-     * @param context
-     * @param key
-     * @return
+     * @param key preference key
+     * @return preference value
      */
     public static String getPreference(Context context, String key) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -164,8 +143,7 @@ public class SettingProperties {
 
     /**
      * Surf自动播放模式
-     * @param context
-     * @return
+     * @return see PreferenceValue.AUTOPLAY_MODE_XXX
      */
     public static int getAutoPlayMode(Context context) {
         String[] modes = context.getResources().getStringArray(R.array.setting_auto_play_mode_key);
@@ -184,8 +162,7 @@ public class SettingProperties {
 
     /**
      * Surf自动播放速度
-     * @param context
-     * @return
+     * @return speed
      */
     public static int getAnimationSpeed(Context context) {
 
@@ -206,23 +183,75 @@ public class SettingProperties {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String text = preferences.getString("setting_min_items", "7");
-        int min_number = Integer.parseInt(text);
-        return min_number;
+        return Integer.parseInt(text);
     }
 
+    /**
+     * sorder 封面模式
+     */
+    public static int getSOrderCoverMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_COVER_MODE, "" + PreferenceValue.SORDER_COVER_SINGLE);
+        return Integer.parseInt(mode);
+    }
+
+    /**
+     * 设置sorder 封面模式
+     * @param mode see PreferenceValue.SORDER_COVER_XXX
+     */
+    public static void setSOrderCoverMode(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_SORDER_COVER_MODE, "" + mode);
+        editor.commit();
+        saveAsDefaultPreference(context);
+    }
+
+    /**
+     * sorder grid界面，封面是cascade模式，显示的图片张数
+     */
     public static int getCascadeCoverNumber(Context context) {
-        return 3;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_CASCADE_NUM, "" + PreferenceValue.SORDER_CASECADE_NUM_DEFAULT);
+        return Integer.parseInt(mode);
     }
 
+    /**
+     * sorder grid界面默认排序模式
+     * @return see PreferenceValue.ORDERBY_XXX
+     */
     public static int getOrderMode(Context context) {
-        return 0;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_GRID_ORDER, "" + PreferenceValue.ORDERBY_NAME);
+        return Integer.parseInt(mode);
     }
 
+    /**
+     * 设置sorder grid界面默认排序模式
+     * @param mode see PreferenceValue.SORDER_COVER_XXX
+     */
+    public static void setOrderMode(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_SORDER_GRID_ORDER, "" + mode);
+        editor.commit();
+        saveAsDefaultPreference(context);
+    }
+
+    /**
+     * 启用翻页模式
+     */
     public static boolean isPageModeEnable(Context context) {
-        return true;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_SORDER_PAGE_MODE, true);
     }
 
+    /**
+     * 翻页模式中每页数量
+     */
     public static int getSOrderPageNumber(Context context) {
-        return 20;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_PAGE_NUM, "" + PreferenceValue.SORDER_PAGE_NUM_DEFAULT);
+        return Integer.parseInt(mode);
     }
 }

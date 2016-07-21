@@ -42,6 +42,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
 
     @Override
     public void initActionbar(ActionBar actionBar) {
+        actionBar.clearActionIcon();
         super.initActionbar(actionBar);
         actionBar.addThumbIcon();
         actionBar.addAddIcon();

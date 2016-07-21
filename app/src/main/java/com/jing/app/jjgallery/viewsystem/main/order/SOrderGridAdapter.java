@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,10 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
+import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 
 import java.util.List;
 
@@ -27,22 +28,17 @@ public class SOrderGridAdapter extends BaseAdapter {
 	private List<SOrder> sorderList;
 	private int coverWidth;
 	private CoverMode mCoverMode;
-	private Bitmap defaultCover;
 	private int multiNum_cascade;
-	
-	private List<List<Bitmap>> multiCoverList;
-	
+
+	private SOrderPresenter mPresenter;
+
 	public SOrderGridAdapter(Context context, List<SOrder> orders) {
 		this.context = context;
 		sorderList = orders;
 		coverWidth = context.getResources().getDimensionPixelSize(R.dimen.sorder_grid_cover_width);
-		mCoverMode = CoverMode.SINGLE;
-		defaultCover = PictureManagerUpdate.getInstance().getDefaultOrderCover(context);
+		setCoverMode(SettingProperties.getSOrderCoverMode(context));
 		multiNum_cascade = SettingProperties.getCascadeCoverNumber(context);
-	}
-
-	public void setMultiCoverList(List<List<Bitmap>> multiCoverList) {
-		this.multiCoverList = multiCoverList;
+		SImageLoader.getInstance().setDefaultImgRes(R.drawable.ic_folder_sub);
 	}
 
 	public void setSorderList(List<SOrder> sorderList) {
@@ -52,9 +48,26 @@ public class SOrderGridAdapter extends BaseAdapter {
 	public List<SOrder> getSorderList() {
 		return sorderList;
 	}
-	
-	public void setCoverMode(CoverMode mode) {
-		mCoverMode = mode;
+
+	public void setPresenter(SOrderPresenter mPresenter) {
+		this.mPresenter = mPresenter;
+	}
+
+	public void setCoverMode(int prefValue) {
+		switch (prefValue) {
+			case PreferenceValue.SORDER_COVER_CASCADE:
+				mCoverMode = CoverMode.CASCADE;
+				break;
+			case PreferenceValue.SORDER_COVER_CASCADE_ROTATE:
+				mCoverMode = CoverMode.CASCADE_ROTATE;
+				break;
+			case PreferenceValue.SORDER_COVER_GRID:
+				mCoverMode = CoverMode.GRID;
+				break;
+			default:
+				mCoverMode = CoverMode.SINGLE;
+				break;
+		}
 	}
 	
 	public CoverMode getCoverMode() {
@@ -100,18 +113,15 @@ public class SOrderGridAdapter extends BaseAdapter {
 				convertView.findViewById(R.id.sorder_grid_item_layout).setBackgroundResource(R.drawable.selector_order_background_l);
 			}
 			holder.cover.setSize(coverWidth, coverWidth);
+			// MultiCoverView内部要创建view
+			createCover(holder.cover, position);
 			convertView.setTag(holder);
 		}
 		else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.name.setText(order.getName() + "(" + order.getItemNumber() + ")");
-		
-		List<Bitmap> bitmaps = null;
-		if (multiCoverList != null) {
-			bitmaps = multiCoverList.get(position);
-		}
-		setCover(holder.cover, bitmaps, position);
+		setCoverValues(holder.cover, position);
 		//new LoadCoverTask(order, holder.cover).execute();
 		return convertView;
 	}
@@ -121,30 +131,21 @@ public class SOrderGridAdapter extends BaseAdapter {
 		public TextView name;
 	}
 
-	private void setCover(MultiCoverView coverView, List<Bitmap> list, int position) {
+	private void createCover(MultiCoverView coverView, int position) {
 
-		coverView.reset();
-		if (list == null || list.size() == 0) {
-			if (defaultCover.isRecycled()) {
-				Log.d("ScrollController", "defaultCover isRecycled " + position);
-			}
-			coverView.setSingleCover(defaultCover);
+		List<String> covers = sorderList.get(position).getCoverList();
+		if (covers == null || covers.size() == 0) {
+			coverView.addSingleCover(null);
 		}
-		else if (list.size() == 1) {
-			if (list.get(0) != null && list.get(0).isRecycled()) {
-				Log.d("ScrollController", "list.get(0) isRecycled " + position);
-			}
-			coverView.setSingleCover(list.get(0));
+		else if (covers.size() == 1) {
+			coverView.addSingleCover(covers.get(0));
 		}
 		else {
 			if (mCoverMode == CoverMode.CASCADE) {
-				for (Bitmap bitmap:list) {
-					if (bitmap != null && bitmap.isRecycled()) {
-						Log.d("ScrollController", "bitmap isRecycled " + position);
-					}
-					coverView.addCover(bitmap);
+				for (String path:covers) {
+					coverView.addCover(path);
 				}
-				
+
 				int spaceX = 0, spaceY = 0;
 				if (multiNum_cascade == 2) {
 					spaceX = 80;
@@ -161,131 +162,38 @@ public class SOrderGridAdapter extends BaseAdapter {
 				coverView.applyStyleCascade(spaceX, spaceY, multiNum_cascade);
 			}
 			else if (mCoverMode == CoverMode.CASCADE_ROTATE) {
-				for (Bitmap bitmap:list) {
-					if (bitmap != null && bitmap.isRecycled()) {
-						Log.d("ScrollController", "bitmap isRecycled " + position);
-					}
-					coverView.addCover(bitmap);
+				for (String path:covers) {
+					coverView.addCover(path);
 				}
-				
+
 				coverView.applyStyleCascadeRotate();
 			}
 			else if (mCoverMode == CoverMode.GRID) {
-				for (Bitmap bitmap:list) {
-					if (bitmap != null && bitmap.isRecycled()) {
-						Log.d("ScrollController", "bitmap isRecycled " + position);
-					}
-					coverView.addBitmap(bitmap);
+				for (String path:covers) {
+					coverView.addCoverPath(path);
 				}
-				
+
 				coverView.applyStyleGrid();
 			}
 		}
 	}
-	
-	/*
-	private class LoadCoverTask extends AsyncTask<Object, Object, List<Bitmap>> {
 
-		private SOrder sOrder;
-		private MultiCoverView coverView;
-		public LoadCoverTask(SOrder order, MultiCoverView cover) {
-			sOrder = order;
-			coverView = cover;
+	private void setCoverValues(MultiCoverView coverView, int position) {
+		List<String> covers = sorderList.get(position).getCoverList();
+		if (covers == null || covers.size() == 0) {
+			coverView.setSingleCover(null);
 		}
-
-		@Override
-		protected List<Bitmap> doInBackground(Object... params) {
-
-			if (mCoverMode == CoverMode.SINGLE) {
-				List<Bitmap> bitmaps = new ArrayList<Bitmap>();
-				Bitmap bitmap = PictureManagerUpdate.getInstance().createSingleOrderCover(sOrder.getCoverPath());
-				bitmaps.add(bitmap);
-				return bitmaps;
+		else if (covers.size() == 1) {
+			coverView.setSingleCover(covers.get(0));
+		}
+		else {
+			if (mCoverMode == CoverMode.CASCADE || mCoverMode == CoverMode.CASCADE_ROTATE) {
+				coverView.setCascadeCovers(covers);
 			}
-			else {
-				List<String> list = null;
-				if (mCoverMode == CoverMode.CASCADE) {
-					list = bridge.loadSOrderCovers(sOrder, multiNum_cascade);
-				}
-				else {
-					list = bridge.loadSOrderCovers(sOrder, multiNum);
-				}
-				if (list != null) {
-					List<Bitmap> bitmaps = new ArrayList<Bitmap>();
-					Bitmap bitmap = null;
-					for (String path:list) {
-						bitmap = PictureManagerUpdate.getInstance().createCascadeOrderCover(path);
-						bitmaps.add(bitmap);
-					}
-					return bitmaps;
-				}
+			else if (mCoverMode == CoverMode.GRID) {
+				coverView.setGridCovers(covers);
 			}
-			return null;
 		}
-
-		@Override
-		protected void onProgressUpdate(Object... values) {
-		}
-
-		@Override
-		protected void onPostExecute(List<Bitmap> list) {
-			//coverView.clearBitmaps();
-			if (list == null || list.size() == 0) {
-				coverView.setSingleCover(defaultCover);
-			}
-			else if (list.size() == 1) {
-				coverView.setSingleCover(list.get(0));
-			}
-			else {
-				if (mCoverMode == CoverMode.CASCADE) {
-					for (Bitmap bitmap:list) {
-						coverView.addCover(bitmap);
-					}
-					
-					int spaceX = 0, spaceY = 0;
-					if (multiNum_cascade == 2) {
-						spaceX = 80;
-						spaceY = 110;
-					}
-					else if (multiNum_cascade == 3) {
-						spaceX = 60;
-						spaceY = 80;
-					}
-					else if (multiNum_cascade == 4) {
-						spaceX = 40;
-						spaceY = 50;
-					}
-					coverView.applyStyleCascade(spaceX, spaceY, multiNum_cascade);
-				}
-				else if (mCoverMode == CoverMode.CASCADE_ROTATE) {
-					for (Bitmap bitmap:list) {
-						coverView.addCover(bitmap);
-					}
-					
-					coverView.applyStyleCascadeRotate();
-				}
-				else if (mCoverMode == CoverMode.GRID) {
-					for (Bitmap bitmap:list) {
-						coverView.addBitmap(bitmap);
-					}
-					
-					coverView.applyStyleGrid();
-				}
-			}
-		
-		}
-
-		@Override
-		protected void onPreExecute() {
-			//coverView.clearBitmaps();
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-		}
-		
 	}
-	*/
+
 }

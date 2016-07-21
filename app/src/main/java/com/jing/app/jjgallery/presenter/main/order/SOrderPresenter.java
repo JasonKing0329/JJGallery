@@ -26,13 +26,27 @@ import java.util.List;
  */
 public class SOrderPresenter extends BasePresenter implements SOrderCallback {
 
+    /**
+     * SOrderActivity回调
+     */
     private ISOrderView sorderView;
+    /**
+     * 数据操作部分的回调
+     */
     private ISOrderDataCallback dataCallback;
 
+    /**
+     * SOrder相关的数据库/File I/O操作模型
+     */
     private SOrderManager sOrderManager;
+    /**
+     * Grid page横向页码操作模型
+     */
     private SOrderHorIndexCreator indexCreator;
 
-    private int orderBy;
+    /**
+     * 当前加载的全部列表
+     */
     private List<SOrder> orderList;
 
     public SOrderPresenter(ISOrderView sorderView) {
@@ -41,30 +55,10 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         indexCreator = new SOrderHorIndexCreator(sOrderManager);
     }
 
-    public void setDataCallback(ISOrderDataCallback dataCallback) {
-        this.dataCallback = dataCallback;
-    }
-
-    // 异步操作
-    public void loadAllOrders(int orderBy) {
-        sOrderManager.loadAllOrders(orderBy);
-    }
-
-    @Override
-    public void onQueryAllOrders(List<SOrder> list, int orderBy) {
-        orderList = list;
-        if (list != null) {
-            if (orderBy == SOrderManager.ORDERBY_NAME) {
-                Collections.sort(list, new NameComparator());
-            }
-            else if (orderBy == SOrderManager.ORDERBY_DATE) {
-                Collections.reverse(list);
-            }
-            indexCreator.createIndex(list);
-        }
-        dataCallback.onQueryAllOrders(list);
-    }
-
+    /**
+     * 判断SOrder的启动界面
+     * @param context
+     */
     public void startSOrderPage(Context context) {
         String mode = SettingProperties.getSOrderDefaultMode(context);
         if (mode.equals(PreferenceValue.VALUE_SORDER_VIEW_THUMB)) {
@@ -78,20 +72,109 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         }
     }
 
+    /**
+     * 切换至Index page
+     */
     public void switchToIndexPage() {
         sorderView.onIndexPage();
     }
 
+    /**
+     * 切换至Thumb page
+     */
     public void switchToThumbPage() {
         sorderView.onThumbPage();
     }
 
+    /**
+     * 切换至Grid page
+     */
     public void switchToGridPage() {
         sorderView.onGridPage();
     }
 
+    /**
+     * 设置数据操作界面回调
+     */
+    public void setDataCallback(ISOrderDataCallback dataCallback) {
+        this.dataCallback = dataCallback;
+    }
+
+    /**
+     * 获取当前全部列表
+     */
     public List<SOrder> getOrderList() {
         return orderList;
+    }
+
+
+    /**
+     * 加载全部列表
+     * 异步操作
+     * @param orderBy see PreferenceValue.ORDERBY_XXX
+     */
+    public void loadAllOrders(int orderBy) {
+        sOrderManager.loadAllOrders(orderBy);
+    }
+
+    @Override
+    /**
+     * loadAllOrders回调
+     * @param list 全部列表数据
+     * @param orderBy see PreferenceValue.ORDERBY_XXX
+     */
+    public void onQueryAllOrders(List<SOrder> list, int orderBy) {
+        orderList = list;
+        if (list != null) {
+            if (orderBy == PreferenceValue.ORDERBY_NAME) {
+                Collections.sort(list, new NameComparator());
+            }
+            else if (orderBy == PreferenceValue.ORDERBY_DATE) {
+                Collections.reverse(list);
+            }
+            else if (orderBy == PreferenceValue.ORDERBY_ITEMNUMBER) {
+                for (SOrder order:list) {
+                    sOrderManager.loadOrderItems(order);
+                }
+                Collections.sort(list, new ItemNumberComparator());
+            }
+            indexCreator.createIndex(list);
+
+            setOrderCover(list);
+        }
+        dataCallback.onQueryAllOrders(list);
+    }
+
+    /**
+     * 加载列表的封面，根据不同的封面模式内容会不同
+     * @param list 待加载的列表
+     */
+    private void setOrderCover(List<SOrder> list) {
+
+        int mode = SettingProperties.getSOrderCoverMode(sorderView.getContext());
+        switch (mode) {
+            case PreferenceValue.SORDER_COVER_SINGLE:
+                for (SOrder order:list) {
+                    List<String> covers = new ArrayList<>();
+                    covers.add(order.getCoverPath());
+                    order.setCoverList(covers);
+                }
+                break;
+            case PreferenceValue.SORDER_COVER_GRID:
+                for (SOrder order:list) {
+                    List<String> covers = loadSOrderCovers(order, 4);
+                    order.setCoverList(covers);
+                }
+                break;
+            case PreferenceValue.SORDER_COVER_CASCADE:
+            case PreferenceValue.SORDER_COVER_CASCADE_ROTATE:
+                int number = SettingProperties.getCascadeCoverNumber(sorderView.getContext());
+                for (SOrder order:list) {
+                    List<String> covers = loadSOrderCovers(order, number);
+                    order.setCoverList(covers);
+                }
+                break;
+        }
     }
 
     /**
@@ -121,6 +204,9 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         return  sOrderManager.renameOrderName(order);
     }
 
+    /**
+     * 按名称排序
+     */
     private class NameComparator implements Comparator<SOrder> {
 
         @Override
@@ -129,6 +215,23 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         }
     }
 
+    /**
+     * 按item numbers排序
+     */
+    private class ItemNumberComparator implements Comparator<SOrder> {
+
+        @Override
+        public int compare(SOrder lhs, SOrder rhs) {
+            return rhs.getItemNumber() - lhs.getItemNumber();
+        }
+    }
+
+    /**
+     * 加载Expandable list的preview图片
+     * @param order 待加载列表
+     * @param number 图片数量
+     * @return 图片地址
+     */
     public List<String> loadSOrderPreviews(SOrder order, int number) {
         if (order.getImgPathList() == null) {
             sOrderManager.loadOrderItems(order);
@@ -147,6 +250,12 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         return list;
     }
 
+    /**
+     * load available covers for order
+     * @param order order to load
+     * @param number max image number to load
+     * @return
+     */
     public List<String> loadSOrderCovers(SOrder order, int number) {
         if (order.getImgPathList() == null) {
             sOrderManager.loadOrderItems(order);
@@ -165,48 +274,58 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         return list;
     }
 
+    /**
+     * load tag list
+     */
     public List<STag> loadTagList() {
         return sOrderManager.loadTagList();
     }
 
     /**
      * delete tag
-     * @param sTag
-     * @param list
      */
     public void deleteTag(STag sTag, List<SOrder> list) {
         sOrderManager.deleteTag(sTag, list);
     }
 
+    /**
+     * order访问统计
+     * @param order
+     */
     public void accessOrder(SOrder order) {
         sOrderManager.accessOrder(order);
     }
 
+    /**
+     * 查询order访问统计数据
+     * @param orderId
+     * @return
+     */
     public SOrderCount queryOrderCount(int orderId) {
         return sOrderManager.queryOrderCount(orderId);
     }
 
     /**
      * 将order还原为未加密目录
-     * @param order
-     * @return
+     * @param order order to decipher
+     * @return success or fail
      */
     public boolean decipherOrderAsFolder(SOrder order) {
         return sOrderManager.decipherOrderAsFolder(order);
     }
 
+    /**
+     * 初始化水平页面
+     */
     public void initIndexCreator(Context context) {
 
         indexCreator.setPageMaxItem(SettingProperties.getSOrderPageNumber(context));
-        indexCreator.setDefaultMode(SettingProperties.getOrderMode(context));
     }
 
-    public List<HorizontalIndexView.IndexItem> createIndex() {
-        return indexCreator.createIndex(orderList);
+    public List<HorizontalIndexView.IndexItem> createIndex(int mode) {
+        return indexCreator.createIndex(orderList, mode);
     }
-    public List<HorizontalIndexView.IndexItem> createIndexBydate() {
-        return indexCreator.createIndex(orderList, PreferenceValue.ORDERBY_DATE);
-    }
+
     public List<SOrder> getPageItem(int index) throws HorizontalIndexView.PageIndexOutOfBoundsException {
         return indexCreator.getPageItem(orderList, index);
     }

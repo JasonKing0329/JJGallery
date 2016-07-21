@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
@@ -109,6 +109,11 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
         }
 
         setCurrentFragment(ft, mIndexFragment, "SOrderIndexFragment");
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     private void setCurrentFragment(FragmentTransaction ft, IFragment fragment, String tag) {

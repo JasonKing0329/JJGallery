@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.model.main.order;
 
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.PreferenceValue;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,7 +57,7 @@ public class SOrderChooserController {
         }
     }
     public void loadAllOrders() {
-        sOrderManager.loadAllOrders(SOrderManager.ORDERBY_NONE);
+        sOrderManager.loadAllOrders(PreferenceValue.ORDERBY_NONE);
     }
 
 }

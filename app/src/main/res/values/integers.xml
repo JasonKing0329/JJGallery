@@ -21,4 +21,5 @@
     <integer name="progress_arc_sweep">15</integer>
 
     <integer name="setting_casual_number">20</integer>
+    <integer name="setting_page_number">16</integer>
 </resources>

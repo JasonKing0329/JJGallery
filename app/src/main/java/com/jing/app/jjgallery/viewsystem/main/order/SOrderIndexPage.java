@@ -118,7 +118,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     protected void showViewModePopup(View v) {
         PopupMenu menu = new PopupMenu(context, v);
-        menu.getMenuInflater().inflate(R.menu.filemanager_view_mode, menu.getMenu());
+        menu.getMenuInflater().inflate(R.menu.sorder_view_mode, menu.getMenu());
         menu.getMenu().findItem(R.id.menu_index_view).setVisible(false);
         menu.show();
         menu.setOnMenuItemClickListener(viewModeListener);

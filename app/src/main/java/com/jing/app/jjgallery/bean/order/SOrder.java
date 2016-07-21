@@ -7,6 +7,8 @@ public class SOrder {
 	private int id;
 	private String name;
 	private String coverPath;
+	private List<String> coverList;
+
 	private STag tag;
 	private List<String> imgPathList;
 	private List<Integer> imgPathIdList;
@@ -60,5 +62,13 @@ public class SOrder {
 	public void setOrderCount(SOrderCount orderCount) {
 		this.orderCount = orderCount;
 	}
+	public List<String> getCoverList() {
+		return coverList;
+	}
+
+	public void setCoverList(List<String> coverList) {
+		this.coverList = coverList;
+	}
+
 
 }

@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.presenter.sub;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
@@ -64,16 +65,16 @@ public class ThumbPresenter extends BasePresenter implements SOrderCallback {
 
     // 异步操作
     public void loadAllOrders() {
-        sorderManager.loadAllOrders(SOrderManager.ORDERBY_NAME);
+        sorderManager.loadAllOrders(PreferenceValue.ORDERBY_NAME);
     }
 
     @Override
     public void onQueryAllOrders(List<SOrder> list, int orderBy) {
         if (list != null) {
-            if (orderBy == SOrderManager.ORDERBY_NAME) {
+            if (orderBy == PreferenceValue.ORDERBY_NAME) {
                 Collections.sort(list, new SOrderComparator());
             }
-            else if (orderBy == SOrderManager.ORDERBY_DATE) {
+            else if (orderBy == PreferenceValue.ORDERBY_DATE) {
                 Collections.reverse(list);
             }
         }

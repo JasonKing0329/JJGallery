@@ -12,4 +12,26 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_filemanager_default" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_sorder_page_mode"
+        android:title="@string/setting_sorder_enable_page" />
+
+    <EditTextPreference
+        android:defaultValue="@integer/setting_page_number"
+        android:inputType="number"
+        android:key="pref_sorder_page_number"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/setting_sorder_set_page_numbers" />
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/pref_sorder_cascade_number"
+        android:entryValues="@array/pref_sorder_cascade_number"
+        android:key="pref_sorder_cascade_number"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_sorder_cover_cascade_num" />
 </PreferenceScreen>

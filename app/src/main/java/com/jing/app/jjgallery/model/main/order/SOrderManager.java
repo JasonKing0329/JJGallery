@@ -29,11 +29,6 @@ import java.util.List;
  */
 public class SOrderManager {
 
-    public static final int ORDERBY_NONE = 0;
-    public static final int ORDERBY_NAME = 1;
-    public static final int ORDERBY_DATE = 2;
-    public static final int ORDERBY_ITEMNUMBER =3;
-
     private SOrderCallback callback;
 
     public SOrderManager(SOrderCallback model) {
