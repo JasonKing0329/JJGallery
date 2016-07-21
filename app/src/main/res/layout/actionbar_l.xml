@@ -89,7 +89,7 @@
 					android:id="@+id/actionbar_sort"
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
-					android:src="@drawable/actionbar_order"
+					android:src="@drawable/ic_sort"
 					android:visibility="gone"/>
 
 				<ImageView

@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.bean.order.SOrderCount;
@@ -66,7 +67,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
 
     private GridView gridView;
     private SOrderGridAdapter gridAdapter;
-    private ProgressDialog progressDialog;
     private List<SOrder> currentPageOrders;
     private int currentPage;
     private ImageView previousPageView, nextPageView;
@@ -242,9 +242,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     }
 
     private void showProgress() {
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getResources().getString(R.string.loading));
-        progressDialog.show();
+        ((BaseSlidingActivity) context).showProgressCycler();
     }
 
     @Override
@@ -263,7 +261,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             currentPageOrders = mPresenter.getOrderList();
             notifyUpdate();
         }
-        progressDialog.cancel();
+        ((BaseSlidingActivity) context).dismissProgressCycler();
     }
 
     private void refresh() {
@@ -416,6 +414,8 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             currentPage = index;
             currentPageOrders = mPresenter.getPageItem(index);
             startSwitchAnimation();
+            // cascade/grid cover模式下需要重新创建cover view(个数变化)
+            needNewAdapter = true;
             notifyUpdate();
         } catch (HorizontalIndexView.PageIndexOutOfBoundsException e) {
             Log.i("SOrderPage", "index(" + index + ") is out of bounds");
@@ -685,7 +685,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
 
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.cancel();
+            ((BaseSlidingActivity) context).dismissProgressCycler();
             if (msg.what == 1) {
                 Toast.makeText(context, R.string.sorder_success, Toast.LENGTH_LONG).show();
             }
@@ -953,28 +953,28 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                     if (currentOrderBy != PreferenceValue.ORDERBY_DATE) {
                         currentOrderBy = PreferenceValue.ORDERBY_DATE;
                         SettingProperties.setOrderMode(context, currentOrderBy);
-                        mPresenter.loadAllOrders(currentOrderBy);
+                        refresh();
                     }
                     break;
                 case R.id.menu_by_name:
                     if (currentOrderBy != PreferenceValue.ORDERBY_NAME) {
                         currentOrderBy = PreferenceValue.ORDERBY_NAME;
                         SettingProperties.setOrderMode(context, currentOrderBy);
-                        mPresenter.loadAllOrders(currentOrderBy);
+                        refresh();
                     }
                     break;
                 case R.id.menu_by_itemnum:
                     if (currentOrderBy != PreferenceValue.ORDERBY_ITEMNUMBER) {
                         currentOrderBy = PreferenceValue.ORDERBY_ITEMNUMBER;
                         SettingProperties.setOrderMode(context, currentOrderBy);
-                        mPresenter.loadAllOrders(currentOrderBy);
+                        refresh();
                     }
                     break;
                 case R.id.menu_by_none:
                     if (currentOrderBy != PreferenceValue.ORDERBY_NONE) {
                         currentOrderBy = PreferenceValue.ORDERBY_NONE;
                         SettingProperties.setOrderMode(context, currentOrderBy);
-                        mPresenter.loadAllOrders(currentOrderBy);
+                        refresh();
                     }
                     break;
 

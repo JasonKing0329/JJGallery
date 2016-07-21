@@ -258,7 +258,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		searchButton.setVisibility(View.VISIBLE);
 	}
 	public void addSortIcon() {
-		currentButtons.add(searchButton);
+		currentButtons.add(sortButton);
 		sortButton.setVisibility(View.VISIBLE);
 	}
 	public void addThumbIcon() {

@@ -213,7 +213,7 @@ public class MultiCoverView extends FrameLayout {
 	 * @param imgPath
 	 */
 	public void setCascadeCovers(List<String> imgPath) {
-		for (int i = 0; i < imageViewList.size(); i ++) {
+		for (int i = 0; i < imgPath.size() && i < imageViewList.size(); i ++) {
 			SImageLoader.getInstance().displayImage(imgPath.get(i), imageViewList.get(i));
 		}
 	}
@@ -333,7 +333,7 @@ public class MultiCoverView extends FrameLayout {
 	 * @param imgPath
      */
 	public void setGridCovers(List<String> imgPath) {
-		for (int i = 0; i < imageViewList.size(); i ++) {
+		for (int i = 0; i < imageViewList.size() && i < imgPath.size(); i ++) {
 			SImageLoader.getInstance().displayImage(imgPath.get(i), imageViewList.get(i));
 		}
 	}
