@@ -68,7 +68,17 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
 
     @Override
     public void onGridPage() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mGridFragment == null) {
+            mGridFragment = new SOrderGridFragment();
+            mGridFragment.setActionbar(mActionBar);
+            mGridFragment.setPresenter(mPresenter);
+        }
+        else {
+            mGridFragment.getPage().initActionbar(mActionBar);
+        }
 
+        setCurrentFragment(ft, mGridFragment, "SOrderGridFragment");
     }
 
     @Override

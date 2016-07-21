@@ -66,7 +66,7 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
-    public static void startRandomSettingActivity(Activity from) {
+    public static void startRandomSurfActivity(Activity from) {
         from.startActivity(new Intent().setClass(from, RandomSurfActivity.class));
         applyAnimation(from);
     }
@@ -90,7 +90,11 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
+    public static void startBookActivity(Activity from, SOrder order) {
+    }
+
     public static void onSettingResult(Context context) {
         SettingProperties.saveAsDefaultPreference(context);
     }
+
 }

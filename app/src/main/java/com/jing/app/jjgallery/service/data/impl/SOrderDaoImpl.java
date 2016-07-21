@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.service.data.impl;
 import android.util.Log;
 
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.file.OnOrderItemMoveTrigger;
@@ -272,6 +273,38 @@ public class SOrderDaoImpl implements SOrderDao {
             }
         }
     }
+
+    /**
+     * 删除整个 order的内容
+     * @param tag
+     * @param connection
+     */
+    public void deleteAllOrdersInTag(STag tag, Connection connection) {
+
+        if (connection != null && tag != null) {
+            String sql = "DELETE FROM " + DBInfor.TABLE_ORDER
+                    + " WHERE " + DBInfor.TO_COL_TAGID + " = " + tag.getId();
+            Statement stmt = null;
+            try {
+                stmt = connection.createStatement();
+                stmt.executeUpdate(sql);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public boolean isOrderExist(String name, Connection connection) {
         Statement stmt = null;
@@ -358,6 +391,85 @@ public class SOrderDaoImpl implements SOrderDao {
             }
         }
         return id;
+    }
+
+    @Override
+    public boolean saveOrderCount(SOrderCount count, Connection connection) {
+
+        if (connection != null && count != null) {
+            StringBuffer buffer = new StringBuffer("UPDATE ");
+            buffer.append(DBInfor.TABLE_ORDER_COUNT).append(" SET ")
+                    .append(DBInfor.TOC_COL[1]).append(" = ").append(count.countAll)
+                    .append(", ").append(DBInfor.TOC_COL[2]).append(" = ").append(count.countYear)
+                    .append(", ").append(DBInfor.TOC_COL[3]).append(" = ").append(count.countMonth)
+                    .append(", ").append(DBInfor.TOC_COL[4]).append(" = ").append(count.countWeek)
+                    .append(", ").append(DBInfor.TOC_COL[5]).append(" = ").append(count.countDay)
+                    .append(", ").append(DBInfor.TOC_COL[6]).append(" = ").append(count.lastYear)
+                    .append(", ").append(DBInfor.TOC_COL[7]).append(" = ").append(count.lastMonth)
+                    .append(", ").append(DBInfor.TOC_COL[8]).append(" = ").append(count.lastWeek)
+                    .append(", ").append(DBInfor.TOC_COL[9]).append(" = ").append(count.lastDay)
+                    .append(" WHERE ").append(DBInfor.TOC_COL[0]).append(" = ").append(count.orderId);
+
+            Statement stmt = null;
+            try {
+                String sql = buffer.toString();
+                stmt = connection.createStatement();
+                stmt.executeUpdate(sql);
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            } finally {
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public SOrderCount queryOrderCount(int orderId, Connection connection) {
+        Statement stmt = null;
+        SOrderCount orderCount = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = null;
+
+            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT
+                    + " WHERE " + DBInfor.TOC_COL[0] + " = " + orderId);
+
+            if (set.next()) {
+                orderCount = new SOrderCount();
+                orderCount.orderId = orderId;
+                orderCount.countAll = set.getInt(DBInfor.TOC_COL[1]);
+                orderCount.countYear = set.getInt(DBInfor.TOC_COL[2]);
+                orderCount.countMonth = set.getInt(DBInfor.TOC_COL[3]);
+                orderCount.countWeek = set.getInt(DBInfor.TOC_COL[4]);
+                orderCount.countDay = set.getInt(DBInfor.TOC_COL[5]);
+                orderCount.lastYear = set.getInt(DBInfor.TOC_COL[6]);
+                orderCount.lastMonth = set.getInt(DBInfor.TOC_COL[7]);
+                orderCount.lastWeek = set.getInt(DBInfor.TOC_COL[8]);
+                orderCount.lastDay = set.getInt(DBInfor.TOC_COL[9]);
+            }
+            set.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return orderCount;
     }
 
     @Override
@@ -719,4 +831,5 @@ public class SOrderDaoImpl implements SOrderDao {
         }
         return order;
     }
+
 }

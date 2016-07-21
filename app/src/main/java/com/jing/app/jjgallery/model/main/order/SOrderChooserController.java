@@ -56,7 +56,7 @@ public class SOrderChooserController {
         }
     }
     public void loadAllOrders() {
-        sOrderManager.loadAllOrders();
+        sOrderManager.loadAllOrders(SOrderManager.ORDERBY_NONE);
     }
 
 }

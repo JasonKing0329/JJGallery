@@ -9,5 +9,5 @@ import java.util.List;
  * Description:
  */
 public interface SOrderCallback {
-    void onQueryAllOrders(List<SOrder> list);
+    void onQueryAllOrders(List<SOrder> list, int orderby);
 }

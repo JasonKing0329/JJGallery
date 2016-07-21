@@ -210,4 +210,19 @@ public class SettingProperties {
         return min_number;
     }
 
+    public static int getCascadeCoverNumber(Context context) {
+        return 3;
+    }
+
+    public static int getOrderMode(Context context) {
+        return 0;
+    }
+
+    public static boolean isPageModeEnable(Context context) {
+        return true;
+    }
+
+    public static int getSOrderPageNumber(Context context) {
+        return 20;
+    }
 }

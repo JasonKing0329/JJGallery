@@ -86,6 +86,14 @@
 				android:gravity="right">
 				<ImageView
 					style="@style/ActionbarIcon_L"
+					android:id="@+id/actionbar_sort"
+					android:layout_width="@dimen/actionbar_icon_width"
+					android:layout_height="match_parent"
+					android:src="@drawable/actionbar_order"
+					android:visibility="gone"/>
+
+				<ImageView
+					style="@style/ActionbarIcon_L"
 					android:id="@+id/actionbar_delete"
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"

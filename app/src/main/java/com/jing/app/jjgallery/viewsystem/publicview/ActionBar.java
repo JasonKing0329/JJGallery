@@ -30,7 +30,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	private Context context;
 	private ImageView backButton, menuButton, menuLeftButton, addButton, editButton
-		, titleIcon, saveButton, cancelButton, galleryButton
+		, titleIcon, saveButton, cancelButton, galleryButton, sortButton
 		, searchButton, closeButton, refreshButton, changeButton, colorButton
 		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton, thumbButton;
 	private TextView titleView;
@@ -61,6 +61,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		galleryButton = (ImageView) view.findViewById(R.id.actionbar_gallery);
 		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
 		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
+		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
 		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
 		randomChangeButton = (ImageView) view.findViewById(R.id.actionbar_random_change);
 		fullScreenButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
@@ -81,6 +82,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		saveButton.setOnClickListener(this);
 		saveButton1.setOnClickListener(this);
 		showButton.setOnClickListener(this);
+		sortButton.setOnClickListener(this);
 		cancelButton.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
 		randomChangeButton.setOnClickListener(this);
@@ -254,6 +256,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addSearchIcon() {
 		currentButtons.add(searchButton);
 		searchButton.setVisibility(View.VISIBLE);
+	}
+	public void addSortIcon() {
+		currentButtons.add(searchButton);
+		sortButton.setVisibility(View.VISIBLE);
 	}
 	public void addThumbIcon() {
 		currentButtons.add(thumbButton);

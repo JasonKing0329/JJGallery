@@ -64,13 +64,18 @@ public class ThumbPresenter extends BasePresenter implements SOrderCallback {
 
     // 异步操作
     public void loadAllOrders() {
-        sorderManager.loadAllOrders();
+        sorderManager.loadAllOrders(SOrderManager.ORDERBY_NAME);
     }
 
     @Override
-    public void onQueryAllOrders(List<SOrder> list) {
+    public void onQueryAllOrders(List<SOrder> list, int orderBy) {
         if (list != null) {
-            Collections.sort(list, new SOrderComparator());
+            if (orderBy == SOrderManager.ORDERBY_NAME) {
+                Collections.sort(list, new SOrderComparator());
+            }
+            else if (orderBy == SOrderManager.ORDERBY_DATE) {
+                Collections.reverse(list);
+            }
         }
         sorderDataCallback.onQueryAllOrders(list);
     }

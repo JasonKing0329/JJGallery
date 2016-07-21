@@ -17,6 +17,7 @@ import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
@@ -75,7 +76,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     public void initData() {
         ((BaseSlidingActivity) context).showProgressCycler();
         mPresenter.setDataCallback(this);
-        mPresenter.loadAllOrders();
+        mPresenter.loadAllOrders(PreferenceValue.ORDERBY_NONE);
     }
 
     @Override

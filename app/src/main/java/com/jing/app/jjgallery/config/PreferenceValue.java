@@ -22,4 +22,9 @@ public class PreferenceValue {
     public static final int AUTOPLAY_MODE_RANDOM = 1;
     public static final int AUTOPLAY_MODE_REPEATABLE = 2;
 
+    public static final int ORDERBY_NONE = 0;
+    public static final int ORDERBY_NAME = 1;
+    public static final int ORDERBY_DATE = 2;
+    public static final int ORDERBY_ITEMNUMBER =3;
+
 }

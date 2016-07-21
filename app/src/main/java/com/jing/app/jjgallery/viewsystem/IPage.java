@@ -19,14 +19,14 @@ import java.util.List;
 public interface IPage {
     void initData();
     void setPresenter(BasePresenter presenter);
-    boolean onBack();
-    void onExit();
+    void initActionbar(ActionBar actionBar);
     void onIconClick(View view);
     void createMenu(MenuInflater menuInflater, Menu menu);
     void onPrepareMenu(MenuInflater menuInflater, Menu menu);
     boolean onMenuItemClick(MenuItem item);
     void onTextChanged(String text, int start, int before, int count);
-    void initActionbar(ActionBar actionBar);
     void onConfigurationChanged(android.content.res.Configuration newConfig);
     void onTouchEvent(MotionEvent event);
+    boolean onBack();
+    void onExit();
 }

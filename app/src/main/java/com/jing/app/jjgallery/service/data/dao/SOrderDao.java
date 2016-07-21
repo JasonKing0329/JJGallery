@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.service.data.dao;
 
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.model.main.file.OnOrderItemMoveTrigger;
 
@@ -19,9 +20,12 @@ public interface SOrderDao {
     STag queryTag(String tName, Connection connection);
     boolean insertTag(String tName, Connection connection);
     void deleteTag(STag sTag, Connection connection);
+    void deleteAllOrdersInTag(STag tag, Connection connection);
     boolean isOrderExist(String name, Connection connection);
     boolean insertOrder(SOrder order, Connection connection);
     int queryOrderIdAfterInsert(Connection connection);
+    boolean saveOrderCount(SOrderCount count, Connection connection);
+    SOrderCount queryOrderCount(int orderId, Connection connection);
     boolean insertOrderCount(int orderId, Connection connection);
     boolean updateOrder(SOrder order, Connection connection);
     boolean deleteOrder(SOrder order, Connection connection);

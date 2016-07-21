@@ -5,4 +5,5 @@ package com.jing.app.jjgallery;
  * Description:
  */
 public abstract class BasePresenter {
+
 }

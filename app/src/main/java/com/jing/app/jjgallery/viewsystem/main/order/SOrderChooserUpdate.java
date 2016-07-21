@@ -132,7 +132,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 	}
 
 	@Override
-	public void onQueryAllOrders(List<SOrder> list) {
+	public void onQueryAllOrders(List<SOrder> list, int orderBy) {
 		totalOrderList = list;
 		controller.sortOrderByName(list);//sort by name
 		priorityController.updateOrdersByPriority(totalOrderList);

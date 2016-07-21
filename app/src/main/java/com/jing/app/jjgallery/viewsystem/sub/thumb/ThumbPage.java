@@ -203,7 +203,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
                 refreshCurrent();
                 break;
             case R.id.actionbar_gallery:
-                ActivityManager.startRandomSettingActivity((Activity) mContext);
+                ActivityManager.startRandomSurfActivity((Activity) mContext);
                 break;
         }
     }
