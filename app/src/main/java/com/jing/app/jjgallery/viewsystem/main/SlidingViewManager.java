@@ -202,6 +202,16 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         ((Activity) mContext).finish();
     }
 
+    @Override
+    public void onNextPage(int next) {
+        viewPager.setCurrentItem(next, true);
+    }
+
+    @Override
+    public void onPreviousPage(int previous) {
+        viewPager.setCurrentItem(previous, true);
+    }
+
     public void onOrentaionChanged(int orientation) {
         String path = getLeftBkPath(orientation);
         if (path != null) {
