@@ -1,52 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <style name="FileManagerBlue" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_blue</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_blue_alpha</item>
+    <style name="JJThemeDark" parent="AppDarkTheme">
+        <item name="actionbar_bk_color">@color/actionbar_bk_dark</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_dark_alpha</item>
+        <item name="default_folder">@drawable/ic_folder_parent</item>
+        <item name="path_indicator_bk">@drawable/indicator_blue</item>
+        <item name="path_indicator_press">@drawable/indicator_orange</item>
+        <item name="actionbar_ic_add">@drawable/ic_add_to_photos_green_900_36dp</item>
+        <item name="actionbar_ic_color">@drawable/ic_color_lens_green_36dp</item>
+        <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_green_36dp</item>
+        <item name="actionbar_ic_cover">@drawable/ic_apps_green_36dp</item>
+        <item name="actionbar_ic_refresh">@drawable/ic_refresh_green_36dp</item>
+        <item name="actionbar_ic_search">@drawable/ic_search_green_36dp</item>
+        <item name="actionbar_ic_menu_left">@drawable/ic_dehaze_green_36dp</item>
+        <item name="actionbar_ic_menu">@drawable/ic_more_vert_green_36dp</item>
+        <item name="actionbar_ic_folder">@drawable/ic_folder_green_36dp</item>
+        <item name="actionbar_ic_back">@drawable/ic_arrow_back_green_36dp</item>
+        <item name="actionbar_ic_surf">@drawable/ic_movie_filter_green_36dp</item>
+        <item name="actionbar_ic_casual">@drawable/ic_camera_green_36dp</item>
+        <item name="actionbar_text_color">@color/actionbar_text_dark</item>
+        <item name="setting_ic_safety">@drawable/ic_fingerprint_yellow_200_36dp</item>
+        <item name="setting_ic_general">@drawable/ic_home_yellow_36dp</item>
+        <item name="setting_ic_folder">@drawable/ic_folder_yellow_36dp</item>
+        <item name="setting_ic_order">@drawable/ic_assistant_yellow_36dp</item>
+        <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_yellow_36dp</item>
+    </style>
+
+    <style name="JJThemeLight" parent="AppTheme">
+        <item name="actionbar_bk_color">@color/actionbar_bk_light</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_light</item>
         <item name="default_folder">@drawable/default_folder</item>
         <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
         <item name="path_indicator_press">@drawable/indicator_orange</item>
+        <item name="actionbar_ic_add">@drawable/ic_add_to_photos_purple_200_36dp</item>
+        <item name="actionbar_ic_color">@drawable/ic_color_lens_purple_200_36dp</item>
+        <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_purple_200_36dp</item>
+        <item name="actionbar_ic_cover">@drawable/ic_apps_purple_200_36dp</item>
+        <item name="actionbar_ic_refresh">@drawable/ic_refresh_purple_36dp</item>
+        <item name="actionbar_ic_search">@drawable/ic_search_purple_36dp</item>
+        <item name="actionbar_ic_menu_left">@drawable/ic_dehaze_purple_36dp</item>
+        <item name="actionbar_ic_menu">@drawable/ic_more_vert_purple_36dp</item>
+        <item name="actionbar_ic_folder">@drawable/ic_folder_purple_36dp</item>
+        <item name="actionbar_ic_back">@drawable/ic_arrow_back_purple_36dp</item>
+        <item name="actionbar_ic_surf">@drawable/ic_movie_filter_purple_36dp</item>
+        <item name="actionbar_ic_casual">@drawable/ic_camera_purple_36dp</item>
+        <item name="actionbar_text_color">@color/actionbar_text_light</item>
+        <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
+        <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>
+        <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
+        <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
+        <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
     </style>
-    
-    <style name="FileManagerGreen" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_green</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_green_alpha</item>
-        <item name="default_folder">@drawable/default_folder_lightgreen</item>
-        <item name="path_indicator_bk">@drawable/indicator_blue</item>
-        <item name="path_indicator_press">@drawable/indicator_red</item>
-    </style>
-    
-    <style name="FileManagerLightGreen" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_lightgreen</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_lightgreen_alpha</item>
-        <item name="default_folder">@drawable/default_folder_lightgreen</item>
-        <item name="path_indicator_bk">@drawable/indicator_blue</item>
-        <item name="path_indicator_press">@drawable/indicator_red</item>
-    </style>
-    
-    <style name="FileManagerOrange" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_orange</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_orange_alpha</item>
+
+    <style name="JJThemeNormal" parent="AppTheme">
+        <item name="actionbar_bk_color">@color/actionbar_bk_normal</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_normal_alpha</item>
         <item name="default_folder">@drawable/default_folder</item>
-        <item name="path_indicator_bk">@drawable/indicator_blue</item>
-        <item name="path_indicator_press">@drawable/indicator_red</item>
-    </style>
-    
-    <style name="FileManagerDeepBlue" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_deepblue</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_deepblue_alpha</item>
-        <item name="default_folder">@drawable/default_folder</item>
-        <item name="path_indicator_bk">@drawable/indicator_purple</item>
+        <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
         <item name="path_indicator_press">@drawable/indicator_orange</item>
+        <item name="actionbar_ic_add">@drawable/ic_add_to_photos_white_36dp</item>
+        <item name="actionbar_ic_color">@drawable/ic_color_lens_white_36dp</item>
+        <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_white_36dp</item>
+        <item name="actionbar_ic_cover">@drawable/ic_apps_white_36dp</item>
+        <item name="actionbar_ic_refresh">@drawable/ic_refresh_white_36dp</item>
+        <item name="actionbar_ic_search">@drawable/ic_search_white_36dp</item>
+        <item name="actionbar_ic_menu_left">@drawable/ic_dehaze_white_36dp</item>
+        <item name="actionbar_ic_menu">@drawable/ic_more_vert_white_36dp</item>
+        <item name="actionbar_ic_folder">@drawable/ic_folder_white_36dp</item>
+        <item name="actionbar_ic_back">@drawable/ic_arrow_back_white_36dp</item>
+        <item name="actionbar_ic_surf">@drawable/ic_movie_filter_white_36dp</item>
+        <item name="actionbar_ic_casual">@drawable/ic_camera_white_36dp</item>
+        <item name="actionbar_text_color">@color/actionbar_text_normal</item>
+        <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
+        <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>
+        <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
+        <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
+        <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
     </style>
-    
-    <style name="FileManagerPurple" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_purple</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_purple_alpha</item>
-        <item name="default_folder">@drawable/default_folder</item>
-        <item name="path_indicator_bk">@drawable/indicator_blue</item>
-        <item name="path_indicator_press">@drawable/indicator_orange</item>
-    </style>
-    
+
+
 </resources>

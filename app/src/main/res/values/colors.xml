@@ -31,7 +31,17 @@
     <color name="actionbar_bk_deepblue_alpha">#66197ba9</color>
     <color name="actionbar_bk_purple_alpha">#66a91980</color>
     <color name="actionbar_bk_wallgalerry">#99000000</color>
+    <color name="actionbar_bk_wallgalerry_light">#99ffffff</color>
     <color name="actionbar_bk_pressed">#99cccccc</color>
+
+    <color name="actionbar_bk_normal">#4b1e54</color>
+    <color name="actionbar_bk_normal_alpha">#664b1e54</color>
+    <color name="actionbar_bk_dark">#25242c</color>
+    <color name="actionbar_bk_dark_alpha">#6625242c</color>
+    <color name="actionbar_bk_light">#dfdfdf</color>
+    <color name="actionbar_text_dark">#218676</color>
+    <color name="actionbar_text_light">#3f37a1</color>
+    <color name="actionbar_text_normal">#ffffff</color>
 
     <color name="dialog_background">#eeeeeeee</color>
     <color name="dialog_background_dark">#cc00a5c4</color>
@@ -58,6 +68,7 @@
     <color name="slidingmenu_item_bk_color1">#00ffffff</color>
     <color name="slidingmenu_item_bk_color2">#ccffffff</color>
     <color name="sliding_menu_divider">#88ffffff</color>
+    <color name="sliding_home_text">#fdc02b</color>
     <color name="sorder_bk">#f5f5f5</color>
     <color name="crop_stroke">#FFA500</color>
     <color name="crop_position_frame_bk">#66000000</color>
@@ -73,11 +84,26 @@
     <color name="timeline_menu_setting_bk">#99ef9801</color>
     <color name="timeline_menu_close_bk">#99a91980</color>
 
-    <color name="sorder_chooser_text">#ffffff</color>
-    <color name="sorder_chooser_text_priority">#FF0000</color>
-    <color name="sorder_chooser_list_selected">#ccF17C3B</color>
-    <color name="sorder_chooser_title_bk">#ffffff</color>
-
+    <color name="colorpicker_background">#eeffffff</color>
+    <color name="colorpicker_title">#ff999999</color>
+    <color name="colorpicker_divider">#ff24ceec</color>
+    <color name="colorpicker_list_text">#ff666666</color>
+    <color name="colorpicker_frame_border">#ff646464</color>
+    <color name="colorpicker_color_text">#ff666666</color>
+    <color name="sorder_chooser_bk">#e9335e65</color>
+    <color name="sorder_chooser_title">#ffffff</color>
+    <color name="sorder_chooser_title_bk">#39a2ab</color>
+    <color name="sorder_chooser_icon_bk">#71c084b7</color>
+    <color name="sorder_chooser_divider">#ffffff</color>
+    <color name="sorder_chooser_text">#d5d5d5</color>
+    <color name="sorder_chooser_text_priority">#ffa900</color>
+    <color name="sorder_chooser_list_selected">#ccf17c3b</color>
+    <color name="sorder_creater_bk">#cfcfcf</color>
+    <color name="sorder_creater_title">#f6f0f5</color>
+    <color name="sorder_creater_title_bk">#4297c6</color>
+    <color name="sorder_creater_icon_bk">#b5788e</color>
+    <color name="sorder_creater_divider">#ffffff</color>
+    <color name="sorder_creater_text">#eb1717</color>
     <color name="tab_actionbar_text">#ffffff</color>
     <color name="tab_actionbar_text_focus">#FFFF00</color>
 

@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppDarkTheme" parent="Theme.AppCompat">
+
+    </style>
+
     <style name="TransparentDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
         <!-- 设置自定义布局的背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -77,6 +81,7 @@
         <item name="android:textSize">@dimen/sliding_item_text_size</item>
         <item name="android:background">@drawable/ripple_rect_white</item>
         <item name="android:padding">@dimen/sliding_item_text_padding</item>
+        <item name="android:drawablePadding">10dp</item>
     </style>
 
 </resources>

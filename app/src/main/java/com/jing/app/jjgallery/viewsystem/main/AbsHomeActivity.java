@@ -14,6 +14,7 @@ import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.res.AppResProvider;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
@@ -21,6 +22,7 @@ import com.jing.app.jjgallery.service.file.EncryptCheckService;
 import com.jing.app.jjgallery.service.file.PreferenceService;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
+import com.jing.app.jjgallery.viewsystem.publicview.ChangeThemeDialog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.lib.colorpicker.ColorPicker;
@@ -105,12 +107,21 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
             public void onExit() {
                 exit();
             }
+
+            @Override
+            public void onChangeTheme() {
+                openChangeThemeDialog();
+            }
         });
         setBehindContentView(slidingViewManager.getSlidingLeftView());
         setSecondaryMenu(slidingViewManager.getSlidingRightView());
         mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
 
         BackgroundManager.getInstance().addSlidingSubscriber(slidingViewManager);
+    }
+
+    public void setHomeViewPagerIndex(int index) {
+        slidingViewManager.setViewPagerPage(index);
     }
 
     @Override
@@ -185,30 +196,34 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
                 openSetting();
                 break;
             case R.id.menu_change_theme:
-//				new ChangeThemeDialog(context, new CustomDialog.OnCustomDialogActionListener() {
-//
-//					@Override
-//					public boolean onSave(Object object) {
-//						reload();
-//						return false;
-//					}
-//
-//					@Override
-//					public void onLoadData(HashMap<String, Object> data) {
-//
-//					}
-//
-//					@Override
-//					public boolean onCancel() {
-//						return false;
-//					}
-//				}).show();
+                openChangeThemeDialog();
                 break;
             case R.id.menu_exit:
                 exit();
                 break;
         }
         return false;
+    }
+
+    private void openChangeThemeDialog() {
+        new ChangeThemeDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+
+            @Override
+            public boolean onSave(Object object) {
+                ActivityManager.reload(AbsHomeActivity.this);
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+        }).show();
     }
 
     private void exit() {
@@ -357,7 +372,9 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     }
 
     protected void applyExtendColors() {
-        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+        if (mActionBar != null) {
+            mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, new ThemeManager(this).getBasicColorResId()));
+        }
     }
 
     @Override

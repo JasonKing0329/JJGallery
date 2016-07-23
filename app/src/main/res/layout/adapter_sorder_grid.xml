@@ -26,6 +26,7 @@
 		    android:layout_marginTop="@dimen/sorder_grid_name_marginTop"
 		    android:gravity="center"
 		    android:textSize="@dimen/sorder_grid_name_textsize"
+			android:textColor="#3c3c3c"
 	        />
 	</LinearLayout>
 </LinearLayout>

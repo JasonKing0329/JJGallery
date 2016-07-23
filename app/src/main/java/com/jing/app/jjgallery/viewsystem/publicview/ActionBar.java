@@ -125,22 +125,18 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	public interface ActionIconListener {
-		public void onBack();
-		public void onIconClick(View view);
+		void onBack();
+		void onIconClick(View view);
 	}
 
 	public interface ActionMenuListener {
-		public void createMenu(MenuInflater menuInflater, Menu menu);
-		public void onPrepareMenu(MenuInflater menuInflater, Menu menu);
-		public boolean onMenuItemClick(MenuItem item);
+		void createMenu(MenuInflater menuInflater, Menu menu);
+		void onPrepareMenu(MenuInflater menuInflater, Menu menu);
+		boolean onMenuItemClick(MenuItem item);
 	}
 
 	public interface ActionSearchListener {
-		public void onTextChanged(String text, int start, int before, int count);
-	}
-
-	public interface ActionSpinnerListener {
-		public void onTitleFilterListener(int indexLevel, int indexCourt);
+		void onTextChanged(String text, int start, int before, int count);
 	}
 
 	public int getHeight() {
@@ -199,6 +195,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addEditIcon() {
 		currentButtons.add(editButton);
 		editButton.setVisibility(View.VISIBLE);
+	}
+	public void addBackIcon() {
+		currentButtons.add(backButton);
+		backButton.setVisibility(View.VISIBLE);
 	}
 	public void addMenuIcon() {
 		currentButtons.add(menuButton);

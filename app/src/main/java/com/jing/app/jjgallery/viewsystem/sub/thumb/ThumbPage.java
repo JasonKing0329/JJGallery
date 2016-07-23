@@ -184,7 +184,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         }
         //To fix: showImageDialog>click setasslidingmenubk icon>popup listwindow
         //>back>show image dialog again>click setasslidingmenubk, there is no action
-        if (imageDialog != null) {
+        if (imageDialog != null && imageDialog.isShowing()) {
             imageDialog.dismiss();
             return true;
         }

@@ -32,6 +32,7 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         void onImport();
         void onSetting();
         void onExit();
+        void onChangeTheme();
     }
 
     private Context mContext;
@@ -76,7 +77,6 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     }
 
     private void initLeftView() {
-        slidingLeftView.findViewById(R.id.sliding_menu_switch).setOnClickListener(this);
         slidingLeftView.findViewById(R.id.sliding_menu_checkall).setOnClickListener(this);
         slidingLeftView.findViewById(R.id.sliding_menu_export).setOnClickListener(this);
         slidingLeftView.findViewById(R.id.sliding_menu_import).setOnClickListener(this);
@@ -154,6 +154,9 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
                 case R.id.sliding_menu_setting:
                     slidingLeftCallback.onSetting();
                     break;
+                case R.id.sliding_menu_theme:
+                    slidingLeftCallback.onChangeTheme();
+                    break;
                 case R.id.sliding_menu_exit:
                     slidingLeftCallback.onExit();
                     break;
@@ -210,6 +213,10 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     @Override
     public void onPreviousPage(int previous) {
         viewPager.setCurrentItem(previous, true);
+    }
+
+    public void setViewPagerPage(int index) {
+        viewPager.setCurrentItem(index);
     }
 
     public void onOrentaionChanged(int orientation) {

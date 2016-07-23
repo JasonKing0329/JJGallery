@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class SOrderThumbFolderAdapter extends ThumbFolderAdapter {
     }
 
     @Override
-    protected void bindDataToView(int position, ImageView image, TextView text) {
+    protected void bindDataToView(int position, ImageView image, TextView text, ViewGroup container) {
 
         SOrder order = orderList.get(position);
         text.setText(order.getName() + "(" + order.getItemNumber() + ")");

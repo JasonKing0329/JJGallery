@@ -21,7 +21,7 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
 
     private OnThumbFolderItemListener mListener;
 
-    private int mFocusPosition;
+    protected int mFocusPosition;
 
     public ThumbFolderAdapter(Context context, OnThumbFolderItemListener listener) {
         mListener = listener;
@@ -67,10 +67,10 @@ public abstract class ThumbFolderAdapter extends RecyclerView.Adapter<ThumbFolde
             holder.container.setBackground(null);
         }
 
-        bindDataToView(position, holder.image, holder.text);
+        bindDataToView(position, holder.image, holder.text, holder.container);
     }
 
-    protected abstract void bindDataToView(int position, ImageView image, TextView text);
+    protected abstract void bindDataToView(int position, ImageView image, TextView text, ViewGroup container);
 
     @Override
     public void onClick(View v) {

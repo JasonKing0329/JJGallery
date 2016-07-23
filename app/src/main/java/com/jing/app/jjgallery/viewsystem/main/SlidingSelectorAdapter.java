@@ -82,18 +82,23 @@ public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClick
 		if (position == 0) {
 			holder.btnPrevious.setVisibility(View.INVISIBLE);
 			holder.btnNext.setVisibility(View.VISIBLE);
+			holder.btnNext.startAnimation(getAnimation());
+			holder.btnPrevious.clearAnimation();
 		}
 		else if (position == 2) {
 			holder.btnPrevious.setVisibility(View.VISIBLE);
 			holder.btnNext.setVisibility(View.INVISIBLE);
+			holder.btnPrevious.startAnimation(getAnimation());
+			holder.btnNext.clearAnimation();
 		}
 		else {
 			holder.btnPrevious.setVisibility(View.VISIBLE);
 			holder.btnNext.setVisibility(View.VISIBLE);
+			holder.btnPrevious.startAnimation(getAnimation());
+			holder.btnNext.startAnimation(getAnimation());
 		}
 		holder.btnNext.setTag(position);
 		holder.btnNext.setOnClickListener(nextListener);
-		holder.btnNext.startAnimation(getAnimation());
 		holder.btnPrevious.setTag(position);
 		holder.btnPrevious.setOnClickListener(previousListener);
 		holder.textView.setTag(position);
@@ -106,8 +111,9 @@ public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClick
 
 	private Animation getAnimation() {
 		Animation animation = new AlphaAnimation(0, 1);
-		animation.setRepeatMode(Animation.INFINITE);
-		animation.setDuration(1000);
+		animation.setRepeatMode(Animation.REVERSE);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setDuration(500);
 		return animation;
 	}
 

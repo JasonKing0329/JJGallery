@@ -171,12 +171,11 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     @Override
     public void initActionbar(ActionBar actionBar) {
-        if (AccessController.getInstance().getAccessMode() != AccessController.ACCESS_MODE_FILEMANAGER) {
-            actionBar.clearActionIcon();
-            actionBar.addThumbIcon();
-            actionBar.addMenuIcon();
-            actionBar.addColorIcon();
-        }
+        actionBar.clearActionIcon();
+        actionBar.addThumbIcon();
+        actionBar.addMenuIcon();
+        actionBar.addColorIcon();
+        actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
     }
 
     @Override

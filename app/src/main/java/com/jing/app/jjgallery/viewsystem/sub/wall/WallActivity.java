@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.sub.WallController;
 import com.jing.app.jjgallery.model.sub.WholeRandomManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -156,7 +157,7 @@ public class WallActivity extends BaseActivity implements Callback
 
 		requestActionbarFloating();
 
-		mActionBar.setBackgroundColor(getResources().getColor(R.color.actionbar_bk_wallgalerry));
+		mActionBar.setBackgroundColor(getResources().getColor(new ThemeManager(this).getWallActionbarColor()));
 		setActionbarNormal();
 		bottomLayout = findViewById(R.id.bottombar);
 		actionbarLayout = findViewById(R.id.actionbar);
@@ -229,6 +230,7 @@ public class WallActivity extends BaseActivity implements Callback
 
 	private void setActionbarNormal() {
 		mActionBar.clearActionIcon();
+		mActionBar.addBackIcon();
 		mActionBar.addMenuIcon();
 		mActionBar.addRefreshIcon();
 		mActionBar.addChangeIcon();

@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -45,6 +46,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         }
         DisplayHelper.disableScreenshot(this);
 
+        setTheme(new ThemeManager(this).getDefaultTheme());
         super.onCreate(savedInstanceState);
 
         curOrientation = getResources().getConfiguration().orientation;
@@ -171,7 +173,9 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     public void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation != curOrientation) {
             curOrientation = newConfig.orientation;
-            mActionBar.onConfiguration(newConfig.orientation);
+            if (mActionBar != null) {
+                mActionBar.onConfiguration(newConfig.orientation);
+            }
             onOrentaionChanged(newConfig);
         }
         super.onConfigurationChanged(newConfig);

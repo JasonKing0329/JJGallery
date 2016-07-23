@@ -19,10 +19,14 @@ import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.timeline.TimeLinePresenter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
+import com.king.lib.colorpicker.ColorPickerSelectionData;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
-public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnClickListener
+import java.util.List;
+
+public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, OnClickListener
 		, OnItemClickListener, OnHeadImageClickListener {
 
 	private final int REQUEST_SETTING = 10;
@@ -55,7 +59,9 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 	}
 
 	@Override
-	protected void initView() {
+	protected void setUpContentView() {
+		setHomeViewPagerIndex(2);
+
 		fmButton = (TextView) findViewById(R.id.timeline_indicator_fm);
 		sorderButton = (TextView) findViewById(R.id.timeline_indicator_sorder);
 		guideButton = (TextView) findViewById(R.id.timeline_indicator_guide);
@@ -81,7 +87,41 @@ public class TimeLineActivity extends BaseActivity implements ITimeLineView, OnC
 		guideButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_guide_bk)));
 		closeButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_setting_bk)));
 		settingButton.setBackground(getOvalDrawable(getResources().getColor(R.color.timeline_menu_close_bk)));
+	}
 
+	@Override
+	protected void setUpLeftMenu() {
+
+	}
+
+	@Override
+	protected void setUpRightMenu() {
+
+	}
+
+	@Override
+	protected List<ColorPickerSelectionData> getListSelectionData() {
+		return null;
+	}
+
+	@Override
+	protected void onActionIconClick(View view) {
+
+	}
+
+	@Override
+	protected boolean handleBack() {
+		return false;
+	}
+
+	@Override
+	protected boolean needOptionWhenExit() {
+		return false;
+	}
+
+	@Override
+	protected void onExit() {
+		finish();
 	}
 
 	@Override

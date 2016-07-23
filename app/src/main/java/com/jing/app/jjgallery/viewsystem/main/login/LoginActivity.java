@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
 import com.jing.app.jjgallery.presenter.main.LoginPresenter;
 import com.jing.app.jjgallery.res.ColorRes;
@@ -65,9 +66,12 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     @Override
     protected void initView() {
 
+        mActionBar.addBackIcon();
+
         progressView = findViewById(R.id.login_init);
         progressButton = (ProgressButton) findViewById(R.id.progressButton);
         progressButton.setAnimationStripWidth(15);
+
     }
 
     @Override
@@ -316,7 +320,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     private void applyExtendColors() {
-        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, new ThemeManager(this).getBasicColorResId()));
     }
 
 }

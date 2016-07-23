@@ -24,7 +24,7 @@ public class AppResManager {
         ColorPickerSelectionData data = new ColorPickerSelectionData();
         data.setKey(ColorRes.ACTIONBAR_BK);
         data.setName("工具栏背景");
-        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, new ThemeManager(context).getBasicColorResId()));
         list.add(data);
         return list;
     }
@@ -39,12 +39,12 @@ public class AppResManager {
         ColorPickerSelectionData data = new ColorPickerSelectionData();
         data.setKey(ColorRes.ACTIONBAR_BK);
         data.setName("工具栏背景");
-        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, R.color.actionbar_bk_blue));
+        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, new ThemeManager(context).getBasicColorResId()));
         list.add(data);
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.FM_THUMB_INDEX_NORMAL_COLOR);
         data.setName("Index正常背景");
-        data.setColor(JResource.getColor(context, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, R.color.actionbar_bk_blue));
+        data.setColor(JResource.getColor(context, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, new ThemeManager(context).getBasicColorResId()));
         list.add(data);
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.FM_THUMB_TEXT_COLOR);
@@ -65,13 +65,13 @@ public class AppResManager {
         int colorId = new ThemeManager(context).getBasicColorResId();
         data.setKey(ColorRes.SORDER_CHOOSER_BK);
         data.setName("背景");
-        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_BK, colorId));
+        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_BK, R.color.sorder_chooser_bk));
         list.add(data);
 
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.SORDER_CHOOSER_TITLE);
         data.setName("标题");
-        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_TITLE, colorId));
+        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_TITLE, R.color.sorder_chooser_title));
         list.add(data);
 
         data = new ColorPickerSelectionData();
@@ -90,13 +90,13 @@ public class AppResManager {
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.SORDER_CHOOSER_ICON_BK);
         data.setName("工具栏图标背景");
-        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_ICON_BK, colorId));
+        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_ICON_BK, R.color.sorder_chooser_icon_bk));
         list.add(data);
 
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.SORDER_CHOOSER_DIVIDER);
         data.setName("分界线");
-        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_DIVIDER, R.color.white));
+        data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_DIVIDER, R.color.sorder_chooser_icon_bk));
         list.add(data);
 
         data = new ColorPickerSelectionData();

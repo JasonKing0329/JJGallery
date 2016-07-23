@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -46,6 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
             DisplayHelper.enableFullScreen();
         }
         DisplayHelper.disableScreenshot(this);
+
+        setTheme(new ThemeManager(this).getDefaultTheme());
         super.onCreate(savedInstanceState);
 
         curOrientation = getResources().getConfiguration().orientation;
@@ -168,7 +171,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     public void onConfigurationChanged(Configuration newConfig) {
         if (newConfig.orientation != curOrientation) {
             curOrientation = newConfig.orientation;
-            mActionBar.onConfiguration(newConfig.orientation);
+            if (mActionBar != null) {
+                mActionBar.onConfiguration(newConfig.orientation);
+            }
         }
         super.onConfigurationChanged(newConfig);
     }

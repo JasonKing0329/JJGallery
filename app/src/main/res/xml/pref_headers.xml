@@ -4,27 +4,27 @@
 
     <header
         android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$SafetyPreferenceFragment"
-        android:icon="@drawable/ic_setting_safety"
+        android:icon="?attr/setting_ic_safety"
         android:title="@string/pref_header_safety" />
 
     <header
         android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_setting_general"
+        android:icon="?attr/setting_ic_general"
         android:title="@string/pref_header_general" />
 
     <header
         android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$FileMnagerPreferenceFragment"
-        android:icon="@drawable/ic_setting_fm"
+        android:icon="?attr/setting_ic_folder"
         android:title="@string/tab_filemanager" />
 
     <header
         android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$SOrderPreferenceFragment"
-        android:icon="@drawable/ic_setting_sorder"
+        android:icon="?attr/setting_ic_order"
         android:title="@string/tab_sorder" />
 
     <header
         android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$SurfPreferenceFragment"
-        android:icon="@drawable/ic_setting_surf"
+        android:icon="?attr/setting_ic_surf"
         android:title="@string/setting_title_surf" />
 
 </preference-headers>

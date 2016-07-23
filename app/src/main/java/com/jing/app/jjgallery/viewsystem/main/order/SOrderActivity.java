@@ -50,6 +50,8 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     }
     @Override
     protected void setUpContentView() {
+        setHomeViewPagerIndex(1);
+
         mActionBar.useMenuLeftIcon();
         mActionBar.addMenuIcon();
         mActionBar.setTitle(getString(R.string.tab_sorder));
@@ -173,6 +175,7 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     @Override
     protected void onExit() {
         mCurrentFragment.getPage().onExit();
+        finish();
     }
 
     @Override
@@ -265,4 +268,5 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     public SOrderPresenter getPresenter() {
         return mPresenter;
     }
+
 }

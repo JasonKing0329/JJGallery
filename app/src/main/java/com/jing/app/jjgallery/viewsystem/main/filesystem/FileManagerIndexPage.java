@@ -176,13 +176,11 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
 
     @Override
     public void initActionbar(ActionBar actionBar) {
-        if (AccessController.getInstance().getAccessMode() != AccessController.ACCESS_MODE_FILEMANAGER) {
-            actionBar.clearActionIcon();
-            actionBar.addThumbIcon();
-            actionBar.addMenuIcon();
-            actionBar.addColorIcon();
-            actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
-        }
+        actionBar.clearActionIcon();
+        actionBar.addThumbIcon();
+        actionBar.addMenuIcon();
+        actionBar.addColorIcon();
+        actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
     }
 
     @Override

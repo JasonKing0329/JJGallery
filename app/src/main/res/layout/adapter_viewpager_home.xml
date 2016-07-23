@@ -4,27 +4,27 @@
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/viewpager_home_previous"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/sliding_viewpager_indicator_width"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:padding="20dp"
         android:background="@drawable/ripple_rect_white"
-        android:src="@drawable/ic_indicator_previous"/>
+        android:src="@drawable/ic_chevron_left_white_36dp"/>
     <TextView
         android:id="@+id/viewpager_home_text"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:textSize="20dp"
+        android:textSize="@dimen/sliding_viewpager_text_size"
         android:gravity="center"
-        android:textColor="@color/actionbar_bk_orange"
+        android:textColor="@color/sliding_home_text"
         android:background="@drawable/ripple_rect_white"/>
     <ImageView
         android:id="@+id/viewpager_home_next"
-        android:layout_width="50dp"
+        android:layout_width="@dimen/sliding_viewpager_indicator_width"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:padding="20dp"
         android:background="@drawable/ripple_rect_white"
-        android:src="@drawable/ic_indicator_next"/>
+        android:src="@drawable/ic_chevron_right_white_36dp"/>
 </LinearLayout>

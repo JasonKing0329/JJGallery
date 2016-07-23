@@ -188,12 +188,9 @@
         <item>@string/action_settings</item>
     </string-array>
     <string-array name="theme_key" translatable="false">
-        <item>blue</item>
-        <item>green</item>
-        <item>lightgreen</item>
-        <item>orange</item>
-        <item>deepblue</item>
-        <item>purple</item>
+        <item>normal</item>
+        <item>dark</item>
+        <item>light</item>
     </string-array>
     <string-array name="game_edit_drop" translatable="false">
 	    <item>Folder</item>

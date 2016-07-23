@@ -43,45 +43,45 @@
                 android:orientation="vertical">
                 <TextView
                     style="@style/SlidingItemText"
-                    android:id="@+id/sliding_menu_switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/menu_mode_switch"/>
-                <TextView
-                    style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_checkall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_room_service_yellow_700_36dp"
                     android:text="@string/menu_check_all_unencrypted"/>
                 <TextView
                     style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_export"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_save_yellow_700_36dp"
                     android:text="@string/menu_export"/>
                 <TextView
                     style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_import"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_import_export_yellow_700_36dp"
                     android:text="@string/menu_load"/>
                 <TextView
                     style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_theme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_format_color_text_yellow_700_36dp"
                     android:text="@string/menu_change_theme"/>
                 <TextView
                     style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_activity_test_settings"/>
+                    android:drawableLeft="@drawable/ic_settings_yellow_700_36dp"
+                    android:text="@string/action_settings"/>
                 <TextView
                     style="@style/SlidingItemText"
                     android:id="@+id/sliding_menu_exit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_exit_to_app_yellow_700_36dp"
                     android:text="@string/menu_exit"/>
             </LinearLayout>
         </ScrollView>

@@ -5,10 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
@@ -26,7 +22,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -40,7 +35,6 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
 import com.jing.app.jjgallery.bean.filesystem.PathIndicatorNode;
 import com.jing.app.jjgallery.controller.AccessController;
-import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
@@ -50,7 +44,6 @@ import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
-import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
 import java.io.File;
 import java.util.List;
@@ -61,7 +54,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 
 	private Context context;
 	private View view;
-	//private TextView currentPathView;
+
 	private FilePathIndicatorView indicatorView;
 	private ImageView parentView;
 	private TextView nameTagView, timeTagView, imageWHView;
@@ -74,11 +67,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	private FileListController listController;
 	private FileManagerPresenter mPresenter;
 	private ProgressDialog progressDialog;
-	private ActionBar actionBar;
-
-	private LinearLayout layout;
-	private Bitmap background;
-//	private ShowImageDialog imageDialog;
 
 	public FileManagerListPage(Context context, View view) {
 		this.context = context;
@@ -92,7 +80,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 
 	private void initView() {
 		showParentItem();
-		layout.setBackgroundColor(Color.WHITE);
 		refresh();
 	}
 
@@ -101,7 +88,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	}
 
 	private void initViewElement() {
-		layout = (LinearLayout) view.findViewById(R.id.layout_page_filemanager);
 		showCurPathView();
 		parentView = (ImageView) view.findViewById(R.id.filelist_parent);
 		nameTagView = (TextView) view.findViewById(R.id.filelist_tag_name);
@@ -135,31 +121,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 		encryptedRadio.setOnCheckedChangeListener(listAction);
 		unencryptedRadio.setOnCheckedChangeListener(listAction);
 	}
-
-	/*v6.3.7 deprecated this display mode, replace it with path indicator view
-	private void showCurPathView() {
-		
-		if (currentPathView != null) {
-			currentPathView.setVisibility(View.GONE);
-		}
-		
-		if (DisplayHelper.isTabModel(context)) {
-			currentPathView = (TextView) view.findViewById(R.id.filelist_current_dir_hor);
-		}
-		else {
-			if (context.getResources().getConfiguration().orientation
-					== android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
-				currentPathView = (TextView) view.findViewById(R.id.filelist_current_dir_hor);
-			}
-			else {
-				currentPathView = (TextView) view.findViewById(R.id.filelist_current_dir);
-			}
-		}
-		currentPathView.setVisibility(View.VISIBLE);
-		
-		currentPathView.setText(listController.getCurrentPath());
-	}
-	*/
 
 	private void showCurPathView() {
 		List<PathIndicatorNode> pathList = null;
@@ -270,18 +231,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 		listController.encryptCurFolder();
 	}
 
-	protected void reload() {
-		Activity activity = (Activity) context;
-		Intent intent = activity.getIntent();
-		activity.overridePendingTransition(0, 0);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-		PictureManagerUpdate.getInstance().destroy();
-		activity.finish();
-		activity.overridePendingTransition(0, 0);
-		activity.startActivity(intent);
-	}
-
 	private void openCreateFolderDialog() {
 		new DefaultDialogManager().openCreateFolderDialog(context
 				, new DefaultDialogManager.OnDialogActionListener() {
@@ -298,15 +247,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 						}
 					}
 				});
-	}
-
-	public void setBackground(Bitmap bitmap) {
-		if (background == null) {
-			layout.setBackgroundColor(Color.WHITE);
-		}
-		else {
-			layout.setBackground(new BitmapDrawable(context.getResources(), background));
-		}
 	}
 
 	private ShowImageDialog imageDialog;
@@ -423,16 +363,13 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 
 	@Override
 	public void initActionbar(ActionBar actionBar) {
-		if (AccessController.getInstance().getAccessMode() != AccessController.ACCESS_MODE_FILEMANAGER) {
-			actionBar.clearActionIcon();
-			actionBar.addThumbIcon();
-			//actionBar.addSortIcon();
-			actionBar.addAddIcon();
-			actionBar.addRefreshIcon();
-			actionBar.addColorIcon();
-			actionBar.addMenuIcon();
-			actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
-		}
+		actionBar.clearActionIcon();
+		actionBar.addThumbIcon();
+		actionBar.addAddIcon();
+		actionBar.addRefreshIcon();
+		actionBar.addColorIcon();
+		actionBar.addMenuIcon();
+		actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
 	}
 
 	private class FileListAction implements Callback, OnItemClickListener

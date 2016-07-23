@@ -117,6 +117,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         actionBar.addColorIcon();
         actionBar.addSortIcon();
         actionBar.addRefreshIcon();
+        actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
     }
 
     @Override

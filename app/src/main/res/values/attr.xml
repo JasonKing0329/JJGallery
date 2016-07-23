@@ -6,6 +6,25 @@
     <attr name="path_indicator_bk" format="reference"/>
     <attr name="path_indicator_press" format="reference"/>
 
+    <attr name="actionbar_ic_add" format="reference"/>
+    <attr name="actionbar_ic_color" format="reference"/>
+    <attr name="actionbar_ic_sort" format="reference"/>
+    <attr name="actionbar_ic_cover" format="reference"/>
+    <attr name="actionbar_ic_refresh" format="reference"/>
+    <attr name="actionbar_ic_search" format="reference"/>
+    <attr name="actionbar_ic_menu_left" format="reference"/>
+    <attr name="actionbar_ic_menu" format="reference"/>
+    <attr name="actionbar_ic_folder" format="reference"/>
+    <attr name="actionbar_ic_back" format="reference"/>
+    <attr name="actionbar_ic_surf" format="reference"/>
+    <attr name="actionbar_ic_casual" format="reference"/>
+    <attr name="actionbar_text_color" format="reference"/>
+    <attr name="setting_ic_safety" format="reference"/>
+    <attr name="setting_ic_general" format="reference"/>
+    <attr name="setting_ic_folder" format="reference"/>
+    <attr name="setting_ic_order" format="reference"/>
+    <attr name="setting_ic_surf" format="reference"/>
+
     <!-- 圆形头像 -->
     <declare-styleable name="CircleImageView">
 

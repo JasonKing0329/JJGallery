@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,13 +28,20 @@ public class FileThumbFolderAdapter extends ThumbFolderAdapter {
     }
 
     @Override
-    protected void bindDataToView(int position, ImageView imageView, TextView textView) {
+    protected void bindDataToView(int position, ImageView imageView, TextView textView, ViewGroup container) {
         textView.setText(folderList.get(position).getName());
         if (mPresenter.hasChildFolder(folderList.get(position).getPath())) {
             imageView.setImageResource(R.drawable.ic_folder_parent);
         }
         else {
-            imageView.setImageResource(R.drawable.ic_folder_sub);
+            // folder模式下子非文件目录不采用边框标识选中，采用focus图片
+            if (mFocusPosition == position) {
+                container.setBackground(null);
+                imageView.setImageResource(R.drawable.ic_folder_sub_focus);
+            }
+            else {
+                imageView.setImageResource(R.drawable.ic_folder_sub);
+            }
         }
     }
 
