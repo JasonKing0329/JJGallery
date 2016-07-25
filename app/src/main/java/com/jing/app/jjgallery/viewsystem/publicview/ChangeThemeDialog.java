@@ -22,7 +22,7 @@ public class ChangeThemeDialog extends CustomDialog implements OnItemClickListen
 	public ChangeThemeDialog(Context context,
 							 OnCustomDialogActionListener actionListener) {
 		super(context, actionListener);
-		applyGreyStyle();
+		applyThemeStyle();
 		requestSaveAction(true);
 		requestCancelAction(true);
 		setTitle(getContext().getResources().getString(R.string.menu_change_theme));

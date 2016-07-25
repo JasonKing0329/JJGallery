@@ -122,7 +122,6 @@ public class FolderDlgItemView extends LinearLayout implements OnClickListener {
 			((MarginLayoutParams) params).leftMargin = leftMargin;
 			containerHolder.nameView.setText(file.getName());
 			containerHolder.nameView.setLayoutParams(params);
-			containerHolder.nameView.setTextColor(getResources().getColor(R.color.black));
 			containerHolder.nameView.setGravity(Gravity.CENTER_VERTICAL);
 			container.addView(containerHolder.nameView);
 		}

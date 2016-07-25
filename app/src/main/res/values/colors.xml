@@ -44,6 +44,7 @@
     <color name="actionbar_text_normal">#ffffff</color>
 
     <color name="dialog_background">#eeeeeeee</color>
+    <color name="dialog_background_dark_theme">#e51a3c49</color>
     <color name="dialog_background_dark">#cc00a5c4</color>
     <color name="dialog_background_rosybrown">#BC8F8F</color><!--褐玫瑰红 -->
     <color name="dialog_sordercreater_divider">#5500a5c4</color>
@@ -60,7 +61,7 @@
     <color name="title_court_clay">#aacc6600</color><!--红土色 -->
 
     <color name="custom_dialog_icon_bk_frame">#ffffff</color>
-    <color name="custom_dialog_icon_bk_normal">#00a5c4</color>
+    <color name="custom_dialog_icon_bk_normal">#00a5e4</color>
     <color name="custom_dialog_icon_bk_pressed">#cc6600</color>
     <color name="custom_dialog_title_bk_normal">#ffffff</color>
     <color name="custom_dialog_title_text">#00a5c4</color>

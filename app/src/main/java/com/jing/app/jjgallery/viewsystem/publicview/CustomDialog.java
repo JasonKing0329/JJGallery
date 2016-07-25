@@ -320,8 +320,21 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		public void onLoadData(HashMap<String, Object> data);
 	}
 
-	public void applyGreyStyle() {
+	public void applyThemeStyle() {
+		if (new ThemeManager(context).isDarkTheme()) {
+			applyDarkThemeStyle();
+		}
+		else {
+			applyLightThemeStyle();
+		}
+	}
+
+	private void applyLightThemeStyle() {
 		rootView.setBackgroundColor(context.getResources().getColor(R.color.dialog_background));
+	}
+
+	private void applyDarkThemeStyle() {
+		rootView.setBackgroundColor(context.getResources().getColor(R.color.dialog_background_dark_theme));
 	}
 
 	public void setBackgroundColor(int color) {

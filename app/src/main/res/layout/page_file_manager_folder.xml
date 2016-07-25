@@ -79,7 +79,7 @@
 		    android:layout_height="25dp"
 		    android:visibility="invisible"
 		    android:layout_marginLeft="@dimen/filelist_vertical_distance"
-		    android:src="@drawable/ic_backup_black_36dp"
+		    android:src="?attr/file_manager_upper"
 		    android:scaleType="fitCenter"
 	        />
         <ImageView 

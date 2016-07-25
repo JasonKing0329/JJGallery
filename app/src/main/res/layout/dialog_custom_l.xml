@@ -31,7 +31,7 @@
 	       		android:layout_height="wrap_content"
 	       		android:layout_marginLeft="5dp"
 	       		android:textSize="@dimen/custom_dialog_title_text_size"
-	       		android:textColor="?attr/actionbar_bk_color"
+	       		android:textColor="@color/custom_dialog_title_text"
 	       		android:textStyle="bold"/>
 	    </LinearLayout>
 	    

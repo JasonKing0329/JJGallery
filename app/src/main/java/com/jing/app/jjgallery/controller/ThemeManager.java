@@ -24,8 +24,8 @@ public class ThemeManager {
 			, R.color.actionbar_bk_light};
 	private int[] themeWallBkColors = new int[] {R.color.actionbar_bk_wallgalerry, R.color.actionbar_bk_wallgalerry
 			, R.color.actionbar_bk_wallgalerry_light};
-	private int[] themeDefaultFolder = new int[] {R.drawable.ic_backup_black_36dp, R.drawable.ic_backup_white_36dp
-			, R.drawable.ic_backup_black_36dp};
+	private int[] themeDefaultFolder = new int[] {R.drawable.ic_folder_sub, R.drawable.ic_folder_sub
+			, R.drawable.ic_folder_sub};
 	
 	public ThemeManager(Context context) {
 		this.context = context;
@@ -91,6 +91,15 @@ public class ThemeManager {
 		return theme;
 	}
 
+	public boolean isDarkTheme() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
+		if (themeKeys[1].equals(value)) {
+			return true;
+		}
+		return false;
+	}
+
 	public int getBasicColorResId() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
@@ -144,4 +153,5 @@ public class ThemeManager {
 		}
 		return color;
 	}
+
 }

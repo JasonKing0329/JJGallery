@@ -37,7 +37,7 @@ public class FolderDialog extends CustomDialog implements
 		super(context, actionListener);
 		requestCancelAction(true);
 		requestOkAction(true);
-		applyGreyStyle();
+		applyThemeStyle();
 		folderManager = new FolderManager();
 		itemList = new ArrayList<FolderDlgItemView>();
 		initViewData();

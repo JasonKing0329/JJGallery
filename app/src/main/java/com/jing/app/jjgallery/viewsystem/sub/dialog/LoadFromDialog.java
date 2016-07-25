@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
 import java.io.File;
@@ -39,6 +41,8 @@ public class LoadFromDialog extends CustomDialog implements OnItemClickListener 
 		setTitle(R.string.menu_load);
 		requestOkAction(true);
 		requestCancelAction(true);
+
+		applyThemeStyle();
 		//FIXME 需要考虑转屏
 		//setHeight(context.getResources().getDimensionPixelSize(R.dimen.dialog_loadfrom_height));
 		initData();
@@ -172,6 +176,10 @@ public class LoadFromDialog extends CustomDialog implements OnItemClickListener 
 		listView = new ListView(context);
 		listView.setDivider(null);
 		listView.setOnItemClickListener(this);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, getContext().getResources().getDimensionPixelSize(R.dimen.dlg_loadfrom_list_height)
+		);
+		listView.setLayoutParams(params);
 		return listView;
 	}
 

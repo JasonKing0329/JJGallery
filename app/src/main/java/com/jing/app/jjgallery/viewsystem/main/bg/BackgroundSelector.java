@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
@@ -26,7 +27,7 @@ public class BackgroundSelector extends CustomDialog {
         super(context, actionListener);
         requestCancelAction(true);
         requestOkAction(true);
-        applyGreyStyle();
+        applyThemeStyle();
         setTitle(R.string.bg_selector_title);
 
         HashMap<String, Object> map = new HashMap<>();
@@ -46,6 +47,12 @@ public class BackgroundSelector extends CustomDialog {
 
         mAdapter = new BackgroundAdapter(getContext(), manager.getItemList());
         recyclerView.setAdapter(mAdapter);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, getContext().getResources().getDimensionPixelSize(R.dimen.dlg_loadfrom_list_height)
+        );
+        view.setLayoutParams(params);
+
         return view;
     }
 
