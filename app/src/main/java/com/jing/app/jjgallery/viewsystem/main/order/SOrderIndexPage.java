@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.BaseSlidingActivity;
@@ -18,7 +17,6 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -111,36 +109,10 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         switch (view.getId()) {
 
             case R.id.actionbar_thumb:
-                showViewModePopup(view);
                 break;
         }
     }
 
-    protected void showViewModePopup(View v) {
-        PopupMenu menu = new PopupMenu(context, v);
-        menu.getMenuInflater().inflate(R.menu.sorder_view_mode, menu.getMenu());
-        menu.getMenu().findItem(R.id.menu_index_view).setVisible(false);
-        menu.show();
-        menu.setOnMenuItemClickListener(viewModeListener);
-    }
-
-    PopupMenu.OnMenuItemClickListener viewModeListener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.menu_grid_view:
-                    mPresenter.switchToGridPage();
-                    break;
-                case R.id.menu_thumb_view:
-                    mPresenter.switchToThumbPage();
-                    break;
-            }
-            return true;
-        }
-
-    };
     @Override
     public void createMenu(MenuInflater menuInflater, Menu menu) {
         loadMenu(menuInflater, menu);
@@ -172,7 +144,8 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void initActionbar(ActionBar actionBar) {
         actionBar.clearActionIcon();
-        actionBar.addThumbIcon();
+        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
+//        actionBar.addThumbIcon();
         actionBar.addMenuIcon();
         actionBar.addColorIcon();
         actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
@@ -210,7 +183,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void onKeywordClick(View view, Keyword keyword) {
         SOrder order = (SOrder) keyword.getObject();
-        ActivityManager.startSurfActivity((Activity) context, order);
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context));
     }
 
     public void onIndexBgChanged(String path) {

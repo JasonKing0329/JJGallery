@@ -90,13 +90,8 @@ public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, 
 	}
 
 	@Override
-	protected void setUpLeftMenu() {
-
-	}
-
-	@Override
-	protected void setUpRightMenu() {
-
+	protected View setUpRightMenu() {
+		return null;
 	}
 
 	@Override

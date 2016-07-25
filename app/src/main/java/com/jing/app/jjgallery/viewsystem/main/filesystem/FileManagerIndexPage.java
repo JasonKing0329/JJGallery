@@ -10,13 +10,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
-import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -117,36 +115,11 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
         switch (view.getId()) {
 
             case R.id.actionbar_thumb:
-                showViewModePopup(view);
+
                 break;
         }
     }
 
-    protected void showViewModePopup(View v) {
-        PopupMenu menu = new PopupMenu(context, v);
-        menu.getMenuInflater().inflate(R.menu.filemanager_view_mode, menu.getMenu());
-        menu.getMenu().findItem(R.id.menu_index_view).setVisible(false);
-        menu.show();
-        menu.setOnMenuItemClickListener(viewModeListener);
-    }
-
-    PopupMenu.OnMenuItemClickListener viewModeListener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.menu_list_view:
-                    mPresenter.switchToListPage();
-                    break;
-                case R.id.menu_thumb_view:
-                    mPresenter.switchToThumbPage();
-                    break;
-            }
-            return true;
-        }
-
-    };
     @Override
     public void createMenu(MenuInflater menuInflater, Menu menu) {
         loadMenu(menuInflater, menu);
@@ -177,7 +150,8 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void initActionbar(ActionBar actionBar) {
         actionBar.clearActionIcon();
-        actionBar.addThumbIcon();
+        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
+//        actionBar.addThumbIcon();
         actionBar.addMenuIcon();
         actionBar.addColorIcon();
         actionBar.onConfiguration(context.getResources().getConfiguration().orientation);
@@ -208,7 +182,7 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void onKeywordClick(View view, Keyword keyword) {
         String path = (String) keyword.getObject();
-        ActivityManager.startSurfActivity((Activity) context, path);
+        ActivityManager.startExploreActivity((Activity) context, path, SettingProperties.getFileManagerIndexItemOpenMode(context));
     }
 
     public void onIndexBgChanged(String path) {

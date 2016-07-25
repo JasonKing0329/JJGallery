@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
@@ -35,6 +36,10 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         void onChangeTheme();
     }
 
+    public interface SlidingRightCallback {
+        View onSetupRightSlidingMenu();
+    }
+
     private Context mContext;
 
     // left menu defines common function of home
@@ -43,6 +48,7 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
     private View slidingRightView;
 
     private SlidingLeftCallback slidingLeftCallback;
+    private SlidingRightCallback slidingRightCallback;
     private View.OnClickListener rightListener;
 
     private ImageView leftBkView, rightBkView;
@@ -56,12 +62,19 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         mContext = context;
         slidingLeftView = LayoutInflater.from(context).inflate(leftLayoutRes, null);
         slidingRightView = LayoutInflater.from(context).inflate(rightLayoutRes, null);
+    }
+
+    public void setup() {
         initLeftView();
         initRightView();
     }
 
     public void setSlidingLeftCallback(SlidingLeftCallback callback) {
         slidingLeftCallback = callback;
+    }
+
+    public void setSlidingRightCallback(SlidingRightCallback callback) {
+        slidingRightCallback = callback;
     }
 
     public void setRightOnClickListener(View.OnClickListener listener) {
@@ -108,6 +121,14 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
         String bkPath = getRightBkPath(mContext.getResources().getConfiguration().orientation);
         if (bkPath != null) {
             SImageLoader.getInstance().displayImage(bkPath, rightBkView);
+        }
+
+        ViewGroup group = (ViewGroup) slidingRightView.findViewById(R.id.sliding_right_content);
+        if (slidingRightCallback != null) {
+            View content = slidingRightCallback.onSetupRightSlidingMenu();
+            if (content != null) {
+                group.addView(content);
+            }
         }
     }
 

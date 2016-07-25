@@ -226,4 +226,9 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string-array name="pref_explore_item_open" translatable="false">
+        <item>Surf</item>
+        <item>Wall</item>
+        <item>Book</item>
+    </string-array>
 </resources>

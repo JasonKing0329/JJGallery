@@ -1,15 +1,12 @@
 package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
 import android.content.Context;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.sub.thumb.OnThumbFolderItemListener;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbPage;
 
@@ -55,7 +52,8 @@ public class FileManagerThumbFolderPage extends ThumbPage {
     @Override
     public void initActionbar(ActionBar actionBar) {
         super.initActionbar(actionBar);
-        actionBar.addThumbIcon();
+        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
+//        actionBar.addThumbIcon();
         actionBar.addAddIcon();
         actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
@@ -120,7 +118,6 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 //				showSortPopup(v);
 //				break;
             case R.id.actionbar_thumb:
-                showViewModePopup(view);
                 break;
         }
     }
@@ -160,38 +157,6 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 
         getIndexCreator().createFromFileList(tempFileList);
     }
-
-    protected void showViewModePopup(View v) {
-        PopupMenu menu = new PopupMenu(getContext(), v);
-        menu.getMenuInflater().inflate(R.menu.filemanager_view_mode, menu.getMenu());
-        menu.getMenu().findItem(R.id.menu_thumb_view).setVisible(false);
-        menu.show();
-        menu.setOnMenuItemClickListener(viewModeListener);
-    }
-
-    PopupMenu.OnMenuItemClickListener viewModeListener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.menu_list_view:
-                    if (getContext() instanceof FileManagerActivity) {
-                        FileManagerActivity instance = (FileManagerActivity) getContext();
-                        instance.getPresenter().switchToListPage();
-                    }
-                    break;
-                case R.id.menu_index_view:
-                    if (getContext() instanceof FileManagerActivity) {
-                        FileManagerActivity instance = (FileManagerActivity) getContext();
-                        instance.getPresenter().switchToIndexPage();
-                    }
-                    break;
-            }
-            return true;
-        }
-
-    };
 
     @Override
     public void onThumbFolderItemClick(View view, int position) {

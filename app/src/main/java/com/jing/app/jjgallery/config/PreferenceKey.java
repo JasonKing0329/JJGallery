@@ -56,6 +56,8 @@ public class PreferenceKey {
     public static final String PREF_BG_FM_INDEX = "pref_bg_fm_index";
     // 文件管理器Index page横屏背景
     public static final String PREF_BG_FM_INDEX_LAND = "pref_bg_fm_index_land";
+    // 点击index page item打开
+    public static final String PREF_FM_INDEX_ITEM_OPEN = "pref_fm_index_item_open";
 
     /**
      * sorder
@@ -74,6 +76,10 @@ public class PreferenceKey {
     public static final String PREF_SORDER_COVER_MODE = "pref_sorder_cover_mode";
     // 层叠封面张数
     public static final String PREF_SORDER_CASCADE_NUM = "pref_sorder_cascade_number";
+    // 点击grid page item打开
+    public static final String PREF_SORDER_GRID_ITEM_OPEN = "pref_sorder_grid_item_open";
+    // 点击index page item打开
+    public static final String PREF_SORDER_INDEX_ITEM_OPEN = "pref_sorder_index_item_open";
 
     /**
      * surf

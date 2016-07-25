@@ -187,9 +187,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_INDEX_ITEM_OPEN));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_PAGE_NUM));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_CASCADE_NUM));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_GRID_ITEM_OPEN));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
     }
@@ -283,6 +286,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_INDEX_ITEM_OPEN));
         }
 
     }
@@ -298,6 +302,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_PAGE_NUM));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_CASCADE_NUM));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_GRID_ITEM_OPEN));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN));
         }
 
     }

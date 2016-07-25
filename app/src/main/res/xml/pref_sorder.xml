@@ -34,4 +34,31 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/setting_sorder_cover_cascade_num" />
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/pref_sorder_cascade_number"
+        android:entryValues="@array/pref_sorder_cascade_number"
+        android:key="pref_sorder_grid_item_open"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_sorder_cover_cascade_num" />
+
+    <ListPreference
+        android:defaultValue="Surf"
+        android:entries="@array/pref_explore_item_open"
+        android:entryValues="@array/pref_explore_item_open"
+        android:key="pref_sorder_grid_item_open"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_sorder_grid_open" />
+
+    <ListPreference
+        android:defaultValue="Wall"
+        android:entries="@array/pref_explore_item_open"
+        android:entryValues="@array/pref_explore_item_open"
+        android:key="pref_sorder_index_item_open"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/setting_sorder_index_open" />
 </PreferenceScreen>

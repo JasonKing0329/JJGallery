@@ -43,7 +43,8 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
     @Override
     public void initActionbar(ActionBar actionBar) {
         super.initActionbar(actionBar);
-        actionBar.addThumbIcon();
+        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
+//        actionBar.addThumbIcon();
         actionBar.addAddIcon();
         actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
@@ -100,7 +101,6 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
 
                 break;
             case R.id.actionbar_thumb:
-                showViewModePopup(view);
                 break;
         }
     }
@@ -147,38 +147,6 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
     protected void onUpperClicked() {
 
     }
-
-    protected void showViewModePopup(View v) {
-        PopupMenu menu = new PopupMenu(getContext(), v);
-        menu.getMenuInflater().inflate(R.menu.sorder_view_mode, menu.getMenu());
-        menu.getMenu().findItem(R.id.menu_thumb_view).setVisible(false);
-        menu.show();
-        menu.setOnMenuItemClickListener(viewModeListener);
-    }
-
-    PopupMenu.OnMenuItemClickListener viewModeListener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.menu_grid_view:
-                    if (getContext() instanceof SOrderActivity) {
-                        SOrderActivity instance = (SOrderActivity) getContext();
-                        instance.getPresenter().switchToGridPage();
-                    }
-                    break;
-                case R.id.menu_index_view:
-                    if (getContext() instanceof SOrderActivity) {
-                        SOrderActivity instance = (SOrderActivity) getContext();
-                        instance.getPresenter().switchToIndexPage();
-                    }
-                    break;
-            }
-            return true;
-        }
-
-    };
 
     @Override
     public void onThumbFolderItemClick(View view, int position) {

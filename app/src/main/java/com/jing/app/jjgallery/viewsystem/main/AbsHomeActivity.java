@@ -57,8 +57,6 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         initSlidingMenu();
         // initialize content view
         setUpContentView();
-        // custom left sliding menu
-        setUpLeftMenu();
         // custom right sliding menu
         setUpRightMenu();
         // apply color saved in disk file
@@ -81,6 +79,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         mSlidingMenu.setSecondaryOnOpenListner(this);
         mSlidingMenu.setOnClosedListener(this);
         setSlidingActionBarEnabled(false);
+
         slidingViewManager = new SlidingViewManager(this, R.layout.layout_sliding_left, R.layout.layout_sliding_right);
         slidingViewManager.setSlidingLeftCallback(new SlidingViewManager.SlidingLeftCallback() {
             @Override
@@ -113,6 +112,14 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
                 openChangeThemeDialog();
             }
         });
+        slidingViewManager.setSlidingRightCallback(new SlidingViewManager.SlidingRightCallback() {
+            @Override
+            public View onSetupRightSlidingMenu() {
+                return setUpRightMenu();
+            }
+        });
+        slidingViewManager.setup();
+
         setBehindContentView(slidingViewManager.getSlidingLeftView());
         setSecondaryMenu(slidingViewManager.getSlidingRightView());
         mSlidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
@@ -131,8 +138,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     }
 
     protected abstract void setUpContentView();
-    protected abstract void setUpLeftMenu();
-    protected abstract void setUpRightMenu();
+    protected abstract View setUpRightMenu();
 
     @Override
     public void onBackPressed() {

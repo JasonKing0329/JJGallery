@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -59,13 +60,10 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     }
 
     @Override
-    protected void setUpLeftMenu() {
-
-    }
-
-    @Override
-    protected void setUpRightMenu() {
-
+    protected View setUpRightMenu() {
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_sliding_right_sorder, null);
+        new RightMenuPage(view, this);
+        return view;
     }
 
     @Override

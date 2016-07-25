@@ -2,7 +2,6 @@ package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -35,6 +34,7 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
@@ -575,12 +575,14 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         SOrder order = currentPageOrders.get(position);
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderGridItemOpenMode(context));
     }
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v,
                                 int groupPosition, int childPosition, long id) {
         SOrder order = orderListInExpandable.get(groupPosition).get(childPosition);
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderGridItemOpenMode(context));
         return false;
     }
 
@@ -899,12 +901,6 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         public boolean onMenuItemClick(MenuItem item) {
 
             switch (item.getItemId()) {
-                case R.id.menu_index_view:
-                    mPresenter.switchToIndexPage();
-                    break;
-                case R.id.menu_thumb_view:
-                    mPresenter.switchToThumbPage();
-                    break;
                 case R.id.menu_cover_single:
                     changeCoverMode(PreferenceValue.SORDER_COVER_SINGLE);
                     break;

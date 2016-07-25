@@ -70,6 +70,7 @@ public class SettingProperties {
 
     /**
      * 文件管理器默认打开视图
+     * @return see PreferenceValue.VALUE_FM_VIEW_XXX
      */
     public static String getFileManagerDefaultMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -78,6 +79,7 @@ public class SettingProperties {
 
     /**
      * SOrder默认打开视图
+     * @return see PreferenceValue.VALUE_SORDER_VIEW_XXX
      */
     public static String getSOrderDefaultMode(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -193,6 +195,33 @@ public class SettingProperties {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String mode = preferences.getString(PreferenceKey.PREF_SORDER_COVER_MODE, "" + PreferenceValue.SORDER_COVER_SINGLE);
         return Integer.parseInt(mode);
+    }
+
+    /**
+     * sorder 点击gird page item打开模式
+     */
+    public static String getSOrderGridItemOpenMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_GRID_ITEM_OPEN, "" + PreferenceValue.EXPLORE_OPEN_SURF);
+        return mode;
+    }
+
+    /**
+     * sorder 点击gird page item打开模式
+     */
+    public static String getSOrderIndexItemOpenMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN, "" + PreferenceValue.EXPLORE_OPEN_WALL);
+        return mode;
+    }
+
+    /**
+     * filemanager 点击gird page item打开模式
+     */
+    public static String getFileManagerIndexItemOpenMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_FM_INDEX_ITEM_OPEN, "" + PreferenceValue.EXPLORE_OPEN_WALL);
+        return mode;
     }
 
     /**

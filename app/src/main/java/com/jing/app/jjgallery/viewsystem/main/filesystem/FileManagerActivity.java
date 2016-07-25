@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,12 @@ import com.king.lib.colorpicker.ColorPickerSelectionData;
 
 import java.util.List;
 
+/**
+ * 文件管理器Activity
+ * 负责list/thumb/index三个page的切换调度，下发由activity触发的回调方法以及公共监听方法
+ * 只负责逻辑层面的调度
+ * UI以及各自的功能交由三个Page页自己处理
+ */
 public class FileManagerActivity extends AbsHomeActivity implements IFileManagerView, FMBgSubscriber {
 
     private FileManagerPresenter mPresenter;
@@ -53,13 +60,10 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    protected void setUpLeftMenu() {
-
-    }
-
-    @Override
-    protected void setUpRightMenu() {
-
+    protected View setUpRightMenu() {
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_sliding_right_fm, null);
+        new RightMenuPage(view, this);
+        return view;
     }
 
     @Override

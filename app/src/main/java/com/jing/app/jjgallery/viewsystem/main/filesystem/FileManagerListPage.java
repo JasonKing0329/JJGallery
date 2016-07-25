@@ -23,8 +23,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -307,7 +305,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 //				showSortPopup(v);
 //				break;
 			case R.id.actionbar_thumb:
-				showViewModePopup(view);
 				break;
 			case R.id.actionbar_refresh:
 				refresh();
@@ -364,7 +361,8 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	@Override
 	public void initActionbar(ActionBar actionBar) {
 		actionBar.clearActionIcon();
-		actionBar.addThumbIcon();
+		//v2.0.3 change: 切换fragment的功能由右侧菜单取代
+//        actionBar.addThumbIcon();
 		actionBar.addAddIcon();
 		actionBar.addRefreshIcon();
 		actionBar.addColorIcon();
@@ -690,32 +688,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 		mPresenter = (FileManagerPresenter) presenter;
 	}
 
-	protected void showViewModePopup(View v) {
-		PopupMenu menu = new PopupMenu(context, v);
-		menu.getMenuInflater().inflate(R.menu.filemanager_view_mode, menu.getMenu());
-		menu.getMenu().findItem(R.id.menu_list_view).setVisible(false);
-		menu.show();
-		menu.setOnMenuItemClickListener(viewModeListener);
-	}
-
-	OnMenuItemClickListener viewModeListener = new OnMenuItemClickListener() {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-
-			switch (item.getItemId()) {
-				case R.id.menu_thumb_view:
-					mPresenter.switchToThumbPage();
-					break;
-				case R.id.menu_index_view:
-					mPresenter.switchToIndexPage();
-					break;
-			}
-			return true;
-		}
-
-	};
-	
 	/*
 	private void showSortPopup(View v) {
 		PopupMenu menu = new PopupMenu(context, v);

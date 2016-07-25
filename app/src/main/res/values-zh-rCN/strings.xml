@@ -230,6 +230,8 @@
     <string name="setting_sorder_cover_cascade_num">层叠封面数量</string>
     <string name="setting_sorder_set_page_numbers">翻页模式每页数量</string>
     <string name="setting_sorder_enable_page">启用翻页模式</string>
+    <string name="setting_sorder_grid_open">点击Grid order自动打开</string>
+    <string name="setting_sorder_index_open">点击Index order自动打开</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>

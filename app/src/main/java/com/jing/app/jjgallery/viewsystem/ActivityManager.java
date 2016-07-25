@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
@@ -90,6 +91,9 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
+    public static void startBookActivity(Activity from, String path) {
+    }
+
     public static void startBookActivity(Activity from, SOrder order) {
     }
 
@@ -107,4 +111,39 @@ public class ActivityManager {
         from.startActivity(intent);
     }
 
+    /**
+     * SOrderGridPage/SOrderIndexPage/FileManagerIndexPage
+     * 其order/folder item会根据setting配置选择不同的直接打开方式
+     * @param from
+     * @param order
+     */
+    public static void startExploreActivity(Activity from, SOrder order, String mode) {
+        if (PreferenceValue.EXPLORE_OPEN_WALL.equals(mode)) {
+            startWallActivity(from, order);
+        }
+        else if (PreferenceValue.EXPLORE_OPEN_BOOK.equals(mode)) {
+            startBookActivity(from, order);
+        }
+        else {
+            startSurfActivity(from, order);
+        }
+    }
+
+    /**
+     * SOrderGridPage/SOrderIndexPage/FileManagerIndexPage
+     * 其order/folder item会根据setting配置选择不同的直接打开方式
+     * @param from
+     * @param path
+     */
+    public static void startExploreActivity(Activity from, String path, String mode) {
+        if (PreferenceValue.EXPLORE_OPEN_WALL.equals(mode)) {
+            startWallActivity(from, path);
+        }
+        else if (PreferenceValue.EXPLORE_OPEN_BOOK.equals(mode)) {
+            startBookActivity(from, path);
+        }
+        else {
+            startSurfActivity(from, path);
+        }
+    }
 }
