@@ -146,6 +146,7 @@
     <dimen name="sliding_left_bottom_height">80dp</dimen>
     <dimen name="sliding_viewpager_indicator_width">80dp</dimen>
     <dimen name="sliding_viewpager_text_size">25dp</dimen>
+    <dimen name="sliding_viewpager_indicator_padding">20dp</dimen>
 
     <!-- cropview -->
     <dimen name="crop_boarder_size">3dp</dimen>

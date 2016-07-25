@@ -9,12 +9,12 @@
        	android:id="@+id/order_chooser_add_order"
 	    android:layout_width="@dimen/custom_dialog_toolbar_icon"
 	    android:layout_height="@dimen/custom_dialog_toolbar_icon"
-	    android:src="@drawable/button_add"/>
+	    android:src="@drawable/ic_add_white_36dp"/>
     <ImageView 
         style="@style/CustomDialogIcon_L"
        	android:id="@+id/order_chooser_color"
 	    android:layout_width="@dimen/custom_dialog_toolbar_icon"
 	    android:layout_height="@dimen/custom_dialog_toolbar_icon"
 	    android:layout_marginLeft="5dp"
-	    android:src="@drawable/actionbar_color_picker"/>
+	    android:src="@drawable/ic_color_lens_white_36dp"/>
 </LinearLayout>

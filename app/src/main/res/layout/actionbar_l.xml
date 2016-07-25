@@ -76,7 +76,7 @@
 				android:padding="@dimen/actionbar_icon_padding"
 				android:layout_height="match_parent"
 				android:layout_alignParentRight="true"
-				android:src="@drawable/actionbar_cancel"/>
+				android:src="@drawable/ic_close_white_36dp"/>
 
 		</RelativeLayout>
 
@@ -104,7 +104,7 @@
 					android:id="@+id/actionbar_delete"
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
-					android:src="@drawable/actionbar_delete"
+					android:src="?attr/actionbar_ic_delete"
 					android:visibility="gone"/>
 
 				<ImageView
@@ -129,14 +129,6 @@
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
 					android:src="?attr/actionbar_ic_surf"
-					android:visibility="gone"/>
-
-				<ImageView
-					style="@style/ActionbarIcon_L"
-					android:id="@+id/actionbar_random_change"
-					android:layout_width="@dimen/actionbar_icon_width"
-					android:layout_height="match_parent"
-					android:src="@drawable/actionbar_random_change"
 					android:visibility="gone"/>
 
 				<ImageView
@@ -169,7 +161,7 @@
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
 					android:visibility="gone"
-					android:src="@drawable/actionbar_save"/>
+					android:src="@drawable/ic_check_white_36dp"/>
 
 				<ImageView
 					style="@style/ActionbarIcon_L"
@@ -177,7 +169,7 @@
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
 					android:visibility="gone"
-					android:src="@drawable/actionbar_cancel"/>
+					android:src="@drawable/ic_close_white_36dp"/>
 
 				<ImageView
 					style="@style/ActionbarIcon_L"
@@ -197,27 +189,18 @@
 
 				<ImageView
 					style="@style/ActionbarIcon_L"
-					android:id="@+id/actionbar_show"
+					android:id="@+id/actionbar_color"
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
 					android:visibility="gone"
-					android:src="@drawable/actionbar_showhide"/>
-
+					android:src="?attr/actionbar_ic_color"/>
 				<ImageView
 					style="@style/ActionbarIcon_L"
 					android:id="@+id/actionbar_save1"
 					android:layout_width="@dimen/actionbar_icon_width"
 					android:layout_height="match_parent"
 					android:visibility="gone"
-					android:src="@drawable/actionbar_save1"/>
-
-				<ImageView
-					style="@style/ActionbarIcon_L"
-					android:id="@+id/actionbar_color"
-					android:layout_width="@dimen/actionbar_icon_width"
-					android:layout_height="match_parent"
-					android:visibility="gone"
-					android:src="?attr/actionbar_ic_color"/>
+					android:src="@drawable/ic_save_white_36dp"/>
 			</LinearLayout>
 		</HorizontalScrollView>
 

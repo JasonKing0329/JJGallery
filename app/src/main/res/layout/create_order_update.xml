@@ -47,14 +47,14 @@
 			    android:layout_height="@dimen/sorder_creater_icon_width"
 			    android:scaleType="fitCenter"
 			    android:layout_marginLeft="10dp"
-			    android:src="@drawable/actionbar_add"/>
+			    android:src="@drawable/ic_add_white_36dp"/>
 	    	<ImageView 
 	    	    android:id="@+id/create_order_tag_cancel"
 			    android:layout_width="@dimen/sorder_creater_icon_width"
 			    android:layout_height="@dimen/sorder_creater_icon_width"
 			    android:scaleType="fitCenter"
 			    android:layout_marginLeft="10dp"
-			    android:src="@drawable/actionbar_cancel"
+			    android:src="@drawable/ic_close_white_36dp"
 				android:visibility="gone"/>
 	    </LinearLayout>
 	    <TextView 

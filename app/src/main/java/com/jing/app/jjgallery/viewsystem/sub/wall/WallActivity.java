@@ -423,8 +423,6 @@ public class WallActivity extends BaseActivity implements Callback
 				intent.setClass(this, SurfActivity.class);
 				startActivity(intent);
 				break;
-			case R.id.actionbar_random_change:
-				break;
 			case R.id.actionbar_refresh:
 				onRefresh();
 				break;

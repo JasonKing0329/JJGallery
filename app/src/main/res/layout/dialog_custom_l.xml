@@ -51,7 +51,7 @@
 	        android:layout_width="@dimen/custom_dialog_toolbar_icon"
        		android:layout_height="@dimen/custom_dialog_toolbar_icon"
        		android:layout_marginRight="5dp"
-       		android:src="@drawable/search"
+       		android:src="@drawable/ic_search_white_36dp"
        		android:visibility="gone"
 	        />
 	    
@@ -61,7 +61,7 @@
 	        android:layout_width="@dimen/custom_dialog_toolbar_icon"
        		android:layout_height="@dimen/custom_dialog_toolbar_icon"
        		android:layout_marginRight="5dp"
-       		android:src="@drawable/actionbar_save"
+       		android:src="@drawable/ic_check_white_36dp"
        		android:visibility="gone"
 	        />
 
@@ -71,7 +71,7 @@
 	        android:layout_width="@dimen/custom_dialog_toolbar_icon"
        		android:layout_height="@dimen/custom_dialog_toolbar_icon"
        		android:layout_marginRight="5dp"
-       		android:src="@drawable/actionbar_save1"
+       		android:src="@drawable/ic_save_white_36dp"
        		android:visibility="gone"
 	        />
 	    
@@ -81,7 +81,7 @@
 	        android:layout_width="@dimen/custom_dialog_toolbar_icon"
        		android:layout_height="@dimen/custom_dialog_toolbar_icon"
        		android:layout_marginRight="5dp"
-       		android:src="@drawable/actionbar_cancel"
+       		android:src="@drawable/ic_close_white_36dp"
        		android:visibility="gone"
 	        />
 	    
@@ -106,7 +106,7 @@
 			    android:layout_marginTop="3dp"
 			    android:layout_marginRight="5dp"
 			    android:paddingBottom="5dp"
-		    	android:src="@drawable/close_dark"
+		    	android:src="@drawable/ic_close_grey_600_36dp"
 		    	android:layout_gravity="right"/>
         </FrameLayout>
     <View 

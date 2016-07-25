@@ -7,7 +7,7 @@
         android:layout_width="@dimen/sliding_viewpager_indicator_width"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:padding="20dp"
+        android:padding="@dimen/sliding_viewpager_indicator_padding"
         android:background="@drawable/ripple_rect_white"
         android:src="@drawable/ic_chevron_left_white_36dp"/>
     <TextView
@@ -24,7 +24,7 @@
         android:layout_width="@dimen/sliding_viewpager_indicator_width"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:padding="20dp"
+        android:padding="@dimen/sliding_viewpager_indicator_padding"
         android:background="@drawable/ripple_rect_white"
         android:src="@drawable/ic_chevron_right_white_36dp"/>
 </LinearLayout>

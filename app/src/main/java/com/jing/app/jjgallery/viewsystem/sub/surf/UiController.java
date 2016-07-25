@@ -287,13 +287,13 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 		}
 
 		if (srcMode == SRC_MODE_RANDOM) {
-			playButton.setImageResource(R.drawable.actionbar_stop);
+			playButton.setImageResource(R.drawable.ic_stop_white_36dp);
 			autoPlayController.startWholeRandomAutoPlay(SettingProperties.getAnimationSpeed(surfActivity));
 		}
 		else {
 			autoPlayController.setFileNameList(mImageList);
 			if (autoPlayController.canPlay()) {
-				playButton.setImageResource(R.drawable.actionbar_stop);
+				playButton.setImageResource(R.drawable.ic_stop_white_36dp);
 				autoPlayController.startAutoPlay(SettingProperties.getAnimationSpeed(surfActivity));
 			}
 			else {
@@ -308,7 +308,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 	public boolean stopAutoPlay() {
 		if (autoPlayController != null && autoPlayController.isAutoPlaying()) {
 			autoPlayController.stopAutoPlay();
-			playButton.setImageResource(R.drawable.actionbar_play);
+			playButton.setImageResource(R.drawable.ic_play_arrow_white_36dp);
 			surfActivity.showToobarAndGallery();
 			return true;
 		}

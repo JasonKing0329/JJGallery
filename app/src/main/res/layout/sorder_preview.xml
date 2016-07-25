@@ -7,7 +7,7 @@
         android:id="@+id/preview_close"
 	    android:layout_width="@dimen/showimagedialog_icon_width"
 	    android:layout_height="@dimen/showimagedialog_icon_width"
-	    android:src="@drawable/actionbar_cancel"
+	    android:src="@drawable/ic_close_white_36dp"
 	    android:padding="5dp"
 	    android:background="@drawable/selector_fullscreen_toolbar_bk"
 	    android:scaleType="fitCenter"

@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.viewsystem.publicview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,7 +31,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private ImageView backButton, menuButton, menuLeftButton, addButton, editButton
 		, titleIcon, saveButton, cancelButton, galleryButton, sortButton
 		, searchButton, closeButton, refreshButton, changeButton, colorButton
-		, fullScreenButton, randomChangeButton, deleteButton, saveButton1, showButton, thumbButton;
+		, fullScreenButton, deleteButton, saveButton1, thumbButton;
 	private TextView titleView;
 	private EditText searchEdit;
 	private ActionIconListener actionIconListener;
@@ -63,11 +62,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
 		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
 		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
-		randomChangeButton = (ImageView) view.findViewById(R.id.actionbar_random_change);
 		fullScreenButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
 		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
-		showButton = (ImageView) view.findViewById(R.id.actionbar_show);
 		titleIcon = (ImageView) view.findViewById(R.id.actionbar_title_icon);
 		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
 		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
@@ -81,11 +78,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		editButton.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 		saveButton1.setOnClickListener(this);
-		showButton.setOnClickListener(this);
 		sortButton.setOnClickListener(this);
 		cancelButton.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
-		randomChangeButton.setOnClickListener(this);
 		fullScreenButton.setOnClickListener(this);
 		deleteButton.setOnClickListener(this);
 		closeButton.setOnClickListener(this);
@@ -220,10 +215,6 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		currentButtons.add(saveButton1);
 		saveButton1.setVisibility(View.VISIBLE);
 	}
-	public void addShowIcon() {
-		currentButtons.add(showButton);
-		showButton.setVisibility(View.VISIBLE);
-	}
 	public void addFullScreenIcon() {
 		currentButtons.add(fullScreenButton);
 		fullScreenButton.setVisibility(View.VISIBLE);
@@ -231,10 +222,6 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addDeleteIcon() {
 		currentButtons.add(deleteButton);
 		deleteButton.setVisibility(View.VISIBLE);
-	}
-	public void addRandomChangeIcon() {
-		currentButtons.add(randomChangeButton);
-		randomChangeButton.setVisibility(View.VISIBLE);
 	}
 	public void addRefreshIcon() {
 		currentButtons.add(refreshButton);

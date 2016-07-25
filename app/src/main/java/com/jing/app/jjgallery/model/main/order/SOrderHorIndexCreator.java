@@ -30,6 +30,10 @@ public class SOrderHorIndexCreator {
 
 	public List<HorizontalIndexView.IndexItem> createIndex(List<SOrder> orderList, int mode) {
 
+		if (orderList == null) {
+			return null;
+		}
+
 		defaultMode = mode;
 		List<HorizontalIndexView.IndexItem> list = null;
 		totalPages = (orderList.size() - 1) / PAGE_MAX_ITEM + 1;

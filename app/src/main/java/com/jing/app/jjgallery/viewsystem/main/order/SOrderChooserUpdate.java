@@ -65,7 +65,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 	private SOrderChooserController controller;
 
 	public void setLightTheme() {
-		addButton.setImageResource(R.drawable.add_dark);
+		addButton.setImageResource(R.drawable.ic_add_grey_600_36dp);
 		//searchButton.setImageResource(R.drawable.search_dark);
 		//closeButton.setImageResource(R.drawable.close_dark);
 	}

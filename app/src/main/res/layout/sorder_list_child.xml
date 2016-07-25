@@ -70,7 +70,7 @@
         android:id="@+id/sorder_list_child_showpreview"
 	    android:layout_width="@dimen/custom_dialog_toolbar_icon"
 	    android:layout_height="@dimen/custom_dialog_toolbar_icon"
-	    android:src="@drawable/actionbar_thumb"
+	    android:src="@drawable/ic_apps_white_36dp"
 	    android:background="@drawable/selector_custom_dialog_icon_bk"
 	    android:padding="5dp"
 	    android:scaleType="fitCenter"/>

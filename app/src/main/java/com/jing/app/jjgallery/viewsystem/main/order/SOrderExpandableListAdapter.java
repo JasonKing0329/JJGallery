@@ -199,7 +199,7 @@ public class SOrderExpandableListAdapter extends BaseExpandableListAdapter {
 
 		public void hideOrderPreview(final ChildViewHolder holder) {
 			holder.previewLayout.setVisibility(View.GONE);
-			holder.showPreview.setImageResource(R.drawable.actionbar_thumb);
+			holder.showPreview.setImageResource(R.drawable.ic_apps_white_36dp);
 
 			Animation animation = AnimationUtils.loadAnimation(context, R.anim.sorder_list_shrink);
 			animation.setAnimationListener(new AnimationListener() {
@@ -260,7 +260,7 @@ public class SOrderExpandableListAdapter extends BaseExpandableListAdapter {
 			Animation animation = AnimationUtils.loadAnimation(context, R.anim.sorder_list_expand);
 			holder.previewLayout.startAnimation(animation);
 			holder.previewLayout.setVisibility(View.VISIBLE);
-			holder.showPreview.setImageResource(R.drawable.actionbar_cancel);
+			holder.showPreview.setImageResource(R.drawable.ic_close_white_36dp);
 		}
 
 		@Override

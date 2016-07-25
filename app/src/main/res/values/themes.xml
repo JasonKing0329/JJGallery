@@ -18,6 +18,7 @@
         <item name="actionbar_ic_back">@drawable/ic_arrow_back_green_36dp</item>
         <item name="actionbar_ic_surf">@drawable/ic_movie_filter_green_36dp</item>
         <item name="actionbar_ic_casual">@drawable/ic_camera_green_36dp</item>
+        <item name="actionbar_ic_delete">@drawable/ic_delete_geen_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_dark</item>
         <item name="setting_ic_safety">@drawable/ic_fingerprint_yellow_200_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_yellow_36dp</item>
@@ -44,6 +45,7 @@
         <item name="actionbar_ic_back">@drawable/ic_arrow_back_purple_36dp</item>
         <item name="actionbar_ic_surf">@drawable/ic_movie_filter_purple_36dp</item>
         <item name="actionbar_ic_casual">@drawable/ic_camera_purple_36dp</item>
+        <item name="actionbar_ic_delete">@drawable/ic_delete_purple_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_light</item>
         <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>
@@ -70,6 +72,7 @@
         <item name="actionbar_ic_back">@drawable/ic_arrow_back_white_36dp</item>
         <item name="actionbar_ic_surf">@drawable/ic_movie_filter_white_36dp</item>
         <item name="actionbar_ic_casual">@drawable/ic_camera_white_36dp</item>
+        <item name="actionbar_ic_delete">@drawable/ic_delete_white_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_normal</item>
         <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>

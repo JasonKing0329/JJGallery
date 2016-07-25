@@ -52,7 +52,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
-		    android:src="@drawable/toolbar_delete"
+		    android:src="@drawable/ic_delete_white_36dp"
 		    android:background="@drawable/ripple_fullscreen_bk"
 		    android:scaleType="fitCenter"/>
 	    <ImageView 
@@ -60,7 +60,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
-		    android:src="@drawable/actionbar_add_to_order"
+		    android:src="@drawable/ic_assistant_white_36dp"
 		    android:background="@drawable/ripple_fullscreen_bk"
 		    android:scaleType="fitCenter"/>
 	    <ImageView 
@@ -68,7 +68,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
-		    android:src="@drawable/actionbar_play"
+		    android:src="@drawable/ic_play_arrow_white_36dp"
 		    android:background="@drawable/ripple_fullscreen_bk"
 		    android:scaleType="fitCenter"/>
 	    <!-- ImageView 
@@ -84,7 +84,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
-		    android:src="@drawable/actionbar_details"
+		    android:src="@drawable/ic_insert_drive_file_white_36dp"
 		    android:background="@drawable/ripple_fullscreen_bk"
 		    android:scaleType="fitCenter"/>
 	    <ImageView 
@@ -92,7 +92,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="match_parent"
 		    android:layout_weight="1"
-		    android:src="@drawable/toolbar_more"
+		    android:src="@drawable/ic_blur_on_white_36dp"
 		    android:background="@drawable/ripple_fullscreen_bk"
 		    android:scaleType="fitCenter"/>
 	</LinearLayout>

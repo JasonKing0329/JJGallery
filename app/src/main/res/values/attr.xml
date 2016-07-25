@@ -18,6 +18,7 @@
     <attr name="actionbar_ic_back" format="reference"/>
     <attr name="actionbar_ic_surf" format="reference"/>
     <attr name="actionbar_ic_casual" format="reference"/>
+    <attr name="actionbar_ic_delete" format="reference"/>
     <attr name="actionbar_text_color" format="reference"/>
     <attr name="setting_ic_safety" format="reference"/>
     <attr name="setting_ic_general" format="reference"/>

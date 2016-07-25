@@ -237,7 +237,7 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 			return;
 		}
 
-		playButton.setImageResource(R.drawable.actionbar_stop);
+		playButton.setImageResource(R.drawable.ic_stop_white_36dp);
 		autoPlayController.startWholeRandomAutoPlay(SettingProperties.getAnimationSpeed(this));
 	}
 
@@ -522,7 +522,7 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 	private boolean stopAutoPlay() {
 		if (autoPlayController != null && autoPlayController.isAutoPlaying()) {
 			autoPlayController.stopAutoPlay();
-			playButton.setImageResource(R.drawable.actionbar_play);
+			playButton.setImageResource(R.drawable.ic_play_arrow_white_36dp);
 			return true;
 		}
 		return false;

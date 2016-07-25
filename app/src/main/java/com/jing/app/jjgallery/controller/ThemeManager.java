@@ -24,8 +24,8 @@ public class ThemeManager {
 			, R.color.actionbar_bk_light};
 	private int[] themeWallBkColors = new int[] {R.color.actionbar_bk_wallgalerry, R.color.actionbar_bk_wallgalerry
 			, R.color.actionbar_bk_wallgalerry_light};
-	private int[] themeDefaultFolder = new int[] {R.drawable.folder_upper, R.drawable.folder_upper
-			, R.drawable.folder_upper};
+	private int[] themeDefaultFolder = new int[] {R.drawable.ic_backup_black_36dp, R.drawable.ic_backup_white_36dp
+			, R.drawable.ic_backup_black_36dp};
 	
 	public ThemeManager(Context context) {
 		this.context = context;

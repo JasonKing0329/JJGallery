@@ -169,6 +169,7 @@
     <dimen name="sliding_circle_margin_left">10dp</dimen>
     <dimen name="sliding_viewpager_indicator_width">50dp</dimen>
     <dimen name="sliding_viewpager_text_size">20dp</dimen>
+    <dimen name="sliding_viewpager_indicator_padding">10dp</dimen>
     <!-- cropview -->
     <dimen name="crop_boarder_size">2dp</dimen>
     <dimen name="crop_boarder_point_size">7dp</dimen>

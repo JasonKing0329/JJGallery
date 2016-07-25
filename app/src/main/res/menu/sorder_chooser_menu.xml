@@ -3,6 +3,6 @@
     
     <item android:id="@+id/menu_sorder_chooser_add"
         android:title="@string/sorder_rename"
-        android:icon="@drawable/button_add"/>
+        android:icon="@drawable/ic_add_white_36dp"/>
 
 </menu>
