@@ -85,7 +85,7 @@ public class ActivityManager {
         Bundle bundle = new Bundle();
         bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_ORDER);
         bundle.putInt(WallActivity.MODE_VALUE_KEY, order.getId());
-        Intent intent = new Intent().setClass(from, SurfActivity.class);
+        Intent intent = new Intent().setClass(from, WallActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);

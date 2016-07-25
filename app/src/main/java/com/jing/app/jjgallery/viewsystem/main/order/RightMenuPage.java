@@ -24,7 +24,7 @@ public class RightMenuPage implements View.OnClickListener {
         content.findViewById(R.id.sliding_right_sorder_thumb).setOnClickListener(this);
         content.findViewById(R.id.sliding_right_sorder_index).setOnClickListener(this);
 
-        String mode = SettingProperties.getFileManagerDefaultMode(content.getContext());
+        String mode = SettingProperties.getSOrderDefaultMode(content.getContext());
         if (PreferenceValue.VALUE_SORDER_VIEW_THUMB.equals(mode)) {
             currentGroup = content.findViewById(R.id.sliding_right_sorder_thumb);
             focusBgGroup = content.findViewById(R.id.sliding_right_sorder_thumb_bk);
