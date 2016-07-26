@@ -237,4 +237,5 @@
     <dimen name="dialog_bg_selector_item_padding">5dp</dimen>
     <dimen name="dialog_bg_selector_item_inner_padding">5dp</dimen>
     <dimen name="dlg_loadfrom_list_height">400dp</dimen>
+    <dimen name="waterfall_item_padding">5dp</dimen>
 </resources>

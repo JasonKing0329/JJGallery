@@ -152,12 +152,7 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
 
     @Override
     protected void onActionIconClick(View view) {
-        if (view.getId() == R.id.actionbar_menu_left) {
-            showMenu();
-        }
-        else {
-            mCurrentFragment.getPage().onIconClick(view);
-        }
+        mCurrentFragment.getPage().onIconClick(view);
     }
 
     @Override

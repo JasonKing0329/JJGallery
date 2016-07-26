@@ -165,6 +165,9 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
             case R.id.actionbar_color:
                 showColorPicker();
                 break;
+            case R.id.actionbar_menu_left:
+                showMenu();
+                break;
             default:
                 onActionIconClick(view);
                 break;

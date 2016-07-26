@@ -42,24 +42,33 @@
         <activity
             android:name=".viewsystem.main.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".viewsystem.main.filesystem.FileManagerActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".viewsystem.main.filesystem.FileManagerActivity"
+            android:configChanges="orientation|screenSize" />
 
         <service android:name=".service.file.FileDBService" />
         <service android:name=".service.file.PreferenceService" />
 
-        <activity android:name=".viewsystem.sub.thumb.ThumbActivity"
+        <activity
+            android:name=".viewsystem.sub.thumb.ThumbActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".viewsystem.sub.surf.SurfActivity"
+        <activity
+            android:name=".viewsystem.sub.surf.SurfActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".viewsystem.main.order.SOrderActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".viewsystem.sub.wall.WallActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".viewsystem.main.timeline.TimeLineActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity android:name=".viewsystem.sub.surf.RandomSurfActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".viewsystem.main.order.SOrderActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".viewsystem.sub.wall.WallActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".viewsystem.main.timeline.TimeLineActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".viewsystem.sub.surf.RandomSurfActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".viewsystem.main.timeline.HomeWaterfallActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

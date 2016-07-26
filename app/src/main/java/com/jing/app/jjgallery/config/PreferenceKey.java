@@ -88,4 +88,12 @@ public class PreferenceKey {
     public static final String PREF_SURF_PLAY_MODE = "setting_auto_play_mode";
     // Surf自动播放切换速度
     public static final String PREF_SURF_PLAY_SPEED = "setting_auto_play_speed";
+
+    /**
+     * waterfall
+     */
+    // 瀑布流竖屏列数
+    public static final String PREF_WATERFALL_COL = "pref_waterfall_column";
+    // 瀑布流竖屏列数
+    public static final String PREF_WATERFALL_COL_LAND = "pref_waterfall_land_column";
 }

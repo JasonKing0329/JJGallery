@@ -181,6 +181,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_surf);
 
+        // Add 'waterfall' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.setting_waterfall);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_waterfall);
+
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
@@ -195,6 +201,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
     }
 
     /**
@@ -227,7 +235,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || FileMnagerPreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || SOrderPreferenceFragment.class.getName().equals(fragmentName)
-                || SurfPreferenceFragment.class.getName().equals(fragmentName);
+                || SurfPreferenceFragment.class.getName().equals(fragmentName)
+                || WaterfallPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     @Override
@@ -318,6 +327,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class WaterfallPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_waterfall);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
         }
 
     }

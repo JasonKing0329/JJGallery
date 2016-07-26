@@ -25,6 +25,7 @@
     <attr name="setting_ic_folder" format="reference"/>
     <attr name="setting_ic_order" format="reference"/>
     <attr name="setting_ic_surf" format="reference"/>
+    <attr name="setting_ic_waterfall" format="reference"/>
     <attr name="dlg_custom_btn_bg_normal" format="reference"/>
     <attr name="dlg_custom_btn_bg_press" format="reference"/>
     <attr name="file_manager_upper" format="reference"/>

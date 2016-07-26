@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.RandomSurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
@@ -34,7 +35,8 @@ public class ActivityManager {
     }
 
     public static void startTimeLineActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+//        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+        from.startActivity(new Intent().setClass(from, HomeWaterfallActivity.class));
         applyAnimation(from);
     }
 

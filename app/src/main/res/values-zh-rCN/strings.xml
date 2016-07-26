@@ -232,6 +232,10 @@
     <string name="setting_sorder_enable_page">启用翻页模式</string>
     <string name="setting_sorder_grid_open">点击Grid order自动打开</string>
     <string name="setting_sorder_index_open">点击Index order自动打开</string>
+    <string name="setting_edit_casual_number">随便看看数量</string>
+    <string name="setting_waterfall_column">竖屏列数</string>
+    <string name="setting_waterfall_column_land">横屏列数</string>
+    <string name="setting_waterfall">瀑布流视图</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>
@@ -241,16 +245,12 @@
     <string name="setting_show_oriname_summary">所有已加密文件将显示原文件名。</string>
     <string name="setting_open_random">以随机顺序打开</string>
     <string name="setting_open_random_summary">打开图库时，图片将以随机顺序显示</string>
-    <string name="setting_edit_casual_number">随便看看数量</string>
     <string name="setting_edit_casual_number_summary">改变随便看看的所有图片数量。</string>
     <string name="setting_show_animation">显示动画效果</string>
     <string name="setting_min_items">最低图片数量</string>
     <string name="setting_min_items_summary">当图库包含图片达到该值，程序才支持自动播放功能。</string>
     <string name="setting_sorder_mode">显示顺序</string>
     <string name="setting_sorder_mode_summary">当加载列表时,决定列表的显示顺序。</string>
-    <string name="setting_waterfall">瀑布流视图</string>
-    <string name="setting_waterfall_colnumber">竖屏列数</string>
-    <string name="setting_waterfall_colnumber_hor">横屏列数</string>
     <string name="setting_slidingmenu">Sliding菜单</string>
     <string name="setting_slidingmenu_mode">位置模式</string>
     <string name="setting_slidingmenu_left">左侧菜单</string>

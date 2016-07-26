@@ -58,8 +58,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
         mActionbarGroup = (ViewGroup) findViewById(R.id.actionbar);
         mContentGroup = (ViewGroup) findViewById(R.id.content);
-        progressManager = new ProgressManager(this);
-        BackgroundManager.getInstance().addProgressSubscriber(progressManager);
 
         if (isActionBarNeed()) {
             View view = getLayoutInflater().inflate(R.layout.actionbar_l, null);
@@ -115,6 +113,10 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     }
 
     public void showProgressCycler() {
+        if (progressManager == null) {
+            progressManager = new ProgressManager(this);
+            BackgroundManager.getInstance().addProgressSubscriber(progressManager);
+        }
         progressManager.showProgressCycler();
     }
 

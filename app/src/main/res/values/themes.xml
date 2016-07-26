@@ -25,6 +25,7 @@
         <item name="setting_ic_folder">@drawable/ic_folder_yellow_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_yellow_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_yellow_36dp</item>
+        <item name="setting_ic_waterfall">@drawable/ic_invert_colors_yellow_fff807_36dp</item>
         <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
         <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
         <item name="file_manager_upper">@drawable/ic_backup_white_36dp</item>
@@ -55,6 +56,7 @@
         <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
+        <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
         <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
         <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
         <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
@@ -85,6 +87,7 @@
         <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
+        <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
         <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
         <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
         <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>

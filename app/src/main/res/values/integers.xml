@@ -22,4 +22,6 @@
 
     <integer name="setting_casual_number">20</integer>
     <integer name="setting_page_number">16</integer>
+    <integer name="waterfall_column">3</integer>
+    <integer name="waterfall_column_land">4</integer>
 </resources>

@@ -27,4 +27,9 @@
         android:icon="?attr/setting_ic_surf"
         android:title="@string/setting_title_surf" />
 
+    <header
+        android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$WaterfallPreferenceFragment"
+        android:icon="?attr/setting_ic_waterfall"
+        android:title="@string/setting_waterfall" />
+
 </preference-headers>

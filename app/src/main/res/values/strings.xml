@@ -241,6 +241,10 @@
     <string name="setting_sorder_enable_page">Enable page mode.</string>
     <string name="setting_sorder_grid_open">Target explore to open selected order in grid page</string>
     <string name="setting_sorder_index_open">Target explore to open selected order in index page</string>
+    <string name="setting_edit_casual_number">Casual look number</string>
+    <string name="setting_waterfall_column">Portrait columns</string>
+    <string name="setting_waterfall_column_land">Landscape columns</string>
+    <string name="setting_waterfall">Waterfall view</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -250,16 +254,12 @@
     <string name="setting_show_oriname_summary">All encrypted file will display the original name.</string>
     <string name="setting_open_random">Open by random</string>
     <string name="setting_open_random_summary">Gallery will display picture items by random order.</string>
-    <string name="setting_edit_casual_number">Casual look number</string>
     <string name="setting_edit_casual_number_summary">Change total pictures in gallery after choose casual look.</string>
     <string name="setting_show_animation">Show animation</string>
     <string name="setting_min_items">Minimum picture number</string>
     <string name="setting_min_items_summary">The gallery need include at least this number, then the auto-play function will be supported.</string>
     <string name="setting_sorder_mode">Show order</string>
     <string name="setting_sorder_mode_summary">Decide the order when load the SOrder page.</string>
-    <string name="setting_waterfall">Waterfall view</string>
-    <string name="setting_waterfall_colnumber">Column in portrait</string>
-    <string name="setting_waterfall_colnumber_hor">Column in landscape</string>
     <string name="setting_slidingmenu">Sliding menu</string>
     <string name="setting_slidingmenu_mode">Position mode</string>
     <string name="setting_slidingmenu_left">Menu at left</string>

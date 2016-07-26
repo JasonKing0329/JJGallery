@@ -283,4 +283,22 @@ public class SettingProperties {
         String mode = preferences.getString(PreferenceKey.PREF_SORDER_PAGE_NUM, "" + PreferenceValue.SORDER_PAGE_NUM_DEFAULT);
         return Integer.parseInt(mode);
     }
+
+    /**
+     * 瀑布流竖屏列数
+     */
+    public static int getWaterfallColumns(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_WATERFALL_COL, "" + context.getResources().getInteger(R.integer.waterfall_column));
+        return Integer.parseInt(mode);
+    }
+
+    /**
+     * 瀑布流横屏列数
+     */
+    public static int getWaterfallColumnsLand(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_WATERFALL_COL_LAND, "" + context.getResources().getInteger(R.integer.waterfall_column_land));
+        return Integer.parseInt(mode);
+    }
 }
