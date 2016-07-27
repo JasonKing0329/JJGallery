@@ -48,7 +48,13 @@ public class HomeSelecter implements  HomeProvider {
     public void startHome(Activity from, int key, Object datas) {
         switch (key) {
             case PreferenceValue.START_VIEW_TIMELINE:
-                ActivityManager.startTimeLineActivity(from);
+                String mode = SettingProperties.getTimelineDefaultMode(from);
+                if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)) {
+                    ActivityManager.startWaterfallActivity(from);
+                }
+                else if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)){
+                    ActivityManager.startTimeLineActivity(from);
+                }
                 break;
             case PreferenceValue.START_VIEW_GUIDE:
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));

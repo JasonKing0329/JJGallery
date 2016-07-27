@@ -11,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.filesystem.FileBean;
 import com.jing.app.jjgallery.model.sub.WaterfallHelper;
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -22,28 +21,26 @@ import java.util.List;
  * Created by JingYang on 2016/7/26 0026.
  * Description:
  */
-public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHolder>
+public abstract class BaseWaterfallAdapter extends RecyclerView.Adapter<BaseWaterfallAdapter.WHolder>
     implements View.OnClickListener, View.OnLongClickListener{
 
-    private final String TAG = "WaterfallAdapter";
+    private final String TAG = "BaseWaterfallAdapter";
     private Context mContext;
-    private List<FileBean> list;
     private WaterfallHelper mHelper;
     private OnWaterfallItemListener itemListener;
 
     private boolean isActionMode;
-    private SparseBooleanArray checkMap;
+    protected SparseBooleanArray mCheckMap;
 
     private int nColumn;
     private int nPadding;
 
-    public WaterfallAdapter(Context context, List<FileBean> list, int column) {
+    public BaseWaterfallAdapter(Context context, int column) {
         mContext = context;
-        this.list = list;
         mHelper = new WaterfallHelper();
         nColumn = column;
         nPadding = context.getResources().getDimensionPixelSize(R.dimen.waterfall_item_padding);
-        checkMap = new SparseBooleanArray();
+        mCheckMap = new SparseBooleanArray();
     }
 
     public void setColumn(int column) {
@@ -54,9 +51,7 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
         this.itemListener = itemListener;
     }
 
-    public String getImagePath(int position) {
-        return list.get(position).getPath();
-    }
+    public abstract String getImagePath(int position);
 
     @Override
     public WHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -73,10 +68,8 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
         holder.container.setOnClickListener(this);
         holder.container.setOnLongClickListener(this);
         holder.checkBox.setVisibility(isActionMode ? View.VISIBLE:View.INVISIBLE);
-        holder.checkBox.setChecked(checkMap.get(position));
-        SImageLoader.getInstance().displayImage(list.get(position).getPath(), holder.image);
-//        holder.position = position;
-//        holder.image.setImageResource(R.drawable.icon_loading);
+        holder.checkBox.setChecked(mCheckMap.get(position));
+        SImageLoader.getInstance().displayImage(getImagePath(position), holder.image);
     }
 
     @Override
@@ -86,19 +79,20 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
     }
 
     @Override
-    public int getItemCount() {
-        return list == null ? 0:list.size();
-    }
-
-    @Override
     public void onClick(View v) {
         WHolder holder = (WHolder) v.getTag();
         int position = holder.position;
         if (isActionMode) {
-            boolean check = !checkMap.get(position);
+            boolean check = !mCheckMap.get(position);
             holder.checkBox.setChecked(check);
-            checkMap.put(position, check);
-//            notifyDataSetChanged();
+            if (check) {
+                mCheckMap.put(position, check);
+            }
+            else {
+                mCheckMap.delete(position);
+            }
+
+            defineCheckMapSize();
         }
         else {
             if (itemListener != null) {
@@ -109,15 +103,16 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
 
     @Override
     public boolean onLongClick(View v) {
+        isActionMode = !isActionMode;
+
         WHolder holder = (WHolder) v.getTag();
         int position = holder.position;
         if (itemListener != null) {
             itemListener.onItemLongClick(position);
         }
 
-        isActionMode = !isActionMode;
         if (isActionMode) {
-            checkMap.put(position, true);
+            mCheckMap.put(position, true);
         }
         else {
             cancelActionMode();
@@ -136,11 +131,31 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
         return false;
     }
 
-    private void cancelActionMode() {
-        if (checkMap != null) {
-            checkMap.clear();
+    public void cancelActionMode() {
+        isActionMode = false;
+        if (mCheckMap != null) {
+            mCheckMap.clear();
         }
     }
+
+    private void defineCheckMapSize() {
+        if (itemListener != null) {
+            if (mCheckMap.size() == 0) {
+                itemListener.onEmptyChecked();
+            }
+            else if (mCheckMap.size() == getItemCount()) {
+                itemListener.onFullChecked();
+            }
+        }
+    }
+
+    public boolean isSelctionMode() {
+        return isActionMode;
+    }
+
+    protected abstract List<String> getSelectedList();
+    protected abstract List<Integer> getSelectedIndex();
+    protected abstract void removeItem(int index);
 
     public class WHolder extends RecyclerView.ViewHolder {
 
@@ -159,7 +174,7 @@ public class WaterfallAdapter extends RecyclerView.Adapter<WaterfallAdapter.WHol
             this.position = position;
 
             ImageValue value = new ImageValue();
-            value.setPath(list.get(position).getPath());
+            value.setPath(getImagePath(position));
             mHelper.calculateImageSize(value);
             mHelper.reseizeImage(value, nColumn, nPadding, mContext);
 

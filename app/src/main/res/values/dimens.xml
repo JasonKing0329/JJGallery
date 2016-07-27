@@ -210,6 +210,7 @@
     <dimen name="timeline_indicator_text_num_size">16sp</dimen>
     <dimen name="timeline_menu_text_size">16sp</dimen>
     <dimen name="timeline_indicator_height">80dp</dimen>
+    <dimen name="timeline_scroll_distance_action">100dp</dimen>
 
     <!-- guide -->
     <dimen name="guide_line1_left_width">180dp</dimen>
@@ -238,4 +239,5 @@
     <dimen name="dialog_bg_selector_item_inner_padding">5dp</dimen>
     <dimen name="dlg_loadfrom_list_height">400dp</dimen>
     <dimen name="waterfall_item_padding">5dp</dimen>
+    <dimen name="actionbar_title_max_width">160dp</dimen>
 </resources>

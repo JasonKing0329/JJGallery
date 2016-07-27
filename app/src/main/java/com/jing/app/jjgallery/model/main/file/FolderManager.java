@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.model.main.file;
 
 import android.os.AsyncTask;
 
+import com.jing.app.jjgallery.bean.filesystem.FileBean;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
@@ -50,6 +51,29 @@ public class FolderManager {
 		});
 		for (File f:files) {
 			list.add(f.getPath());
+		}
+		return list;
+	}
+
+	public List<FileBean> loadFileBeanList(String path) {
+		List<FileBean> list = new ArrayList<>();
+		File[] files = new File(path).listFiles(new FileFilter() {
+
+			private Encrypter encrypter;
+			@Override
+			public boolean accept(File file) {
+				if (encrypter == null) {
+					encrypter = EncrypterFactory.create();
+				}
+				return encrypter.isEncrypted(file) || file.isDirectory();
+			}
+
+		});
+		FileBean bean = null;
+		for (File f:files) {
+			bean = new FileBean();
+			bean.setPath(f.getPath());
+			list.add(bean);
 		}
 		return list;
 	}

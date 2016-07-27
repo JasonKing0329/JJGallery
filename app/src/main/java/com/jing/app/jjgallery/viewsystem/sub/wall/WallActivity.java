@@ -34,12 +34,11 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -136,7 +135,7 @@ public class WallActivity extends BaseActivity implements Callback
 				}
 				//restore normal status
 				wallAdapter.setSelectMode(false);
-				setActionbarNormal();
+				cancelActionbarSelectMode();
 
 				//notify adapter refresh in animation ending
 				new Handler().postDelayed(new Runnable() {
@@ -158,7 +157,7 @@ public class WallActivity extends BaseActivity implements Callback
 		requestActionbarFloating();
 
 		mActionBar.setBackgroundColor(getResources().getColor(new ThemeManager(this).getWallActionbarColor()));
-		setActionbarNormal();
+		initActionbar();
 		bottomLayout = findViewById(R.id.bottombar);
 		actionbarLayout = findViewById(R.id.actionbar);
 
@@ -220,28 +219,40 @@ public class WallActivity extends BaseActivity implements Callback
 	}
 
 	private void computeActionbarLayout() {
-		if (getResources().getConfiguration().orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
-			mActionBar.onLandscape();
-		}
-		else {
-			mActionBar.onVertical();
-		}
+		mActionBar.onConfiguration(getResources().getConfiguration().orientation);
 	}
 
-	private void setActionbarNormal() {
+	private void initActionbar() {
 		mActionBar.clearActionIcon();
 		mActionBar.addBackIcon();
 		mActionBar.addMenuIcon();
 		mActionBar.addRefreshIcon();
 		mActionBar.addChangeIcon();
 		mActionBar.addFullScreenIcon();
+		mActionBar.setActionSelectAllListener(new ActionBar.ActionSelectAllListener() {
+			@Override
+			public void onSelectAll() {
+				wallAdapter.selectAll();
+				wallAdapter.disableImageRecycle();
+				notifyGridViewRefresh();
+			}
+
+			@Override
+			public void onDeselectall() {
+				wallAdapter.resetMap();
+				wallAdapter.disableImageRecycle();
+				notifyGridViewRefresh();
+			}
+		});
 		computeActionbarLayout();
 	}
 
+	private void cancelActionbarSelectMode() {
+		mActionBar.cancelSelectionMode();
+	}
+
 	private void setActionbarSelectMode() {
-		mActionBar.clearActionIcon();
-		mActionBar.addMenuIcon();
-		mActionBar.addDeleteIcon();
+		mActionBar.setSelectionMode();
 		computeActionbarLayout();
 	}
 
@@ -284,14 +295,19 @@ public class WallActivity extends BaseActivity implements Callback
 
 	@Override
 	public void onWallItemClick(View view, int position) {
+		showImageDialog.applyTransparentBackground();
+		showImageDialog.setImagePath(imagePathList.get(position));
+		showImageDialog.fitImageView();
+		showImageDialog.show();
+	}
+
+	@Override
+	public void onWallItemLongClick(View view, int position) {
 		if (wallAdapter.isSelectMode()) {
-			wallAdapter.setChecked(position);
+			mActionBar.setSelectionMode();
 		}
 		else {
-			showImageDialog.applyTransparentBackground();
-			showImageDialog.setImagePath(imagePathList.get(position));
-			showImageDialog.fitImageView();
-			showImageDialog.show();
+			mActionBar.cancelSelectionMode();
 		}
 	}
 
@@ -308,14 +324,13 @@ public class WallActivity extends BaseActivity implements Callback
 	}
 
 	@Override
-	public void onWallItemLongClick(View view, int position) {
-		if (!wallAdapter.isSelectMode()) {
-			wallAdapter.resetMap();
-			wallAdapter.setSelectMode(true);
-			wallAdapter.setChecked(position);
-			notifyGridViewRefresh();
-			setActionbarSelectMode();
-		}
+	public void onEmptyChecked() {
+		mActionBar.showSelectAllStatus(false);
+	}
+
+	@Override
+	public void onFullChecked() {
+		mActionBar.showSelectAllStatus(true);
 	}
 
 	@Override
@@ -325,7 +340,7 @@ public class WallActivity extends BaseActivity implements Callback
 			wallAdapter.resetMap();
 			wallAdapter.disableImageRecycle();
 			notifyGridViewRefresh();
-			setActionbarNormal();
+			cancelActionbarSelectMode();
 		}
 		else if (wallAdapter.isMirrorMode()) {
 			wallAdapter.closeMirror();
@@ -391,6 +406,9 @@ public class WallActivity extends BaseActivity implements Callback
 					deleteSelectedFile();
 				}
 				break;
+			case R.id.actionbar_addto:
+				sOrderProvider.openOrderChooserToAddItem(getSelectedList());
+				break;
 			case R.id.actionbar_change:
 				currentMode = MODE_LIST;
 				changeActionbarTitle();
@@ -455,82 +473,11 @@ public class WallActivity extends BaseActivity implements Callback
 	private void loadMenu(MenuInflater menuInflater, Menu menu) {
 		menu.clear();
 		menuInflater.inflate(R.menu.wallgallery, menu);
-		if (wallAdapter.isSelectMode()) {
-			menu.findItem(R.id.menu_wall_setaswall).setVisible(false);
-			int checkedItemNum = wallAdapter.getCheckMap().size();
-			if (checkedItemNum == 0) {
-				menu.findItem(R.id.menu_thumb_deselectall).setVisible(false);
-				menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
-				menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
-				menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
-				menu.findItem(R.id.menu_thumb_deselectall).setVisible(false);
-			}
-			else if (checkedItemNum == 1) {
-				menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
-				menu.findItem(R.id.menu_thumb_setascover).setVisible(true);
-				menu.findItem(R.id.menu_thumb_viewdetail).setVisible(true);
-				menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
-				menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
-			}
-			else if (checkedItemNum == imagePathList.size()) {
-				menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
-				menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
-				menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
-				menu.findItem(R.id.menu_thumb_selectall).setVisible(false);
-				menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
-			}
-			else {
-				menu.findItem(R.id.menu_thumb_addtooder).setVisible(true);
-				menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
-				menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
-				menu.findItem(R.id.menu_thumb_selectall).setVisible(true);
-				menu.findItem(R.id.menu_thumb_deselectall).setVisible(true);
-			}
-		}
-		else {
-			menu.findItem(R.id.menu_thumb_addtooder).setVisible(false);
-			menu.findItem(R.id.menu_thumb_deselectall).setVisible(false);
-			menu.findItem(R.id.menu_thumb_setascover).setVisible(false);
-			menu.findItem(R.id.menu_thumb_viewdetail).setVisible(false);
-			menu.findItem(R.id.menu_thumb_selectall).setVisible(false);
-			menu.findItem(R.id.menu_thumb_deselectall).setVisible(false);
-			menu.findItem(R.id.menu_wall_setaswall).setVisible(false);
-			if (currentMode == MODE_LIST) {
-				menu.findItem(R.id.menu_thumb_waterfall).setVisible(false);
-			}
-			else {
-				menu.findItem(R.id.menu_thumb_waterfall).setVisible(true);
-			}
-		}
 	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_wall_setaswall:
-				wallController.saveDefaultWallRes();
-				break;
-			case R.id.menu_thumb_selectall:
-				wallAdapter.selectAll();
-				wallAdapter.disableImageRecycle();
-				notifyGridViewRefresh();
-				break;
-			case R.id.menu_thumb_deselectall:
-				wallAdapter.resetMap();
-				wallAdapter.disableImageRecycle();
-				notifyGridViewRefresh();
-				break;
-			case R.id.menu_thumb_addtooder:
-				sOrderProvider.openOrderChooserToAddItem(getSelectedList());
-				break;
-			case R.id.menu_thumb_setascover:
-				int index = wallAdapter.getCheckMap().keyAt(0);
-				sOrderProvider.openOrderChooserToSetCover(imagePathList.get(index));
-				break;
-			case R.id.menu_thumb_viewdetail:
-				int position = wallAdapter.getCheckMap().keyAt(0);
-				viewDetails(position);
-				break;
 			case R.id.menu_thumb_waterfall:
 				if (currentMode == MODE_FOLDER) {
 					startFileWaterFallView();
@@ -568,13 +515,6 @@ public class WallActivity extends BaseActivity implements Callback
 //		}
 	}
 
-	private void viewDetails(int pos) {
-		File file = new File(imagePathList.get(pos));
-		if (file != null && file.exists()) {
-			new DefaultDialogManager().openDetailDialog(this, file);
-		}
-	}
-
 	protected List<Integer> getSelectedIndex() {
 		List<Integer> list = null;
 		SparseBooleanArray map = wallAdapter.getCheckMap();
@@ -600,11 +540,6 @@ public class WallActivity extends BaseActivity implements Callback
 			}
 		}
 		return list;
-	}
-
-	@Override
-	public void onTextChanged(String text, int start, int before, int count) {
-
 	}
 
 	private void loadRandomList() {

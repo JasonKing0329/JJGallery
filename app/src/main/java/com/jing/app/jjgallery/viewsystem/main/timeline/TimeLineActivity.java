@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem.main.timeline;
 import android.content.Intent;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -91,7 +92,9 @@ public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, 
 
 	@Override
 	protected View setUpRightMenu() {
-		return null;
+		View view = LayoutInflater.from(this).inflate(R.layout.layout_sliding_right_timeline, null);
+		new RightMenuPage(view, RightMenuPage.INDEX_TIMELINE);
+		return view;
 	}
 
 	@Override

@@ -13,6 +13,9 @@ public class PreferenceValue {
     public static final String VALUE_SORDER_VIEW_THUMB = "Thumbfolder";
     public static final String VALUE_SORDER_VIEW_INDEX = "Index";
 
+    public static final String VALUE_TIMELINE_VIEW_TIMELINE = "Timeline";
+    public static final String VALUE_TIMELINE_VIEW_WATERFALL = "Waterfall";
+
     public static final int START_VIEW_FILEMANAGER = 0;
     public static final int START_VIEW_SORDER = 1;
     public static final int START_VIEW_TIMELINE = 2;

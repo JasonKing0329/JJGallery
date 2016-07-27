@@ -236,6 +236,7 @@
     <string name="setting_waterfall_column">竖屏列数</string>
     <string name="setting_waterfall_column_land">横屏列数</string>
     <string name="setting_waterfall">瀑布流视图</string>
+    <string name="setting_timeline_view_default">默认时间线视图</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>

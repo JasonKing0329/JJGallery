@@ -32,6 +32,8 @@ public class PreferenceKey {
     public static final String PREF_FM_ORIGIN = "pref_filemanager_origin";
     // SOrder默认打开视图
     public static final String PREF_SORDER_VIEW = "pref_sorder_view";
+    // TimeLine默认打开视图
+    public static final String PREF_TIMELINE_VIEW = "pref_timeline_view";
     // 随便看看数量
     public static final String PREF_CASUAL_NUMBER = "pref_casual_number";
 

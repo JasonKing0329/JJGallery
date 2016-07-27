@@ -8,16 +8,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
@@ -27,96 +26,9 @@ import java.util.List;
 
 public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickListener {
 
-	private Context context;
-	private ImageView backButton, menuButton, menuLeftButton, addButton, editButton
-		, titleIcon, saveButton, cancelButton, galleryButton, sortButton
-		, searchButton, closeButton, refreshButton, changeButton, colorButton
-		, fullScreenButton, deleteButton, saveButton1, thumbButton;
-	private TextView titleView;
-	private EditText searchEdit;
-	private ActionIconListener actionIconListener;
-	private ActionMenuListener actionMenuListener;
-	private ActionSearchListener actionSearchListener;
-	private List<View> currentButtons, tempButotns;
-	private HorizontalScrollView iconContainer;
-	//private Spinner levelSpinner, courtSpinner;
-	private LinearLayout layout;
-	private RelativeLayout searchLayout;
-
-	private PopupMenu popupMenu;
-
-	public ActionBar(Context context, View view) {
-		this.context = context;
-		layout = (LinearLayout) view.findViewById(R.id.actionbar_content);
-		searchLayout = (RelativeLayout) view.findViewById(R.id.actionbar_search_layout);
-		backButton = (ImageView) view.findViewById(R.id.actionbar_back);
-		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);
-		menuLeftButton = (ImageView) view.findViewById(R.id.actionbar_menu_left);
-		addButton = (ImageView) view.findViewById(R.id.actionbar_add);
-		editButton = (ImageView) view.findViewById(R.id.actionbar_edit);
-		saveButton = (ImageView) view.findViewById(R.id.actionbar_save);
-		saveButton1 = (ImageView) view.findViewById(R.id.actionbar_save1);
-		cancelButton = (ImageView) view.findViewById(R.id.actionbar_cancel);
-		galleryButton = (ImageView) view.findViewById(R.id.actionbar_gallery);
-		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
-		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
-		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
-		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
-		fullScreenButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
-		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
-		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
-		titleIcon = (ImageView) view.findViewById(R.id.actionbar_title_icon);
-		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
-		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
-		searchEdit = (EditText) view.findViewById(R.id.actionbar_search_edittext);
-		iconContainer = (HorizontalScrollView) view.findViewById(R.id.actionbar_icon_container);
-		backButton.setOnClickListener(this);
-		menuButton.setOnClickListener(this);
-		menuLeftButton.setOnClickListener(this);
-		addButton.setOnClickListener(this);
-		refreshButton.setOnClickListener(this);
-		editButton.setOnClickListener(this);
-		saveButton.setOnClickListener(this);
-		saveButton1.setOnClickListener(this);
-		sortButton.setOnClickListener(this);
-		cancelButton.setOnClickListener(this);
-		searchButton.setOnClickListener(this);
-		fullScreenButton.setOnClickListener(this);
-		deleteButton.setOnClickListener(this);
-		closeButton.setOnClickListener(this);
-		changeButton.setOnClickListener(this);
-		galleryButton.setOnClickListener(this);
-		searchEdit.addTextChangedListener(this);
-		colorButton.setOnClickListener(this);
-		thumbButton.setOnClickListener(this);
-		titleView = (TextView) view.findViewById(R.id.actionbar_title);
-
-		currentButtons = new ArrayList<View>();
-
-	}
-
-	public void setActionIconListener(ActionIconListener listener) {
-		actionIconListener = listener;
-	}
-
-	public void setActionMenuListener(ActionMenuListener listener) {
-		actionMenuListener = listener;
-	}
-
-	public void setActionSearchListener(ActionSearchListener listener) {
-		actionSearchListener = listener;
-	}
-
-	public void updateBackground(int newColor) {
-		layout.setBackgroundColor(newColor);
-	}
-
-	@Override
-	public boolean onMenuItemClick(MenuItem item) {
-		if (actionMenuListener != null) {
-			return  actionMenuListener.onMenuItemClick(item);
-		}
-		return false;
+	public interface ActionSelectAllListener {
+		void onSelectAll();
+		void onDeselectall();
 	}
 
 	public interface ActionIconListener {
@@ -134,6 +46,258 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		void onTextChanged(String text, int start, int before, int count);
 	}
 
+	private Context context;
+
+	/**
+	 * 整个actionbar根view
+	 */
+	private LinearLayout layout;
+
+
+	/**
+	 * normal container包含的所有图标
+	 */
+	private ImageView backButton, menuLeftButton, addButton
+		, galleryButton, sortButton, searchButton, closeButton, refreshButton
+		, changeButton, colorButton, fullScreenButton, thumbButton;
+
+	/**
+	 * 最右侧菜单图标，固定位置
+	 */
+	private ImageView menuButton;
+
+	/**
+	 * select mode container包含的所有图标
+	 */
+	private ImageView addToButton, deleteButton;
+
+	/**
+	 * 标题
+	 */
+	private TextView titleView;
+
+	/**
+	 * 搜索框
+	 */
+	private EditText searchEdit;
+
+	/**
+	 * 全选/取消全选
+	 */
+	private CheckBox selectCheckBox;
+
+	/**
+	 * 当前添加的所有normal container包含的图标
+	 */
+	private List<View> currentButtons;
+
+	/**
+	 * 右侧按钮下拉菜单
+	 */
+	private PopupMenu popupMenu;
+
+
+	/**
+	 * 全选/取消全选事件
+	 */
+	private ActionSelectAllListener actionSelectAllListener;
+
+	/**
+	 * 图标点击事件
+	 */
+	private ActionIconListener actionIconListener;
+
+	/**
+	 * 右侧下拉菜单事件
+	 */
+	private ActionMenuListener actionMenuListener;
+
+	/**
+	 * 输入框文字变化事件
+	 */
+	private ActionSearchListener actionSearchListener;
+
+
+	/**
+	 * 由返回/标题/全选/取消全选组成的左侧布局
+	 */
+	private ViewGroup leftLayout;
+
+	/**
+	 * 由返回/标题组成的布局
+	 */
+	private ViewGroup leftBackTitleLayout;
+
+	/**
+	 * 输入框布局
+	 */
+	private ViewGroup searchLayout;
+
+	/**
+	 * 右侧全部图标布局（除menu图标以外）
+	 */
+	private ViewGroup iconContainer;
+
+	/**
+	 * normal图标布局
+	 */
+	private ViewGroup normalIconContainer;
+
+	/**
+	 * selection mode图标布局
+	 */
+	private ViewGroup selectionIconContainer;
+
+
+	public ActionBar(final Context context, View view) {
+		this.context = context;
+
+		// 初始化各个view
+		layout = (LinearLayout) view.findViewById(R.id.actionbar_content);
+
+		backButton = (ImageView) view.findViewById(R.id.actionbar_back);
+		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);
+		menuLeftButton = (ImageView) view.findViewById(R.id.actionbar_menu_left);
+		addButton = (ImageView) view.findViewById(R.id.actionbar_add);
+		galleryButton = (ImageView) view.findViewById(R.id.actionbar_gallery);
+		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
+		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
+		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
+		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
+		fullScreenButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
+		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
+		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
+		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
+
+		addToButton = (ImageView) view.findViewById(R.id.actionbar_addto);
+		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
+
+		searchEdit = (EditText) view.findViewById(R.id.actionbar_search_edittext);
+		titleView = (TextView) view.findViewById(R.id.actionbar_title);
+		selectCheckBox = (CheckBox) view.findViewById(R.id.actionbar_select_check);
+
+		leftLayout = (ViewGroup) view.findViewById(R.id.actionbar_left);
+		leftBackTitleLayout = (ViewGroup) view.findViewById(R.id.actionbar_left_backtitle);
+		iconContainer = (ViewGroup) view.findViewById(R.id.actionbar_icon_container);
+		searchLayout = (ViewGroup) view.findViewById(R.id.actionbar_search_layout);
+		normalIconContainer = (ViewGroup) view.findViewById(R.id.actionbar_icons_normal);
+		selectionIconContainer = (ViewGroup) view.findViewById(R.id.actionbar_icons_selection);
+
+		// 设置图标监听事件--normal icons
+		backButton.setOnClickListener(this);
+		menuButton.setOnClickListener(this);
+		menuLeftButton.setOnClickListener(this);
+		addButton.setOnClickListener(this);
+		refreshButton.setOnClickListener(this);
+		sortButton.setOnClickListener(this);
+		searchButton.setOnClickListener(this);
+		fullScreenButton.setOnClickListener(this);
+		closeButton.setOnClickListener(this);
+		changeButton.setOnClickListener(this);
+		galleryButton.setOnClickListener(this);
+		colorButton.setOnClickListener(this);
+		thumbButton.setOnClickListener(this);
+
+		// 设置图标监听事件--selection icons
+		addToButton.setOnClickListener(this);
+		deleteButton.setOnClickListener(this);
+
+		// 设置输入框文字变化监听事件
+		searchEdit.addTextChangedListener(this);
+
+		// 设置全选/取消全选监听事件
+		// 不用OnCheckChangedListener，因为外部一个个勾选完全部或者取消勾选完全部，要引起setChecked事件，会触发该listener
+		// 只监听主动按键的check变化
+		selectCheckBox.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (actionSelectAllListener != null) {
+					CheckBox box = (CheckBox) v;
+					if (box.isChecked()) {
+						actionSelectAllListener.onSelectAll();
+						selectCheckBox.setText(context.getString(R.string.menu_thumb_deselectall));
+					}
+					else {
+						actionSelectAllListener.onDeselectall();
+						selectCheckBox.setText(context.getString(R.string.menu_thumb_selectall));
+					}
+				}
+			}
+		});
+
+		// 初始化normal icons集合
+		currentButtons = new ArrayList<>();
+	}
+
+	/**
+	 * 更改select all选中状态
+	 * @param selectall
+     */
+	public void showSelectAllStatus(boolean selectall) {
+		selectCheckBox.setChecked(selectall);
+		if (selectall) {
+			selectCheckBox.setText(context.getString(R.string.menu_thumb_deselectall));
+		}
+		else {
+			selectCheckBox.setText(context.getString(R.string.menu_thumb_selectall));
+		}
+	}
+
+	/**
+	 * 禁止使用全选按钮
+	 */
+	public void disableSelectAll() {
+		selectCheckBox.setEnabled(false);
+	}
+
+	/**
+	 * 更改背景
+	 * @param newColor
+	 */
+	public void updateBackground(int newColor) {
+		layout.setBackgroundColor(newColor);
+	}
+
+	/**
+	 * 设置全选/取消全选事件监听
+	 * @param listener
+	 */
+	public void setActionSelectAllListener(ActionSelectAllListener listener) {
+		actionSelectAllListener = listener;
+	}
+
+	/**
+	 * 设置图标点击事件监听
+	 * @param listener
+	 */
+	public void setActionIconListener(ActionIconListener listener) {
+		actionIconListener = listener;
+	}
+
+	/**
+	 * 设置菜单事件监听
+	 * @param listener
+	 */
+	public void setActionMenuListener(ActionMenuListener listener) {
+		actionMenuListener = listener;
+	}
+
+	/**
+	 * 设置输入框文字变化事件监听
+	 * @param listener
+	 */
+	public void setActionSearchListener(ActionSearchListener listener) {
+		actionSearchListener = listener;
+	}
+
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		if (actionMenuListener != null) {
+			return  actionMenuListener.onMenuItemClick(item);
+		}
+		return false;
+	}
+
 	public int getHeight() {
 		return context.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
 	}
@@ -148,31 +312,11 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	public void onLandscape() {
-		LayoutParams params = (LayoutParams) iconContainer.getLayoutParams();
-		int iconNumber = currentButtons.size();
-		if (currentButtons.contains(menuButton)) {
-			iconNumber --;
-		}
-		if (iconNumber < context.getResources().getInteger(R.integer.actionbar_max_icon)) {
-			params.width = context.getResources().getDimensionPixelSize(R.dimen.actionbar_icon_width) * iconNumber;
-		}
-		else {
-			params.width = context.getResources().getDimensionPixelSize(R.dimen.actionbar_icon_max_width);
-		}
+
 	}
 
 	public void onVertical() {
-		LayoutParams params = (LayoutParams) iconContainer.getLayoutParams();
-		int iconNumber = currentButtons.size();
-		if (currentButtons.contains(menuButton)) {
-			iconNumber --;
-		}
-		if (iconNumber < context.getResources().getInteger(R.integer.actionbar_max_icon)) {
-			params.width = context.getResources().getDimensionPixelSize(R.dimen.actionbar_icon_width) * iconNumber;
-		}
-		else {
-			params.width = context.getResources().getDimensionPixelSize(R.dimen.actionbar_icon_max_width);
-		}
+
 	}
 
 	public void clearActionIcon() {
@@ -187,10 +331,6 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		menuLeftButton.setVisibility(View.VISIBLE);
 	}
 
-	public void addEditIcon() {
-		currentButtons.add(editButton);
-		editButton.setVisibility(View.VISIBLE);
-	}
 	public void addBackIcon() {
 		currentButtons.add(backButton);
 		backButton.setVisibility(View.VISIBLE);
@@ -211,17 +351,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		currentButtons.add(galleryButton);
 		galleryButton.setVisibility(View.VISIBLE);
 	}
-	public void addSaveIcon() {
-		currentButtons.add(saveButton1);
-		saveButton1.setVisibility(View.VISIBLE);
-	}
 	public void addFullScreenIcon() {
 		currentButtons.add(fullScreenButton);
 		fullScreenButton.setVisibility(View.VISIBLE);
-	}
-	public void addDeleteIcon() {
-		currentButtons.add(deleteButton);
-		deleteButton.setVisibility(View.VISIBLE);
 	}
 	public void addRefreshIcon() {
 		currentButtons.add(refreshButton);
@@ -230,15 +362,6 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addChangeIcon() {
 		currentButtons.add(changeButton);
 		changeButton.setVisibility(View.VISIBLE);
-	}
-	public void addCancelIcon() {
-		currentButtons.add(cancelButton);
-		cancelButton.setVisibility(View.VISIBLE);
-	}
-	public void addTitleIcon(int resId) {
-		titleIcon.setImageResource(resId);
-		currentButtons.add(titleIcon);
-		titleIcon.setVisibility(View.VISIBLE);
 	}
 	public void addSearchIcon() {
 		currentButtons.add(searchButton);
@@ -253,7 +376,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		thumbButton.setVisibility(View.VISIBLE);
 	}
 
-	public void closeSearch() {
+	private void closeSearch() {
 
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
 		searchLayout.startAnimation(animation);
@@ -262,16 +385,22 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		animation = AnimationUtils.loadAnimation(context, R.anim.appear);
 		iconContainer.startAnimation(animation);
 		iconContainer.setVisibility(View.VISIBLE);
+		leftLayout.startAnimation(animation);
+		leftLayout.setVisibility(View.VISIBLE);
 	}
-	public void addSearchLayout() {
 
-		Animation animation = AnimationUtils.loadAnimation(context, R.anim.appear);
+	private void showSearchLayout() {
+
+		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
+		iconContainer.startAnimation(animation);
+		iconContainer.setVisibility(View.GONE);
+		leftLayout.startAnimation(animation);
+		leftLayout.setVisibility(View.GONE);
+
+		animation = AnimationUtils.loadAnimation(context, R.anim.appear);
 		searchLayout.startAnimation(animation);
 		searchLayout.setVisibility(View.VISIBLE);
 
-		animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
-		iconContainer.startAnimation(animation);
-		iconContainer.setVisibility(View.GONE);
 	}
 
 	public void setTitle(String text) {
@@ -281,16 +410,24 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		return titleView.getText().toString();
 	}
 
+	public void setSelectionMode() {
+		normalIconContainer.setVisibility(View.GONE);
+		leftBackTitleLayout.setVisibility(View.GONE);
+		selectCheckBox.setVisibility(View.VISIBLE);
+		selectionIconContainer.setVisibility(View.VISIBLE);
+	}
+
+	public void cancelSelectionMode() {
+		normalIconContainer.setVisibility(View.VISIBLE);
+		leftBackTitleLayout.setVisibility(View.VISIBLE);
+		selectCheckBox.setVisibility(View.GONE);
+		selectionIconContainer.setVisibility(View.GONE);
+	}
+
 	@Override
 	public void onClick(View view) {
 		if (view == backButton) {
 			actionIconListener.onBack();
-		}
-//		else if (view == addButton) {
-//			setEditMode(true);
-//		}
-		else if (view == editButton) {
-			setEditMode(true);
 		}
 		else if (view == menuButton) {
 			if (popupMenu == null) {
@@ -302,37 +439,14 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 			}
 			popupMenu.show();
 		}
-		else if (view == cancelButton) {
-			setEditMode(false);
-		}
-		else if (view == saveButton) {
-			setEditMode(false);
-		}
 		else if (view == searchButton) {
-			addSearchLayout();
+			showSearchLayout();
 		}
 		else if (view == closeButton) {
 			closeSearch();
 		}
 		else {
 			actionIconListener.onIconClick(view);
-		}
-	}
-
-	private void setEditMode(boolean b) {
-		if (b) {
-			saveButton.setVisibility(View.VISIBLE);
-			cancelButton.setVisibility(View.VISIBLE);
-			for (View v:currentButtons) {
-				v.setVisibility(View.GONE);
-			}
-		}
-		else {
-			saveButton.setVisibility(View.GONE);
-			cancelButton.setVisibility(View.GONE);
-			for (View v:currentButtons) {
-				v.setVisibility(View.VISIBLE);
-			}
 		}
 	}
 
@@ -352,16 +466,27 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 	
 	public void hide() {
+		layout.startAnimation(getDisapplearAnim());
 		layout.setVisibility(View.GONE);
 	}
 	
 	public void show() {
+		layout.startAnimation(getApplearAnim());
 		layout.setVisibility(View.VISIBLE);
 	}
 	public boolean dismissMenu() {
 		return false;
 	}
 
+	public Animation getApplearAnim() {
+		Animation appearAnim = AnimationUtils.loadAnimation(context, R.anim.appear);
+		return appearAnim;
+	}
+
+	public Animation getDisapplearAnim() {
+		Animation disappearAnim = AnimationUtils.loadAnimation(context, R.anim.disappear);
+		return disappearAnim;
+	}
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {

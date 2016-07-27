@@ -35,7 +35,11 @@ public class ActivityManager {
     }
 
     public static void startTimeLineActivity(Activity from) {
-//        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startWaterfallActivity(Activity from) {
         from.startActivity(new Intent().setClass(from, HomeWaterfallActivity.class));
         applyAnimation(from);
     }

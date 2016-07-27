@@ -183,7 +183,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     /**
      * 设置actionbar浮于content之上
      */
-    protected void requestActionbarFloating() {
+    public void requestActionbarFloating() {
         RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
         params.removeRule(RelativeLayout.BELOW);

@@ -1,10 +1,13 @@
 package com.jing.app.jjgallery.viewsystem.main.timeline;
 
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
+import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallAllFileFragment;
 import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallFragment;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
@@ -16,7 +19,7 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
 
     @Override
     protected boolean isActionBarNeed() {
-        return false;
+        return true;
     }
 
     @Override
@@ -36,7 +39,9 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
 
     @Override
     protected View setUpRightMenu() {
-        return null;
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_sliding_right_timeline, null);
+        new RightMenuPage(view, RightMenuPage.INDEX_WATERFALL);
+        return view;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
     public void onWaterfallPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (fragment == null) {
-            fragment = new WaterfallFragment();
+            fragment = new WaterfallAllFileFragment();
             fragment.setActionbar(mActionBar);
         }
 
@@ -57,13 +62,18 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
 
     @Override
     protected void onActionIconClick(View view) {
-
+        fragment.onActionIconClick(view);
     }
 
     @Override
     protected boolean handleBack() {
-
         return fragment.onBackPressed();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        fragment.dispatchTouchEvent(event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

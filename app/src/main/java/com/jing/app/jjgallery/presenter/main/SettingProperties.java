@@ -87,6 +87,15 @@ public class SettingProperties {
     }
 
     /**
+     * TimeLine默认打开视图
+     * @return see PreferenceValue.VALUE_SORDER_VIEW_XXX
+     */
+    public static String getTimelineDefaultMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(PreferenceKey.PREF_TIMELINE_VIEW, PreferenceValue.VALUE_TIMELINE_VIEW_TIMELINE);
+    }
+
+    /**
      * 随便看看数量
      */
     public static int getCasualLookNumber(Context context) {

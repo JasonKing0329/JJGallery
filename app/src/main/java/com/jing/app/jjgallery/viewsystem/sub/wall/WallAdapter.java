@@ -37,9 +37,11 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 		implements OnClickListener, OnLongClickListener, RecycleAdapterLoadController.ImageProvider, MirrorListener {
 
 	public interface OnWallItemListener {
-		public void onWallItemClick(View view, int position);
-		public void onWallItemLongClick(View view, int position);
-//		public void onWallItemZoom(View view);
+		void onWallItemClick(View view, int position);
+		void onWallItemLongClick(View view, int position);
+		void onEmptyChecked();
+
+		void onFullChecked();
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,8 +73,9 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 	private List<String> pathList;
 	private boolean showName;
 	private ImageView.ScaleType scaleType;
-	private boolean isSelectMode;
-	private SparseBooleanArray checkMap;
+
+	private boolean isActionMode;
+	private SparseBooleanArray mCheckMap;
 
 	private RecycleAdapterLoadController loadController;
 	private OnWallItemListener onWallItemListener;
@@ -87,7 +90,7 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 		this.context = context;
 		this.pathList = pathList;
 		scaleType = ImageView.ScaleType.FIT_XY;
-		checkMap = new SparseBooleanArray();
+		mCheckMap = new SparseBooleanArray();
 		loadController = new RecycleAdapterLoadController(this);
 		itemViewTouchListener = new ItemViewTouchListener(this);
 		mirrorLayout = ((Activity) context).findViewById(R.id.wall_mirror);
@@ -138,20 +141,8 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 			holder.name.setVisibility(View.GONE);
 		}
 
-		if (isSelectMode) {
-			holder.check.setVisibility(View.VISIBLE);
-			Boolean status = checkMap.get(position);
-			if (status == null || !status) {
-				holder.check.setChecked(false);
-			}
-			else {
-				holder.check.setChecked(true);
-			}
-			holder.check.setTag(position);
-		}
-		else {
-			holder.check.setVisibility(View.GONE);
-		}
+		holder.check.setVisibility(isActionMode ? View.VISIBLE:View.INVISIBLE);
+		holder.check.setChecked(mCheckMap.get(position));
 	}
 
 	@Override
@@ -209,38 +200,25 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 	}
 
 	public void setSelectMode(boolean mode) {
-		isSelectMode = mode;
+		isActionMode = mode;
 	}
 
 	public boolean isSelectMode() {
-		return isSelectMode;
+		return isActionMode;
 	}
 
 	public void resetMap() {
-		checkMap.clear();
+		mCheckMap.clear();
 	}
 
 	public void selectAll() {
 		for (int i = 0; i < pathList.size(); i ++) {
-			checkMap.put(i, true);
+			mCheckMap.put(i, true);
 		}
-	}
-
-	public void setChecked(int pos) {
-		if (DEBUG) {
-			Log.d(TAG, "setChecked " + pos);
-		}
-		if (checkMap.get(pos)) {
-			checkMap.delete(pos);
-		}
-		else {
-			checkMap.put(pos, true);
-		}
-		notifyItemChanged(pos);
 	}
 
 	public SparseBooleanArray getCheckMap() {
-		return checkMap;
+		return mCheckMap;
 	}
 
 	@Override
@@ -248,26 +226,71 @@ public class WallAdapter extends Adapter<WallAdapter.ViewHolder>
 		if (DEBUG) {
 			Log.d(TAG, "onClick");
 		}
-		ViewHolder tag = (ViewHolder) v.getTag();
+		ViewHolder holder = (ViewHolder) v.getTag();
+
+		int position = holder.position;
+		if (isActionMode) {
+			boolean check = !mCheckMap.get(position);
+			holder.check.setChecked(check);
+			if (check) {
+				mCheckMap.put(position, check);
+			}
+			else {
+				mCheckMap.delete(position);
+			}
+
+			defineCheckMapSize();
+		}
+		else {
+			if (onWallItemListener != null) {
+				onWallItemListener.onWallItemClick(v, holder.position);
+			}
+		}
+	}
+
+	private void defineCheckMapSize() {
 		if (onWallItemListener != null) {
-			onWallItemListener.onWallItemClick(v, tag.position);
+			if (mCheckMap.size() == 0) {
+				onWallItemListener.onEmptyChecked();
+			}
+			else if (mCheckMap.size() == pathList.size()) {
+				onWallItemListener.onFullChecked();
+			}
 		}
 	}
 
 	private boolean disableImageRecycle;
 	@Override
 	public boolean onLongClick(View v) {
+		isActionMode = !isActionMode;
+
 		if (DEBUG) {
 			Log.d(TAG, "onLongClick");
 		}
 
 		disableImageRecycle();
 
-		ViewHolder tag = (ViewHolder) v.getTag();
+		ViewHolder holder = (ViewHolder) v.getTag();
+
+		int position = holder.position;
 		if (onWallItemListener != null) {
-			onWallItemListener.onWallItemLongClick(v, tag.position);
+			onWallItemListener.onWallItemLongClick(v, holder.position);
 		}
+
+		if (isActionMode) {
+			mCheckMap.put(position, true);
+		}
+		else {
+			cancelActionMode();
+		}
+		notifyDataSetChanged();
 		return true;
+	}
+
+	private void cancelActionMode() {
+		if (mCheckMap != null) {
+			mCheckMap.clear();
+		}
 	}
 
 	/**

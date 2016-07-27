@@ -212,4 +212,5 @@
     <dimen name="dialog_bg_selector_item_padding">15dp</dimen>
     <dimen name="dialog_bg_selector_item_inner_padding">15dp</dimen>
     <dimen name="dlg_loadfrom_list_height">800dp</dimen>
+    <dimen name="actionbar_title_max_width">300dp</dimen>
 </resources>

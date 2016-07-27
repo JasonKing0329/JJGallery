@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
@@ -182,4 +183,18 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     }
 
     protected abstract void onOrentaionChanged(Configuration newConfig);
+
+    /**
+     * 设置actionbar浮于content之上
+     */
+    public void requestActionbarFloating() {
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
+        params.removeRule(RelativeLayout.BELOW);
+        container.removeView(mContentGroup);
+        container.removeView(mActionbarGroup);
+        container.addView(mContentGroup, 0);
+        container.addView(mActionbarGroup, 1);
+    }
+
 }

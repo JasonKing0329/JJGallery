@@ -192,6 +192,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_TIMELINE_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_INDEX_ITEM_OPEN));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
@@ -282,6 +283,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_TIMELINE_VIEW));
         }
 
     }

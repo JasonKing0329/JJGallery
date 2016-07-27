@@ -245,6 +245,7 @@
     <string name="setting_waterfall_column">Portrait columns</string>
     <string name="setting_waterfall_column_land">Landscape columns</string>
     <string name="setting_waterfall">Waterfall view</string>
+    <string name="setting_timeline_view_default">Default timeline view</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -331,8 +332,10 @@
     <string name="time_line_setting">Setting</string>
     <string name="time_line_close">Close</string>
     <string name="time_line_nocontent">No data~</string>
-    <!--************************** guide **************************-->
+    <!--************************** timeline **************************-->
     <string name="guide_timeline">Time Line</string>
+    <string name="sliding_right_timeline" translatable="false">Timeline</string>
+    <string name="sliding_right_waterfall" translatable="false">Waterfall</string>
     <!--************************** colorpicker **************************-->
     <string name="colorpicker_update_success">Update successfully</string>
     <string name="colorpicker_update_failed">Update failed</string>
