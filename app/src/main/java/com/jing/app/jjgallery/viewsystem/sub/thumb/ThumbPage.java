@@ -202,7 +202,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
             case R.id.actionbar_refresh:
                 refreshCurrent();
                 break;
-            case R.id.actionbar_gallery:
+            case R.id.actionbar_surf:
                 ActivityManager.startRandomSurfActivity((Activity) mContext);
                 break;
         }
@@ -318,7 +318,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         actionBar.clearActionIcon();
         if (!isChooserMode) {
             actionBar.addMenuIcon();
-            actionBar.addGalleryIcon();
+            actionBar.addSurfIcon();
             actionBar.addRefreshIcon();
             actionBar.addColorIcon();
         }

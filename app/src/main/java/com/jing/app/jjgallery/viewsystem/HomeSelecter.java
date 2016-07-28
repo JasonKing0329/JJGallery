@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -52,7 +51,7 @@ public class HomeSelecter implements  HomeProvider {
                 if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)) {
                     ActivityManager.startWaterfallActivity(from);
                 }
-                else if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)){
+                else if (PreferenceValue.VALUE_TIMELINE_VIEW_TIMELINE.equals(mode)){
                     ActivityManager.startTimeLineActivity(from);
                 }
                 break;

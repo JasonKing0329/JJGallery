@@ -304,7 +304,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 //			case R.id.actionbar_sort:
 //				showSortPopup(v);
 //				break;
-			case R.id.actionbar_thumb:
+			case R.id.actionbar_cover:
 				break;
 			case R.id.actionbar_refresh:
 				refresh();
@@ -361,8 +361,6 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	@Override
 	public void initActionbar(ActionBar actionBar) {
 		actionBar.clearActionIcon();
-		//v2.0.3 change: 切换fragment的功能由右侧菜单取代
-//        actionBar.addThumbIcon();
 		actionBar.addAddIcon();
 		actionBar.addRefreshIcon();
 		actionBar.addColorIcon();

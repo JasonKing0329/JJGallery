@@ -26,22 +26,34 @@ import java.util.List;
 
 public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickListener {
 
+	/**
+	 * select/deselect all action listener
+	 */
 	public interface ActionSelectAllListener {
 		void onSelectAll();
 		void onDeselectall();
 	}
 
+	/**
+	 * action icon listener, define it by view.getId()
+	 */
 	public interface ActionIconListener {
 		void onBack();
 		void onIconClick(View view);
 	}
 
+	/**
+	 * custom menu action listener
+	 */
 	public interface ActionMenuListener {
 		void createMenu(MenuInflater menuInflater, Menu menu);
 		void onPrepareMenu(MenuInflater menuInflater, Menu menu);
 		boolean onMenuItemClick(MenuItem item);
 	}
 
+	/**
+	 * text change action listener
+	 */
 	public interface ActionSearchListener {
 		void onTextChanged(String text, int start, int before, int count);
 	}
@@ -58,8 +70,8 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	 * normal container包含的所有图标
 	 */
 	private ImageView backButton, menuLeftButton, addButton
-		, galleryButton, sortButton, searchButton, closeButton, refreshButton
-		, changeButton, colorButton, fullScreenButton, thumbButton;
+		, surfButton, sortButton, searchButton, closeButton, refreshButton
+		, changeButton, colorButton, randomSurfButton, coverButton;
 
 	/**
 	 * 最右侧菜单图标，固定位置
@@ -159,15 +171,15 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);
 		menuLeftButton = (ImageView) view.findViewById(R.id.actionbar_menu_left);
 		addButton = (ImageView) view.findViewById(R.id.actionbar_add);
-		galleryButton = (ImageView) view.findViewById(R.id.actionbar_gallery);
+		surfButton = (ImageView) view.findViewById(R.id.actionbar_surf);
 		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
 		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
 		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
 		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
-		fullScreenButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
+		randomSurfButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
 		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
 		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
-		thumbButton = (ImageView) view.findViewById(R.id.actionbar_thumb);
+		coverButton = (ImageView) view.findViewById(R.id.actionbar_cover);
 
 		addToButton = (ImageView) view.findViewById(R.id.actionbar_addto);
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
@@ -191,12 +203,12 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		refreshButton.setOnClickListener(this);
 		sortButton.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
-		fullScreenButton.setOnClickListener(this);
+		randomSurfButton.setOnClickListener(this);
 		closeButton.setOnClickListener(this);
 		changeButton.setOnClickListener(this);
-		galleryButton.setOnClickListener(this);
+		surfButton.setOnClickListener(this);
 		colorButton.setOnClickListener(this);
-		thumbButton.setOnClickListener(this);
+		coverButton.setOnClickListener(this);
 
 		// 设置图标监听事件--selection icons
 		addToButton.setOnClickListener(this);
@@ -298,10 +310,18 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		return false;
 	}
 
+	/**
+	 * 获取actionbar高度
+	 * @return
+     */
 	public int getHeight() {
 		return context.getResources().getDimensionPixelSize(R.dimen.actionbar_height);
 	}
 
+	/**
+	 * 处理转屏变化
+	 * @param orientation
+     */
 	public void onConfiguration(int orientation) {
 		if (orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
 			onLandscape();
@@ -319,6 +339,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	}
 
+	/**
+	 * 清空所有normal icons
+	 */
 	public void clearActionIcon() {
 		for (View v:currentButtons) {
 			v.setVisibility(View.GONE);
@@ -326,56 +349,105 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		currentButtons.clear();
 	}
 
+	/**
+	 * 使用左侧菜单按钮，屏蔽返回按钮（用于AbsHomeActivity）
+	 */
 	public void useMenuLeftIcon() {
 		backButton.setVisibility(View.GONE);
 		menuLeftButton.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * back icon
+	 */
 	public void addBackIcon() {
 		currentButtons.add(backButton);
 		backButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * menu icon
+	 */
 	public void addMenuIcon() {
 		currentButtons.add(menuButton);
 		menuButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * add icon
+	 */
 	public void addAddIcon() {
 		currentButtons.add(addButton);
 		addButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * edit color icon
+	 */
 	public void addColorIcon() {
 		currentButtons.add(colorButton);
 		colorButton.setVisibility(View.VISIBLE);
 	}
-	public void addGalleryIcon() {
-		currentButtons.add(galleryButton);
-		galleryButton.setVisibility(View.VISIBLE);
+
+	/**
+	 * surf icon
+	 */
+	public void addSurfIcon() {
+		currentButtons.add(surfButton);
+		surfButton.setVisibility(View.VISIBLE);
 	}
-	public void addFullScreenIcon() {
-		currentButtons.add(fullScreenButton);
-		fullScreenButton.setVisibility(View.VISIBLE);
+
+	/**
+	 * random surf icon
+	 */
+	public void addRandomSurfIcon() {
+		currentButtons.add(randomSurfButton);
+		randomSurfButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * refresh icon
+	 */
 	public void addRefreshIcon() {
 		currentButtons.add(refreshButton);
 		refreshButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * change icon
+	 */
 	public void addChangeIcon() {
 		currentButtons.add(changeButton);
 		changeButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * search icon
+	 */
 	public void addSearchIcon() {
 		currentButtons.add(searchButton);
 		searchButton.setVisibility(View.VISIBLE);
 	}
+
+	/**
+	 * sort by icon
+	 */
 	public void addSortIcon() {
 		currentButtons.add(sortButton);
 		sortButton.setVisibility(View.VISIBLE);
 	}
-	public void addThumbIcon() {
-		currentButtons.add(thumbButton);
-		thumbButton.setVisibility(View.VISIBLE);
+
+	/**
+	 * sorder cover icon
+	 */
+	public void addCoverIcon() {
+		currentButtons.add(coverButton);
+		coverButton.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * hide search layout
+	 */
 	private void closeSearch() {
 
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
@@ -389,6 +461,9 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		leftLayout.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * show search layout
+	 */
 	private void showSearchLayout() {
 
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
@@ -403,13 +478,26 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	}
 
+	/**
+	 * set actionbar title
+	 * @param text title name
+     */
 	public void setTitle(String text) {
 		titleView.setText(text);
 	}
+
+	/**
+	 * get actionbar title
+	 * @return name
+     */
 	public String getTitle() {
 		return titleView.getText().toString();
 	}
 
+	/**
+	 * make actionbar show selection mode
+	 * includes select all on the left and selection icons on the right
+	 */
 	public void setSelectionMode() {
 		normalIconContainer.setVisibility(View.GONE);
 		leftBackTitleLayout.setVisibility(View.GONE);
@@ -417,6 +505,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		selectionIconContainer.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * exit selection mode
+	 * re show normal mode
+	 */
 	public void cancelSelectionMode() {
 		normalIconContainer.setVisibility(View.VISIBLE);
 		leftBackTitleLayout.setVisibility(View.VISIBLE);
@@ -426,10 +518,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 	@Override
 	public void onClick(View view) {
-		if (view == backButton) {
+		if (view == backButton) {// back
 			actionIconListener.onBack();
 		}
-		else if (view == menuButton) {
+		else if (view == menuButton) {// menu
 			if (popupMenu == null) {
 
 				createMenu();
@@ -439,54 +531,77 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 			}
 			popupMenu.show();
 		}
-		else if (view == searchButton) {
+		else if (view == searchButton) {// search
 			showSearchLayout();
 		}
-		else if (view == closeButton) {
+		else if (view == closeButton) {// close search
 			closeSearch();
 		}
-		else {
+		else {// all other icons
 			actionIconListener.onIconClick(view);
 		}
 	}
 
+	/**
+	 * create popup menu
+	 */
 	private void createMenu() {
 		popupMenu = new PopupMenu(context, menuButton);
 		actionMenuListener.createMenu(popupMenu.getMenuInflater(), popupMenu.getMenu());
 		//menuWindow.setWidth(context.getResources().getDimensionPixelSize(R.dimen.actionbar_menu_width));
 		popupMenu.setOnMenuItemClickListener(this);
 	}
-	
+
+	/**
+	 * whether actionbar is hidden
+	 * @return
+     */
 	public boolean isHidden() {
 		return layout.getVisibility() == View.GONE ? true:false;
 	}
 
+	/**
+	 * whether actionbar is showing
+	 * @return
+	 */
 	public boolean isShowing() {
 		return layout.getVisibility() == View.VISIBLE ? true:false;
 	}
-	
+
+	/**
+	 * hide actionbar
+	 */
 	public void hide() {
 		layout.startAnimation(getDisapplearAnim());
 		layout.setVisibility(View.GONE);
 	}
-	
+
+	/**
+	 * show action bar, default status is show
+	 */
 	public void show() {
 		layout.startAnimation(getApplearAnim());
 		layout.setVisibility(View.VISIBLE);
 	}
-	public boolean dismissMenu() {
-		return false;
-	}
 
+	/**
+	 * actionbar show animation
+	 * @return
+     */
 	public Animation getApplearAnim() {
 		Animation appearAnim = AnimationUtils.loadAnimation(context, R.anim.appear);
 		return appearAnim;
 	}
 
+	/**
+	 * actionbar hide animation
+	 * @return
+	 */
 	public Animation getDisapplearAnim() {
 		Animation disappearAnim = AnimationUtils.loadAnimation(context, R.anim.disappear);
 		return disappearAnim;
 	}
+
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
@@ -503,6 +618,10 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		
 	}
 
+	/**
+	 * set background color
+	 * @param color
+     */
 	public void setBackgroundColor(int color) {
 		layout.setBackgroundColor(color);
 	}

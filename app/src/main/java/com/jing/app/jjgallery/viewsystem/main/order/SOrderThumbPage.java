@@ -1,14 +1,11 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
 import android.content.Context;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbFolderAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbPage;
@@ -43,8 +40,6 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
     @Override
     public void initActionbar(ActionBar actionBar) {
         super.initActionbar(actionBar);
-        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
-//        actionBar.addThumbIcon();
         actionBar.addAddIcon();
         actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
@@ -100,7 +95,7 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
             case R.id.actionbar_add:
 
                 break;
-            case R.id.actionbar_thumb:
+            case R.id.actionbar_cover:
                 break;
         }
     }

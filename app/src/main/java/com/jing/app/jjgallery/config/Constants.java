@@ -14,7 +14,7 @@ public class Constants {
 	
 	public static final boolean TEST_FILE_SERVICE = true;
 	
-	public static final int WATERFALL_MIN_NUMBER = 1;
+	public static final int WATERFALL_MIN_NUMBER = 20;
 	public static final int WATERFALL_NUM_PER_LOAD = 20;
 //	public static final int SLIDING_MENU_DEFAULT_BK = R.drawable.wall_bk5;
 //

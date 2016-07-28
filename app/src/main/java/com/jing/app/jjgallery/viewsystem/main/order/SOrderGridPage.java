@@ -34,7 +34,6 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.config.DBInfor;
-import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
@@ -113,7 +112,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
         actionBar.clearActionIcon();
         actionBar.addMenuIcon();
         actionBar.addAddIcon();
-        actionBar.addThumbIcon();
+        actionBar.addCoverIcon();
         actionBar.addColorIcon();
         actionBar.addSortIcon();
         actionBar.addRefreshIcon();
@@ -129,7 +128,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             case R.id.actionbar_sort:
                 showSortPopup(view);
                 break;
-            case R.id.actionbar_thumb:
+            case R.id.actionbar_cover:
                 showSelectCoverPopup(view);
                 break;
 

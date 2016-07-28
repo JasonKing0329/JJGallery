@@ -147,7 +147,7 @@
 
 						<ImageView
 							style="@style/ActionbarIcon_L"
-							android:id="@+id/actionbar_gallery"
+							android:id="@+id/actionbar_surf"
 							android:layout_width="@dimen/actionbar_icon_width"
 							android:layout_height="match_parent"
 							android:src="?attr/actionbar_ic_surf"
@@ -163,7 +163,7 @@
 
 						<ImageView
 							style="@style/ActionbarIcon_L"
-							android:id="@+id/actionbar_thumb"
+							android:id="@+id/actionbar_cover"
 							android:layout_width="@dimen/actionbar_icon_width"
 							android:layout_height="match_parent"
 							android:src="?attr/actionbar_ic_cover"

@@ -52,8 +52,6 @@ public class FileManagerThumbFolderPage extends ThumbPage {
     @Override
     public void initActionbar(ActionBar actionBar) {
         super.initActionbar(actionBar);
-        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
-//        actionBar.addThumbIcon();
         actionBar.addAddIcon();
         actionBar.onConfiguration(getContext().getResources().getConfiguration().orientation);
     }
@@ -117,7 +115,7 @@ public class FileManagerThumbFolderPage extends ThumbPage {
 //			case R.id.actionbar_sort:
 //				showSortPopup(v);
 //				break;
-            case R.id.actionbar_thumb:
+            case R.id.actionbar_cover:
                 break;
         }
     }

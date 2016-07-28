@@ -67,8 +67,10 @@
         <activity
             android:name=".viewsystem.sub.surf.RandomSurfActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".viewsystem.main.timeline.HomeWaterfallActivity"
+        <activity
+            android:name=".viewsystem.main.timeline.HomeWaterfallActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".viewsystem.sub.waterfall.WaterfallActivity"></activity>
     </application>
 
 </manifest>

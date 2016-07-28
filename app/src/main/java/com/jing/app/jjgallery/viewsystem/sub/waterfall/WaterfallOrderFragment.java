@@ -13,8 +13,8 @@ public class WaterfallOrderFragment extends WaterfallFragment {
     private SOrder sOrder;
     private BaseWaterfallAdapter mAdapter;
 
-    public void setOrder(SOrder sOrder) {
-        this.sOrder = sOrder;
+    public void setOrderId(int id) {
+        sOrder = mPresenter.queryOrder(id);
     }
 
     @Override

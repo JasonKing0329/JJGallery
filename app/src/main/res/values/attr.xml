@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="actionbar_bk_color" format="reference"/>
-    <attr name="actionbar_bk_color_alpha" format="reference"/>
+    <!-- public -->
+    <attr name="dlg_custom_btn_bg_normal" format="reference"/>
+    <attr name="dlg_custom_btn_bg_press" format="reference"/>
+
+    <!-- file manager -->
+    <attr name="file_manager_upper" format="reference"/>
     <attr name="default_folder" format="reference"/>
     <attr name="path_indicator_bk" format="reference"/>
     <attr name="path_indicator_press" format="reference"/>
 
+    <!-- file manager -->
+    <attr name="circlemenu_color_normal" format="reference"/>
+    <attr name="circlemenu_color_press" format="reference"/>
+
+    <!-- actionbar -->
+    <attr name="actionbar_bk_color" format="reference"/>
+    <attr name="actionbar_bk_color_alpha" format="reference"/>
     <attr name="actionbar_ic_add" format="reference"/>
     <attr name="actionbar_ic_color" format="reference"/>
     <attr name="actionbar_ic_sort" format="reference"/>
@@ -20,15 +31,14 @@
     <attr name="actionbar_ic_casual" format="reference"/>
     <attr name="actionbar_ic_delete" format="reference"/>
     <attr name="actionbar_text_color" format="reference"/>
+
+    <!-- setting -->
     <attr name="setting_ic_safety" format="reference"/>
     <attr name="setting_ic_general" format="reference"/>
     <attr name="setting_ic_folder" format="reference"/>
     <attr name="setting_ic_order" format="reference"/>
     <attr name="setting_ic_surf" format="reference"/>
     <attr name="setting_ic_waterfall" format="reference"/>
-    <attr name="dlg_custom_btn_bg_normal" format="reference"/>
-    <attr name="dlg_custom_btn_bg_press" format="reference"/>
-    <attr name="file_manager_upper" format="reference"/>
 
     <!-- 圆形头像 -->
     <declare-styleable name="CircleImageView">

@@ -108,6 +108,11 @@
     <color name="tab_actionbar_text">#ffffff</color>
     <color name="tab_actionbar_text_focus">#FFFF00</color>
 
+
+    <color name="circlemenu_color_normal_dark">#218676</color>
+    <color name="circlemenu_color_normal_light">#3f3a71</color>
+    <color name="circlemenu_color_normal">#00a5c4</color>
+
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
     <color name="lightyellow">#FFFFE0</color><!--亮黄色 -->

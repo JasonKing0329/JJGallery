@@ -114,7 +114,7 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     public void onIconClick(View view) {
         switch (view.getId()) {
 
-            case R.id.actionbar_thumb:
+            case R.id.actionbar_cover:
 
                 break;
         }
@@ -150,8 +150,6 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void initActionbar(ActionBar actionBar) {
         actionBar.clearActionIcon();
-        //v2.0.3 change: 切换fragment的功能由右侧菜单取代
-//        actionBar.addThumbIcon();
         actionBar.addMenuIcon();
         actionBar.addColorIcon();
         actionBar.onConfiguration(context.getResources().getConfiguration().orientation);

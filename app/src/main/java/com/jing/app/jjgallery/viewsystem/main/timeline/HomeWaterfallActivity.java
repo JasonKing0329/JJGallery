@@ -24,7 +24,7 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_waterfall;
+        return R.layout.activity_home_waterfall;
     }
 
     @Override

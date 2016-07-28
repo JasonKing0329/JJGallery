@@ -38,6 +38,14 @@ public class WaterfallPresenter extends BasePresenter implements TimeLineCallbac
     }
 
     /**
+     * 同步方法，查询SOrder
+     * @param id order id
+     */
+    public SOrder queryOrder(int id) {
+        return new SOrderManager(null).queryOrder(id);
+    }
+
+    /**
      * 同步方法，加载列表items
      * @param sOrder
      */
@@ -54,4 +62,5 @@ public class WaterfallPresenter extends BasePresenter implements TimeLineCallbac
         List<FileBean> list = new FolderManager().loadFileBeanList(folder);
         waterfall.onLoadDataFinished(list);
     }
+
 }

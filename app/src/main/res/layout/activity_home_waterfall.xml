@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallActivity">
+    tools:context="com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbActivity">
 
     <RelativeLayout
         android:id="@+id/waterfall_fragment_container"

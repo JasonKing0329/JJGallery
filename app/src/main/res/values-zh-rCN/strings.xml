@@ -282,6 +282,7 @@
     <string name="wall_image_fitxy">拉伸</string>
     <string name="wall_image_centrecrop">裁切</string>
     <string name="wall_image_origin">原始</string>
+    <string name="wall_waterfall_notenough">当前内容不足%d，无法打开瀑布流视图！</string>
     
     <!--************************** showimagedialog **************************-->
     <string name="showimage_zoom_origin">原始大小</string>

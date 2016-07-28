@@ -21,7 +21,7 @@ import java.util.List;
 public class CircleMenuView extends AbsoluteLayout implements OnClickListener {
 
 	public interface OnMenuItemListener {
-		public void onMenuClick(int index);
+		void onMenuClick(int index);
 	}
 
 	private final String TAG = "CircleMenuView";

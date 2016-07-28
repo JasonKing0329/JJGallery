@@ -291,6 +291,7 @@
     <string name="wall_image_fitxy">fit XY</string>
     <string name="wall_image_centrecrop">center crop</string>
     <string name="wall_image_origin">origin</string>
+    <string name="wall_waterfall_notenough">Waterfall view need items larger than %d!</string>
 
     <!--************************** showimagedialog **************************-->
     <string name="showimage_zoom_origin">Origin size</string>

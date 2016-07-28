@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="JJThemeDark" parent="AppDarkTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_dark</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_dark_alpha</item>
+
+        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
+        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="file_manager_upper">@drawable/ic_backup_white_36dp</item>
         <item name="default_folder">@drawable/ic_folder_parent</item>
         <item name="path_indicator_bk">@drawable/indicator_blue</item>
         <item name="path_indicator_press">@drawable/indicator_orange</item>
+
+        <item name="circlemenu_color_normal">@color/circlemenu_color_normal_dark</item>
+        <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="actionbar_bk_color">@color/actionbar_bk_dark</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_dark_alpha</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_green_900_36dp</item>
         <item name="actionbar_ic_color">@drawable/ic_color_lens_green_36dp</item>
         <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_green_36dp</item>
@@ -20,23 +29,30 @@
         <item name="actionbar_ic_casual">@drawable/ic_camera_green_36dp</item>
         <item name="actionbar_ic_delete">@drawable/ic_delete_geen_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_dark</item>
+
         <item name="setting_ic_safety">@drawable/ic_fingerprint_yellow_200_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_yellow_36dp</item>
         <item name="setting_ic_folder">@drawable/ic_folder_yellow_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_yellow_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_yellow_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_yellow_fff807_36dp</item>
-        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
-        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
-        <item name="file_manager_upper">@drawable/ic_backup_white_36dp</item>
     </style>
 
     <style name="JJThemeLight" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_light</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_light</item>
+
+        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
+        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
         <item name="default_folder">@drawable/default_folder</item>
         <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
         <item name="path_indicator_press">@drawable/indicator_orange</item>
+
+        <item name="circlemenu_color_normal">@color/circlemenu_color_normal_light</item>
+        <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="actionbar_bk_color">@color/actionbar_bk_light</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_light</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_purple_200_36dp</item>
         <item name="actionbar_ic_color">@drawable/ic_color_lens_purple_200_36dp</item>
         <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_purple_200_36dp</item>
@@ -51,23 +67,30 @@
         <item name="actionbar_ic_casual">@drawable/ic_camera_purple_36dp</item>
         <item name="actionbar_ic_delete">@drawable/ic_delete_purple_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_light</item>
+
         <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>
         <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
-        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
-        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
-        <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
     </style>
 
     <style name="JJThemeNormal" parent="AppTheme">
-        <item name="actionbar_bk_color">@color/actionbar_bk_normal</item>
-        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_normal_alpha</item>
+
+        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
+        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
         <item name="default_folder">@drawable/default_folder</item>
         <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
         <item name="path_indicator_press">@drawable/indicator_orange</item>
+
+        <item name="circlemenu_color_normal">@color/circlemenu_color_normal</item>
+        <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
+
+        <item name="actionbar_bk_color">@color/actionbar_bk_normal</item>
+        <item name="actionbar_bk_color_alpha">@color/actionbar_bk_normal_alpha</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_white_36dp</item>
         <item name="actionbar_ic_color">@drawable/ic_color_lens_white_36dp</item>
         <item name="actionbar_ic_sort">@drawable/ic_sort_by_alpha_white_36dp</item>
@@ -82,16 +105,13 @@
         <item name="actionbar_ic_casual">@drawable/ic_camera_white_36dp</item>
         <item name="actionbar_ic_delete">@drawable/ic_delete_white_36dp</item>
         <item name="actionbar_text_color">@color/actionbar_text_normal</item>
+
         <item name="setting_ic_safety">@drawable/ic_fingerprint_black_36dp</item>
         <item name="setting_ic_general">@drawable/ic_home_black_36dp</item>
         <item name="setting_ic_folder">@drawable/ic_folder_black_36dp</item>
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
-        <item name="dlg_custom_btn_bg_normal">@color/custom_dialog_icon_bk_normal</item>
-        <item name="dlg_custom_btn_bg_press">@color/custom_dialog_icon_bk_pressed</item>
-        <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
     </style>
-
 
 </resources>

@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.viewsystem.sub.surf.RandomSurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
+import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallActivity;
 
 /**
  * Created by JingYang on 2016/7/12 0012.
@@ -41,6 +42,24 @@ public class ActivityManager {
 
     public static void startWaterfallActivity(Activity from) {
         from.startActivity(new Intent().setClass(from, HomeWaterfallActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startWaterfallActivity(Activity from, String filePath) {
+        Intent intent = new Intent();
+        intent.setClass(from, WaterfallActivity.class);
+        intent.putExtra(WaterfallActivity.KEY_TYPE, WaterfallActivity.FOLDER);
+        intent.putExtra(WaterfallActivity.KEY_FOLDER_PATH, filePath);
+        from.startActivity(intent);
+        applyAnimation(from);
+    }
+
+    public static void startWaterfallActivity(Activity from, SOrder order) {
+        Intent intent = new Intent();
+        intent.setClass(from, WaterfallActivity.class);
+        intent.putExtra(WaterfallActivity.KEY_TYPE, WaterfallActivity.SORDER);
+        intent.putExtra(WaterfallActivity.KEY_ORDER_ID, order.getId());
+        from.startActivity(intent);
         applyAnimation(from);
     }
 

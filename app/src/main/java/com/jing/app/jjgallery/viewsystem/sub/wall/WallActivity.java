@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.sub.WallController;
 import com.jing.app.jjgallery.model.sub.WholeRandomManager;
@@ -34,11 +35,13 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -228,7 +231,7 @@ public class WallActivity extends BaseActivity implements Callback
 		mActionBar.addMenuIcon();
 		mActionBar.addRefreshIcon();
 		mActionBar.addChangeIcon();
-		mActionBar.addFullScreenIcon();
+		mActionBar.addRandomSurfIcon();
 		mActionBar.setActionSelectAllListener(new ActionBar.ActionSelectAllListener() {
 			@Override
 			public void onSelectAll() {
@@ -481,9 +484,15 @@ public class WallActivity extends BaseActivity implements Callback
 			case R.id.menu_thumb_waterfall:
 				if (currentMode == MODE_FOLDER) {
 					startFileWaterFallView();
+					// 都是大量图片资源视图，最好释放掉本activity
+					beforeDestroy();
+					finish();
 				}
 				else if (currentMode == MODE_ORDER) {
 					startOrderWaterFallView();
+					// 都是大量图片资源视图，最好释放掉本activity
+					beforeDestroy();
+					finish();
 				}
 				break;
 			default:
@@ -493,26 +502,26 @@ public class WallActivity extends BaseActivity implements Callback
 	}
 
 	private void startFileWaterFallView() {
-//		if (currentPath != null) {
-//			File file = new File(currentPath);
-//			if (file.list().length > Constants.WATERFALL_MIN_NUMBER) {
-//				Intent intent = new Intent();
-//				intent.setClass(this, WaterFallActivity.class);
-//				intent.putExtra("filePath", file.getPath());
-//				startActivity(intent);
-//			}
-//		}
+		if (currentPath != null) {
+			File file = new File(currentPath);
+			if (file.list().length >= Constants.WATERFALL_MIN_NUMBER) {
+				ActivityManager.startWaterfallActivity(this, file.getPath());
+			}
+			else {
+				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+			}
+		}
 	}
 
 	private void startOrderWaterFallView() {
-//		if (currentOrder != null && currentOrder.getImgPathList() != null) {
-//			if (currentOrder.getImgPathList().size() > Constants.WATERFALL_MIN_NUMBER) {
-//				Intent intent = new Intent();
-//				intent.setClass(this, WaterFallActivity.class);
-//				intent.putExtra("order", currentOrder.getId());
-//				startActivity(intent);
-//			}
-//		}
+		if (currentOrder != null && currentOrder.getImgPathList() != null) {
+			if (currentOrder.getImgPathList().size() >= Constants.WATERFALL_MIN_NUMBER) {
+				ActivityManager.startWaterfallActivity(this, currentOrder);
+			}
+			else {
+				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+			}
+		}
 	}
 
 	protected List<Integer> getSelectedIndex() {
@@ -619,8 +628,12 @@ public class WallActivity extends BaseActivity implements Callback
 
 	@Override
 	protected void onDestroy() {
-		PictureManagerUpdate.getInstance().recycleWallItems();
+		beforeDestroy();
 		super.onDestroy();
+	}
+
+	private void beforeDestroy() {
+		PictureManagerUpdate.getInstance().recycleWallItems();
 	}
 
 	/**
