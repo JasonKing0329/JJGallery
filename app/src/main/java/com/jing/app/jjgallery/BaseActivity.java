@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
@@ -28,7 +29,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
  * activity/fragment animation
  */
 public abstract class BaseActivity extends AppCompatActivity implements ActionBar.ActionIconListener
-    , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener {
+    , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener, ProgressProvider {
 
     private ViewGroup mActionbarGroup;
     private ViewGroup mContentGroup;
@@ -91,12 +92,14 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
 
     protected abstract void initBackgroundWork();
 
-    protected void showProgress(String text) {
+    @Override
+    public void showProgress(String text) {
         progressDialog.setMessage(text);
         progressDialog.show();
     }
 
-    protected boolean dismissProgress() {
+    @Override
+    public boolean dismissProgress() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
             return true;
@@ -104,14 +107,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
         return  false;
     }
 
-    protected void showToastLong(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    protected void showToastShort(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
+    @Override
     public void showProgressCycler() {
         if (progressManager == null) {
             progressManager = new ProgressManager(this);
@@ -120,8 +116,21 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
         progressManager.showProgressCycler();
     }
 
-    public void dismissProgressCycler() {
-        progressManager.dismissProgressCycler();
+    @Override
+    public boolean dismissProgressCycler() {
+        if (progressManager.isShowing()) {
+            progressManager.dismissProgressCycler();
+            return true;
+        }
+        return false;
+    }
+
+    protected void showToastLong(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    protected void showToastShort(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override

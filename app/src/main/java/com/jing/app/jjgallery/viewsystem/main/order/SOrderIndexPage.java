@@ -22,6 +22,7 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
@@ -72,7 +73,9 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     @Override
     public void initData() {
-        ((BaseSlidingActivity) context).showProgressCycler();
+        if (context instanceof ProgressProvider) {
+            ((ProgressProvider) context).showProgressCycler();
+        }
         mPresenter.setDataCallback(this);
         mPresenter.loadAllOrders(PreferenceValue.ORDERBY_NONE);
     }
@@ -86,7 +89,9 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
             mKeyAdapter.feedKeyword();
             mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
         }
-        ((BaseSlidingActivity) context).dismissProgressCycler();
+        if (context instanceof  ProgressProvider) {
+            ((ProgressProvider) context).dismissProgressCycler();
+        }
     }
 
     @Override

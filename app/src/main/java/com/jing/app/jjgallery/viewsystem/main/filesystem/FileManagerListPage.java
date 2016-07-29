@@ -264,6 +264,11 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	private void startFullScreenActivity(String path) {
 		ActivityManager.startSurfActivity((Activity) context, path);
 	}
+
+	private void startBookView(String path) {
+		ActivityManager.startBookActivity((Activity) context, path);
+	}
+
 	@Override
 	public void onFindFileFinish() {
 		notifyAdapterRefresh();
@@ -481,7 +486,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 									startFullScreenActivity(item.getFile().getPath());
 								}
 								else if (which == 3) {//book view
-//									startBookView(item.getFile().getPath());
+									startBookView(item.getFile().getPath());
 								}
 							}
 						}).show();

@@ -20,6 +20,7 @@ import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
@@ -71,7 +72,9 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void initData() {
 
-        ((BaseSlidingActivity) context).showProgressCycler();
+        if (context instanceof  ProgressProvider) {
+            ((ProgressProvider) context).showProgressCycler();
+        }
         mPresenter.setFileDataCallback(this);
         mPresenter.loadAllFolders();
     }
@@ -85,7 +88,9 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
             mKeyAdapter.feedKeyword();
             mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
         }
-        ((BaseSlidingActivity) context).dismissProgressCycler();
+        if (context instanceof  ProgressProvider) {
+            ((ProgressProvider) context).dismissProgressCycler();
+        }
     }
 
     @Override

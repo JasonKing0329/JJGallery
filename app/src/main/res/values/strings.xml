@@ -349,4 +349,5 @@
 
     <!--************************** bg selector **************************-->
     <string name="bg_selector_title">Set as background</string>
+
 </resources>

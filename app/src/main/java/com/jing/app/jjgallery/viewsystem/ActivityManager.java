@@ -14,6 +14,7 @@ import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
+import com.jing.app.jjgallery.viewsystem.sub.book.BookActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.RandomSurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
@@ -117,9 +118,23 @@ public class ActivityManager {
     }
 
     public static void startBookActivity(Activity from, String path) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BookActivity.KEY_TYPE, BookActivity.FOLDER);
+        bundle.putString(BookActivity.KEY_FOLDER_PATH, path);
+        Intent intent = new Intent().setClass(from, BookActivity.class);
+        intent.putExtras(bundle);
+        from.startActivity(intent);
+        applyAnimation(from);
     }
 
     public static void startBookActivity(Activity from, SOrder order) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BookActivity.KEY_TYPE, BookActivity.SORDER);
+        bundle.putInt(BookActivity.KEY_ORDER_ID, order.getId());
+        Intent intent = new Intent().setClass(from, BookActivity.class);
+        intent.putExtras(bundle);
+        from.startActivity(intent);
+        applyAnimation(from);
     }
 
     public static void onSettingResult(Context context) {

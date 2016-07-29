@@ -70,7 +70,12 @@
         <activity
             android:name=".viewsystem.main.timeline.HomeWaterfallActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".viewsystem.sub.waterfall.WaterfallActivity"></activity>
+        <activity
+            android:name=".viewsystem.sub.waterfall.WaterfallActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".viewsystem.sub.book.BookActivity"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>

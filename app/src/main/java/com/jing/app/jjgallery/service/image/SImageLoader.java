@@ -14,6 +14,7 @@ public class SImageLoader {
     /**
      * lru.ImageLoader在处理快速滑动过程中，
      * item都会直接显示实际图片，但是稍卡顿，回翻之前的item会闪回position不正确的图片
+     * 注意：使用这种方法千万不要占用ImageView的tag，即不要对imageViwe使用setTag！！！tag被用于异步加载图片了
      * @return
      */
     public static ISImageLoader getInstance() {

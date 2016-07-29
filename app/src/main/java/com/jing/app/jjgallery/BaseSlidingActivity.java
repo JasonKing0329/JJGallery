@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
@@ -28,7 +29,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
  * 除了继承SlidingAppCompatActivity以外，其他的封装层面和BaseActivity一致
  */
 public abstract class BaseSlidingActivity extends SlidingAppCompatActivity implements ActionBar.ActionIconListener
-        , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener {
+        , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener, ProgressProvider {
     private ViewGroup mActionbarGroup;
     private ViewGroup mContentGroup;
 
@@ -92,17 +93,37 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     protected abstract void initBackgroundWork();
 
-    protected void showProgress(String text) {
+    @Override
+    public void showProgress(String text) {
         progressDialog.setMessage(text);
         progressDialog.show();
     }
 
-    protected boolean dismissProgress() {
+    @Override
+    public boolean dismissProgress() {
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
             return true;
         }
         return  false;
+    }
+
+    @Override
+    public void showProgressCycler() {
+        if (progressManager == null) {
+            progressManager = new ProgressManager(this);
+            BackgroundManager.getInstance().addProgressSubscriber(progressManager);
+        }
+        progressManager.showProgressCycler();
+    }
+
+    @Override
+    public boolean dismissProgressCycler() {
+        if (progressManager.isShowing()) {
+            progressManager.dismissProgressCycler();
+            return true;
+        }
+        return false;
     }
 
     protected void showToastLong(String text) {
@@ -111,14 +132,6 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     protected void showToastShort(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void showProgressCycler() {
-        progressManager.showProgressCycler();
-    }
-
-    public void dismissProgressCycler() {
-        progressManager.dismissProgressCycler();
     }
 
     @Override

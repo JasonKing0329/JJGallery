@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "2.1.1"
+ext.appVersionName = "2.2.0"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 41
+        versionCode 42
         versionName appVersionName
     }
 
@@ -96,4 +96,5 @@ dependencies {
     compile project(':prjsaveasdialog')
     compile project(':libgifimageview')
     compile project(':libstickygridheaders')
+    compile project(':flipview')
 }

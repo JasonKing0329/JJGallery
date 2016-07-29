@@ -53,4 +53,8 @@ public class ProgressManager implements ProgressSubscriber {
         progressButton.setImageBitmap(PictureManagerUpdate.getInstance().createCircleBitmap(
                 path, context));
     }
+
+    public boolean isShowing() {
+        return progressView.getVisibility() == View.VISIBLE;
+    }
 }

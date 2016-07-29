@@ -40,6 +40,7 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
@@ -242,7 +243,9 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     }
 
     private void showProgress() {
-        ((BaseSlidingActivity) context).showProgressCycler();
+        if (context instanceof ProgressProvider) {
+            ((ProgressProvider) context).showProgressCycler();
+        }
     }
 
     @Override
@@ -261,7 +264,9 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             currentPageOrders = mPresenter.getOrderList();
             notifyUpdate();
         }
-        ((BaseSlidingActivity) context).dismissProgressCycler();
+        if (context instanceof  ProgressProvider) {
+            ((ProgressProvider) context).dismissProgressCycler();
+        }
     }
 
     private void refresh() {
@@ -687,7 +692,9 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
 
         @Override
         public void handleMessage(Message msg) {
-            ((BaseSlidingActivity) context).dismissProgressCycler();
+            if (context instanceof  ProgressProvider) {
+                ((ProgressProvider) context).dismissProgressCycler();
+            }
             if (msg.what == 1) {
                 Toast.makeText(context, R.string.sorder_success, Toast.LENGTH_LONG).show();
             }
