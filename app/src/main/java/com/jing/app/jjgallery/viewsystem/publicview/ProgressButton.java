@@ -442,7 +442,9 @@ public class ProgressButton extends CompoundButton {
       iconDrawable.draw(canvas);
     }
     else {
-      canvas.drawBitmap(bitmap, matrix, mCirclePaint);
+      if (matrix != null) {
+        canvas.drawBitmap(bitmap, matrix, mCirclePaint);
+      }
     }
 
 //    mTempRect.set(0, 0, mDrawableSize, mDrawableSize);

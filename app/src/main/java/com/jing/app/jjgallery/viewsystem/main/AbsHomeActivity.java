@@ -62,7 +62,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         // apply color saved in disk file
         applyExtendColors();
 
-//        startService(new Intent(this, PreferenceService.class));
+        checkkAllService(false);
     }
 
     private void initSlidingMenu() {
@@ -84,7 +84,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         slidingViewManager.setSlidingLeftCallback(new SlidingViewManager.SlidingLeftCallback() {
             @Override
             public void onCheckAllService() {
-                checkkAllService();
+                checkkAllService(true);
             }
 
             @Override
@@ -193,7 +193,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         switch (item.getItemId()) {
 
             case R.id.menu_check_all_unencrypted:
-                checkkAllService();
+                checkkAllService(true);
                 break;
             case R.id.menu_export:
                 export();
@@ -256,8 +256,10 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
         ConfManager.exportDatabase(this);
     }
 
-    private void checkkAllService() {
-        showProgress(getString(R.string.checking));
+    private void checkkAllService(boolean showProgress) {
+        if (showProgress) {
+            showProgress(getString(R.string.checking));
+        }
         if (mEncryptCheckService == null) {
             mEncryptCheckService = new EncryptCheckService(this);
         }
