@@ -11,10 +11,11 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 public class WaterfallOrderFragment extends WaterfallFragment {
 
     private SOrder sOrder;
+    private int orderId;
     private BaseWaterfallAdapter mAdapter;
 
     public void setOrderId(int id) {
-        sOrder = mPresenter.queryOrder(id);
+        orderId = id;
     }
 
     @Override
@@ -49,6 +50,7 @@ public class WaterfallOrderFragment extends WaterfallFragment {
 
     @Override
     protected void loadListData() {
+        sOrder = mPresenter.queryOrder(orderId);
         mPresenter.loadSOrderItems(sOrder);
     }
 

@@ -484,15 +484,9 @@ public class WallActivity extends BaseActivity implements Callback
 			case R.id.menu_thumb_waterfall:
 				if (currentMode == MODE_FOLDER) {
 					startFileWaterFallView();
-					// 都是大量图片资源视图，最好释放掉本activity
-					beforeDestroy();
-					finish();
 				}
 				else if (currentMode == MODE_ORDER) {
 					startOrderWaterFallView();
-					// 都是大量图片资源视图，最好释放掉本activity
-					beforeDestroy();
-					finish();
 				}
 				break;
 			default:
@@ -506,6 +500,9 @@ public class WallActivity extends BaseActivity implements Callback
 			File file = new File(currentPath);
 			if (file.list().length >= Constants.WATERFALL_MIN_NUMBER) {
 				ActivityManager.startWaterfallActivity(this, file.getPath());
+				// 都是大量图片资源视图，最好释放掉本activity
+				beforeDestroy();
+				finish();
 			}
 			else {
 				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
@@ -517,6 +514,9 @@ public class WallActivity extends BaseActivity implements Callback
 		if (currentOrder != null && currentOrder.getImgPathList() != null) {
 			if (currentOrder.getImgPathList().size() >= Constants.WATERFALL_MIN_NUMBER) {
 				ActivityManager.startWaterfallActivity(this, currentOrder);
+				// 都是大量图片资源视图，最好释放掉本activity
+				beforeDestroy();
+				finish();
 			}
 			else {
 				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
