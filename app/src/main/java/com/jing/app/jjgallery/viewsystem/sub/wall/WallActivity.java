@@ -126,9 +126,8 @@ public class WallActivity extends BaseActivity implements Callback
 
 			@Override
 			public void onDeleteIndex(int index) {
-				//show animation
-				imagePathList.remove(index);
-				wallAdapter.notifyRemoved(index);
+				// 无法在批量删除中展示动画
+//				wallAdapter.notifyRemoved(index);
 			}
 
 			@Override
