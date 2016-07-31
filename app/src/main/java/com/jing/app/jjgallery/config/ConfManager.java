@@ -32,6 +32,7 @@ public class ConfManager {
     private static String DATABASE_NAME = "fileencryption.db";
     private static String PREF_NAME="com.jing.app.jjgallery_preferences";
     public static String DB_PATH;
+    public static String GDB_DB_PATH = Configuration.APP_DIR_CONF + "/gdata.db";
 
     private static String DISK_PREF_DEFAULT_PATH;
 

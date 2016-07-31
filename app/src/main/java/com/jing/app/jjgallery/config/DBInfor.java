@@ -64,6 +64,9 @@ public class DBInfor {
 	public static final int NUM_TS_COL_NAME = 1;
 	public static final int NUM_TS_COL_SEQ = 2;
 
+	// gdata.db只支持外部扩展目录，不内置到程序中
+	public static String GDB_DB_PATH = ConfManager.GDB_DB_PATH;
+
 	public static boolean prepareDatabase(Context context) {
 		boolean result = ConfManager.prepareDatabase(context);
 		DB_PATH = ConfManager.DB_PATH;

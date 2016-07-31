@@ -10,6 +10,7 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
+import com.jing.app.jjgallery.viewsystem.main.gdb.GDBHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
@@ -32,7 +33,8 @@ public class ActivityManager {
     }
 
     public static void startFileManagerActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
+//        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
+        from.startActivity(new Intent().setClass(from, GDBHomeActivity.class));
         applyAnimation(from);
     }
 

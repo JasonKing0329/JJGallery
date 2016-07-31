@@ -72,10 +72,12 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".viewsystem.sub.waterfall.WaterfallActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".viewsystem.sub.book.BookActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".viewsystem.main.gdb.GDBHomeActivity" />
+        <activity android:name=".viewsystem.main.gdb.StarActivity"></activity>
     </application>
 
 </manifest>

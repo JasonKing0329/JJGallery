@@ -240,4 +240,9 @@
     <dimen name="dlg_loadfrom_list_height">400dp</dimen>
     <dimen name="waterfall_item_padding">5dp</dimen>
     <dimen name="actionbar_title_max_width">160dp</dimen>
+
+    <!-- wave side bar -->
+    <dimen name="textSize_sidebar">10sp</dimen>
+    <dimen name="textSize_sidebar_choose">12sp</dimen>
+    <dimen name="textSize_sidebar_padding">20sp</dimen>
 </resources>
