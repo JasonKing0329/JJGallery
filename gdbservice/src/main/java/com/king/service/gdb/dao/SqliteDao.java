@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
 
@@ -40,57 +41,70 @@ public class SqliteDao {
 	public List<RecordOneVOne> queryOneVOneRecords(Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1;
+		Statement stmt = null;
 		try {
-			Statement stmt = connection.createStatement();
+			stmt = connection.createStatement();
 			ResultSet set = stmt.executeQuery(sql);
-			while (set.next()) {
-				RecordOneVOne record = new RecordOneVOne();
-				record.setId(set.getInt(1));
-				record.setSequence(set.getInt(2));
-				record.setSceneName(set.getString(3));
-				record.setDirectory(set.getString(4));
-				int star1Id = set.getInt(38);
-				int star2Id = set.getInt(39);
-				record.setStar1(queryStarById(connection, star1Id));
-				record.setStar2(queryStarById(connection, star2Id));
-				record.setName(set.getString(6));
-				record.setHDLevel(set.getInt(7));
-				record.setScore(set.getInt(8));
-				record.setScoreFeel(set.getInt(9));
-				record.setScoreStar1(set.getInt(10));
-				record.setScoreStar2(set.getInt(11));
-				record.setScoreStarC1(set.getInt(12));
-				record.setScoreStarC2(set.getInt(13));
-				record.setScoreRhythm(set.getInt(14));
-				record.setScoreForePlay(set.getInt(15));
-				record.setScoreRim(set.getInt(16));
-				record.setScoreBJob(set.getInt(17));
-				record.setScoreFkType1(set.getInt(18));
-				record.setScoreFkType2(set.getInt(19));
-				record.setScoreFkType3(set.getInt(20));
-				record.setScoreFkType4(set.getInt(21));
-				record.setScoreFkType5(set.getInt(22));
-				record.setScoreFkType6(set.getInt(23));
-				record.setScoreCum(set.getInt(24));
-				record.setScoreScene(set.getInt(25));
-				record.setScoreStory(set.getInt(26));
-				record.setScoreNoCond(set.getInt(27));
-				record.setScoreCShow(set.getInt(28));
-				record.setScoreFoot(set.getInt(29));
-				record.setScoreSpeicial(set.getInt(30));
-				record.setScoreFk(set.getInt(31));
-				record.setRateFkType1(Integer.parseInt(set.getString(32)));
-				record.setRateFkType2(Integer.parseInt(set.getString(33)));
-				record.setRateFkType3(Integer.parseInt(set.getString(34)));
-				record.setRateFkType4(Integer.parseInt(set.getString(35)));
-				record.setRateFkType5(Integer.parseInt(set.getString(36)));
-				record.setRateFkType6(Integer.parseInt(set.getString(37)));
-				list.add(record);
-			}
+			parseOneVOneRecords(connection, set, list);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return list;
+	}
+
+	private void parseOneVOneRecords(Connection connection, ResultSet set, List<RecordOneVOne> list) throws SQLException {
+		while (set.next()) {
+			RecordOneVOne record = new RecordOneVOne();
+			record.setId(set.getInt(1));
+			record.setSequence(set.getInt(2));
+			record.setSceneName(set.getString(3));
+			record.setDirectory(set.getString(4));
+			int star1Id = set.getInt(39);
+			int star2Id = set.getInt(40);
+			record.setStar1(queryStarById(connection, star1Id));
+			record.setStar2(queryStarById(connection, star2Id));
+			record.setName(set.getString(7));
+			record.setHDLevel(set.getInt(8));
+			record.setScore(set.getInt(9));
+			record.setScoreFeel(set.getInt(10));
+			record.setScoreStar1(set.getInt(11));
+			record.setScoreStar2(set.getInt(12));
+			record.setScoreStarC1(set.getInt(13));
+			record.setScoreStarC2(set.getInt(14));
+			record.setScoreRhythm(set.getInt(15));
+			record.setScoreForePlay(set.getInt(16));
+			record.setScoreRim(set.getInt(17));
+			record.setScoreBJob(set.getInt(18));
+			record.setScoreFkType1(set.getInt(19));
+			record.setScoreFkType2(set.getInt(20));
+			record.setScoreFkType3(set.getInt(21));
+			record.setScoreFkType4(set.getInt(22));
+			record.setScoreFkType5(set.getInt(23));
+			record.setScoreFkType6(set.getInt(24));
+			record.setScoreCum(set.getInt(25));
+			record.setScoreScene(set.getInt(26));
+			record.setScoreStory(set.getInt(27));
+			record.setScoreNoCond(set.getInt(28));
+			record.setScoreCShow(set.getInt(29));
+			record.setScoreFoot(set.getInt(30));
+			record.setScoreSpeicial(set.getInt(31));
+			record.setScoreFk(set.getInt(32));
+			record.setRateFkType1(Integer.parseInt(set.getString(33)));
+			record.setRateFkType2(Integer.parseInt(set.getString(34)));
+			record.setRateFkType3(Integer.parseInt(set.getString(35)));
+			record.setRateFkType4(Integer.parseInt(set.getString(36)));
+			record.setRateFkType5(Integer.parseInt(set.getString(37)));
+			record.setRateFkType6(Integer.parseInt(set.getString(38)));
+			list.add(record);
+		}
 	}
 
 	public boolean insertRecord(Connection connection, RecordOneVOne record) {
@@ -321,5 +335,36 @@ public class SqliteDao {
 			}
 		}
 		return id;
+	}
+
+	public void loadStarRecords(Connection connection, Star star) {
+		Statement stmt = null;
+		List<Record> rList = new ArrayList<>();
+
+		try {
+			// load 1v1 records
+			String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " WHERE star1_id=" + star.getId() + " OR star2_id=" + star.getId();
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			List<RecordOneVOne> list = new ArrayList<>();
+
+			parseOneVOneRecords(connection, set, list);
+
+			for (RecordOneVOne record:list) {
+				rList.add(record);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		star.setRecordList(rList);
 	}
 }

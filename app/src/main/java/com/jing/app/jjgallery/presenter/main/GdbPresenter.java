@@ -36,7 +36,7 @@ public class GdbPresenter {
     }
 
     public void loadStarRecords(int starId) {
-
+        new LoadStarRecordsTask().execute(starId);
     }
 
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
@@ -65,6 +65,21 @@ public class GdbPresenter {
         @Override
         protected List<Star> doInBackground(Void... params) {
             return gdbProvider.getStars();
+        }
+    }
+
+    private class LoadStarRecordsTask extends AsyncTask<Integer, Void, Star> {
+        @Override
+        protected void onPostExecute(Star star) {
+
+            starView.onRecordsLoaded(star);
+
+            super.onPostExecute(star);
+        }
+
+        @Override
+        protected Star doInBackground(Integer... params) {
+            return gdbProvider.getStarRecords(params[0]);
         }
     }
 }

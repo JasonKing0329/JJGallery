@@ -1,17 +1,15 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
-import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.Star;
 
 import java.util.List;
 
@@ -20,25 +18,24 @@ import java.util.List;
  */
 public class StarRecordsAdapter extends RecyclerListAdapter {
 
-    private List<RecordOneVOne> mList;
-    private String mImagePath;
-    private PullZoomRecyclerView mRecyclerView;
+    private PullZoomRecyclerView recyclerView;
+    protected List<Record> listData;
+    private Star star;
 
-    public StarRecordsAdapter(PullZoomRecyclerView recyclerView, List<RecordOneVOne> list, String imagePath) {
-        mRecyclerView = recyclerView;
-        mList = list;
-        mImagePath = imagePath;
-        SImageLoader.getInstance().setDefaultImgRes(R.drawable.theme_dark);
-        addViewType(Integer.class, new ViewHolderFactory<ViewHolder>() {
+    public StarRecordsAdapter(Star star, PullZoomRecyclerView recyclerView) {
+        this.star = star;
+        this.recyclerView = recyclerView;
+        listData = star.getRecordList();
+        addViewType(Record.class, new ViewHolderFactory<PullZoomItemHolder>() {
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent) {
-                return new ItemHolder(parent);
+            public PullZoomItemHolder onCreateViewHolder(ViewGroup parent) {
+                return new PullZoomItemHolder(parent);
             }
         });
-        addViewType(TYPE_HEADER, new ViewHolderFactory<ViewHolder>() {
+        addViewType(TYPE_HEADER, new ViewHolderFactory<PullZoomHeaderHolder>() {
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent) {
-                return new HeaderHolder(parent);
+            public PullZoomHeaderHolder onCreateViewHolder(ViewGroup parent) {
+                return new PullZoomHeaderHolder(parent);
             }
         });
     }
@@ -48,52 +45,61 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
         if (position == 0) {
             return ITEM_HEADER;
         }
-        return mList.get(--position);
+        return listData.get(--position);
     }
 
     @Override
     public int getItemCount() {
-        return mList.size() + 1;
+        return listData.size() + 1;
     }
 
-    private class ItemHolder extends RecyclerListAdapter.ViewHolder<RecordOneVOne> {
-
-        public ItemHolder(ViewGroup parent) {
-            this(LayoutInflater.from(mRecyclerView.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
-        }
-
-        public ItemHolder(View view) {
-            super(view);
-//            imageView = (ImageView) view.findViewById(R.id.imageView);
-//            textView = (TextView) view.findViewById(R.id.text_view);
-        }
-
-        @Override
-        public void bind(RecordOneVOne item, int position) {
-
-        }
-    }
-
-    private class HeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
-
+    private class PullZoomHeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
         private ImageView zoomView;
         private ViewGroup zoomHeaderContainer;
+        private TextView nameView;
+        private TextView numberView;
 
-        public HeaderHolder(ViewGroup parent) {
-            this(LayoutInflater.from(mRecyclerView.getContext()).inflate(R.layout.adapter_gdb_star_header, parent, false));
+        public PullZoomHeaderHolder(ViewGroup parent) {
+            this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_header, parent, false));
         }
 
-        public HeaderHolder(View view) {
+        public PullZoomHeaderHolder(View view) {
             super(view);
-            zoomView = (ImageView) view.findViewById(R.id.zoom_image_view);
-            zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.zoom_header_container);
+            zoomView = (ImageView) view.findViewById(R.id.gdb_star_header_image);
+            zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.gdb_star_header_container);
+            nameView = (TextView) view.findViewById(R.id.gdb_star_header_name);
+            numberView = (TextView) view.findViewById(R.id.gdb_star_header_number);
         }
 
         @Override
         public void bind(Object item, int position) {
-            SImageLoader.getInstance().displayImage(mImagePath, zoomView);
-            mRecyclerView.setZoomView(zoomView);
-            mRecyclerView.setHeaderContainer(zoomHeaderContainer);
+            recyclerView.setZoomView(zoomView);
+            recyclerView.setHeaderContainer(zoomHeaderContainer);
+            nameView.setText(star.getName());
+            numberView.setText(String.format(recyclerView.getContext().getString(R.string.gdb_star_file_numbers), listData.size()));
+        }
+    }
+    private class PullZoomItemHolder extends RecyclerListAdapter.ViewHolder<Record> {
+        private ImageView imageView;
+        private TextView nameView;
+        private TextView scoreView;
+
+        public PullZoomItemHolder(ViewGroup parent) {
+            this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
+        }
+
+        public PullZoomItemHolder(View view) {
+            super(view);
+            imageView = (ImageView) view.findViewById(R.id.record_thumb);
+            nameView = (TextView) view.findViewById(R.id.record_name);
+            scoreView = (TextView) view.findViewById(R.id.record_score);
+        }
+
+        @Override
+        public void bind(Record item, int position) {
+//                imageView.setImageResource(item);
+            nameView.setText(item.getName());
+            scoreView.setText("" + item.getScore());
         }
     }
 }

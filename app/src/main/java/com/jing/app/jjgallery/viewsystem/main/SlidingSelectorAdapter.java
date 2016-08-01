@@ -85,7 +85,7 @@ public class SlidingSelectorAdapter extends PagerAdapter implements View.OnClick
 			holder.btnNext.startAnimation(getAnimation());
 			holder.btnPrevious.clearAnimation();
 		}
-		else if (position == 2) {
+		else if (position == 3) {
 			holder.btnPrevious.setVisibility(View.VISIBLE);
 			holder.btnNext.setVisibility(View.INVISIBLE);
 			holder.btnPrevious.startAnimation(getAnimation());

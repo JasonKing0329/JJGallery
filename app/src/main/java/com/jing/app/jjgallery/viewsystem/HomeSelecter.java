@@ -34,6 +34,10 @@ public class HomeSelecter implements  HomeProvider {
         bean.setPreferenceKey(PreferenceValue.START_VIEW_TIMELINE);
         bean.setName(context.getString(R.string.setting_start_view_timeline));
         list.add(bean);
+        bean = new HomeBean();
+        bean.setPreferenceKey(PreferenceValue.START_GDB);
+        bean.setName(context.getString(R.string.setting_start_view_gdb));
+        list.add(bean);
     }
 
     @Override
@@ -60,6 +64,9 @@ public class HomeSelecter implements  HomeProvider {
                 break;
             case PreferenceValue.START_VIEW_SORDER:
                 ActivityManager.startSOrderActivity(from);
+                break;
+            case PreferenceValue.START_GDB:
+                ActivityManager.startGDBHomeActivity(from);
                 break;
             default:
                 ActivityManager.startFileManagerActivity(from);

@@ -66,10 +66,10 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
          * open source design this way
          */
         if (viewType == 0) {
-            return new NameHolder(inflateItemView(R.layout.adapter_gdb_star_item, parent));
+            return new NameHolder(inflateItemView(R.layout.adapter_gdb_starlist_item, parent));
         }
         else {
-            return new IndexHeaderHolder(inflateItemView(R.layout.adapter_gdb_star_header, parent));
+            return new IndexHeaderHolder(inflateItemView(R.layout.adapter_gdb_starlist_header, parent));
         }
     }
 

@@ -272,6 +272,7 @@
     <string name="setting_start_view_filemanager">File manager</string>
     <string name="setting_start_view_guide">Guide</string>
     <string name="setting_start_view_timeline">Timeline</string>
+    <string name="setting_start_view_gdb" translatable="false">GDB</string>
 
     <string name="login_finger_not_support">Fingerprint is not supported on current device!</string>
     <!--************************** thumb folder **************************-->
@@ -349,5 +350,8 @@
 
     <!--************************** bg selector **************************-->
     <string name="bg_selector_title">Set as background</string>
+
+    <!--************************** gdb **************************-->
+    <string name="gdb_star_file_numbers">%d video files</string>
 
 </resources>

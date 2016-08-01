@@ -11,6 +11,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.gdb.GDBHomeActivity;
+import com.jing.app.jjgallery.viewsystem.main.gdb.StarActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
@@ -21,6 +22,7 @@ import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
 import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallActivity;
+import com.king.service.gdb.bean.Star;
 
 /**
  * Created by JingYang on 2016/7/12 0012.
@@ -33,13 +35,17 @@ public class ActivityManager {
     }
 
     public static void startFileManagerActivity(Activity from) {
-//        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
-        from.startActivity(new Intent().setClass(from, GDBHomeActivity.class));
+        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
         applyAnimation(from);
     }
 
     public static void startTimeLineActivity(Activity from) {
         from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
+        applyAnimation(from);
+    }
+
+    public static void startGDBHomeActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, GDBHomeActivity.class));
         applyAnimation(from);
     }
 
@@ -187,5 +193,14 @@ public class ActivityManager {
         else {
             startSurfActivity(from, path);
         }
+    }
+
+    public static void startStarActivity(Activity from, Star star) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(StarActivity.KEY_STAR_ID, star.getId());
+        Intent intent = new Intent().setClass(from, StarActivity.class);
+        intent.putExtras(bundle);
+        from.startActivity(intent);
+        applyAnimation(from);
     }
 }

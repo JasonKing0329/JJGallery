@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 
@@ -62,11 +63,12 @@ public class StarListFragment extends Fragment implements IGdbView, StarListAdap
     @Override
     public void onLoadStarList(List<Star> list) {
         mAdapter = new StarListAdapter(getActivity(), list);
+        mAdapter.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onStarClick(Star star) {
-
+        ActivityManager.startStarActivity(getActivity(), star);
     }
 }

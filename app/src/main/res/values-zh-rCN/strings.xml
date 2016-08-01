@@ -336,4 +336,7 @@
 
     <!--************************** bg selector **************************-->
     <string name="bg_selector_title">背景设置器</string>
+
+    <!--************************** gdb **************************-->
+    <string name="gdb_star_file_numbers">%d个视频文件</string>
 </resources>

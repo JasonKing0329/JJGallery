@@ -76,8 +76,10 @@
         <activity
             android:name=".viewsystem.sub.book.BookActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".viewsystem.main.gdb.GDBHomeActivity" />
-        <activity android:name=".viewsystem.main.gdb.StarActivity"></activity>
+        <activity android:name=".viewsystem.main.gdb.GDBHomeActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name=".viewsystem.main.gdb.StarActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

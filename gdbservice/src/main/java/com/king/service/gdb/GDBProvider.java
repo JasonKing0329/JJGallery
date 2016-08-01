@@ -42,4 +42,18 @@ public class GDBProvider {
         }
         return null;
     }
+
+    public Star getStarRecords(int starId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            Star star = sqliteDao.queryStarById(SqlConnection.getInstance().getConnection(), starId);
+            sqliteDao.loadStarRecords(SqlConnection.getInstance().getConnection(), star);
+            return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
 }
