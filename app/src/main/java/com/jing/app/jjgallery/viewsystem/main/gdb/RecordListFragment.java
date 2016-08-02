@@ -58,9 +58,11 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     }
 
     private void initActionbar() {
+        mActionbar.clearActionIcon();
         mActionbar.addSortIcon();
+        mActionbar.addSearchIcon();
         mActionbar.addBackIcon();
-        mActionbar.hide();
+        mActionbar.addMenuIcon();
     }
 
     public void onIconClick(View view) {

@@ -103,7 +103,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
             container.setTag(position);
             container.setOnClickListener(RecordListAdapter.this);
 //                imageView.setImageResource(item);
-            seqView.setText("" + position);
+            seqView.setText("" + (position + 1));
             nameView.setText(item.getName());
             scoreView.setText("" + item.getScore());
             if (item instanceof RecordSingleScene) {

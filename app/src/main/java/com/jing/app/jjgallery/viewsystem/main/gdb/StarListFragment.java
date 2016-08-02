@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 
@@ -26,10 +27,12 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
 
     private GdbPresenter gdbPresenter;
     private StarListAdapter mAdapter;
+    private ActionBar mActionbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         gdbPresenter = new GdbPresenter(this);
+        initActionbar();
 
         View view = inflater.inflate(R.layout.page_gdb_starlist, null);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_star_recycler_view);
@@ -58,6 +61,17 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
 
         gdbPresenter.loadStarList();
         return view;
+    }
+
+    public void setActionbar(ActionBar actionbar) {
+        this.mActionbar = actionbar;
+    }
+
+    private void initActionbar() {
+        mActionbar.clearActionIcon();
+        mActionbar.addMenuIcon();
+        mActionbar.addSearchIcon();
+        mActionbar.addBackIcon();
     }
 
     @Override

@@ -37,20 +37,14 @@ public class GDBHomeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        initActionBar();
         onStarListPage();
-    }
-
-    private void initActionBar() {
-        mActionBar.addBackIcon();
-        mActionBar.addMenuIcon();
-        mActionBar.addSearchIcon();
     }
 
     public void onStarListPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (starFragment == null) {
             starFragment = new StarListFragment();
+            starFragment.setActionbar(mActionBar);
         }
         currentFragment = starFragment;
 
