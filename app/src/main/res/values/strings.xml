@@ -353,5 +353,6 @@
 
     <!--************************** gdb **************************-->
     <string name="gdb_star_file_numbers">%d video files</string>
+    <string name="gdb_no_conf">No database found in 'conf' folder.</string>
 
 </resources>

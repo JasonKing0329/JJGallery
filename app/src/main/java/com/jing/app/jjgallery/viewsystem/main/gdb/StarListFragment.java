@@ -71,4 +71,10 @@ public class StarListFragment extends Fragment implements IGdbView, StarListAdap
     public void onStarClick(Star star) {
         ActivityManager.startStarActivity(getActivity(), star);
     }
+
+    public void onTextChanged(String text, int start, int before, int count) {
+        if (mAdapter != null) {
+            mAdapter.onStarFilter(text);
+        }
+    }
 }

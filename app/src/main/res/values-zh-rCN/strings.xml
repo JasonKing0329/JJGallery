@@ -339,4 +339,5 @@
 
     <!--************************** gdb **************************-->
     <string name="gdb_star_file_numbers">%d个视频文件</string>
+    <string name="gdb_no_conf">conf目录下没有找到数据库文件</string>
 </resources>

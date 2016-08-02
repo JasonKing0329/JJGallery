@@ -12,7 +12,6 @@
 	    android:layout_height="wrap_content"
 	    android:inputType="none"
 	    android:cursorVisible="false"
-	    android:textColor="@color/black"
 	    android:gravity="top"
-	    android:background="@color/transparent"/>
+		android:background="@null"/>
 </LinearLayout>

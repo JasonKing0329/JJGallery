@@ -32,6 +32,7 @@ public class GDBHomeActivity extends BaseActivity {
     private void initActionBar() {
         mActionBar.addBackIcon();
         mActionBar.addMenuIcon();
+        mActionBar.addSearchIcon();
     }
 
     public void onStarListPage() {
@@ -47,5 +48,11 @@ public class GDBHomeActivity extends BaseActivity {
     @Override
     protected void initBackgroundWork() {
 
+    }
+
+    @Override
+    public void onTextChanged(String text, int start, int before, int count) {
+        super.onTextChanged(text, start, before, count);
+        fragment.onTextChanged(text, start, before, count);
     }
 }

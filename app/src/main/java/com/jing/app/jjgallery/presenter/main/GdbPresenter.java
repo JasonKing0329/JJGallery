@@ -2,13 +2,19 @@ package com.jing.app.jjgallery.presenter.main;
 
 import android.os.AsyncTask;
 
+import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.model.main.file.FolderManager;
+import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
+import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.LetterComparator;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Star;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +41,8 @@ public class GdbPresenter {
         new LoadStarListTask().execute();
     }
 
-    public void loadStarRecords(int starId) {
-        new LoadStarRecordsTask().execute(starId);
+    public void loadStar(int starId) {
+        new LoadStarTask().execute(starId);
     }
 
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
@@ -68,18 +74,34 @@ public class GdbPresenter {
         }
     }
 
-    private class LoadStarRecordsTask extends AsyncTask<Integer, Void, Star> {
+    private class LoadStarTask extends AsyncTask<Integer, Void, StarProxy> {
         @Override
-        protected void onPostExecute(Star star) {
+        protected void onPostExecute(StarProxy star) {
 
-            starView.onRecordsLoaded(star);
+            starView.onStarLoaded(star);
 
             super.onPostExecute(star);
         }
 
         @Override
-        protected Star doInBackground(Integer... params) {
-            return gdbProvider.getStarRecords(params[0]);
+        protected StarProxy doInBackground(Integer... params) {
+            // load star object and star's records
+            Star star = gdbProvider.getStarRecords(params[0]);
+            StarProxy proxy = new StarProxy();
+            proxy.setStar(star);
+
+            // load image path of star
+            Encrypter encrypter = EncrypterFactory.create();
+            List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
+            for (String path:list) {
+                String name = encrypter.decipherOriginName(new File(path));
+                String preName = name.split("\\.")[0];
+                if (preName.equals(star.getName())) {
+                    proxy.setImagePath(path);
+                    break;
+                }
+            }
+            return proxy;
         }
     }
 }

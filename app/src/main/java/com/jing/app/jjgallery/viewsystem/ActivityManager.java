@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.ConfManager;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
@@ -23,6 +26,8 @@ import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
 import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallActivity;
 import com.king.service.gdb.bean.Star;
+
+import java.io.File;
 
 /**
  * Created by JingYang on 2016/7/12 0012.
@@ -44,9 +49,14 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
-    public static void startGDBHomeActivity(Activity from) {
+    public static boolean startGDBHomeActivity(Activity from) {
+        if (!new File(ConfManager.GDB_DB_PATH).exists()) {
+            Toast.makeText(from, R.string.gdb_no_conf, Toast.LENGTH_LONG).show();
+            return false;
+        }
         from.startActivity(new Intent().setClass(from, GDBHomeActivity.class));
         applyAnimation(from);
+        return true;
     }
 
     public static void startWaterfallActivity(Activity from) {

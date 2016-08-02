@@ -7,9 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
 import com.king.service.gdb.bean.Record;
-import com.king.service.gdb.bean.Star;
 
 import java.util.List;
 
@@ -20,12 +21,12 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
 
     private PullZoomRecyclerView recyclerView;
     protected List<Record> listData;
-    private Star star;
+    private StarProxy star;
 
-    public StarRecordsAdapter(Star star, PullZoomRecyclerView recyclerView) {
+    public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
         this.star = star;
         this.recyclerView = recyclerView;
-        listData = star.getRecordList();
+        listData = star.getStar().getRecordList();
         addViewType(Record.class, new ViewHolderFactory<PullZoomItemHolder>() {
             @Override
             public PullZoomItemHolder onCreateViewHolder(ViewGroup parent) {
@@ -38,6 +39,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
                 return new PullZoomHeaderHolder(parent);
             }
         });
+        SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
     }
 
     @Override
@@ -75,10 +77,12 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
         public void bind(Object item, int position) {
             recyclerView.setZoomView(zoomView);
             recyclerView.setHeaderContainer(zoomHeaderContainer);
-            nameView.setText(star.getName());
+            SImageLoader.getInstance().displayImage(star.getImagePath(), zoomView);
+            nameView.setText(star.getStar().getName());
             numberView.setText(String.format(recyclerView.getContext().getString(R.string.gdb_star_file_numbers), listData.size()));
         }
     }
+
     private class PullZoomItemHolder extends RecyclerListAdapter.ViewHolder<Record> {
         private ImageView imageView;
         private TextView nameView;

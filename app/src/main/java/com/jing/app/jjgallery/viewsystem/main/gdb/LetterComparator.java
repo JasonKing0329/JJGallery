@@ -12,11 +12,6 @@ public class LetterComparator implements Comparator<Star> {
             return 0;
         }
 
-        String lhsSortLetters = l.getName().substring(0, 1).toUpperCase();
-        String rhsSortLetters = r.getName().substring(0, 1).toUpperCase();
-        if (lhsSortLetters == null || rhsSortLetters == null) {
-            return 0;
-        }
-        return lhsSortLetters.compareTo(rhsSortLetters);
+        return l.getName().toLowerCase().compareTo(r.getName().toLowerCase());
     }
 }

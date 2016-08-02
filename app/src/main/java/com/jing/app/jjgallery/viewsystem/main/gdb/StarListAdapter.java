@@ -22,6 +22,8 @@ import cc.solart.turbo.BaseViewHolder;
  */
 public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> implements View.OnClickListener {
 
+    private List<Star> originList;
+
     public interface OnStarClickListener {
         void onStarClick(Star star);
     }
@@ -40,10 +42,15 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
 
     public StarListAdapter(Context context, List<Star> data) {
         super(context, data);
+        originList = data;
     }
 
     public void setOnStarClickListener(OnStarClickListener listener) {
         onStarClickListener = listener;
+    }
+
+    private boolean isHeader(int position) {
+        return getItem(position).getId() == -1;
     }
 
     @Override
@@ -52,8 +59,7 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
          * normal item must be 0
          * open source design this way
          */
-        Star star = getItem(position);
-        if (star.getId() == -1) {
+        if (isHeader(position)) {
             return 1;
         }
         return 0;
@@ -93,7 +99,7 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
 
     public int getLetterPosition(String letter){
         for (int i = 0 ; i < getData().size(); i++){
-            if(getData().get(i).getId() == -1 && getData().get(i).getName().equals(letter)){
+            if(isHeader(i) && getData().get(i).getName().equals(letter)){
                 return i;
             }
         }
@@ -126,6 +132,28 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
             Star star = (Star) v.getTag();
             onStarClickListener.onStarClick(star);
         }
+    }
+
+    public void onStarFilter(String name) {
+        mData.clear();
+        if (name.trim().length() == 0) {
+            for (Star star:originList) {
+                mData.add(star);
+            }
+        }
+        else {
+            for (int i = 0; i < originList.size(); i ++) {
+                if (originList.get(i).getId() == -1) {
+                    mData.add(originList.get(i));
+                }
+                else {
+                    if (originList.get(i).getName().toLowerCase().contains(name.toLowerCase())) {
+                        mData.add(originList.get(i));
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }

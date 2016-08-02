@@ -48,7 +48,8 @@ public class HomeSelecter implements  HomeProvider {
     }
 
     @Override
-    public void startHome(Activity from, int key, Object datas) {
+    public boolean startHome(Activity from, int key, Object datas) {
+        boolean result = true;
         switch (key) {
             case PreferenceValue.START_VIEW_TIMELINE:
                 String mode = SettingProperties.getTimelineDefaultMode(from);
@@ -66,12 +67,13 @@ public class HomeSelecter implements  HomeProvider {
                 ActivityManager.startSOrderActivity(from);
                 break;
             case PreferenceValue.START_GDB:
-                ActivityManager.startGDBHomeActivity(from);
+                result = ActivityManager.startGDBHomeActivity(from);
                 break;
             default:
                 ActivityManager.startFileManagerActivity(from);
                 break;
         }
+        return result;
     }
 
     @Override

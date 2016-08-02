@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
-import com.king.service.gdb.bean.Star;
 
 /**
  * Created by JingYang on 2016/8/1 0001.
@@ -38,15 +39,22 @@ public class StarFragment extends Fragment implements IStarView {
 
         mRecyclerView = (PullZoomRecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mPresenter.loadStarRecords(starId);
+
+        if (getActivity() instanceof ProgressProvider) {
+            ((ProgressProvider) getActivity()).showProgressCycler();
+        }
+        mPresenter.loadStar(starId);
     }
 
-    protected RecyclerListAdapter createPullZoomAdapter(Star star) {
+    protected RecyclerListAdapter createPullZoomAdapter(StarProxy star) {
         return new StarRecordsAdapter(star, mRecyclerView);
     }
 
     @Override
-    public void onRecordsLoaded(Star star) {
+    public void onStarLoaded(StarProxy star) {
         mRecyclerView.setAdapter(createPullZoomAdapter(star));
+        if (getActivity() instanceof ProgressProvider) {
+            ((ProgressProvider) getActivity()).dismissProgressCycler();
+        }
     }
 }

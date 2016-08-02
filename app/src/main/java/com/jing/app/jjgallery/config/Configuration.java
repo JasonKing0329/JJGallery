@@ -29,6 +29,9 @@ public class Configuration {
 	public static final String APP_DIR_IMG = APP_ROOT + "/img";
 	public static final String APP_DIR_CROP_IMG = APP_DIR_IMG + "/crop";
 	public static final String DOWNLOAD_IMAGE_DEFAULT = APP_DIR_IMG + "/download";
+	public static final String GDB_IMG = APP_DIR_IMG + "/gdb";
+	public static final String GDB_IMG_STAR = GDB_IMG + "/star";
+	public static final String GDB_IMG_RECORD = GDB_IMG + "/record";
 	public static final String APP_DIR_IMG_SAVEAS = APP_ROOT + "/saveas";
 	public static final String APP_DIR_DB_HISTORY = APP_ROOT + "/history";
 	public static final String APP_DIR_GAME = APP_ROOT + "/game";
@@ -68,6 +71,18 @@ public class Configuration {
 				file.mkdir();
 			}
 			file = new File(DOWNLOAD_IMAGE_DEFAULT);
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			file = new File(GDB_IMG);
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			file = new File(GDB_IMG_STAR);
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			file = new File(GDB_IMG_RECORD);
 			if (!file.exists()) {
 				file.mkdir();
 			}

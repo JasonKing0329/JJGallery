@@ -10,6 +10,6 @@ import java.util.List;
 public interface HomeProvider {
 
     void startDefaultHome(Activity from, Object datas);
-    void startHome(Activity from, int key, Object datas);
+    boolean startHome(Activity from, int key, Object datas);
     List<HomeBean> getHomeList();
 }
