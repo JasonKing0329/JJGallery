@@ -81,12 +81,6 @@ public class WaterfallActivity extends BaseActivity {
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        fragment.dispatchTouchEvent(event);
-        return super.dispatchTouchEvent(event);
-    }
-
-    @Override
     public void onBackPressed() {
         if (fragment.onBackPressed()) {
             return;

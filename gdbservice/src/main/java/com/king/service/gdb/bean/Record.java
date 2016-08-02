@@ -12,6 +12,7 @@ public abstract class Record {
 	private int scoreFeel;
 	private int scoreStory;
 	private int HDLevel;
+	private long lastModifyTime;
 	
 	public int getId() {
 		return id;
@@ -72,5 +73,13 @@ public abstract class Record {
 	}
 	public void setHDLevel(int hDLevel) {
 		HDLevel = hDLevel;
+	}
+
+	public long getLastModifyTime() {
+		return lastModifyTime;
+	}
+
+	public void setLastModifyTime(long lastModifyTime) {
+		this.lastModifyTime = lastModifyTime;
 	}
 }

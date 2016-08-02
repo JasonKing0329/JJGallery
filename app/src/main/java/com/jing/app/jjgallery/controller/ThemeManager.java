@@ -26,6 +26,10 @@ public class ThemeManager {
 			, R.color.actionbar_bk_wallgalerry_light};
 	private int[] themeDefaultFolder = new int[] {R.drawable.ic_folder_sub, R.drawable.ic_folder_sub
 			, R.drawable.ic_folder_sub};
+	private int[] themeGdbRSTextColorNormal = new int[] {R.color.darkgrey, R.color.white
+			, R.color.darkgrey};
+	private int[] themeGdbRSTextColorBareback = new int[] {R.color.gdb_record_text_score_light, R.color.gdb_record_text_score_dark
+			, R.color.gdb_record_text_score_light};
 	
 	public ThemeManager(Context context) {
 		this.context = context;
@@ -141,13 +145,35 @@ public class ThemeManager {
 		return resId;
 	}
 
-	public int getWallActionbarColor() {
+	public int getWallActionbarColorId() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		int color = themeWallBkColors[0];
 		for (int i = 0; i < themeKeys.length; i ++) {
 			if (value.equals(themeKeys[i])) {
 				color = themeWallBkColors[i];
+				break;
+			}
+		}
+		return color;
+	}
+
+	/**
+	 * gdb star page, the text color of record's name
+	 * @param bareback
+	 * @return
+     */
+	public int getGdbSRTextColorId(boolean bareback) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
+		int[] array = themeGdbRSTextColorNormal;
+		if (bareback) {
+			array = themeGdbRSTextColorBareback;
+		}
+		int color = array[0];
+		for (int i = 0; i < themeKeys.length; i ++) {
+			if (value.equals(themeKeys[i])) {
+				color = array[i];
 				break;
 			}
 		}

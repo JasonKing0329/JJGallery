@@ -33,7 +33,7 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
 
     @Override
     protected void setUpContentView() {
-        setHomeViewPagerIndex(1);
+        setHomeViewPagerIndex(2);
         onWaterfallPage();
     }
 
@@ -68,12 +68,6 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
     @Override
     protected boolean handleBack() {
         return fragment.onBackPressed();
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        fragment.dispatchTouchEvent(event);
-        return super.dispatchTouchEvent(event);
     }
 
     @Override

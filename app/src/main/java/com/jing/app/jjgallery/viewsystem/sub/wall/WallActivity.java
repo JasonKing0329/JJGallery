@@ -156,9 +156,8 @@ public class WallActivity extends BaseActivity implements Callback
 	@Override
 	protected void initView() {
 
-		requestActionbarFloating();
+		requestActionbarFloating(true);
 
-		mActionBar.setBackgroundColor(getResources().getColor(new ThemeManager(this).getWallActionbarColor()));
 		initActionbar();
 		bottomLayout = findViewById(R.id.bottombar);
 		actionbarLayout = findViewById(R.id.actionbar);

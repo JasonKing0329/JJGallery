@@ -113,6 +113,9 @@
     <string name="menu_cover_cascade_rotate">Cascade and rotate</string>
     <string name="menu_cover_grid">Grid</string>
     <string name="menu_new_folder">New folder</string>
+
+    <string name="menu_gdb_record">Records</string>
+    <string name="menu_gdb_star">Stars</string>
     <!--************************** mainview file list **************************-->
     <string name="filemanager_encrypt">Encrypt</string>
     <string name="filemanager_decipher">Decipher</string>
@@ -353,6 +356,6 @@
 
     <!--************************** gdb **************************-->
     <string name="gdb_star_file_numbers">%d video files</string>
-    <string name="gdb_no_conf">No database found in 'conf' folder.</string>
+    <string name="gdb_no_conf">No database found in conf folder.</string>
 
 </resources>

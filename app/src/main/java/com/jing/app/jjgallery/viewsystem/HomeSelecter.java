@@ -7,6 +7,10 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.main.gdb.GDBHomeActivity;
+import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
+import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
+import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +56,10 @@ public class HomeSelecter implements  HomeProvider {
         boolean result = true;
         switch (key) {
             case PreferenceValue.START_VIEW_TIMELINE:
+                if (from instanceof TimeLineActivity || from instanceof HomeWaterfallActivity) {//禁止重复打开当前页面
+                    result = false;
+                    break;
+                }
                 String mode = SettingProperties.getTimelineDefaultMode(from);
                 if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)) {
                     ActivityManager.startWaterfallActivity(from);
@@ -64,9 +72,17 @@ public class HomeSelecter implements  HomeProvider {
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));
                 break;
             case PreferenceValue.START_VIEW_SORDER:
+                if (from instanceof SOrderActivity) {//禁止重复打开当前页面
+                    result = false;
+                    break;
+                }
                 ActivityManager.startSOrderActivity(from);
                 break;
             case PreferenceValue.START_GDB:
+                if (from instanceof GDBHomeActivity) {//禁止重复打开当前页面
+                    result = false;
+                    break;
+                }
                 result = ActivityManager.startGDBHomeActivity(from);
                 break;
             default:

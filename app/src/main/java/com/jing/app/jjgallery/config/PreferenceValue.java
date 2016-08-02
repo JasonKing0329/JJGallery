@@ -44,4 +44,11 @@ public class PreferenceValue {
     public static final String EXPLORE_OPEN_WALL = "Wall";
     public static final String EXPLORE_OPEN_BOOK = "Book";
 
+    public static final int GDB_SR_ORDERBY_NONE = 0;
+    public static final int GDB_SR_ORDERBY_NAME = 1;
+    public static final int GDB_SR_ORDERBY_DATE = 2;
+    public static final int GDB_SR_ORDERBY_SCORE =3;
+    public static final int GDB_SR_ORDERBY_FK =4;
+    public static final int GDB_SR_ORDERBY_CUM =5;
+
 }

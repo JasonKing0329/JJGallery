@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,6 +20,7 @@ import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.ActionBarManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 
 /**
@@ -40,6 +42,8 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     private int curOrientation;
 
     private ProgressManager progressManager;
+    private ActionBarManager actionBarManager;
+    private boolean isActionbarFloating;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (isFullScreen()) {
@@ -65,6 +69,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
             View view = getLayoutInflater().inflate(R.layout.actionbar_l, null);
             mActionbarGroup.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mActionBar = new ActionBar(this, view);
+            actionBarManager = new ActionBarManager(this, mActionBar);
             mActionBar.setActionIconListener(this);
             mActionBar.setActionMenuListener(this);
             mActionBar.setActionSearchListener(this);
@@ -199,8 +204,9 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
 
     /**
      * 设置actionbar浮于content之上
+     * @param disableParentOperation 禁止BaseActivity的dispatch touch处理，由派生类自己改写操作(例如WallActivity涉及top bottom两个bar的控制)
      */
-    public void requestActionbarFloating() {
+    public void requestActionbarFloating(boolean disableParentOperation) {
         RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
         params.removeRule(RelativeLayout.BELOW);
@@ -208,6 +214,19 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         container.removeView(mActionbarGroup);
         container.addView(mContentGroup, 0);
         container.addView(mActionbarGroup, 1);
+        if (!disableParentOperation) {
+            isActionbarFloating = true;
+        }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (isActionbarFloating) {
+            if (actionBarManager != null) {
+                actionBarManager.dispatchTouchEvent(event);
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 
 }

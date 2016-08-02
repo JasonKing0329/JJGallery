@@ -277,6 +277,50 @@ public class SettingProperties {
     }
 
     /**
+     * gdb star record界面默认排序模式
+     * @return see PreferenceValue.ORDERBY_XXX
+     */
+    public static int getGdbStarRecordOrderMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_GDB_STAR_RECORD_ORDER, "" + PreferenceValue.GDB_SR_ORDERBY_NONE);
+        return Integer.parseInt(mode);
+    }
+
+    /**
+     * 设置gdb star record默认排序模式
+     * @param mode see PreferenceValue.SORDER_COVER_XXX
+     */
+    public static void setGdbStarRecordOrderMode(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_GDB_STAR_RECORD_ORDER, "" + mode);
+        editor.commit();
+        saveAsDefaultPreference(context);
+    }
+
+    /**
+     * gdb record list界面默认排序模式
+     * @return see PreferenceValue.ORDERBY_XXX
+     */
+    public static int getGdbRecordOrderMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_GDB_RECORD_ORDER, "" + PreferenceValue.GDB_SR_ORDERBY_NONE);
+        return Integer.parseInt(mode);
+    }
+
+    /**
+     * 设置gdb star record默认排序模式
+     * @param mode see PreferenceValue.SORDER_COVER_XXX
+     */
+    public static void setGdbRecordOrderMode(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_GDB_RECORD_ORDER, "" + mode);
+        editor.commit();
+        saveAsDefaultPreference(context);
+    }
+
+    /**
      * 启用翻页模式
      */
     public static boolean isPageModeEnable(Context context) {

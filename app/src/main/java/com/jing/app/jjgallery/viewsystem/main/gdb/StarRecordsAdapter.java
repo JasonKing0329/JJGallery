@@ -8,25 +8,40 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
+import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.RecordSingleScene;
 
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarRecordsAdapter extends RecyclerListAdapter {
+public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnClickListener {
+
+    public interface OnRecordItemClickListener {
+        void onClickRecordItem(Record record);
+    }
 
     private PullZoomRecyclerView recyclerView;
     protected List<Record> listData;
     private StarProxy star;
 
+    private int nameColorNormal, nameColorBareback;
+    private OnRecordItemClickListener itemClickListener;
+
     public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
         this.star = star;
         this.recyclerView = recyclerView;
         listData = star.getStar().getRecordList();
+        ThemeManager themeManager = new ThemeManager((recyclerView.getContext()));
+        nameColorNormal = recyclerView.getContext().getResources().getColor(themeManager.getGdbSRTextColorId(false));
+        nameColorBareback = recyclerView.getContext().getResources().getColor(themeManager.getGdbSRTextColorId(true));
+        SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
+
         addViewType(Record.class, new ViewHolderFactory<PullZoomItemHolder>() {
             @Override
             public PullZoomItemHolder onCreateViewHolder(ViewGroup parent) {
@@ -39,7 +54,11 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
                 return new PullZoomHeaderHolder(parent);
             }
         });
-        SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
+
+    }
+
+    public void setItemClickListener(OnRecordItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -53,6 +72,14 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
     @Override
     public int getItemCount() {
         return listData.size() + 1;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (itemClickListener != null) {
+            int position = (int) v.getTag();
+            itemClickListener.onClickRecordItem(listData.get(position));
+        }
     }
 
     private class PullZoomHeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
@@ -84,9 +111,12 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
     }
 
     private class PullZoomItemHolder extends RecyclerListAdapter.ViewHolder<Record> {
+        private View container;
         private ImageView imageView;
         private TextView nameView;
         private TextView scoreView;
+        private TextView fkView;
+        private TextView cumView;
 
         public PullZoomItemHolder(ViewGroup parent) {
             this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
@@ -94,16 +124,36 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
 
         public PullZoomItemHolder(View view) {
             super(view);
+            container = view.findViewById(R.id.record_container);
             imageView = (ImageView) view.findViewById(R.id.record_thumb);
             nameView = (TextView) view.findViewById(R.id.record_name);
             scoreView = (TextView) view.findViewById(R.id.record_score);
+            fkView = (TextView) view.findViewById(R.id.record_score_fk);
+            cumView = (TextView) view.findViewById(R.id.record_score_cum);
         }
 
         @Override
         public void bind(Record item, int position) {
+            container.setTag(position);
+            container.setOnClickListener(StarRecordsAdapter.this);
 //                imageView.setImageResource(item);
             nameView.setText(item.getName());
             scoreView.setText("" + item.getScore());
+            if (item instanceof RecordSingleScene) {
+                RecordSingleScene record = (RecordSingleScene) item;
+                fkView.setText("fk(" + record.getScoreFk() + ")");
+                cumView.setText("cum(" + record.getScoreCum() + ")");
+
+                if (record.getScoreNoCond() == GDBProperites.BAREBACK) {
+                    nameView.setTextColor(nameColorBareback);
+                }
+                else {
+                    nameView.setTextColor(nameColorNormal);
+                }
+            }
+            else {
+                nameView.setTextColor(nameColorNormal);
+            }
         }
     }
 }

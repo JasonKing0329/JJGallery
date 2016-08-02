@@ -6,9 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -64,7 +62,6 @@ public abstract class WaterfallFragment extends Fragment implements IWaterfall, 
         initSOrderProvider();
 
         initActionbar();
-        SCROLL_DISTANCE = getResources().getDimensionPixelSize(R.dimen.timeline_scroll_distance_action);
         View view = inflater.inflate(R.layout.page_waterfall, null);
         recyclerView = (RecyclerView) view.findViewById(R.id.waterfall_recyclerview);
 
@@ -99,14 +96,13 @@ public abstract class WaterfallFragment extends Fragment implements IWaterfall, 
     private void initActionbar() {
         mActionbar.clearActionIcon();
         if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).requestActionbarFloating();
+            ((BaseActivity) getActivity()).requestActionbarFloating(false);
         }
         else if (getActivity() instanceof BaseSlidingActivity) {
-            ((BaseSlidingActivity) getActivity()).requestActionbarFloating();
+            ((BaseSlidingActivity) getActivity()).requestActionbarFloating(false);
             mActionbar.useMenuLeftIcon();
         }
 
-        mActionbar.setBackgroundColor(getResources().getColor(new ThemeManager(getActivity()).getWallActionbarColor()));
         mActionbar.disableSelectAll();
         mActionbar.addMenuIcon();
         mActionbar.hide();
@@ -204,34 +200,4 @@ public abstract class WaterfallFragment extends Fragment implements IWaterfall, 
         return getAdapter().getSelectedList();
     }
 
-
-    private float touchStartY;
-    private float SCROLL_DISTANCE;
-
-    /**
-     * 如果需要使用上拉隐藏actionbar，下拉显示actionbar，需要在Activity的dispatchTouchEvent调用该方法
-     * ps.不能在recyclerView上注册onTouchListener，ACTION_DOWN事件会被拦截记录不了startY的值
-     * @param event
-     */
-    public void dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touchStartY = event.getRawY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float dis = event.getRawY() - touchStartY;
-                if (dis < -SCROLL_DISTANCE) {
-                    if (!mActionbar.isHidden()) {
-                        mActionbar.hide();
-                    }
-                } else if (dis > SCROLL_DISTANCE) {
-                    if (!mActionbar.isShowing()) {
-                        mActionbar.show();
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-        }
-    }
 }

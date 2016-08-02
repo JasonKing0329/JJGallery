@@ -1,5 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
+import android.view.View;
+
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 
@@ -10,7 +12,7 @@ public class StarActivity extends BaseActivity {
 
     @Override
     protected boolean isActionBarNeed() {
-        return false;
+        return true;
     }
 
     @Override
@@ -25,6 +27,7 @@ public class StarActivity extends BaseActivity {
     @Override
     protected void initView() {
         starFragment = new StarFragment(getIntent().getIntExtra(KEY_STAR_ID, -1));
+        starFragment.setActionbar(mActionBar);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, starFragment)
                 .commit();
@@ -33,5 +36,17 @@ public class StarActivity extends BaseActivity {
     @Override
     protected void initBackgroundWork() {
 
+    }
+
+    @Override
+    public void onIconClick(View view) {
+        super.onIconClick(view);
+        starFragment.onIconClick(view);
+    }
+
+    @Override
+    public void onBack() {
+        super.onBack();
+        finish();
     }
 }

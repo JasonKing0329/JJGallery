@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarListFragment extends Fragment implements IGdbView, StarListAdapter.OnStarClickListener {
+public class StarListFragment extends Fragment implements IGdbStarListView, StarListAdapter.OnStarClickListener {
 
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;

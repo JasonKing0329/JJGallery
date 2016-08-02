@@ -98,4 +98,12 @@ public class PreferenceKey {
     public static final String PREF_WATERFALL_COL = "pref_waterfall_column";
     // 瀑布流竖屏列数
     public static final String PREF_WATERFALL_COL_LAND = "pref_waterfall_land_column";
+
+    /**
+     * gdb
+     */
+    // gdb record list排序方式
+    public static final String PREF_GDB_RECORD_ORDER = "pref_gdb_record_order";
+    // gdb star record排序方式
+    public static final String PREF_GDB_STAR_RECORD_ORDER = "pref_gdb_star_record_order";
 }

@@ -43,6 +43,9 @@
     <color name="actionbar_text_light">#3f37a1</color>
     <color name="actionbar_text_normal">#ffffff</color>
 
+    <color name="gdb_record_text_score_dark">#fff807</color>
+    <color name="gdb_record_text_score_light">#00a5c4</color>
+
     <color name="dialog_background">#eeeeeeee</color>
     <color name="dialog_background_dark_theme">#e51a3c49</color>
     <color name="dialog_background_dark">#cc00a5c4</color>
