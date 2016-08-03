@@ -26,10 +26,10 @@ public class ThemeManager {
 			, R.color.actionbar_bk_wallgalerry_light};
 	private int[] themeDefaultFolder = new int[] {R.drawable.ic_folder_sub, R.drawable.ic_folder_sub
 			, R.drawable.ic_folder_sub};
-	private int[] themeGdbRSTextColorNormal = new int[] {R.color.darkgrey, R.color.white
-			, R.color.darkgrey};
-	private int[] themeGdbRSTextColorBareback = new int[] {R.color.gdb_record_text_score_light, R.color.gdb_record_text_score_dark
-			, R.color.gdb_record_text_score_light};
+	private int[] themeGdbRSTextColorNormal = new int[] {R.color.gdb_record_text_normal_light, R.color.gdb_record_text_normal_dark
+			, R.color.gdb_record_text_normal_light};
+	private int[] themeGdbRSTextColorBareback = new int[] {R.color.gdb_record_text_bareback_light, R.color.gdb_record_text_bareback_dark
+			, R.color.gdb_record_text_bareback_light};
 	
 	public ThemeManager(Context context) {
 		this.context = context;

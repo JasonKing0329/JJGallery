@@ -42,10 +42,10 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         nameColorBareback = recyclerView.getContext().getResources().getColor(themeManager.getGdbSRTextColorId(true));
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
 
-        addViewType(Record.class, new ViewHolderFactory<PullZoomItemHolder>() {
+        addViewType(Record.class, new ViewHolderFactory<RecordHolder>() {
             @Override
-            public PullZoomItemHolder onCreateViewHolder(ViewGroup parent) {
-                return new PullZoomItemHolder(parent);
+            public RecordHolder onCreateViewHolder(ViewGroup parent) {
+                return new RecordHolder(parent);
             }
         });
         addViewType(TYPE_HEADER, new ViewHolderFactory<PullZoomHeaderHolder>() {
@@ -110,22 +110,24 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         }
     }
 
-    private class PullZoomItemHolder extends RecyclerListAdapter.ViewHolder<Record> {
+    public class RecordHolder extends RecyclerListAdapter.ViewHolder<Record> {
         private View container;
         private ImageView imageView;
+        private TextView seqView;
         private TextView nameView;
         private TextView scoreView;
         private TextView fkView;
         private TextView cumView;
 
-        public PullZoomItemHolder(ViewGroup parent) {
-            this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
+        public RecordHolder(ViewGroup parent) {
+            this(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
         }
 
-        public PullZoomItemHolder(View view) {
+        public RecordHolder(View view) {
             super(view);
             container = view.findViewById(R.id.record_container);
             imageView = (ImageView) view.findViewById(R.id.record_thumb);
+            seqView = (TextView) view.findViewById(R.id.record_seq);
             nameView = (TextView) view.findViewById(R.id.record_name);
             scoreView = (TextView) view.findViewById(R.id.record_score);
             fkView = (TextView) view.findViewById(R.id.record_score_fk);
@@ -137,6 +139,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             container.setTag(position);
             container.setOnClickListener(StarRecordsAdapter.this);
 //                imageView.setImageResource(item);
+            seqView.setText("" + position);
             nameView.setText(item.getName());
             scoreView.setText("" + item.getScore());
             if (item instanceof RecordSingleScene) {

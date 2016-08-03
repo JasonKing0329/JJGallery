@@ -14,6 +14,7 @@ import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.RecordSingleScene;
 import com.king.service.gdb.bean.Star;
 
@@ -193,6 +194,61 @@ public class GdbPresenter {
                     rightScore = 0;
                     if (rhs instanceof RecordSingleScene) {
                         rightScore = ((RecordSingleScene) rhs).getScoreCum();
+                    }
+                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_BJOB:// desc
+                    leftScore = 0;
+                    if (lhs instanceof RecordSingleScene) {
+                        leftScore = ((RecordSingleScene) lhs).getScoreBJob();
+                    }
+                    rightScore = 0;
+                    if (rhs instanceof RecordSingleScene) {
+                        rightScore = ((RecordSingleScene) rhs).getScoreBJob();
+                    }
+                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STAR1:// desc
+                    leftScore = 0;
+                    if (lhs instanceof RecordOneVOne) {
+                        leftScore = ((RecordOneVOne) lhs).getScoreStar1();
+                    }
+                    rightScore = 0;
+                    if (rhs instanceof RecordOneVOne) {
+                        rightScore = ((RecordOneVOne) rhs).getScoreStar1();
+                    }
+                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STAR2:// desc
+                    leftScore = 0;
+                    if (lhs instanceof RecordOneVOne) {
+                        leftScore = ((RecordOneVOne) lhs).getScoreStar2();
+                    }
+                    rightScore = 0;
+                    if (rhs instanceof RecordOneVOne) {
+                        rightScore = ((RecordOneVOne) rhs).getScoreStar2();
+                    }
+                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STARCC1:// desc
+                    leftScore = 0;
+                    if (lhs instanceof RecordOneVOne) {
+                        leftScore = ((RecordOneVOne) lhs).getScoreStarC1();
+                    }
+                    rightScore = 0;
+                    if (rhs instanceof RecordOneVOne) {
+                        rightScore = ((RecordOneVOne) rhs).getScoreStarC1();
+                    }
+                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STARCC2:// desc
+                    leftScore = 0;
+                    if (lhs instanceof RecordOneVOne) {
+                        leftScore = ((RecordOneVOne) lhs).getScoreStarC2();
+                    }
+                    rightScore = 0;
+                    if (rhs instanceof RecordOneVOne) {
+                        rightScore = ((RecordOneVOne) rhs).getScoreStarC2();
                     }
                     result = rightScore - leftScore;
                     break;

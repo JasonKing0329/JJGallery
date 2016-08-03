@@ -50,5 +50,10 @@ public class PreferenceValue {
     public static final int GDB_SR_ORDERBY_SCORE =3;
     public static final int GDB_SR_ORDERBY_FK =4;
     public static final int GDB_SR_ORDERBY_CUM =5;
+    public static final int GDB_SR_ORDERBY_BJOB =6;
+    public static final int GDB_SR_ORDERBY_STAR1 =7;
+    public static final int GDB_SR_ORDERBY_STAR2 =8;
+    public static final int GDB_SR_ORDERBY_STARCC1 =9;
+    public static final int GDB_SR_ORDERBY_STARCC2 =10;
 
 }

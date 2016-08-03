@@ -213,4 +213,10 @@
     <dimen name="dialog_bg_selector_item_inner_padding">15dp</dimen>
     <dimen name="dlg_loadfrom_list_height">800dp</dimen>
     <dimen name="actionbar_title_max_width">300dp</dimen>
+
+    <!-- gdb -->
+    <dimen name="gdb_star_header_height">500dp</dimen>
+    <dimen name="gdb_record_seq_width">30dp</dimen>
+    <dimen name="gdb_record_name_left">10dp</dimen>
+    <dimen name="gdb_record_sub_text_size">12dp</dimen>
 </resources>

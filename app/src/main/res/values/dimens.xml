@@ -245,4 +245,8 @@
     <dimen name="textSize_sidebar">10sp</dimen>
     <dimen name="textSize_sidebar_choose">12sp</dimen>
     <dimen name="textSize_sidebar_padding">20sp</dimen>
+    <dimen name="gdb_star_header_height">320dp</dimen>
+    <dimen name="gdb_record_seq_width">20dp</dimen>
+    <dimen name="gdb_record_name_left">5dp</dimen>
+    <dimen name="gdb_record_sub_text_size">11dp</dimen>
 </resources>

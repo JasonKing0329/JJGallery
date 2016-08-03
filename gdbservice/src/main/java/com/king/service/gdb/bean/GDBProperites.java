@@ -9,4 +9,6 @@ public class GDBProperites {
      * related to scoreNoCond parameter in RecordSingleScene
      */
     public static final int BAREBACK = 20;
+
+    public static final String STAR_UNKNOWN = "Unknown";
 }

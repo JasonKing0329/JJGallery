@@ -73,7 +73,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
     private void showSortPopup(View v) {
         PopupMenu menu = new PopupMenu(getActivity(), v);
-        menu.getMenuInflater().inflate(R.menu.sort_gdb_star_page, menu.getMenu());
+        menu.getMenuInflater().inflate(R.menu.sort_gdb_record_list, menu.getMenu());
         menu.show();
         menu.setOnMenuItemClickListener(sortListener);
     }
@@ -82,51 +82,53 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
+            int sortMode;
+            boolean refresh = true;
             switch (item.getItemId()) {
                 case R.id.menu_by_date:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_DATE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_DATE;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_DATE;
                     break;
                 case R.id.menu_by_name:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_NAME) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_NAME;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_NAME;
                     break;
                 case R.id.menu_by_score:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_SCORE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_SCORE;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_SCORE;
                     break;
                 case R.id.menu_by_fk:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_FK) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_FK;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_FK;
                     break;
                 case R.id.menu_by_cum:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_CUM) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_CUM;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_CUM;
+                    break;
+                case R.id.menu_by_bjob:
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_BJOB;
+                    break;
+                case R.id.menu_by_star1:
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_STAR1;
+                    break;
+                case R.id.menu_by_star2:
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_STAR2;
+                    break;
+                case R.id.menu_by_starcc1:
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_STARCC1;
+                    break;
+                case R.id.menu_by_starcc2:
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_STARCC2;
                     break;
 
                 case R.id.menu_by_none:
                 default:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_NONE;
-                        SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        // no action
-                    }
+                    sortMode = PreferenceValue.GDB_SR_ORDERBY_NONE;
+                    refresh = false;
                     break;
+            }
+
+            if (currentSortMode != sortMode) {
+                currentSortMode = sortMode;
+                SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
+            }
+            if (refresh) {
+                refresh();
             }
             return true;
         }

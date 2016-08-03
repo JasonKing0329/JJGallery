@@ -12,7 +12,9 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.RecordSingleScene;
+import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
  * Created by JingYang on 2016/8/2 0002.
  * Description:
  */
-public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.ItemHolder> implements View.OnClickListener {
+public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordHolder> implements View.OnClickListener {
 
     public interface OnRecordItemClickListener {
         void onClickRecordItem(Record record);
@@ -52,12 +54,12 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
     }
 
     @Override
-    public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItemHolder(parent);
+    public RecordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RecordHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(ItemHolder holder, int position) {
+    public void onBindViewHolder(RecordHolder holder, int position) {
         holder.bind(recordList.get(position), position);
     }
 
@@ -74,7 +76,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
         }
     }
 
-    public class ItemHolder extends RecyclerListAdapter.ViewHolder<Record> {
+    public class RecordHolder extends RecyclerListAdapter.ViewHolder<Record> {
         private View container;
         private ImageView imageView;
         private TextView seqView;
@@ -82,12 +84,15 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
         private TextView scoreView;
         private TextView fkView;
         private TextView cumView;
+        private TextView bjobView;
+        private TextView star1View;
+        private TextView star2View;
 
-        public ItemHolder(ViewGroup parent) {
+        public RecordHolder(ViewGroup parent) {
             this(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_record_item, parent, false));
         }
 
-        public ItemHolder(View view) {
+        public RecordHolder(View view) {
             super(view);
             container = view.findViewById(R.id.record_container);
             imageView = (ImageView) view.findViewById(R.id.record_thumb);
@@ -96,6 +101,9 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
             scoreView = (TextView) view.findViewById(R.id.record_score);
             fkView = (TextView) view.findViewById(R.id.record_score_fk);
             cumView = (TextView) view.findViewById(R.id.record_score_cum);
+            bjobView = (TextView) view.findViewById(R.id.record_score_bjob);
+            star1View = (TextView) view.findViewById(R.id.record_star1);
+            star2View = (TextView) view.findViewById(R.id.record_star2);
         }
 
         @Override
@@ -110,6 +118,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
                 RecordSingleScene record = (RecordSingleScene) item;
                 fkView.setText("fk(" + record.getScoreFk() + ")");
                 cumView.setText("cum(" + record.getScoreCum() + ")");
+                bjobView.setText("bjob(" + record.getScoreBJob() + ")");
 
                 if (record.getScoreNoCond() == GDBProperites.BAREBACK) {
                     nameView.setTextColor(nameColorBareback);
@@ -120,6 +129,23 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.It
             }
             else {
                 nameView.setTextColor(nameColorNormal);
+            }
+            if (item instanceof RecordOneVOne) {
+                RecordOneVOne record = (RecordOneVOne) item;
+                Star star1 = record.getStar1();
+                if (star1 == null) {
+                    star1View.setText(GDBProperites.STAR_UNKNOWN);
+                }
+                else {
+                    star1View.setText(star1.getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
+                }
+                Star star2 = record.getStar2();
+                if (star2 == null) {
+                    star2View.setText(GDBProperites.STAR_UNKNOWN);
+                }
+                else {
+                    star2View.setText(star2.getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
+                }
             }
         }
     }
