@@ -837,7 +837,8 @@ public class SOrderDaoImpl implements SOrderDao {
 
     @Override
     public List<SOrder> queryOrderAccessList(Connection connection, String column, int number) {
-        String sql = "SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT + " ORDER BY " + column + " DESC LIMIT 0," + number;
+        // 防止有些order已经不存在，查number + 10条取number条
+        String sql = "SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT + " ORDER BY " + column + " DESC LIMIT 0," + String.valueOf(number + 10);
         List<SOrder> list = new ArrayList<>();
         Statement stmt = null;
         try {
@@ -846,8 +847,10 @@ public class SOrderDaoImpl implements SOrderDao {
             while (set.next()) {
                 SOrderCount count = getSorderCountFromSet(set);
                 SOrder order = queryOrder(count.orderId, connection);
-                order.setOrderCount(count);
-                list.add(order);
+                if (order != null) {
+                    order.setOrderCount(count);
+                    list.add(order);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -859,6 +862,11 @@ public class SOrderDaoImpl implements SOrderDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+
+        // 防止有些order已经不存在，查number + 10条取number条
+        for (int i = list.size() - 1; i >= 10; i --) {
+            list.remove(i);
         }
         return list;
     }

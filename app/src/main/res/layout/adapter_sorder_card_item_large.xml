@@ -16,7 +16,7 @@
 
         <com.github.siyamed.shapeimageview.RoundedImageView
             android:id="@+id/text_list_card_image"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/sorder_card_image_size"
             android:layout_height="@dimen/sorder_card_image_size"
             app:siRadius="20dp"
             app:siBorderWidth="0dp"
