@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "2.3.5"
+ext.appVersionName = "2.4.0"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 50
+        versionCode 51
         versionName appVersionName
     }
 
@@ -88,13 +88,10 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
-
     // apply as ViewHelper
     compile 'com.nineoldandroids:library:2.4.0'
-
     // apply in viewsystem/main/gdb/StarListAdapter
     compile 'cc.solart:turbo-recyclerview-helper:1.0.3-beta'
-
     compile project(':slidingmenu')
     compile project(':swipebacklayout')
     compile project(':prjcolorpicker')
@@ -104,4 +101,6 @@ dependencies {
     compile project(':libstickygridheaders')
     compile project(':flipview')
     compile project(':gdbservice')
+    compile project(':cardstack')
+    compile project(':shapimageview')
 }

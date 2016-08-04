@@ -220,6 +220,7 @@
         <item>Grid</item>
         <item>Thumbfolder</item>
         <item>Index</item>
+        <item>Access</item>
     </string-array>
     <string-array name="pref_timeline_view_mode" translatable="false">
         <item>Timeline</item>

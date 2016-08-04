@@ -6,6 +6,7 @@ import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
+import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderHorIndexCreator;
@@ -66,6 +67,9 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         }
         else if (mode.equals(PreferenceValue.VALUE_SORDER_VIEW_INDEX)) {
             sorderView.onIndexPage();
+        }
+        else if (mode.equals(PreferenceValue.VALUE_SORDER_VIEW_ACCESS)) {
+            sorderView.onAccessCountPage();
         }
         else {
             sorderView.onGridPage();
@@ -202,6 +206,46 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
      */
     public boolean renameOrderName(SOrder order) {
         return  sOrderManager.renameOrderName(order);
+    }
+
+    /**
+     * 查询访问量前X的列表（总访问量)
+     * @return
+     */
+    public List<SOrder> loadTopTotalList(int number) {
+        return  sOrderManager.loadTopOrders(DBInfor.TOC_ALL, number);
+    }
+
+    /**
+     * 查询访问量前X的列表（年访问量)
+     * @return
+     */
+    public List<SOrder> loadTopYearList(int number) {
+        return  sOrderManager.loadTopOrders(DBInfor.TOC_YEAR, number);
+    }
+
+    /**
+     * 查询访问量前X的列表（月访问量)
+     * @return
+     */
+    public List<SOrder> loadTopMonthList(int number) {
+        return  sOrderManager.loadTopOrders(DBInfor.TOC_MONTH, number);
+    }
+
+    /**
+     * 查询访问量前X的列表（周访问量)
+     * @return
+     */
+    public List<SOrder> loadTopWeekList(int number) {
+        return  sOrderManager.loadTopOrders(DBInfor.TOC_WEEK, number);
+    }
+
+    /**
+     * 查询访问量前X的列表（日访问量)
+     * @return
+     */
+    public List<SOrder> loadTopDayList(int number) {
+        return  sOrderManager.loadTopOrders(DBInfor.TOC_DAY, number);
     }
 
     /**

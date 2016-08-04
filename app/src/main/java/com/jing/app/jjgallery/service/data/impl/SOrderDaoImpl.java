@@ -439,23 +439,11 @@ public class SOrderDaoImpl implements SOrderDao {
         SOrderCount orderCount = null;
         try {
             stmt = connection.createStatement();
-            ResultSet set = null;
-
-            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT
+            ResultSet set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT
                     + " WHERE " + DBInfor.TOC_COL[0] + " = " + orderId);
 
             if (set.next()) {
-                orderCount = new SOrderCount();
-                orderCount.orderId = orderId;
-                orderCount.countAll = set.getInt(DBInfor.TOC_COL[1]);
-                orderCount.countYear = set.getInt(DBInfor.TOC_COL[2]);
-                orderCount.countMonth = set.getInt(DBInfor.TOC_COL[3]);
-                orderCount.countWeek = set.getInt(DBInfor.TOC_COL[4]);
-                orderCount.countDay = set.getInt(DBInfor.TOC_COL[5]);
-                orderCount.lastYear = set.getInt(DBInfor.TOC_COL[6]);
-                orderCount.lastMonth = set.getInt(DBInfor.TOC_COL[7]);
-                orderCount.lastWeek = set.getInt(DBInfor.TOC_COL[8]);
-                orderCount.lastDay = set.getInt(DBInfor.TOC_COL[9]);
+                orderCount = getSorderCountFromSet(set);
             }
             set.close();
         } catch (SQLException e) {
@@ -469,6 +457,21 @@ public class SOrderDaoImpl implements SOrderDao {
                 e.printStackTrace();
             }
         }
+        return orderCount;
+    }
+
+    private SOrderCount getSorderCountFromSet(ResultSet set) throws SQLException {
+        SOrderCount orderCount = new SOrderCount();
+        orderCount.orderId = set.getInt(DBInfor.TOC_COL[0]);
+        orderCount.countAll = set.getInt(DBInfor.TOC_COL[1]);
+        orderCount.countYear = set.getInt(DBInfor.TOC_COL[2]);
+        orderCount.countMonth = set.getInt(DBInfor.TOC_COL[3]);
+        orderCount.countWeek = set.getInt(DBInfor.TOC_COL[4]);
+        orderCount.countDay = set.getInt(DBInfor.TOC_COL[5]);
+        orderCount.lastYear = set.getInt(DBInfor.TOC_COL[6]);
+        orderCount.lastMonth = set.getInt(DBInfor.TOC_COL[7]);
+        orderCount.lastWeek = set.getInt(DBInfor.TOC_COL[8]);
+        orderCount.lastDay = set.getInt(DBInfor.TOC_COL[9]);
         return orderCount;
     }
 
@@ -830,6 +833,34 @@ public class SOrderDaoImpl implements SOrderDao {
             }
         }
         return order;
+    }
+
+    @Override
+    public List<SOrder> queryOrderAccessList(Connection connection, String column, int number) {
+        String sql = "SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT + " ORDER BY " + column + " DESC LIMIT 0," + number;
+        List<SOrder> list = new ArrayList<>();
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = stmt.executeQuery(sql);
+            while (set.next()) {
+                SOrderCount count = getSorderCountFromSet(set);
+                SOrder order = queryOrder(count.orderId, connection);
+                order.setOrderCount(count);
+                list.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
     }
 
 }

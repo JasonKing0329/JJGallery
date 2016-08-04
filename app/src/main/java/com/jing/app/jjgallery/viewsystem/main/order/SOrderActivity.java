@@ -27,7 +27,7 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
 
     private SOrderPresenter mPresenter;
     private IFragment mCurrentFragment;
-    private IFragment mGridFragment, mIndexFragment, mThumbFragment;
+    private IFragment mGridFragment, mIndexFragment, mThumbFragment, mAccessFragment;
 
     @Override
     protected boolean isActionBarNeed() {
@@ -109,6 +109,21 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
         }
 
         setCurrentFragment(ft, mIndexFragment, "SOrderIndexFragment");
+    }
+
+    @Override
+    public void onAccessCountPage() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (mAccessFragment == null) {
+            mAccessFragment = new SOrderCardFragment();
+            mAccessFragment.setActionbar(mActionBar);
+            mAccessFragment.setPresenter(mPresenter);
+        }
+        else {
+            mAccessFragment.getPage().initActionbar(mActionBar);
+        }
+
+        setCurrentFragment(ft, mAccessFragment, "SOrderCardFragment");
     }
 
     @Override

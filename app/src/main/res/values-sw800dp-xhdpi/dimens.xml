@@ -102,6 +102,13 @@
     
     <dimen name="sorder_multicover_cascade_width">130dp</dimen>
     <dimen name="sorder_multicover_cascade_height">130dp</dimen>
+
+    <dimen name="sorder_card_page_padding_hor">10dp</dimen>
+    <dimen name="sorder_card_list_width">390dp</dimen>
+    <dimen name="sorder_card_list_padding_hor">5dp</dimen>
+    <dimen name="sorder_card_image_size">380dp</dimen>
+    <dimen name="sorder_card_stack_height">180dp</dimen>
+    <dimen name="sorder_card_stack_large_height">360dp</dimen>
     <!-- actionbar  -->
     <dimen name="actionbar_padding">10dp</dimen>
     <dimen name="actionbar_icon_padding">20dp</dimen>

@@ -12,6 +12,7 @@ public class PreferenceValue {
     public static final String VALUE_SORDER_VIEW_GRID = "Grid";
     public static final String VALUE_SORDER_VIEW_THUMB = "Thumbfolder";
     public static final String VALUE_SORDER_VIEW_INDEX = "Index";
+    public static final String VALUE_SORDER_VIEW_ACCESS = "Access";
 
     public static final String VALUE_TIMELINE_VIEW_TIMELINE = "Timeline";
     public static final String VALUE_TIMELINE_VIEW_WATERFALL = "Waterfall";
@@ -39,6 +40,8 @@ public class PreferenceValue {
 
     public static final int SORDER_CASECADE_NUM_DEFAULT = 3;
     public static final int SORDER_PAGE_NUM_DEFAULT = 16;
+
+    public static final int SORDER_CARD_TOP_NUMBER = 10;
 
     public static final String EXPLORE_OPEN_SURF = "Surf";
     public static final String EXPLORE_OPEN_WALL = "Wall";

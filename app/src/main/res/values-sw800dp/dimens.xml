@@ -40,7 +40,7 @@
     <dimen name="sorder_grid_item_width">320dp</dimen>
     <dimen name="sorder_grid_name_marginTop">12dp</dimen>
     <dimen name="sorder_grid_name_textsize">20sp</dimen>
-    
+
     <!-- soderpage  -->
     <dimen name="rgame_image_thread_width">300dp</dimen>
     

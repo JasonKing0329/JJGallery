@@ -112,6 +112,13 @@
     <dimen name="sorder_cover_menu_width_small">60dp</dimen>
     <dimen name="sorder_cover_menu_textSize">5dp</dimen>
     <dimen name="sorder_cover_menu_padding">5dp</dimen>
+
+    <dimen name="sorder_card_page_padding_hor">10dp</dimen>
+    <dimen name="sorder_card_list_width">340dp</dimen>
+    <dimen name="sorder_card_list_padding_hor">2dp</dimen>
+    <dimen name="sorder_card_image_size">336dp</dimen>
+    <dimen name="sorder_card_stack_height">160dp</dimen>
+    <dimen name="sorder_card_stack_large_height">320dp</dimen>
     <!-- actionbar  -->
     <dimen name="actionbar_padding">5dp</dimen>
     <dimen name="actionbar_title_text_size">20dp</dimen>

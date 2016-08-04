@@ -94,5 +94,36 @@
                     android:textSize="20dp"/>
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/sliding_menu_divider"/>
+
+        <LinearLayout
+            android:id="@+id/sliding_right_sorder_access_bk"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/sliding_right_sorder_access"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@drawable/ripple_rect_white"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_visibility_white_36dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sorder_access"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

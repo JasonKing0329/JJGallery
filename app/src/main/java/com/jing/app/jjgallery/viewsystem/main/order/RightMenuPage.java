@@ -23,6 +23,7 @@ public class RightMenuPage implements View.OnClickListener {
         content.findViewById(R.id.sliding_right_sorder_grid).setOnClickListener(this);
         content.findViewById(R.id.sliding_right_sorder_thumb).setOnClickListener(this);
         content.findViewById(R.id.sliding_right_sorder_index).setOnClickListener(this);
+        content.findViewById(R.id.sliding_right_sorder_access).setOnClickListener(this);
 
         String mode = SettingProperties.getSOrderDefaultMode(content.getContext());
         if (PreferenceValue.VALUE_SORDER_VIEW_THUMB.equals(mode)) {
@@ -32,6 +33,10 @@ public class RightMenuPage implements View.OnClickListener {
         else if (PreferenceValue.VALUE_SORDER_VIEW_INDEX.equals(mode)) {
             currentGroup = content.findViewById(R.id.sliding_right_sorder_index);
             focusBgGroup = content.findViewById(R.id.sliding_right_sorder_index_bk);
+        }
+        else if (PreferenceValue.VALUE_SORDER_VIEW_ACCESS.equals(mode)) {
+            currentGroup = content.findViewById(R.id.sliding_right_sorder_access);
+            focusBgGroup = content.findViewById(R.id.sliding_right_sorder_access_bk);
         }
         else {
             currentGroup = content.findViewById(R.id.sliding_right_sorder_grid);
@@ -75,6 +80,18 @@ public class RightMenuPage implements View.OnClickListener {
                     updateCurrentGroup();
                     if (sorderView != null) {
                         sorderView.onIndexPage();
+                    }
+                    closeMenu();
+                }
+                break;
+            case R.id.sliding_right_sorder_access:
+                if (v != currentGroup) {
+                    currentGroup = v;
+                    focusBgGroup.setBackground(null);
+                    focusBgGroup = (View) v.getParent();
+                    updateCurrentGroup();
+                    if (sorderView != null) {
+                        sorderView.onAccessCountPage();
                     }
                     closeMenu();
                 }

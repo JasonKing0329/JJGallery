@@ -337,6 +337,25 @@ public class SOrderManager {
         return order;
     }
 
+    /**
+     * 查询访问量前X的列表（总访问量)
+     * @return
+     */
+    public List<SOrder> loadTopOrders(String column, int number) {
+        List<SOrder> list = null;
+        try {
+            SqlConnection.getInstance().connect(DBInfor.DB_PATH);
+            SOrderDao dao = new SOrderDaoImpl();
+
+            list = dao.queryOrderAccessList(SqlConnection.getInstance().getConnection(), column, number);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return list;
+    }
+
     private class QueryTask extends AsyncTask<Integer, Void, List<SOrder>> {
 
         private int orderBy;

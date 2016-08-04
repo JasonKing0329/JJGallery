@@ -82,6 +82,8 @@ public class PreferenceKey {
     public static final String PREF_SORDER_GRID_ITEM_OPEN = "pref_sorder_grid_item_open";
     // 点击index page item打开
     public static final String PREF_SORDER_INDEX_ITEM_OPEN = "pref_sorder_index_item_open";
+    // 访问量页面展示的top个数
+    public static final String PREF_SORDER_CARD_TOP_NUMBER = "pref_sorder_card_top_number";
 
     /**
      * surf

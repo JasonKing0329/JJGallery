@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_list_card_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:stackHeaderHeight="@dimen/sorder_card_stack_large_height"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/frame_list_card_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.github.siyamed.shapeimageview.RoundedImageView
+            android:id="@+id/text_list_card_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sorder_card_image_size"
+            app:siRadius="20dp"
+            app:siBorderWidth="0dp"
+            app:siBorderColor="@color/darkgray"
+            app:siSquare="true"/>
+
+        <TextView
+            android:id="@+id/text_list_card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="12"
+            android:textSize="20dp"
+            android:layout_margin="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/container_list_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/text_list_card_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="50dp"/>
+    </ScrollView>
+
+</LinearLayout>

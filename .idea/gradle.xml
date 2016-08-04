@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/cardstack" />
             <option value="$PROJECT_DIR$/flipview" />
             <option value="$PROJECT_DIR$/gdbservice" />
             <option value="$PROJECT_DIR$/libcolorpicker" />
@@ -18,6 +19,7 @@
             <option value="$PROJECT_DIR$/libstickygridheaders" />
             <option value="$PROJECT_DIR$/prjcolorpicker" />
             <option value="$PROJECT_DIR$/prjsaveasdialog" />
+            <option value="$PROJECT_DIR$/shapimageview" />
             <option value="$PROJECT_DIR$/slidingmenu" />
             <option value="$PROJECT_DIR$/swipebacklayout" />
           </set>
@@ -26,6 +28,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/cardstack" />
             <option value="$PROJECT_DIR$/flipview" />
             <option value="$PROJECT_DIR$/gdbservice" />
             <option value="$PROJECT_DIR$/libcolorpicker" />
@@ -34,6 +37,7 @@
             <option value="$PROJECT_DIR$/libstickygridheaders" />
             <option value="$PROJECT_DIR$/prjcolorpicker" />
             <option value="$PROJECT_DIR$/prjsaveasdialog" />
+            <option value="$PROJECT_DIR$/shapimageview" />
             <option value="$PROJECT_DIR$/slidingmenu" />
             <option value="$PROJECT_DIR$/swipebacklayout" />
           </set>

@@ -159,6 +159,11 @@
     <string name="sorder_create_fail">创建失败！</string>
     <string name="sorder_name_already_exist">错误 ： 列表已存在！</string>
     <string name="sorder_warning_delete">列表内容不为空，确认删除？</string>
+    <string name="sorder_hit_total">总排名</string>
+    <string name="sorder_hit_year">年度排名</string>
+    <string name="sorder_hit_month">本月排名</string>
+    <string name="sorder_hit_week">本周排名</string>
+    <string name="sorder_hit_day">今日排名</string>
     
     <string name="add_to_order">添加至列表</string>
     <string name="set_as_cover">设置封面</string>

@@ -22,7 +22,6 @@ public class DBInfor {
 	public static final String TABLE_TAG = "fe_tag";
 	public static final String TABLE_SEQUENCE = "sqlite_sequence";
 	public static final String TABLE_ORDER_COUNT = "fe_orders_count";
-	public static final String[] TOC_COL = new String[]{"o_id","o_all","o_year","o_month","o_week","o_day","o_lastyear","o_lastmonth","o_lastweek","o_lastday"};
 	public static final String TO_COL_ID = "o_id";
 	public static final String TO_COL_NAME = "o_name";
 	public static final String TO_COL_COVER = "o_cover";
@@ -37,6 +36,13 @@ public class DBInfor {
 	public static final int NUM_TOL_COL_ID = 1;
 	public static final int NUM_TOL_COL_OID = 2;
 	public static final int NUM_TOL_COL_PATH = 3;
+	public static final String[] TOC_COL = new String[]{"o_id","o_all","o_year","o_month","o_week","o_day","o_lastyear","o_lastmonth","o_lastweek","o_lastday"};
+	public static final String TOC_ALL = "o_all";
+	public static final String TOC_YEAR = "o_year";
+	public static final String TOC_MONTH= "o_month";
+	public static final String TOC_WEEK = "o_week";
+	public static final String TOC_DAY = "o_day";
+	public static final int NUM_TOC_COL_ID = 1;
 	public static final String TIP_COL_ID = "fip_id";
 	public static final String TIP_COL_NAME = "fip_name";
 	public static final String TIP_COL_WIDTH = "fip_width";

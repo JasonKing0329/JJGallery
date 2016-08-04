@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JJGallery.iml" filepath="$PROJECT_DIR$/JJGallery.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cardstack/cardstack.iml" filepath="$PROJECT_DIR$/cardstack/cardstack.iml" />
       <module fileurl="file://$PROJECT_DIR$/flipview/flipview.iml" filepath="$PROJECT_DIR$/flipview/flipview.iml" />
       <module fileurl="file://$PROJECT_DIR$/gdbservice/gdbservice.iml" filepath="$PROJECT_DIR$/gdbservice/gdbservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/libcolorpicker/libcolorpicker.iml" filepath="$PROJECT_DIR$/libcolorpicker/libcolorpicker.iml" />
@@ -12,6 +13,7 @@
       <module fileurl="file://$PROJECT_DIR$/libstickygridheaders/libstickygridheaders.iml" filepath="$PROJECT_DIR$/libstickygridheaders/libstickygridheaders.iml" />
       <module fileurl="file://$PROJECT_DIR$/prjcolorpicker/prjcolorpicker.iml" filepath="$PROJECT_DIR$/prjcolorpicker/prjcolorpicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/prjsaveasdialog/prjsaveasdialog.iml" filepath="$PROJECT_DIR$/prjsaveasdialog/prjsaveasdialog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/shapimageview/shapimageview.iml" filepath="$PROJECT_DIR$/shapimageview/shapimageview.iml" />
       <module fileurl="file://$PROJECT_DIR$/slidingmenu/slidingmenu.iml" filepath="$PROJECT_DIR$/slidingmenu/slidingmenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/swipebacklayout/swipebacklayout.iml" filepath="$PROJECT_DIR$/swipebacklayout/swipebacklayout.iml" />
     </modules>

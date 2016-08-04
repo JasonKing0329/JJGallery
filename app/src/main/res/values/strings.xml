@@ -171,6 +171,12 @@
     <string name="sorder_create_fail">Create failed!</string>
     <string name="sorder_name_already_exist">Error : The name is already exist!</string>
     <string name="sorder_warning_delete">Order is not empty, are you sure to delete?</string>
+    <string name="sorder_access" translatable="false">Hit list</string>
+    <string name="sorder_hit_total">Total hit</string>
+    <string name="sorder_hit_year">Year hit</string>
+    <string name="sorder_hit_month">Month hit</string>
+    <string name="sorder_hit_week">Week hit</string>
+    <string name="sorder_hit_day">Day hit</string>
 
     <string name="add_to_order">Add to order</string>
     <string name="set_as_cover">Set as cover</string>

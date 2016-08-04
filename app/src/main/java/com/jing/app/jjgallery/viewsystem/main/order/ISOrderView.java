@@ -10,6 +10,7 @@ public interface ISOrderView {
     void onGridPage();
     void onThumbPage();
     void onIndexPage();
+    void onAccessCountPage();
 
     Context getContext();
 }

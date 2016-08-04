@@ -354,4 +354,13 @@ public class SettingProperties {
         String mode = preferences.getString(PreferenceKey.PREF_WATERFALL_COL_LAND, "" + context.getResources().getInteger(R.integer.waterfall_column_land));
         return Integer.parseInt(mode);
     }
+
+    /**
+     * 访问量页面展示的top个数
+     */
+    public static int getAccessRankNumbers(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_SORDER_CARD_TOP_NUMBER, "" + PreferenceValue.SORDER_CARD_TOP_NUMBER);
+        return Integer.parseInt(mode);
+    }
 }
