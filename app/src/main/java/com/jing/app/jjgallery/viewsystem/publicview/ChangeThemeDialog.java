@@ -32,7 +32,7 @@ public class ChangeThemeDialog extends CustomDialog implements OnItemClickListen
 	protected View getCustomView() {
 		ListView view = new ListView(getContext());
 		view.setDivider(null);
-		ThemeManager manager = new ThemeManager(getContext());
+		ThemeManager manager = ThemeManager.getInstance();
 		themes = manager.getThemes();
 		ThemeAdapter adapter = new ThemeAdapter(manager.getThemesDrawables());
 		view.setAdapter(adapter);
@@ -49,7 +49,7 @@ public class ChangeThemeDialog extends CustomDialog implements OnItemClickListen
 	@Override
 	public void onClick(View view) {
 		if (view == saveIcon) {
-			new ThemeManager(getContext()).saveTheme(themes[selectedIndex]);
+			ThemeManager.getInstance().saveTheme(getContext(), themes[selectedIndex]);
 			actionListener.onSave(null);
 		}
 		super.onClick(view);

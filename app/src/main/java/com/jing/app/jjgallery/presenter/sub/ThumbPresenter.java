@@ -86,6 +86,11 @@ public class ThumbPresenter extends BasePresenter implements SOrderCallback {
         sorderManager.loadOrderItems(sOrder);
     }
 
+    // 同步操作
+    public void accessOrder(SOrder order) {
+        sorderManager.accessOrder(order);
+    }
+
     private class NameComparator implements Comparator<File> {
 
         @Override

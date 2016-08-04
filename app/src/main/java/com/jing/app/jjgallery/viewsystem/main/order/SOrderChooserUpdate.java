@@ -456,7 +456,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 
 	@Override
 	public void show() {
-		themeBasicColor = new ThemeManager(context).getBasicColorResId();
+		themeBasicColor = ThemeManager.getInstance().getBasicColorResId(context);
 		resetColors();
 		super.show();
 	}

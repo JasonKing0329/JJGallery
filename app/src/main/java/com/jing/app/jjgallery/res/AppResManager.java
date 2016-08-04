@@ -24,7 +24,7 @@ public class AppResManager {
         ColorPickerSelectionData data = new ColorPickerSelectionData();
         data.setKey(ColorRes.ACTIONBAR_BK);
         data.setName("工具栏背景");
-        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, new ThemeManager(context).getBasicColorResId()));
+        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, ThemeManager.getInstance().getBasicColorResId(context)));
         list.add(data);
         return list;
     }
@@ -39,12 +39,12 @@ public class AppResManager {
         ColorPickerSelectionData data = new ColorPickerSelectionData();
         data.setKey(ColorRes.ACTIONBAR_BK);
         data.setName("工具栏背景");
-        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, new ThemeManager(context).getBasicColorResId()));
+        data.setColor(JResource.getColor(context, ColorRes.ACTIONBAR_BK, ThemeManager.getInstance().getBasicColorResId(context)));
         list.add(data);
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.FM_THUMB_INDEX_NORMAL_COLOR);
         data.setName("Index正常背景");
-        data.setColor(JResource.getColor(context, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, new ThemeManager(context).getBasicColorResId()));
+        data.setColor(JResource.getColor(context, ColorRes.FM_THUMB_INDEX_NORMAL_COLOR, ThemeManager.getInstance().getBasicColorResId(context)));
         list.add(data);
         data = new ColorPickerSelectionData();
         data.setKey(ColorRes.FM_THUMB_TEXT_COLOR);
@@ -62,7 +62,7 @@ public class AppResManager {
     public List<ColorPickerSelectionData> getSorderChooserList(Context context) {
         List<ColorPickerSelectionData> list = new ArrayList<ColorPickerSelectionData>();
         ColorPickerSelectionData data = new ColorPickerSelectionData();
-        int colorId = new ThemeManager(context).getBasicColorResId();
+        int colorId = ThemeManager.getInstance().getBasicColorResId(context);
         data.setKey(ColorRes.SORDER_CHOOSER_BK);
         data.setName("背景");
         data.setColor(JResource.getColor(context, ColorRes.SORDER_CHOOSER_BK, R.color.sorder_chooser_bk));
@@ -127,7 +127,7 @@ public class AppResManager {
     public List<ColorPickerSelectionData> getSorderCreaterList(Context context) {
         List<ColorPickerSelectionData> list = new ArrayList<ColorPickerSelectionData>();
         ColorPickerSelectionData data = new ColorPickerSelectionData();
-        int colorId = new ThemeManager(context).getBasicColorResId();
+        int colorId = ThemeManager.getInstance().getBasicColorResId(context);
         data.setKey(ColorRes.SORDER_CREATER_BK);
         data.setName("背景");
         data.setColor(JResource.getColor(context, ColorRes.SORDER_CREATER_BK, colorId));

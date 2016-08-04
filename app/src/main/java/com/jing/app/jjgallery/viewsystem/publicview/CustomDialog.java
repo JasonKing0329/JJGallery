@@ -67,7 +67,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		titleView = (TextView) findViewById(R.id.dialog_custom_title);
 		dividerView = findViewById(R.id.dialog_custom_divider);
 		rootView = titleView.getRootView();
-		rootView.setBackgroundColor(new ThemeManager(context).getBasicColor());
+		rootView.setBackgroundColor(ThemeManager.getInstance().getBasicColor(context));
 		nullContentView = (TextView) findViewById(R.id.dialog_custom_view_null);
 		okButton = (ImageView) findViewById(R.id.dialog_custom_save);
 		saveButton = (ImageView) findViewById(R.id.dialog_custom_save1);
@@ -321,7 +321,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 	}
 
 	public void applyThemeStyle() {
-		if (new ThemeManager(context).isDarkTheme()) {
+		if (ThemeManager.getInstance().isDarkTheme(context)) {
 			applyDarkThemeStyle();
 		}
 		else {

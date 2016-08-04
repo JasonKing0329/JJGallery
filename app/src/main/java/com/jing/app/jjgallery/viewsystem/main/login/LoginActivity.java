@@ -320,7 +320,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     private void applyExtendColors() {
-        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, new ThemeManager(this).getBasicColorResId()));
+        mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, ThemeManager.getInstance().getBasicColorResId(this)));
     }
 
 }

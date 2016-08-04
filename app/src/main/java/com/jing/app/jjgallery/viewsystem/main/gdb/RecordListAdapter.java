@@ -40,9 +40,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         for (Record record:originList) {
             recordList.add(record);
         }
-        ThemeManager themeManager = new ThemeManager(context);
-        nameColorNormal = context.getResources().getColor(themeManager.getGdbSRTextColorId(false));
-        nameColorBareback = context.getResources().getColor(themeManager.getGdbSRTextColorId(true));
+        nameColorNormal = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, false));
+        nameColorBareback = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, true));
     }
 
     public List<Record> getRecordList() {

@@ -28,7 +28,7 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
-        setTheme(new ThemeManager(this).getDefaultTheme());
+        setTheme(ThemeManager.getInstance().getDefaultTheme(this));
         super.onCreate(savedInstanceState);
     }
 

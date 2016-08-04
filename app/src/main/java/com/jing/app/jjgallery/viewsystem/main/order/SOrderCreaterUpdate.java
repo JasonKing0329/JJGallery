@@ -53,7 +53,7 @@ public class SOrderCreaterUpdate extends CustomDialog implements
 	public SOrderCreaterUpdate(Context context, OnCustomDialogActionListener listener) {
 		super(context, listener);
 
-		themeBasicColor = new ThemeManager(context).getBasicColorResId();
+		themeBasicColor = ThemeManager.getInstance().getBasicColorResId(context);
 		this.context = context;
 		setTitle(R.string.sorder_create_order);
 		requestSaveAction(true);

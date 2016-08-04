@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.king.lib.colorpicker.ColorFormatter;
 import com.king.lib.colorpicker.ResourceProvider;
 import com.king.lib.resmanager.JResManager;
@@ -37,13 +38,17 @@ public class JResource {
 	}
 
 	public static int getColor(Context context, String resName, int defaultResId) {
-		try {
-			int color = jResManager.getColor(context, resName);
-			return color;
-		} catch (JResNotFoundException e) {
-			e.printStackTrace();
-		} catch (JResParseException e) {
-			e.printStackTrace();
+
+		// normal主题才采用自定义颜色
+		if (ThemeManager.getInstance().isNormalTheme(context)) {
+			try {
+				int color = jResManager.getColor(context, resName);
+				return color;
+			} catch (JResNotFoundException e) {
+				e.printStackTrace();
+			} catch (JResParseException e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (defaultResId == ResourceProvider.FLAG_DEFAULT) {
@@ -61,11 +66,14 @@ public class JResource {
 	}
 
 	public static void saveColorUpdate(Context context) {
-		if (jResManager.saveColorUpdate()) {
-			Toast.makeText(context, R.string.colorpicker_update_success, Toast.LENGTH_SHORT).show();
-		}
-		else {
-			Toast.makeText(context, R.string.colorpicker_update_failed, Toast.LENGTH_SHORT).show();
+		// normal主题才采用自定义颜色
+		if (ThemeManager.getInstance().isNormalTheme(context)) {
+			if (jResManager.saveColorUpdate()) {
+				Toast.makeText(context, R.string.colorpicker_update_success, Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(context, R.string.colorpicker_update_failed, Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

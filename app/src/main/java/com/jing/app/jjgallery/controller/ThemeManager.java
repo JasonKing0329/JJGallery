@@ -11,10 +11,10 @@ public class ThemeManager {
 
 	private final String TAG = "ThemeManager";
 
+	private static ThemeManager instance;
+
 	public static final String THEME_PREF_KEY = "pref_theme";
-	
-	private String[] themeKeys;
-	private Context context;
+	private String[] themeKeys = new String[]{"normal", "dark", "light"};
 	
 	private int[] themeValues = new int[] {R.style.JJThemeNormal, R.style.JJThemeDark
 			, R.style.JJThemeLight};
@@ -31,9 +31,15 @@ public class ThemeManager {
 	private int[] themeGdbRSTextColorBareback = new int[] {R.color.gdb_record_text_bareback_light, R.color.gdb_record_text_bareback_dark
 			, R.color.gdb_record_text_bareback_light};
 	
-	public ThemeManager(Context context) {
-		this.context = context;
-		themeKeys = context.getResources().getStringArray(R.array.theme_key);
+	private ThemeManager() {
+
+	}
+
+	public static ThemeManager getInstance() {
+		if (instance == null) {
+			instance = new ThemeManager();
+		}
+		return instance;
 	}
 	
 	public String[] getThemes() {
@@ -71,14 +77,14 @@ public class ThemeManager {
 		}
 	}
 
-	public void saveTheme(String key) {
+	public void saveTheme(Context context, String key) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(THEME_PREF_KEY, key);
 		editor.commit();
 	}
 	
-	public int getDefaultTheme() {
+	public int getDefaultTheme(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = null;
 		int valueArray[] = null;
@@ -95,7 +101,7 @@ public class ThemeManager {
 		return theme;
 	}
 
-	public boolean isDarkTheme() {
+	public boolean isDarkTheme(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		if (themeKeys[1].equals(value)) {
@@ -104,7 +110,17 @@ public class ThemeManager {
 		return false;
 	}
 
-	public int getBasicColorResId() {
+	public boolean isNormalTheme(Context context) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
+		if (themeKeys[0].equals(value)) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public int getBasicColorResId(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		int color = themeBasicColors[0];
@@ -117,7 +133,7 @@ public class ThemeManager {
 		return color;
 	}
 	
-	public int getBasicColor() {
+	public int getBasicColor(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		int color = themeBasicColors[0];
@@ -130,7 +146,7 @@ public class ThemeManager {
 		return context.getResources().getColor(color);
 	}
 	
-	public int getDefFolderResId() {
+	public int getDefFolderResId(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		Log.d(TAG, "getDefFolderResId value = " + value);
@@ -145,7 +161,7 @@ public class ThemeManager {
 		return resId;
 	}
 
-	public int getWallActionbarColorId() {
+	public int getWallActionbarColorId(Context context) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		int color = themeWallBkColors[0];
@@ -163,7 +179,7 @@ public class ThemeManager {
 	 * @param bareback
 	 * @return
      */
-	public int getGdbSRTextColorId(boolean bareback) {
+	public int getGdbSRTextColorId(Context context, boolean bareback) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		String value = preferences.getString(THEME_PREF_KEY, themeKeys[0]);
 		int[] array = themeGdbRSTextColorNormal;

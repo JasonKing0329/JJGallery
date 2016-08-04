@@ -40,7 +40,7 @@ public class SOrderExpandableListAdapter extends BaseExpandableListAdapter {
 		this.list = list;
 		tagList = tList;
 
-		int themeColor = new ThemeManager(context).getBasicColor();
+		int themeColor = ThemeManager.getInstance().getBasicColor(context);
 		COLOR_BK1 = themeColor;
 		COLOR_BK2 = themeColor;
 		uiController = new Controller();

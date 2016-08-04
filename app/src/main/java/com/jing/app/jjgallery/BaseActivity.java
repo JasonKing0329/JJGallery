@@ -53,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
         }
         DisplayHelper.disableScreenshot(this);
 
-        setTheme(new ThemeManager(this).getDefaultTheme());
+        setTheme(ThemeManager.getInstance().getDefaultTheme(this));
         super.onCreate(savedInstanceState);
 
         curOrientation = getResources().getConfiguration().orientation;
@@ -199,7 +199,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
      * @param disableParentOperation 禁止BaseActivity的dispatch touch处理，由派生类自己改写操作(例如WallActivity涉及top bottom两个bar的控制)
      */
     public void requestActionbarFloating(boolean disableParentOperation) {
-        mActionBar.setBackgroundColor(getResources().getColor(new ThemeManager(this).getWallActionbarColorId()));
+        mActionBar.setBackgroundColor(getResources().getColor(ThemeManager.getInstance().getWallActionbarColorId(this)));
         RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
         params.removeRule(RelativeLayout.BELOW);

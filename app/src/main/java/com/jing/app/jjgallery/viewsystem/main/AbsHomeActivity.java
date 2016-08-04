@@ -384,7 +384,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
 
     protected void applyExtendColors() {
         if (mActionBar != null) {
-            mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, new ThemeManager(this).getBasicColorResId()));
+            mActionBar.updateBackground(JResource.getColor(this, ColorRes.ACTIONBAR_BK, ThemeManager.getInstance().getBasicColorResId(this)));
         }
     }
 

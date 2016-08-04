@@ -186,6 +186,7 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void onKeywordClick(View view, Keyword keyword) {
         SOrder order = (SOrder) keyword.getObject();
+        mPresenter.accessOrder(order);
         ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context));
     }
 

@@ -52,7 +52,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         }
         DisplayHelper.disableScreenshot(this);
 
-        setTheme(new ThemeManager(this).getDefaultTheme());
+        setTheme(ThemeManager.getInstance().getDefaultTheme(this));
         super.onCreate(savedInstanceState);
 
         curOrientation = getResources().getConfiguration().orientation;

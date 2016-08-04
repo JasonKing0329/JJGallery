@@ -397,7 +397,7 @@ public class PictureManagerUpdate {
 		Bitmap bitmap = defaultPool.get(KEY_SORDER_COVER_DEFAULT);
 		if (bitmap == null || bitmap.isRecycled()) {
 			//Drawable drawable = context.getResources().getDrawable(R.drawable.directory_icon);
-			Drawable drawable = context.getResources().getDrawable(new ThemeManager(context).getDefFolderResId());
+			Drawable drawable = context.getResources().getDrawable(ThemeManager.getInstance().getDefFolderResId(context));
 			BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 			bitmap = ImageFactory.createReflectionImageWithOrigin(bitmapDrawable.getBitmap());
 			defaultPool.put(KEY_SORDER_COVER_DEFAULT, bitmap);

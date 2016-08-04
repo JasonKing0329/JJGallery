@@ -657,10 +657,9 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     }
 
     protected void showAccessCount(SOrder order) {
-        SOrderCount orderCount = order.getOrderCount();
+        SOrderCount orderCount = mPresenter.queryOrderCount(order.getId());
+        order.setOrderCount(orderCount);
         if (orderCount == null) {
-            orderCount = mPresenter.queryOrderCount(order.getId());
-            order.setOrderCount(orderCount);
         }
         StringBuffer buffer = new StringBuffer("总访问量： ");
         buffer.append(orderCount.countAll)

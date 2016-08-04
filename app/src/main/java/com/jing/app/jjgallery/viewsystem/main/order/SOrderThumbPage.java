@@ -151,6 +151,8 @@ public class SOrderThumbPage extends ThumbPage implements ISOrderDataCallback {
     @Override
     public void onThumbFolderItemClick(View view, int position) {
         mCurrentOrder = tempList.get(position);
+
+        mPresenter.accessOrder(mCurrentOrder);
         mPresenter.loadOrderItems(mCurrentOrder);
 
         // 设置选中状态

@@ -37,9 +37,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         this.star = star;
         this.recyclerView = recyclerView;
         listData = star.getStar().getRecordList();
-        ThemeManager themeManager = new ThemeManager((recyclerView.getContext()));
-        nameColorNormal = recyclerView.getContext().getResources().getColor(themeManager.getGdbSRTextColorId(false));
-        nameColorBareback = recyclerView.getContext().getResources().getColor(themeManager.getGdbSRTextColorId(true));
+        nameColorNormal = recyclerView.getContext().getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(recyclerView.getContext(), false));
+        nameColorBareback = recyclerView.getContext().getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(recyclerView.getContext(), true));
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
 
         addViewType(Record.class, new ViewHolderFactory<RecordHolder>() {
