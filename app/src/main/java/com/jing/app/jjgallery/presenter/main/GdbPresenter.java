@@ -75,6 +75,30 @@ public class GdbPresenter {
         }
     }
 
+    public void sortSceneRecords(List<RecordProxy> recordList, int sortMode) {
+        if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
+            List<Record> list = null;
+            int index = 0;
+            int headIndex = 0;
+            for (RecordProxy proxy:recordList) {
+                if (proxy.isHeader()) {
+                    if (list != null) {
+                        Collections.sort(list, new RecordComparator(sortMode));
+                        for (int i = 0; i < list.size(); i ++) {
+                            recordList.get(headIndex + 1 + i).setRecord(list.get(i));
+                        }
+                    }
+                    headIndex = index;
+                    list = new ArrayList<>();
+                }
+                else {
+                    list.add(proxy.getRecord());
+                }
+                index ++;
+            }
+        }
+    }
+
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
         @Override
         protected void onPostExecute(List<Star> list) {
@@ -266,7 +290,7 @@ public class GdbPresenter {
         }
     }
 
-    public List<RecordProxy> collectRecordsByScene(List<Record> list) {
+    public List<RecordProxy> collectRecordsByScene(List<Record> list, int sortMode) {
         List<RecordProxy> resultList = new ArrayList<>();
         Map<String, List<Record>> map = new HashMap<>();
         List<Record> subList;
@@ -295,6 +319,7 @@ public class GdbPresenter {
         }
         Collections.sort(scenes, new NameComparator());
 
+        RecordComparator comparator = new RecordComparator(sortMode);
         // 将list转化为包含header模型的proxy模型
         for (int i = 0; i < scenes.size(); i ++) {
             RecordProxy proxy = new RecordProxy();
@@ -302,6 +327,7 @@ public class GdbPresenter {
             proxy.setHeader(true);
 
             subList = map.get(scenes.get(i));
+            Collections.sort(subList, comparator);
             proxy.setItemNumber(subList.size());
             resultList.add(proxy);
 

@@ -63,6 +63,10 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
         onRecordClickListener = listener;
     }
 
+    public List<RecordProxy> getRecordList() {
+        return mData;
+    }
+
     private boolean isHeader(int position) {
         return getItem(position).isHeader();
     }

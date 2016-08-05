@@ -62,12 +62,18 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
         mActionbar.addSortIcon();
         mActionbar.addSearchIcon();
         mActionbar.addBackIcon();
+        mActionbar.addShowIcon();
         mActionbar.addMenuIcon();
     }
 
     public void onIconClick(View view) {
-        if (view.getId() == R.id.actionbar_sort) {
-            showSortPopup(view);
+        switch (view.getId()) {
+            case R.id.actionbar_sort:
+                showSortPopup(view);
+                break;
+            case R.id.actionbar_show:
+                ((GDBHomeActivity) getContext()).onRecordSceneListPage();
+                break;
         }
     }
 

@@ -179,6 +179,22 @@
 
 						<ImageView
 							style="@style/ActionbarIcon_L"
+							android:id="@+id/actionbar_show"
+							android:layout_width="@dimen/actionbar_icon_width"
+							android:layout_height="match_parent"
+							android:src="?attr/actionbar_ic_gdb_show_scene"
+							android:visibility="gone"/>
+
+						<ImageView
+							style="@style/ActionbarIcon_L"
+							android:id="@+id/actionbar_hide"
+							android:layout_width="@dimen/actionbar_icon_width"
+							android:layout_height="match_parent"
+							android:src="?attr/actionbar_ic_gdb_hide_scene"
+							android:visibility="gone"/>
+
+						<ImageView
+							style="@style/ActionbarIcon_L"
 							android:id="@+id/actionbar_color"
 							android:layout_width="@dimen/actionbar_icon_width"
 							android:layout_height="match_parent"

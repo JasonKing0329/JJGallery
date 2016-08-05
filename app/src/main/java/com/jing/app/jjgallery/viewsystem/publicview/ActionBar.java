@@ -71,7 +71,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	 */
 	private ImageView backButton, menuLeftButton, addButton
 		, surfButton, sortButton, searchButton, closeButton, refreshButton
-		, changeButton, colorButton, randomSurfButton, coverButton;
+		, changeButton, colorButton, randomSurfButton, coverButton, showButton, hideButton;
 
 	/**
 	 * 最右侧菜单图标，固定位置
@@ -180,6 +180,8 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
 		colorButton = (ImageView) view.findViewById(R.id.actionbar_color);
 		coverButton = (ImageView) view.findViewById(R.id.actionbar_cover);
+		showButton = (ImageView) view.findViewById(R.id.actionbar_show);
+		hideButton = (ImageView) view.findViewById(R.id.actionbar_hide);
 
 		addToButton = (ImageView) view.findViewById(R.id.actionbar_addto);
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
@@ -209,6 +211,8 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		surfButton.setOnClickListener(this);
 		colorButton.setOnClickListener(this);
 		coverButton.setOnClickListener(this);
+		showButton.setOnClickListener(this);
+		hideButton.setOnClickListener(this);
 
 		// 设置图标监听事件--selection icons
 		addToButton.setOnClickListener(this);
@@ -443,6 +447,22 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addCoverIcon() {
 		currentButtons.add(coverButton);
 		coverButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * show icon
+	 */
+	public void addShowIcon() {
+		currentButtons.add(showButton);
+		showButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * hide icon
+	 */
+	public void addHideIcon() {
+		currentButtons.add(hideButton);
+		hideButton.setVisibility(View.VISIBLE);
 	}
 
 	/**

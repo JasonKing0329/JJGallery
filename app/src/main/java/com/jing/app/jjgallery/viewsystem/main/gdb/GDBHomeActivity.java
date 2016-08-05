@@ -88,6 +88,9 @@ public class GDBHomeActivity extends BaseActivity {
         if (currentFragment == recordFragment) {
             recordFragment.onIconClick(view);
         }
+        else if (currentFragment == sceneListFragment) {
+            sceneListFragment.onIconClick(view);
+        }
     }
 
     @Override
@@ -98,6 +101,9 @@ public class GDBHomeActivity extends BaseActivity {
         }
         else if (currentFragment == recordFragment) {
             recordFragment.onTextChanged(text, start, before, count);
+        }
+        else if (currentFragment == sceneListFragment) {
+            sceneListFragment.onTextChanged(text, start, before, count);
         }
     }
 
@@ -122,14 +128,16 @@ public class GDBHomeActivity extends BaseActivity {
         else if (currentFragment instanceof RecordListFragment) {
             menu.findItem(R.id.menu_gdb_record).setVisible(false);
         }
+        else if (currentFragment instanceof RecordSceneListFragment) {
+            menu.findItem(R.id.menu_gdb_record).setVisible(false);
+        }
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_gdb_record:
-//                onRecordListPage();
-                onRecordSceneListPage();
+                onRecordListPage();
                 break;
             case R.id.menu_gdb_star:
                 onStarListPage();
