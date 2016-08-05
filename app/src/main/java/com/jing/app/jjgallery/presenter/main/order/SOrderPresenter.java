@@ -17,6 +17,7 @@ import com.jing.app.jjgallery.viewsystem.main.order.ISOrderDataCallback;
 import com.jing.app.jjgallery.viewsystem.main.order.ISOrderView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -246,6 +247,72 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
      */
     public List<SOrder> loadTopDayList(int number) {
         return  sOrderManager.loadTopOrders(DBInfor.TOC_DAY, number);
+    }
+
+    /**
+     * 获取访问量统计信息
+     * @param order
+     * @return
+     */
+    public String getAccessCountMessage(SOrder order) {
+        SOrderCount orderCount = queryOrderCount(order.getId());
+        order.setOrderCount(orderCount);
+
+        Calendar calendar = Calendar.getInstance();
+        if (orderCount == null) {
+            sOrderManager.insertOrderCount(order.getId());
+            orderCount = new SOrderCount();
+            orderCount.orderId = order.getId();
+        }
+
+        // 符合当年/月/周/日情况才显示统计数
+        int year = 0;
+        int month = 0;
+        int week = 0;
+        int day = 0;
+        if (calendar.get(Calendar.YEAR) == orderCount.lastYear) {
+            year = orderCount.countYear;
+            if (calendar.get(Calendar.MONTH) + 1 == orderCount.lastMonth) {
+                month = orderCount.countMonth;
+                if (calendar.get(Calendar.DAY_OF_MONTH) == orderCount.lastDay) {
+                    day = orderCount.countDay;
+                }
+                else {
+                    day = 0;
+                }
+            }
+            else {
+                month = 0;
+                day = 0;
+            }
+            if (calendar.get(Calendar.WEEK_OF_YEAR) == orderCount.lastWeek) {
+                week = orderCount.countWeek;
+                if (calendar.get(Calendar.DAY_OF_MONTH) == orderCount.lastDay) {
+                    day = orderCount.countDay;
+                }
+                else {
+                    day = 0;
+                }
+            }
+            else {
+                week = 0;
+                day = 0;
+            }
+        }
+        else {
+            year = 0;
+            month = 0;
+            week = 0;
+            day = 0;
+        }
+
+        StringBuffer buffer = new StringBuffer("总访问量： ");
+        buffer.append(orderCount.countAll)
+                .append("\n").append("年访问量:  ").append(year)
+                .append("\n").append("月访问量:  ").append(month)
+                .append("\n").append("一周访问量:  ").append(week)
+                .append("\n").append("今日访问量:  ").append(day);
+        return buffer.toString();
     }
 
     /**

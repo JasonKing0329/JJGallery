@@ -28,10 +28,8 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BasePresenter;
-import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
-import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
@@ -579,6 +577,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         SOrder order = currentPageOrders.get(position);
+        mPresenter.accessOrder(order);
         ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderGridItemOpenMode(context));
     }
 
@@ -657,19 +656,10 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
     }
 
     protected void showAccessCount(SOrder order) {
-        SOrderCount orderCount = mPresenter.queryOrderCount(order.getId());
-        order.setOrderCount(orderCount);
-        if (orderCount == null) {
-        }
-        StringBuffer buffer = new StringBuffer("总访问量： ");
-        buffer.append(orderCount.countAll)
-                .append("\n").append("年访问量:  ").append(orderCount.countYear)
-                .append("\n").append("月访问量:  ").append(orderCount.countMonth)
-                .append("\n").append("一周访问量:  ").append(orderCount.countWeek)
-                .append("\n").append("今日访问量:  ").append(orderCount.countDay);
+        String message = mPresenter.getAccessCountMessage(order);
         new AlertDialog.Builder(context)
                 .setTitle(null)
-                .setMessage(buffer.toString())
+                .setMessage(message)
                 .show();
     }
 

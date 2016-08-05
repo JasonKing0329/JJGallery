@@ -1,13 +1,12 @@
 package com.jing.app.jjgallery.service.data.impl;
 
-import android.util.Log;
-
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.bean.order.SOrderCount;
 import com.jing.app.jjgallery.bean.order.STag;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.file.OnOrderItemMoveTrigger;
 import com.jing.app.jjgallery.service.data.dao.SOrderDao;
+import com.jing.app.jjgallery.util.DebugLog;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -838,7 +838,38 @@ public class SOrderDaoImpl implements SOrderDao {
     @Override
     public List<SOrder> queryOrderAccessList(Connection connection, String column, int number) {
         // 防止有些order已经不存在，查number + 10条取number条
-        String sql = "SELECT * FROM " + DBInfor.TABLE_ORDER_COUNT + " ORDER BY " + column + " DESC LIMIT 0," + String.valueOf(number + 10);
+        StringBuffer buffer = new StringBuffer("SELECT * FROM ");
+        buffer.append(DBInfor.TABLE_ORDER_COUNT);
+
+        String where;
+        // 只有查询总访问量不需要where条件，查询年/月/周/日都需要比较是否是本年/月/周/日
+        if (!column.equals(DBInfor.TOC_ALL)) {
+            where = " WHERE ";
+            buffer.append(where);
+            Calendar calendar = Calendar.getInstance();
+            if (column.equals(DBInfor.TOC_YEAR)) {
+                buffer.append(DBInfor.TOC_COL[6]).append("=").append(calendar.get(Calendar.YEAR));
+            }
+            else if (column.equals(DBInfor.TOC_MONTH)) {
+                buffer.append(DBInfor.TOC_COL[6]).append("=").append(calendar.get(Calendar.YEAR));
+                buffer.append(" AND ").append(DBInfor.TOC_COL[7]).append("=").append(calendar.get(Calendar.MONTH) + 1);
+            }
+            else if (column.equals(DBInfor.TOC_WEEK)) {// week和month不是上下关系，和year是上下关系
+                buffer.append(DBInfor.TOC_COL[6]).append("=").append(calendar.get(Calendar.YEAR));
+                buffer.append(" AND ").append(DBInfor.TOC_COL[8]).append("=").append(calendar.get(Calendar.WEEK_OF_YEAR));
+            }
+            else if (column.equals(DBInfor.TOC_DAY)) {// day和month是上下关系
+                buffer.append(DBInfor.TOC_COL[6]).append("=").append(calendar.get(Calendar.YEAR));
+                buffer.append(" AND ").append(DBInfor.TOC_COL[7]).append("=").append(calendar.get(Calendar.MONTH) + 1);
+                buffer.append(" AND ").append(DBInfor.TOC_COL[9]).append("=").append(calendar.get(Calendar.DAY_OF_MONTH));
+            }
+        }
+
+        buffer.append(" ORDER BY ").append(column).append(" DESC LIMIT 0,").append(number + 10);
+
+        String sql = buffer.toString();
+        DebugLog.d(sql);
+
         List<SOrder> list = new ArrayList<>();
         Statement stmt = null;
         try {

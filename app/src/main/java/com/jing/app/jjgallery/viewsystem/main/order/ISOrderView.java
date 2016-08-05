@@ -11,6 +11,8 @@ public interface ISOrderView {
     void onThumbPage();
     void onIndexPage();
     void onAccessCountPage();
+    void removeAccessCountPage();
 
     Context getContext();
+
 }

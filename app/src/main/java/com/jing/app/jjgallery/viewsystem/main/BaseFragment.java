@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.IColorPage;
 import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.IPage;

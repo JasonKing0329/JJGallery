@@ -15,6 +15,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.presenter.sub.ThumbPresenter;
 import com.jing.app.jjgallery.res.AppResManager;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.IFragment;
 import com.jing.app.jjgallery.viewsystem.main.AbsHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
@@ -78,7 +79,9 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
             mGridFragment.getPage().initActionbar(mActionBar);
         }
 
+        Fragment fragment = getToDeleteFragment();
         setCurrentFragment(ft, mGridFragment, "SOrderGridFragment");
+        removeFragment(fragment);
     }
 
     @Override
@@ -93,7 +96,9 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
             mThumbFragment.getPage().initActionbar(mActionBar);
         }
 
+        Fragment fragment = getToDeleteFragment();
         setCurrentFragment(ft, mThumbFragment, "SOrderThumbFragment");
+        removeFragment(fragment);
     }
 
     @Override
@@ -108,7 +113,9 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
             mIndexFragment.getPage().initActionbar(mActionBar);
         }
 
+        Fragment fragment = getToDeleteFragment();
         setCurrentFragment(ft, mIndexFragment, "SOrderIndexFragment");
+        removeFragment(fragment);
     }
 
     @Override
@@ -123,7 +130,51 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
             mAccessFragment.getPage().initActionbar(mActionBar);
         }
 
+        Fragment fragment = getToDeleteFragment();
         setCurrentFragment(ft, mAccessFragment, "SOrderCardFragment");
+        removeFragment(fragment);
+    }
+
+    // sorder的几个fragment内存开销过大，不保存fragment实例
+    private void removeFragment(Fragment fragment) {
+        DebugLog.e("");
+        if (fragment == null) {
+            return;
+        }
+        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        if (fragment == mGridFragment) {
+            mGridFragment = null;
+        }
+        else if (fragment == mThumbFragment) {
+            mThumbFragment = null;
+        }
+        else if (fragment == mIndexFragment) {
+            mIndexFragment = null;
+        }
+        else if (fragment == mAccessFragment) {
+            mAccessFragment = null;
+        }
+    }
+
+    private Fragment getToDeleteFragment() {
+        if (mCurrentFragment == mGridFragment) {
+            return (Fragment) mGridFragment;
+        }
+        else if (mCurrentFragment == mAccessFragment) {
+            return (Fragment) mAccessFragment;
+        }
+        else if (mCurrentFragment == mThumbFragment) {
+            return (Fragment) mThumbFragment;
+        }
+        else {
+            return (Fragment) mIndexFragment;
+        }
+    }
+
+    @Override
+    public void removeAccessCountPage() {
+        mAccessFragment = null;
+        mCurrentFragment = null;
     }
 
     @Override
@@ -135,23 +186,31 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
         // no animation at first time
         if (mCurrentFragment != null) {
             if (mCurrentFragment == mGridFragment) {// current fragment is list fragment
-                if (fragment == mIndexFragment) {// index view
+                if (fragment == mAccessFragment) {
                     applyAnimatinLeftIn(ft);
                 }
-                else {// thumb view
+                else {
                     applyAnimatinRightIn(ft);
                 }
             }
             else if (mCurrentFragment == mIndexFragment) {// current fragment is index fragment
-                if (fragment == mGridFragment) {// list view
+                if (fragment == mAccessFragment) {
                     applyAnimatinRightIn(ft);
                 }
-                else {// thumb view
+                else {
+                    applyAnimatinLeftIn(ft);
+                }
+            }
+            else if (mCurrentFragment == mAccessFragment) {// current fragment is access count fragment
+                if (fragment == mGridFragment) {// grid view
+                    applyAnimatinRightIn(ft);
+                }
+                else {
                     applyAnimatinLeftIn(ft);
                 }
             }
             else {// current fragment is thumb fragment
-                if (fragment == mGridFragment) {// list view
+                if (fragment == mGridFragment) {
                     applyAnimatinLeftIn(ft);
                 }
                 else {// index view

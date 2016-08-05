@@ -47,55 +47,28 @@ public class RightMenuPage implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sliding_right_sorder_grid:
-                if (v != currentGroup) {
-                    currentGroup = v;
-                    focusBgGroup.setBackground(null);
-                    focusBgGroup = (View) v.getParent();
-                    updateCurrentGroup();
-                    if (sorderView != null) {
+        if (v != currentGroup) {
+            currentGroup = v;
+            focusBgGroup.setBackground(null);
+            focusBgGroup = (View) v.getParent();
+            updateCurrentGroup();
+            if (sorderView != null) {
+                switch (v.getId()) {
+                    case R.id.sliding_right_sorder_grid:
                         sorderView.onGridPage();
-                    }
-                    closeMenu();
-                }
-                break;
-            case R.id.sliding_right_sorder_thumb:
-                if (v != currentGroup) {
-                    currentGroup = v;
-                    focusBgGroup.setBackground(null);
-                    focusBgGroup = (View) v.getParent();
-                    updateCurrentGroup();
-                    if (sorderView != null) {
+                        break;
+                    case R.id.sliding_right_sorder_thumb:
                         sorderView.onThumbPage();
-                    }
-                    closeMenu();
-                }
-                break;
-            case R.id.sliding_right_sorder_index:
-                if (v != currentGroup) {
-                    currentGroup = v;
-                    focusBgGroup.setBackground(null);
-                    focusBgGroup = (View) v.getParent();
-                    updateCurrentGroup();
-                    if (sorderView != null) {
+                        break;
+                    case R.id.sliding_right_sorder_index:
                         sorderView.onIndexPage();
-                    }
-                    closeMenu();
-                }
-                break;
-            case R.id.sliding_right_sorder_access:
-                if (v != currentGroup) {
-                    currentGroup = v;
-                    focusBgGroup.setBackground(null);
-                    focusBgGroup = (View) v.getParent();
-                    updateCurrentGroup();
-                    if (sorderView != null) {
+                        break;
+                    case R.id.sliding_right_sorder_access:
                         sorderView.onAccessCountPage();
-                    }
-                    closeMenu();
+                        break;
                 }
-                break;
+            }
+            closeMenu();
         }
     }
 
