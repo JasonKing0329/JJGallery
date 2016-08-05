@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.presenter.main;
 
 import android.os.AsyncTask;
 
+import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
@@ -13,6 +14,7 @@ import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
 import com.king.service.gdb.GDBProvider;
+import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.RecordSingleScene;
@@ -22,7 +24,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
@@ -52,6 +57,10 @@ public class GdbPresenter {
         new LoadStarListTask().execute();
     }
 
+    /**
+     *
+     * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
+     */
     public void loadRecordList(int sortMode) {
         new LoadRecordListTask().execute(sortMode);
     }
@@ -256,4 +265,66 @@ public class GdbPresenter {
             return result;
         }
     }
+
+    public List<RecordProxy> collectRecordsByScene(List<Record> list) {
+        List<RecordProxy> resultList = new ArrayList<>();
+        Map<String, List<Record>> map = new HashMap<>();
+        List<Record> subList;
+
+        // 按scene归类list
+        for (Record record:list) {
+            if (record instanceof RecordSingleScene) {
+                String scene = ((RecordSingleScene) record).getSceneName();
+                if (scene == null) {
+                    scene = GDBProperites.RECORD_UNKNOWN;
+                }
+                subList = map.get(scene);
+                if (subList == null) {
+                    subList = new ArrayList<>();
+                    map.put(scene, subList);
+                }
+                subList.add(record);
+            }
+        }
+
+        List<String> scenes = new ArrayList<>();
+        // 将scene按名称升序排序
+        Iterator<String> it = map.keySet().iterator();
+        while (it.hasNext()) {
+            scenes.add(it.next());
+        }
+        Collections.sort(scenes, new NameComparator());
+
+        // 将list转化为包含header模型的proxy模型
+        for (int i = 0; i < scenes.size(); i ++) {
+            RecordProxy proxy = new RecordProxy();
+            proxy.setHeaderName(scenes.get(i));
+            proxy.setHeader(true);
+
+            subList = map.get(scenes.get(i));
+            proxy.setItemNumber(subList.size());
+            resultList.add(proxy);
+
+            for (int j = 0; j < subList.size(); j ++) {
+                proxy = new RecordProxy();
+                proxy.setPositionInHeader(j);
+                proxy.setRecord(subList.get(j));
+                resultList.add(proxy);
+            }
+        }
+        return resultList;
+    }
+
+    public class NameComparator implements Comparator<String> {
+
+        @Override
+        public int compare(String l, String r) {
+            if (l == null || r == null) {
+                return 0;
+            }
+
+            return l.toLowerCase().compareTo(r.toLowerCase());
+        }
+    }
+
 }

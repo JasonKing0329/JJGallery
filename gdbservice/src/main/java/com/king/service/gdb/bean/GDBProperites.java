@@ -11,4 +11,5 @@ public class GDBProperites {
     public static final int BAREBACK = 20;
 
     public static final String STAR_UNKNOWN = "Unknown";
+    public static final String RECORD_UNKNOWN = "Unknown";
 }

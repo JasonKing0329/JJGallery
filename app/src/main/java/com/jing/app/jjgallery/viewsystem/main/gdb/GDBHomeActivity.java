@@ -20,6 +20,7 @@ public class GDBHomeActivity extends BaseActivity {
     private Fragment currentFragment;
     private StarListFragment starFragment;
     private RecordListFragment recordFragment;
+    private RecordSceneListFragment sceneListFragment;
     @Override
     protected boolean isActionBarNeed() {
         return true;
@@ -61,6 +62,18 @@ public class GDBHomeActivity extends BaseActivity {
         currentFragment = recordFragment;
 
         ft.replace(R.id.gdb_fragment_container, currentFragment, "RecordListFragment");
+        ft.commit();
+    }
+
+    public void onRecordSceneListPage() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (sceneListFragment == null) {
+            sceneListFragment = new RecordSceneListFragment();
+            sceneListFragment.setActionbar(mActionBar);
+        }
+        currentFragment = sceneListFragment;
+
+        ft.replace(R.id.gdb_fragment_container, sceneListFragment, "RecordSceneListFragment");
         ft.commit();
     }
 
@@ -115,7 +128,8 @@ public class GDBHomeActivity extends BaseActivity {
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_gdb_record:
-                onRecordListPage();
+//                onRecordListPage();
+                onRecordSceneListPage();
                 break;
             case R.id.menu_gdb_star:
                 onStarListPage();
