@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -13,7 +14,10 @@ import android.preference.PreferenceCategory;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
@@ -200,10 +204,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_CASCADE_NUM));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_GRID_ITEM_OPEN));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN));
+        EditTextPreference preference = (EditTextPreference) findPreference(PreferenceKey.PREF_SORDER_CARD_TOP_NUMBER);
+        bindPreferenceSummaryToValue(preference);
+        limitEditRange(preference.getEditText(), 5, 20);
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
+    }
+
+    private void limitEditRange(final EditText editText, final int min, final int max) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    int num = Integer.parseInt(s.toString());
+                    if (num > max) {
+                        editText.setText("" + max);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     /**
@@ -303,7 +334,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class SOrderPreferenceFragment extends PreferenceFragment {
+    public class SOrderPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -315,6 +346,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_CASCADE_NUM));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_GRID_ITEM_OPEN));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_INDEX_ITEM_OPEN));
+            EditTextPreference preference = (EditTextPreference) findPreference(PreferenceKey.PREF_SORDER_CARD_TOP_NUMBER);
+            bindPreferenceSummaryToValue(preference);
+            limitEditRange(preference.getEditText(), 5, 20);
         }
 
     }

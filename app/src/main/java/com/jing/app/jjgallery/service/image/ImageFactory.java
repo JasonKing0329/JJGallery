@@ -238,20 +238,15 @@ public class ImageFactory {
 	 * create thumb nail mode image, to save the memory
 	 * @param file
 	 * @param maxPixel  use parameter like 128*128
-	 * @param listener 用于统计图片的原始大小
 	 * @return
 	 */
-	public Bitmap createEncryptedThumbnail(String file, int maxPixel, ImageValueListener listener) {
+	public Bitmap createEncryptedThumbnail(String file, int maxPixel) {
 		Bitmap bitmap = null;
 		byte datas[] = encrypter.decipherToByteArray(new File(file));
 		if (datas != null) {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;// 对bitmap不分配空间，只是用于计算文件options的各种属性(本程序需要计算width,height)
 			BitmapFactory.decodeByteArray(datas, 0, datas.length, opts);
-			//统计图片的原始大小
-			if (listener != null) {
-				listener.onCreate(file, opts.outWidth, opts.outHeight);
-			}
 
 			opts.inSampleSize = computeSampleSize(opts, -1, maxPixel);// 通过计算出的options属性获取
 			// inSampleSize参数，该参数用于决定为缩略图分配空间的适当等级

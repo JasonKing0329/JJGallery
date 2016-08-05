@@ -52,4 +52,15 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/setting_sorder_index_open" />
+
+    <EditTextPreference
+        android:defaultValue="10"
+        android:inputType="number"
+        android:key="pref_sorder_card_top_number"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:hint="@string/setting_sorder_hit_hint"
+        android:title="@string/setting_sorder_hit_num" />
+
 </PreferenceScreen>

@@ -31,6 +31,8 @@
             android:textSize="20dp"
             android:layout_margin="20dp"
             android:textStyle="bold"
+            android:padding="5dp"
+            android:background="@drawable/bg_sorder_card_title"
             android:textColor="@android:color/white"/>
     </FrameLayout>
 

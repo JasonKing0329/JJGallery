@@ -161,7 +161,10 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         else {
             count = data.getOrderCount().countDay;
         }
-        content.setText(count + "次访问");
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(count).append("次访问").append("\n").append("上次访问时间:  ")
+                .append(data.getOrderCount().lastYear).append("-").append(data.getOrderCount().lastMonth).append("-").append(data.getOrderCount().lastDay);
+        content.setText(buffer.toString());
     }
 
 }

@@ -25,16 +25,15 @@ public class ImageValueDaoImpl implements ImageValueDao {
             stmt = connection.createStatement();
             ResultSet set = null;
 
-            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_IMAGE_PIXEL
-                    + " WHERE " + DBInfor.TIP_COL_NAME + " = '" + key + "'");
+            set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_FILES
+                    + " WHERE " + DBInfor.TF_COL_PATH + " = '" + key + "'");
 
             if (set.next()) {
                 value = new ImageValue();
                 value.setName(key);
-                value.setId(set.getInt(DBInfor.NUM_TIP_COL_ID));
-                value.setWidth(set.getInt(DBInfor.NUM_TIP_COL_WIDTH));
-                value.setHeight(set.getInt(DBInfor.NUM_TIP_COL_HEIGHT));
-                value.setOther(set.getString(DBInfor.NUM_TIP_COL_OTHER));
+                value.setId(set.getInt(DBInfor.TF_COL_ID));
+                value.setWidth(set.getInt(DBInfor.TF_COL_WIDTH));
+                value.setHeight(set.getInt(DBInfor.TF_COL_HEIGHT));
             }
             set.close();
         } catch (SQLException e) {
@@ -51,65 +50,33 @@ public class ImageValueDaoImpl implements ImageValueDao {
         return value;
     }
 
-    @Override
-    public boolean insertImagePixel(ImageValue value, Connection connection) {
-        if (connection != null && value != null) {
-            String sql = "INSERT INTO " + DBInfor.TABLE_IMAGE_PIXEL
-                    + "(" + DBInfor.TIP_COL_NAME + "," + DBInfor.TIP_COL_WIDTH + "," + DBInfor.TIP_COL_HEIGHT + ")" +
-                    " VALUES(?,?,?)";
-            PreparedStatement stmt = null;
-            try {
-                stmt = connection.prepareStatement(sql);
-                stmt.setString(1, value.getName());
-                stmt.setInt(2, value.getWidth());
-                stmt.setInt(3, value.getHeight());
-                stmt.executeUpdate();
-                return true;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            } finally {
-                if (stmt != null) {
-                    try {
-                        stmt.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * query many items
-     * @param keyList its size must be equal with param values'
-     * @param values to save key referring result
+     * @param pathList its size must be equal with param values'
+     * @param values each path of pathList refer same position ImageValue, this list should not be null and its size is 0
      * @param connection
      */
     @Override
-    public void queryImageValues(List<String> keyList
+    public void queryImageValues(List<String> pathList
             , List<ImageValue> values, Connection connection) {
         PreparedStatement stmt = null;
-        ImageValue value = null;
+        ImageValue value;
         try {
-            ResultSet set = null;
-            String sql = "SELECT * FROM " + DBInfor.TABLE_IMAGE_PIXEL
-                    + " WHERE " + DBInfor.TIP_COL_NAME + " = ?";
+            ResultSet set;
+            String sql = "SELECT * FROM " + DBInfor.TABLE_FILES
+                    + " WHERE " + DBInfor.TF_COL_PATH + " = ?";
             stmt = connection.prepareStatement(sql);
 
-            for (int i = 0; i < keyList.size(); i ++) {
-                stmt.setString(1, keyList.get(i));
+            for (int i = 0; i < pathList.size(); i ++) {
+                stmt.setString(1, pathList.get(i));
                 set = stmt.executeQuery();
                 if (set.next()) {
                     value = new ImageValue();
-                    value.setName(keyList.get(i));
-                    value.setId(set.getInt(DBInfor.NUM_TIP_COL_ID));
-                    value.setWidth(set.getInt(DBInfor.NUM_TIP_COL_WIDTH));
-                    value.setHeight(set.getInt(DBInfor.NUM_TIP_COL_HEIGHT));
-                    value.setOther(set.getString(DBInfor.NUM_TIP_COL_OTHER));
-                    values.set(i, value);
+                    value.setName(pathList.get(i));
+                    value.setId(set.getInt(DBInfor.TF_COL_ID));
+                    value.setWidth(set.getInt(DBInfor.TF_COL_WIDTH));
+                    value.setHeight(set.getInt(DBInfor.TF_COL_HEIGHT));
+                    values.add(value);
                 }
                 set.close();
             }

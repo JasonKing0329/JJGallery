@@ -38,12 +38,6 @@ public class PictureManagerUpdate {
 	private final String KEY_SORDER_COVER_DEFAULT = "sorder_cover_default";
 	private final String KEY_ITEM_DEFAULT = "item_default";
 
-	/**
-	 * as create image value infor need execute database I/O
-	 * for performance, it's better execute imageValue event in process that only open one image 
-	 */
-	private ImageValueController imageValueController;
-
 	private PictureManagerUpdate() {
 		orderPool = new HashMap<String, Bitmap>();
 		expandOrderPool = new HashMap<String, Bitmap>();
@@ -52,8 +46,6 @@ public class PictureManagerUpdate {
 		orderPreviewPool = new HashMap<String, Bitmap>();
 		wallItemPool = new HashMap<String, Bitmap>();
 		spicturePool = new HashMap<String, Bitmap>();
-
-		imageValueController = new ImageValueController();
 	}
 	public static PictureManagerUpdate getInstance() {
 		if (manager == null) {
@@ -412,7 +404,7 @@ public class PictureManagerUpdate {
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
 		File file = new File(path);
 		if (encrypter.isEncrypted(file)) {
-			bitmap = factory.createEncryptedThumbnail(path, size, null);
+			bitmap = factory.createEncryptedThumbnail(path, size);
 		}
 		else {
 			bitmap = factory.createImageThumbnail(path, size);
@@ -427,7 +419,7 @@ public class PictureManagerUpdate {
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
 		File file = new File(path);
 		if (encrypter.isEncrypted(file)) {
-			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel(), null);
+			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel());
 		}
 		else {
 			bitmap = factory.createImageThumbnail(path, Configuration.getSorderCoverMaxPixel());
@@ -442,7 +434,7 @@ public class PictureManagerUpdate {
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
 		File file = new File(path);
 		if (encrypter.isEncrypted(file)) {
-			bitmap = factory.createEncryptedThumbnail(path, Configuration.getChooserItemWidth() * Configuration.getChooserItemWidth(), null);
+			bitmap = factory.createEncryptedThumbnail(path, Configuration.getChooserItemWidth() * Configuration.getChooserItemWidth());
 		}
 		else {
 			bitmap = factory.createImageThumbnail(path, Configuration.getChooserItemWidth() * Configuration.getChooserItemWidth());
@@ -472,7 +464,7 @@ public class PictureManagerUpdate {
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
 		File file = new File(path);
 		if (encrypter.isEncrypted(file)) {
-			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel(), null);
+			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel());
 		}
 		else {
 			bitmap = factory.createImageThumbnail(path, Configuration.getSorderCoverMaxPixel());
@@ -487,7 +479,7 @@ public class PictureManagerUpdate {
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
 		File file = new File(path);
 		if (encrypter.isEncrypted(file)) {
-			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverPreviewSize(), null);
+			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverPreviewSize());
 		}
 		else {
 			bitmap = factory.createImageThumbnail(path, Configuration.getSorderCoverPreviewSize());
@@ -505,7 +497,7 @@ public class PictureManagerUpdate {
 		Bitmap bitmap = null;
 		Encrypter encrypter = EncrypterFactory.create();
 		ImageFactory factory = ImageFactory.getInstance(encrypter);
-		bitmap = factory.createEncryptedThumbnail(path, Configuration.getScreenWidth() * Configuration.getScreenHeight(), imageValueController);
+		bitmap = factory.createEncryptedThumbnail(path, Configuration.getScreenWidth() * Configuration.getScreenHeight());
 		return bitmap;
 	}
 

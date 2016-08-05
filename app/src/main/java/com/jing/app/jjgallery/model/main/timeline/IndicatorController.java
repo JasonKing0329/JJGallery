@@ -132,7 +132,7 @@ public class IndicatorController {
 					params[0], mContext);
 			if (Constants.FEATURE_TIMELINE_ENABLE_BK) {
 				indicator.bkBitmap = ImageFactory.getInstance(encrypter).createEncryptedThumbnail(params[1]
-						, bkWidth * bkHeight, null);
+						, bkWidth * bkHeight);
 			}
 			return null;
 		}

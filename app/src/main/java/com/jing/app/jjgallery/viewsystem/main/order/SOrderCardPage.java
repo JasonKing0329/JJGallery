@@ -16,7 +16,10 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
 import com.loopeer.cardstack.CardStackView;
+import com.loopeer.cardstack.UpDownAnimatorAdapter;
+import com.loopeer.cardstack.UpDownStackAnimatorAdapter;
 
 import java.util.List;
 
@@ -39,6 +42,11 @@ public class SOrderCardPage implements IPage {
         monthStackView = (CardStackView) view.findViewById(R.id.sorder_card_list_month);
         weekStackView = (CardStackView) view.findViewById(R.id.sorder_card_list_week);
         dayStackView = (CardStackView) view.findViewById(R.id.sorder_card_list_day);
+        totalStackView.setAnimatorAdapter(new AllMoveDownAnimatorAdapter(totalStackView));
+        yearStackView.setAnimatorAdapter(new UpDownStackAnimatorAdapter(yearStackView));
+        monthStackView.setAnimatorAdapter(new UpDownAnimatorAdapter(monthStackView));
+        weekStackView.setAnimatorAdapter(new AllMoveDownAnimatorAdapter(weekStackView));
+        dayStackView.setAnimatorAdapter(new UpDownStackAnimatorAdapter(dayStackView));
     }
 
     @Override
@@ -60,6 +68,7 @@ public class SOrderCardPage implements IPage {
         dayAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Day);
         dayAdapter.updateData(dayList);
 
+        // 延迟加载，渲染的过程较慢，又不能在非UI线程处理
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +78,7 @@ public class SOrderCardPage implements IPage {
                 weekStackView.setAdapter(weekAdapter);
                 dayStackView.setAdapter(dayAdapter);
             }
-        }, 1000);
+        }, 500);
     }
 
     @Override

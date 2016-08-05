@@ -266,24 +266,17 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         }
 
         // 符合当年/月/周/日情况才显示统计数
-        int year = 0;
-        int month = 0;
-        int week = 0;
-        int day = 0;
+        int year;
+        int month;
+        int week;
+        int day;
         if (calendar.get(Calendar.YEAR) == orderCount.lastYear) {
             year = orderCount.countYear;
             if (calendar.get(Calendar.MONTH) + 1 == orderCount.lastMonth) {
                 month = orderCount.countMonth;
-                if (calendar.get(Calendar.DAY_OF_MONTH) == orderCount.lastDay) {
-                    day = orderCount.countDay;
-                }
-                else {
-                    day = 0;
-                }
             }
             else {
                 month = 0;
-                day = 0;
             }
             if (calendar.get(Calendar.WEEK_OF_YEAR) == orderCount.lastWeek) {
                 week = orderCount.countWeek;
@@ -311,7 +304,8 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
                 .append("\n").append("年访问量:  ").append(year)
                 .append("\n").append("月访问量:  ").append(month)
                 .append("\n").append("一周访问量:  ").append(week)
-                .append("\n").append("今日访问量:  ").append(day);
+                .append("\n").append("今日访问量:  ").append(day)
+                .append("\n").append("上次访问时间:  ").append(orderCount.lastYear).append("-").append(orderCount.lastMonth).append("-").append(orderCount.lastDay);
         return buffer.toString();
     }
 

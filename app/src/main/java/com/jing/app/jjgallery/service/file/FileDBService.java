@@ -151,7 +151,7 @@ public class FileDBService extends Service implements InsertFileBeanThread.Callb
 		private UpdateDbThread () {
 			fileDao = new FileDaoImpl();
 			SqlConnection.getInstance().connect(DBInfor.DB_PATH);
-			fileDao.queryAllFileBeans(SqlConnection.getInstance().getConnection(), null);
+			list = fileDao.queryAllFileBeans(SqlConnection.getInstance().getConnection(), null);
 			if (list != null) {
 				total = list.size();
 			}

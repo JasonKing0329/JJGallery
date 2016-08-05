@@ -536,6 +536,7 @@ public class SOrderDaoImpl implements SOrderDao {
     public boolean deleteOrder(SOrder order, Connection connection) {
 
         if (connection != null && order != null) {
+            // 从TABLE_ORDER表中删除
             String sql = "DELETE FROM " + DBInfor.TABLE_ORDER
                     + " WHERE " + DBInfor.TO_COL_ID + " = " + order.getId();
             Statement stmt = null;
@@ -543,8 +544,14 @@ public class SOrderDaoImpl implements SOrderDao {
                 stmt = connection.createStatement();
                 stmt.executeUpdate(sql);
 
+                // 删除TABLE_ORDER_LIST表中order包含的所有内容
                 sql = "DELETE FROM " + DBInfor.TABLE_ORDER_LIST
                         + " WHERE " + DBInfor.TOL_COL_OID + " = " + order.getId();
+                stmt.executeUpdate(sql);
+
+                // 从TABLE_ORDER_COUNT表中删除
+                sql = "DELETE FROM " + DBInfor.TABLE_ORDER_COUNT
+                        + " WHERE " + DBInfor.TOC_COL[0] + " = " + order.getId();
                 stmt.executeUpdate(sql);
                 return true;
             } catch (SQLException e) {
@@ -896,7 +903,7 @@ public class SOrderDaoImpl implements SOrderDao {
         }
 
         // 防止有些order已经不存在，查number + 10条取number条
-        for (int i = list.size() - 1; i >= 10; i --) {
+        for (int i = list.size() - 1; i >= number; i --) {
             list.remove(i);
         }
         return list;

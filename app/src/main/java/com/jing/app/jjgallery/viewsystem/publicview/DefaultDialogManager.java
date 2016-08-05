@@ -20,7 +20,7 @@ import java.io.File;
 public class DefaultDialogManager {
 
 	public interface OnDialogActionListener {
-		public void onOk(String name);
+		void onOk(String name);
 	}
 
 	public void openCreateFolderDialog(Context context, final OnDialogActionListener listener) {
@@ -83,8 +83,8 @@ public class DefaultDialogManager {
 			originName = encrypter.decipherOriginName(file);
 		}
 
-		String msg = null;
-		ImageValue value = new ImageValueController().queryImagePixel(ImageValue.generateName(file.getPath()));
+		String msg;
+		ImageValue value = new ImageValueController().queryImagePixel(file.getPath());
 		String valueInfor = value == null ? "" : context.getResources().getString(R.string.spicture_details_wh) + "\n"
 				+ value.getWidth() + " * " + value.getHeight();
 		if (originName == null) {

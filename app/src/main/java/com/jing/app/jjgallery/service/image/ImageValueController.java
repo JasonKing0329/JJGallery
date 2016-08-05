@@ -10,42 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ImageValueController implements ImageValueListener {
+public class ImageValueController {
 
-	@Override
-	public void onCreate(String path, int width, int height) {
-		
-		String name = ImageValue.generateName(path);
-		
-		ImageValue value = queryImagePixel(name);
-		if (value == null) {
-			value = new ImageValue();
-			value.setPath(path);
-			value.setName(name);
-			value.setWidth(width);
-			value.setHeight(height);
-			addImagePixel(value);
-		}
-	}
-
-	public ImageValue queryImagePixel(String key) {
-		ImageValue value = null;
+	public ImageValue queryImagePixel(String path) {
+		ImageValue value;
 		SqlConnection.getInstance().connect(DBInfor.DB_PATH);
 		ImageValueDao dao = new ImageValueDaoImpl();
 
-		value = dao.queryImageValue(key, SqlConnection.getInstance().getConnection());
+		value = dao.queryImageValue(path, SqlConnection.getInstance().getConnection());
 
 		SqlConnection.getInstance().close();
 		return value;
-	}
-
-	public void addImagePixel(ImageValue value) {
-		SqlConnection.getInstance().connect(DBInfor.DB_PATH);
-		ImageValueDao dao = new ImageValueDaoImpl();
-
-		dao.insertImagePixel(value, SqlConnection.getInstance().getConnection());
-
-		SqlConnection.getInstance().close();
 	}
 
 	/**
@@ -56,13 +31,7 @@ public class ImageValueController implements ImageValueListener {
 	public void queryImagePixelFrom(List<String> pathList, List<ImageValue> values) {
 		if (pathList != null && values != null) {
 
-			List<String> keyList = new ArrayList<String>();
-			for (String path:pathList) {
-				values.add(null);
-				keyList.add(ImageValue.generateName(path));
-			}
-			
-			queryImagePixel(keyList, values);
+			queryImagePixel(pathList, values);
 			
 			for (int i = 0; i < values.size(); i ++) {
 				if (values.get(i) == null) {
@@ -76,13 +45,18 @@ public class ImageValueController implements ImageValueListener {
 			}
 		}
 	}
-	
-	private void queryImagePixel(List<String> keyList, List<ImageValue> values) {
-		if (keyList != null && values != null) {
+
+	/**
+	 *
+	 * @param pathList
+	 * @param values should be not null but size is 0.
+     */
+	private void queryImagePixel(List<String> pathList, List<ImageValue> values) {
+		if (pathList != null && values != null) {
 			SqlConnection.getInstance().connect(DBInfor.DB_PATH);
 			ImageValueDao dao = new ImageValueDaoImpl();
 			
-			dao.queryImageValues(keyList, values, SqlConnection.getInstance().getConnection());
+			dao.queryImageValues(pathList, values, SqlConnection.getInstance().getConnection());
 
 			SqlConnection.getInstance().close();
 
@@ -93,13 +67,13 @@ public class ImageValueController implements ImageValueListener {
 
 		if (list != null) {
 			List<ImageValue> values = new ArrayList<ImageValue>();
-			List<String> keyList = new ArrayList<String>();
+			List<String> pathList = new ArrayList<String>();
 			for (FilePageItem item:list) {
 				values.add(null);
-				keyList.add(ImageValue.generateName(item.getFile().getPath()));
+				pathList.add(item.getFile().getPath());
 			}
 			
-			queryImagePixel(keyList, values);
+			queryImagePixel(pathList, values);
 			
 			for (int i = 0; i < list.size(); i ++) {
 				if (values.get(i) != null) {

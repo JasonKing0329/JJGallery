@@ -250,6 +250,8 @@
     <string name="setting_sorder_enable_page">Enable page mode.</string>
     <string name="setting_sorder_grid_open">Target explore to open selected order in grid page</string>
     <string name="setting_sorder_index_open">Target explore to open selected order in index page</string>
+    <string name="setting_sorder_hit_num">Hit numbers</string>
+    <string name="setting_sorder_hit_hint">Input number should be between 5 and 20</string>
     <string name="setting_edit_casual_number">Casual look number</string>
     <string name="setting_waterfall_column">Portrait columns</string>
     <string name="setting_waterfall_column_land">Landscape columns</string>
