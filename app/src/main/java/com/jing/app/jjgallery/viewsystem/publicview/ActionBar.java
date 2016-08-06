@@ -69,7 +69,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	/**
 	 * normal container包含的所有图标
 	 */
-	private ImageView backButton, menuLeftButton, addButton
+	private ImageView backButton, menuLeftButton, addButton, homeButton
 		, surfButton, sortButton, searchButton, closeButton, refreshButton
 		, changeButton, colorButton, randomSurfButton, coverButton, showButton, hideButton;
 
@@ -168,6 +168,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		layout = (LinearLayout) view.findViewById(R.id.actionbar_content);
 
 		backButton = (ImageView) view.findViewById(R.id.actionbar_back);
+		homeButton = (ImageView) view.findViewById(R.id.actionbar_home);
 		menuButton = (ImageView) view.findViewById(R.id.actionbar_menu);
 		menuLeftButton = (ImageView) view.findViewById(R.id.actionbar_menu_left);
 		addButton = (ImageView) view.findViewById(R.id.actionbar_add);
@@ -199,6 +200,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 
 		// 设置图标监听事件--normal icons
 		backButton.setOnClickListener(this);
+		homeButton.setOnClickListener(this);
 		menuButton.setOnClickListener(this);
 		menuLeftButton.setOnClickListener(this);
 		addButton.setOnClickListener(this);
@@ -367,6 +369,14 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addBackIcon() {
 		currentButtons.add(backButton);
 		backButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * home icon
+	 */
+	public void addHomeIcon() {
+		currentButtons.add(homeButton);
+		homeButton.setVisibility(View.VISIBLE);
 	}
 
 	/**

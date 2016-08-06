@@ -10,6 +10,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
@@ -37,20 +38,25 @@ public class GdbPresenter {
     private IGdbRecordListView gdbRecordListView;
     private IStarView starView;
     private GDBProvider gdbProvider;
-
+    private static Encrypter encrypter;
     public GdbPresenter(IGdbStarListView gdbStarListView) {
         this.gdbStarListView = gdbStarListView;
-        gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        init();
     }
 
     public GdbPresenter(IGdbRecordListView gdbRecordListView) {
         this.gdbRecordListView = gdbRecordListView;
-        gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        init();
     }
 
     public GdbPresenter(IStarView starView) {
         this.starView = starView;
+        init();
+    }
+
+    private void init() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        encrypter = EncrypterFactory.create();
     }
 
     public void loadStarList() {
@@ -97,6 +103,20 @@ public class GdbPresenter {
                 index ++;
             }
         }
+    }
+
+    public static String getRecordPath(String recordName) {
+        // load image path of star
+        List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
+        for (String path:list) {
+            String name = encrypter.decipherOriginName(new File(path));
+            int dot = name.lastIndexOf(".");
+            String preName = name.substring(0, dot);
+            if (preName.equals(recordName)) {
+                return path;
+            }
+        }
+        return null;
     }
 
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
@@ -162,7 +182,7 @@ public class GdbPresenter {
             proxy.setStar(star);
 
             // load image path of star
-            Encrypter encrypter = EncrypterFactory.create();
+            encrypter = EncrypterFactory.create();
             List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
             for (String path:list) {
                 String name = encrypter.decipherOriginName(new File(path));

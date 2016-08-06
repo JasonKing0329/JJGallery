@@ -11,9 +11,7 @@ import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
-import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
-import com.king.service.gdb.bean.RecordSingleScene;
 
 import java.util.List;
 
@@ -44,7 +42,9 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         addViewType(Record.class, new ViewHolderFactory<RecordHolder>() {
             @Override
             public RecordHolder onCreateViewHolder(ViewGroup parent) {
-                return new RecordHolder(parent);
+                RecordHolder holder = new RecordHolder(parent);
+                holder.setParameters(nameColorNormal, nameColorBareback, StarRecordsAdapter.this);
+                return holder;
             }
         });
         addViewType(TYPE_HEADER, new ViewHolderFactory<PullZoomHeaderHolder>() {
@@ -71,6 +71,26 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     @Override
     public int getItemCount() {
         return listData.size() + 1;
+    }
+
+    /**
+     * 覆盖父类的方法，这个PullZoom open source是把第recyclerView第0个当成pull image，
+     * 但是现在RecordHolder是跟record list界面共用的一个holder，那里是正常的用第0个index的
+     * 所以覆盖父类的实现方法，当holder的类型是RecordHolder，将position - 1。父类的getItem其实就是listData.get(position - 1)
+     * 但是这里要把正确的position传给RecordHolder
+     *
+     * PullZoomHeaderHolder还是实现父类的方法
+     * @param holder
+     * @param position
+     */
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        if (holder instanceof PullZoomHeaderHolder) {
+            super.onBindViewHolder(holder, position);
+        }
+        else {
+            ((RecordHolder) holder).bind(listData.get(position - 1), position - 1);
+        }
     }
 
     @Override
@@ -106,56 +126,6 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             SImageLoader.getInstance().displayImage(star.getImagePath(), zoomView);
             nameView.setText(star.getStar().getName());
             numberView.setText(String.format(recyclerView.getContext().getString(R.string.gdb_star_file_numbers), listData.size()));
-        }
-    }
-
-    public class RecordHolder extends RecyclerListAdapter.ViewHolder<Record> {
-        private View container;
-        private ImageView imageView;
-        private TextView seqView;
-        private TextView nameView;
-        private TextView scoreView;
-        private TextView fkView;
-        private TextView cumView;
-
-        public RecordHolder(ViewGroup parent) {
-            this(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_star_item, parent, false));
-        }
-
-        public RecordHolder(View view) {
-            super(view);
-            container = view.findViewById(R.id.record_container);
-            imageView = (ImageView) view.findViewById(R.id.record_thumb);
-            seqView = (TextView) view.findViewById(R.id.record_seq);
-            nameView = (TextView) view.findViewById(R.id.record_name);
-            scoreView = (TextView) view.findViewById(R.id.record_score);
-            fkView = (TextView) view.findViewById(R.id.record_score_fk);
-            cumView = (TextView) view.findViewById(R.id.record_score_cum);
-        }
-
-        @Override
-        public void bind(Record item, int position) {
-            container.setTag(position);
-            container.setOnClickListener(StarRecordsAdapter.this);
-//                imageView.setImageResource(item);
-            seqView.setText("" + position);
-            nameView.setText(item.getName());
-            scoreView.setText("" + item.getScore());
-            if (item instanceof RecordSingleScene) {
-                RecordSingleScene record = (RecordSingleScene) item;
-                fkView.setText("fk(" + record.getScoreFk() + ")");
-                cumView.setText("cum(" + record.getScoreCum() + ")");
-
-                if (record.getScoreNoCond() == GDBProperites.BAREBACK) {
-                    nameView.setTextColor(nameColorBareback);
-                }
-                else {
-                    nameView.setTextColor(nameColorNormal);
-                }
-            }
-            else {
-                nameView.setTextColor(nameColorNormal);
-            }
         }
     }
 }

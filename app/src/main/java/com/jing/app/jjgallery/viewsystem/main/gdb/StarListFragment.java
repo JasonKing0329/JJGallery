@@ -71,7 +71,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         mActionbar.clearActionIcon();
         mActionbar.addMenuIcon();
         mActionbar.addSearchIcon();
-        mActionbar.addBackIcon();
+        mActionbar.addHomeIcon();
     }
 
     @Override

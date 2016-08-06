@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
+import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
@@ -90,7 +92,7 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
          * open source design this way
          */
         if (viewType == 0) {
-            return new RecordHolder(parent);
+            return new RecordHolderProxy(parent);
         }
         else {
             return new IndexHeaderHolder(inflateItemView(R.layout.adapter_gdb_starlist_header, parent));
@@ -106,8 +108,8 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
                 ((IndexHeaderHolder) holder).container.setBackgroundColor(mContext.getResources().getColor(colors[index]));
             }
         }
-        else if (holder instanceof RecordHolder) {
-            ((RecordHolder) holder).bind(item);
+        else if (holder instanceof RecordHolderProxy) {
+            ((RecordHolderProxy) holder).bind(item);
         }
     }
 
@@ -131,76 +133,23 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
         }
     }
 
-    public class RecordHolder extends BaseViewHolder {
-        private View container;
-        private ImageView imageView;
-        private TextView seqView;
-        private TextView nameView;
-        private TextView scoreView;
-        private TextView fkView;
-        private TextView cumView;
-        private TextView bjobView;
-        private TextView star1View;
-        private TextView star2View;
+    public class RecordHolderProxy extends BaseViewHolder {
 
-        public RecordHolder(ViewGroup parent) {
+        private RecordViewHolder viewHolder;
+
+        public RecordHolderProxy(View view) {
+            super(view);
+            viewHolder = new RecordViewHolder();
+            viewHolder.initView(view);
+            viewHolder.setParameters(nameColorNormal, nameColorBareback, RecordSceneAdapter.this);
+        }
+
+        public RecordHolderProxy(ViewGroup parent) {
             this(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_record_item, parent, false));
         }
 
-        public RecordHolder(View view) {
-            super(view);
-            container = view.findViewById(R.id.record_container);
-            imageView = (ImageView) view.findViewById(R.id.record_thumb);
-            seqView = (TextView) view.findViewById(R.id.record_seq);
-            nameView = (TextView) view.findViewById(R.id.record_name);
-            scoreView = (TextView) view.findViewById(R.id.record_score);
-            fkView = (TextView) view.findViewById(R.id.record_score_fk);
-            cumView = (TextView) view.findViewById(R.id.record_score_cum);
-            bjobView = (TextView) view.findViewById(R.id.record_score_bjob);
-            star1View = (TextView) view.findViewById(R.id.record_star1);
-            star2View = (TextView) view.findViewById(R.id.record_star2);
-        }
-
         public void bind(RecordProxy item) {
-            container.setTag(item);
-            container.setOnClickListener(RecordSceneAdapter.this);
-//                imageView.setImageResource(item);
-            seqView.setText("" + (item.getPositionInHeader() + 1));
-            nameView.setText(item.getRecord().getName());
-            scoreView.setText("" + item.getRecord().getScore());
-            if (item.getRecord() instanceof RecordSingleScene) {
-                RecordSingleScene record = (RecordSingleScene) item.getRecord();
-                fkView.setText("fk(" + record.getScoreFk() + ")");
-                cumView.setText("cum(" + record.getScoreCum() + ")");
-                bjobView.setText("bjob(" + record.getScoreBJob() + ")");
-
-                if (record.getScoreNoCond() == GDBProperites.BAREBACK) {
-                    nameView.setTextColor(nameColorBareback);
-                }
-                else {
-                    nameView.setTextColor(nameColorNormal);
-                }
-            }
-            else {
-                nameView.setTextColor(nameColorNormal);
-            }
-            if (item.getRecord() instanceof RecordOneVOne) {
-                RecordOneVOne record = (RecordOneVOne) item.getRecord();
-                Star star1 = record.getStar1();
-                if (star1 == null) {
-                    star1View.setText(GDBProperites.STAR_UNKNOWN);
-                }
-                else {
-                    star1View.setText(star1.getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
-                }
-                Star star2 = record.getStar2();
-                if (star2 == null) {
-                    star2View.setText(GDBProperites.STAR_UNKNOWN);
-                }
-                else {
-                    star2View.setText(star2.getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
-                }
-            }
+            viewHolder.bind(item);
         }
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:id="@+id/record_container"
@@ -14,13 +15,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp" />
 
-    <ImageView
+    <com.github.siyamed.shapeimageview.BubbleImageView
         android:id="@+id/record_thumb"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:layout_toRightOf="@id/record_seq"
         android:visibility="gone"
         android:layout_centerVertical="true"
+        app:siArrowPosition="right"
+        app:siSquare="false"
         android:scaleType="centerCrop"/>
 
     <LinearLayout

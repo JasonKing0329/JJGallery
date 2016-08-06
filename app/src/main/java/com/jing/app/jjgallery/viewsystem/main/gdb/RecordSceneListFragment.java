@@ -67,7 +67,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         mActionbar.addSearchIcon();
         mActionbar.addSortIcon();
         mActionbar.addHideIcon();
-        mActionbar.addBackIcon();
+        mActionbar.addHomeIcon();
     }
 
     public void onIconClick(View view) {

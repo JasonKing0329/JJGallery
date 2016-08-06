@@ -10,6 +10,7 @@ import android.view.View;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.viewsystem.publicview.ChangeThemeDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
@@ -85,11 +86,17 @@ public class GDBHomeActivity extends BaseActivity {
     @Override
     public void onIconClick(View view) {
         super.onIconClick(view);
-        if (currentFragment == recordFragment) {
-            recordFragment.onIconClick(view);
+        if (view.getId() == R.id.actionbar_home) {
+            new HomeSelecter(this).startDefaultHome(this, null);
+            finish();
         }
-        else if (currentFragment == sceneListFragment) {
-            sceneListFragment.onIconClick(view);
+        else {
+            if (currentFragment == recordFragment) {
+                recordFragment.onIconClick(view);
+            }
+            else if (currentFragment == sceneListFragment) {
+                sceneListFragment.onIconClick(view);
+            }
         }
     }
 

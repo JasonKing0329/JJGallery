@@ -32,6 +32,7 @@
     <attr name="actionbar_ic_delete" format="reference"/>
     <attr name="actionbar_ic_gdb_show_scene" format="reference"/>
     <attr name="actionbar_ic_gdb_hide_scene" format="reference"/>
+    <attr name="actionbar_ic_home" format="reference"/>
     <attr name="actionbar_text_color" format="reference"/>
 
     <!-- setting -->
