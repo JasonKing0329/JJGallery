@@ -256,4 +256,5 @@
     <dimen name="gdb_record_seq_width">20dp</dimen>
     <dimen name="gdb_record_name_left">5dp</dimen>
     <dimen name="gdb_record_sub_text_size">11dp</dimen>
+    <dimen name="gdb_record_main_text_size">14dp</dimen>
 </resources>

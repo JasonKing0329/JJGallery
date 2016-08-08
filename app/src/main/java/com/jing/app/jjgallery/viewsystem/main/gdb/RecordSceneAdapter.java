@@ -38,7 +38,7 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
     private Random random;
 
     public interface OnRecordClickListener {
-        void onRecordClick(Star star);
+        void onRecordClick(Record record);
     }
 
     private int colors[] = new int[] {
@@ -61,7 +61,7 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
         random = new Random();
     }
 
-    public void setOnStarClickListener(OnRecordClickListener listener) {
+    public void setOnRecordClickListener(OnRecordClickListener listener) {
         onRecordClickListener = listener;
     }
 
@@ -156,8 +156,8 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
     @Override
     public void onClick(View v) {
         if (onRecordClickListener != null) {
-            Star star = (Star) v.getTag();
-            onRecordClickListener.onRecordClick(star);
+            Record record = (Record) v.getTag();
+            onRecordClickListener.onRecordClick(record);
         }
     }
 

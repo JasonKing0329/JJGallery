@@ -96,8 +96,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     @Override
     public void onClick(View v) {
         if (itemClickListener != null) {
-            int position = (int) v.getTag();
-            itemClickListener.onClickRecordItem(listData.get(position));
+            Record record = (Record) v.getTag();
+            itemClickListener.onClickRecordItem(record);
         }
     }
 

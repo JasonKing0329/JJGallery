@@ -19,7 +19,7 @@ public class SqliteDao {
 	private final String TABLE_SEQUENCE = "sqlite_sequence";
 	private final String TABLE_STAR = "star";
 	private final String TABLE_RECORD_1V1 = "record_1v1";
-	
+
 	public SqliteDao() {
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -27,7 +27,7 @@ public class SqliteDao {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Connection connect(String dbFile) {
 		Connection connection = null;
 		try {
@@ -37,7 +37,7 @@ public class SqliteDao {
 		}
 		return connection;
 	}
-	
+
 	public List<RecordOneVOne> queryOneVOneRecords(Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1;
@@ -110,13 +110,13 @@ public class SqliteDao {
 	public boolean insertRecord(Connection connection, RecordOneVOne record) {
 		StringBuffer buffer = new StringBuffer("INSERT INTO ");
 		buffer.append(TABLE_RECORD_1V1)
-			.append("(sequence,scene,directory,partner1,partner2,name,HDLevel,score")
-			.append(",scoreFeel,scoreStar1,scoreStar2,scoreStarC1,scoreStarC2,scoreRhythm")
-			.append(",scoreForePlay,scoreRim,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
-			.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreCum,scoreScene,scoreStory")
-			.append(",scoreNoCond,scoreCShow,scoreFoot,scoreSpecial,scoreFk,rateFkType1,rateFkType2")
-			.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id)")
-			.append(" VALUES(?");
+				.append("(sequence,scene,directory,partner1,partner2,name,HDLevel,score")
+				.append(",scoreFeel,scoreStar1,scoreStar2,scoreStarC1,scoreStarC2,scoreRhythm")
+				.append(",scoreForePlay,scoreRim,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
+				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreCum,scoreScene,scoreStory")
+				.append(",scoreNoCond,scoreCShow,scoreFoot,scoreSpecial,scoreFk,rateFkType1,rateFkType2")
+				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id)")
+				.append(" VALUES(?");
 		for (int i = 0; i < 38; i ++) {
 			buffer.append(",?");
 		}
@@ -162,6 +162,7 @@ public class SqliteDao {
 			stmt.setString(35, "" + record.getRateFkType4());
 			stmt.setString(36, "" + record.getRateFkType5());
 			stmt.setString(37, "" + record.getRateFkType6());
+			System.out.println("id1=" + record.getStar1().getId() + ", id2=" + record.getStar2().getId());
 			stmt.setInt(38, record.getStar1().getId());
 			stmt.setInt(39, record.getStar2().getId());
 			stmt.executeUpdate();
@@ -181,7 +182,7 @@ public class SqliteDao {
 		}
 		return false;
 	}
-	
+
 	public Star queryStarByName(Connection connection, String name) {
 		if (name.contains("'")) {
 			name = name.replace("'", "''");
@@ -234,7 +235,7 @@ public class SqliteDao {
 		}
 		return false;
 	}
-	
+
 	public Star queryStarById(Connection connection, int id) {
 		String sql = "SELECT * FROM " + TABLE_STAR + " WHERE id=" + id;
 		Statement statement = null;
@@ -297,7 +298,7 @@ public class SqliteDao {
 			statement = connection.createStatement();
 			ResultSet set = statement.executeQuery(sql);
 			if (set.next()) {
-				id = set.getInt(1);
+				id = set.getInt(2);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -312,7 +313,7 @@ public class SqliteDao {
 		}
 		return id;
 	}
-	
+
 	public int queryLastRecordSequence(Connection connection) {
 		String sql = "SELECT * FROM " + TABLE_SEQUENCE + " WHERE name='" + TABLE_RECORD_1V1 + "'";
 		Statement statement = null;
@@ -366,5 +367,57 @@ public class SqliteDao {
 		}
 
 		star.setRecordList(rList);
+	}
+
+	public void clearTableRecord1v1(Connection connection) {
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			statement.executeUpdate("DELETE FROM " + TABLE_RECORD_1V1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public void clearTableStar(Connection connection) {
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			statement.executeUpdate("DELETE FROM " + TABLE_STAR);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public void clearTableSequence(Connection connection) {
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			statement.executeUpdate("DELETE FROM " + TABLE_SEQUENCE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

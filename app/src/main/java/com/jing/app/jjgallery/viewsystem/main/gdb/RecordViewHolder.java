@@ -25,10 +25,13 @@ public class RecordViewHolder {
     private ImageView imageView;
     private TextView seqView;
     private TextView nameView;
+    private TextView dirView;
     private TextView scoreView;
+    private TextView sceneView;
     private TextView fkView;
     private TextView cumView;
     private TextView bjobView;
+    private TextView fkSubView;
     private TextView star1View;
     private TextView star2View;
 
@@ -46,10 +49,13 @@ public class RecordViewHolder {
         imageView = (ImageView) view.findViewById(R.id.record_thumb);
         seqView = (TextView) view.findViewById(R.id.record_seq);
         nameView = (TextView) view.findViewById(R.id.record_name);
+        dirView = (TextView) view.findViewById(R.id.record_dir);
         scoreView = (TextView) view.findViewById(R.id.record_score);
+        sceneView = (TextView) view.findViewById(R.id.record_scene);
         fkView = (TextView) view.findViewById(R.id.record_score_fk);
         cumView = (TextView) view.findViewById(R.id.record_score_cum);
         bjobView = (TextView) view.findViewById(R.id.record_score_bjob);
+        fkSubView = (TextView) view.findViewById(R.id.record_score_fk_sub);
         star1View = (TextView) view.findViewById(R.id.record_star1);
         star2View = (TextView) view.findViewById(R.id.record_star2);
     }
@@ -73,9 +79,11 @@ public class RecordViewHolder {
 
         seqView.setText("" + (position + 1));
         nameView.setText(item.getName());
+        dirView.setText(item.getDirectory());
         scoreView.setText("" + item.getScore());
         if (item instanceof RecordSingleScene) {
             RecordSingleScene record = (RecordSingleScene) item;
+            sceneView.setText(record.getSceneName() + "(" + record.getScoreScene() + ")");
             fkView.setText("fk(" + record.getScoreFk() + ")");
             cumView.setText("cum(" + record.getScoreCum() + ")");
             bjobView.setText("bjob(" + record.getScoreBJob() + ")");
@@ -105,6 +113,30 @@ public class RecordViewHolder {
             }
             else {
                 star2View.setText(star2.getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
+            }
+
+            StringBuffer buffer = new StringBuffer();
+            if (record.getScoreFkType1() != 0) {
+                buffer.append("坐面(").append(record.getScoreFkType1()).append("/").append(record.getRateFkType1()).append("%)   ");
+            }
+            if (record.getScoreFkType2() != 0) {
+                buffer.append("坐背(").append(record.getScoreFkType2()).append("/").append(record.getRateFkType2()).append("%)   ");
+            }
+            if (record.getScoreFkType3() != 0) {
+                buffer.append("立面(").append(record.getScoreFkType3()).append("/").append(record.getRateFkType3()).append("%)   ");
+            }
+            if (record.getScoreFkType4() != 0) {
+                buffer.append("立背(").append(record.getScoreFkType4()).append("/").append(record.getRateFkType4()).append("%)   ");
+            }
+            if (record.getScoreFkType5() != 0) {
+                buffer.append("侧(").append(record.getScoreFkType5()).append("/").append(record.getRateFkType5()).append("%)   ");
+            }
+            if (record.getScoreFkType6() != 0) {
+                buffer.append("特殊(").append(record.getScoreFkType6()).append("/").append(record.getRateFkType6()).append("%)   ");
+            }
+            String text = buffer.toString();
+            if (text.length() > 0) {
+                fkSubView.setText(text.substring(0, text.length() - 3));
             }
         }
     }

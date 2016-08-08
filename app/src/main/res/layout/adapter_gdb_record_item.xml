@@ -37,7 +37,20 @@
             android:id="@+id/record_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:textSize="@dimen/gdb_record_main_text_size"/>
+
+        <TextView
+            android:id="@+id/record_dir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/gdb_record_sub_text_size"/>
+
+        <TextView
+            android:id="@+id/record_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/gdb_record_sub_text_size"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -63,6 +76,17 @@
                 android:textSize="@dimen/gdb_record_sub_text_size"
                 android:layout_marginLeft="20dp"/>
         </RelativeLayout>
+        <TextView
+            android:id="@+id/record_score_fk_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/gdb_record_sub_text_size"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

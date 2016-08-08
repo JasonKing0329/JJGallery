@@ -163,7 +163,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     }
 
     @Override
-    public void onRecordClick(Star star) {
+    public void onRecordClick(Record star) {
 
     }
 }
