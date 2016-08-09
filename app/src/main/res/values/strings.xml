@@ -257,6 +257,7 @@
     <string name="setting_waterfall_column_land">Landscape columns</string>
     <string name="setting_waterfall">Waterfall view</string>
     <string name="setting_timeline_view_default">Default timeline view</string>
+    <string name="setting_book_switch_default">Book view switch mode</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>

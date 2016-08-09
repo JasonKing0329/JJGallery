@@ -226,6 +226,10 @@
         <item>Timeline</item>
         <item>Waterfall</item>
     </string-array>
+    <string-array name="pref_book_switch_mode" translatable="false">
+        <item>Vertical</item>
+        <item>Landscape</item>
+    </string-array>
     <string-array name="pref_sorder_cascade_number" translatable="false">
         <item>2</item>
         <item>3</item>

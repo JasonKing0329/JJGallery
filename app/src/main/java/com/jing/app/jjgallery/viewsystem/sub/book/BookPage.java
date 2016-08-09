@@ -20,10 +20,6 @@ import java.util.List;
  */
 public class BookPage {
 
-	public static final int ITEM_ONE = 1;
-	public static final int ITEM_TWO = 2;
-	public static final int ITEM_THREE = 3;
-	public static final int ITEM_FOUR = 4;
 	private static final String TAG = "BookPage";
 	private View.OnClickListener imageListener;
 	
@@ -50,14 +46,14 @@ public class BookPage {
 				break;
 			case 3:
 				int tag = (int) imageValues.get(0).getTag();
-				if (tag == 1) {
+				if (tag == 1) {// 3个item纵向依次排列
 					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_3item_1, null);
 				}
-				else if (tag == 2) {
+				else if (tag == 2) {// 2个item在下横向等宽，1个在上满屏
 					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_3item_2, null);
 				}
-				else if (tag == 3) {
-					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_3item_2, null);
+				else if (tag == 3) {// 2个item在上横向等宽，1个在下满屏
+					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_3item_3, null);
 				}
 				imageViews[0] = (ImageView) view.findViewById(R.id.bookpage_3item_image1);
 				imageViews[1] = (ImageView) view.findViewById(R.id.bookpage_3item_image2);
@@ -69,6 +65,21 @@ public class BookPage {
 				imageViews[1] = (ImageView) view.findViewById(R.id.bookpage_4item_image2);
 				imageViews[2] = (ImageView) view.findViewById(R.id.bookpage_4item_image3);
 				imageViews[3] = (ImageView) view.findViewById(R.id.bookpage_4item_image4);
+				break;
+			case 6:
+				tag = (int) imageValues.get(0).getTag();
+				if (tag == 1) {// 6个等宽图片分三行排列
+					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_6item_1, null);
+				}
+				else if (tag == 2) {// 三行，第1行第3行，图片宽度比为2:1，第2行比为1:2
+					view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_6item_2, null);
+				}
+				imageViews[0] = (ImageView) view.findViewById(R.id.bookpage_6item_image1);
+				imageViews[1] = (ImageView) view.findViewById(R.id.bookpage_6item_image2);
+				imageViews[2] = (ImageView) view.findViewById(R.id.bookpage_6item_image3);
+				imageViews[3] = (ImageView) view.findViewById(R.id.bookpage_6item_image4);
+				imageViews[4] = (ImageView) view.findViewById(R.id.bookpage_6item_image5);
+				imageViews[5] = (ImageView) view.findViewById(R.id.bookpage_6item_image6);
 				break;
 			case 1:
 			default:
@@ -86,46 +97,10 @@ public class BookPage {
 		int size = imageValues.size();
 		// 由于lru包里的ImageLoader是用imageView默认的setTag进行异步加载图片的
 		// 所以在进行onClick的tag设定中不能占用默认的setTag()，可以用setTag(key, object)
-		switch (size) {
-			case 2:
-				SImageLoader.getInstance().displayImage(imageValues.get(0).getPath(), imageViews[0]);
-				SImageLoader.getInstance().displayImage(imageValues.get(1).getPath(), imageViews[1]);
-				imageViews[0].setTag(R.id.book_item_position, imageValues.get(0));
-				imageViews[1].setTag(R.id.book_item_position, imageValues.get(1));
-				imageViews[0].setOnClickListener(imageListener);
-				imageViews[1].setOnClickListener(imageListener);
-				break;
-			case 3:
-				SImageLoader.getInstance().displayImage(imageValues.get(0).getPath(), imageViews[0]);
-				SImageLoader.getInstance().displayImage(imageValues.get(1).getPath(), imageViews[1]);
-				SImageLoader.getInstance().displayImage(imageValues.get(2).getPath(), imageViews[2]);
-				imageViews[0].setTag(R.id.book_item_position, imageValues.get(0));
-				imageViews[1].setTag(R.id.book_item_position, imageValues.get(1));
-				imageViews[2].setTag(R.id.book_item_position, imageValues.get(2));
-				imageViews[0].setOnClickListener(imageListener);
-				imageViews[1].setOnClickListener(imageListener);
-				imageViews[2].setOnClickListener(imageListener);
-				break;
-			case 4:
-				SImageLoader.getInstance().displayImage(imageValues.get(0).getPath(), imageViews[0]);
-				SImageLoader.getInstance().displayImage(imageValues.get(1).getPath(), imageViews[1]);
-				SImageLoader.getInstance().displayImage(imageValues.get(2).getPath(), imageViews[2]);
-				SImageLoader.getInstance().displayImage(imageValues.get(3).getPath(), imageViews[3]);
-				imageViews[0].setTag(R.id.book_item_position, imageValues.get(0));
-				imageViews[1].setTag(R.id.book_item_position, imageValues.get(1));
-				imageViews[2].setTag(R.id.book_item_position, imageValues.get(2));
-				imageViews[3].setTag(R.id.book_item_position, imageValues.get(3));
-				imageViews[0].setOnClickListener(imageListener);
-				imageViews[1].setOnClickListener(imageListener);
-				imageViews[2].setOnClickListener(imageListener);
-				imageViews[3].setOnClickListener(imageListener);
-				break;
-			case 1:
-			default:
-				SImageLoader.getInstance().displayImage(imageValues.get(0).getPath(), imageViews[0]);
-				imageViews[0].setTag(R.id.book_item_position, imageValues.get(0));
-				imageViews[0].setOnClickListener(imageListener);
-				break;
+		for (int i = 0; i < size; i ++) {
+			SImageLoader.getInstance().displayImage(imageValues.get(i).getPath(), imageViews[i]);
+			imageViews[i].setTag(R.id.book_item_position, imageValues.get(i));
+			imageViews[i].setOnClickListener(imageListener);
 		}
 	}
 }

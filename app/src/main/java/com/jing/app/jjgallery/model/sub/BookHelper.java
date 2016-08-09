@@ -58,9 +58,14 @@ public class BookHelper {
 	 */
 	private void sortImageValue(List<List<ImageValue>> list,
 									   List<ImageValue> values) {
+		// 分配队列
+		// 所有宽大于高1.2倍以上的图片
 		Queue<ImageValue> widthQueue = new LinkedList<>();
+		// 所有高大于宽1.2倍以上的图片
 		Queue<ImageValue> heightQueue = new LinkedList<>();
+		// 所有宽高比在1.2之内的图片
 		Queue<ImageValue> middleQueue = new LinkedList<>();
+
 		for (ImageValue value:values) {
 			if (value.getWidth() > value.getHeight()) {
 				if ((float) value.getWidth() / (float) value.getHeight() > 1.2f) {
@@ -81,22 +86,37 @@ public class BookHelper {
 		}
 
 		Random random = new Random();
-		int[] sizeMode = new int[] {1, 2, 3, 4};
+		//支持的页面类型（页面包含的图片数）
+		int[] sizeMode = new int[] {1, 2, 3, 4, 6};
 		int size = 1;
 
 		boolean hasMore = true;
 		List<ImageValue> subList = null;
 
+		// 从3个队列里遍历完所有图片，分配模式
 		while (hasMore) {
 
+			// 先随机应用一种模式
 			size = sizeMode[Math.abs(random.nextInt()) % sizeMode.length];
 
+			// 当前还剩下的图片总数
 			int left = widthQueue.size() + heightQueue.size() + middleQueue.size();
 			Log.d(TAG, "random size=" + size + ", left number=" + left);
 
 			/**************************特殊情况先做判断**********************************/
 			if (left < size) {//剩余图片不足随机数制定的图片张数
 				size = left;
+			}
+
+			if (size == 6) {
+				// 6图目前有两种模式，1.全部是middle 2.3个height，3个width
+				if (middleQueue.size() < 6 || (heightQueue.size() < 3 && widthQueue.size() < 3)) {
+					size = 4;//由于暂时没有5图模式，降级为4
+				}
+			}
+
+			if (size == 5) {
+				size --;
 			}
 
 			if (size == 4) {
@@ -154,65 +174,103 @@ public class BookHelper {
 				list.add(subList);
 			}
 			else if (size == 3) {//有3种布局模式，最复杂
-				if (widthQueue.size() + middleQueue.size() > 2) {//模式1，纵向线性布局
-					boolean apply = Math.abs(random.nextInt()) % 2 == 0 ? false : true;
-					apply = apply || (heightQueue.size() + middleQueue.size() < 2);//模式3必须要求至少2张属于height or middle, 另外一张是width or middle
-					if (apply) {
-						Log.d(TAG, "size 3 apply mode 1");
-						subList = new ArrayList<ImageValue>();
 
-						//第一个添加模式标志，Bookpage在显示的时候根据该tag
-						//从而判断运用哪种显示模式
-						ImageValue value = widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll();
-						value.setTag(1);
-						subList.add(value);
-						subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
-						subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
-						list.add(subList);
-						if (widthQueue.size() == 0 && heightQueue.size() == 0 && middleQueue.size() == 0) {
-							hasMore = false;
-						}
-						continue;
-					}
+				List<Integer> availableMode = new ArrayList<>();
+
+				// 模式1，3个纵向排列，要求3个都是width or middle
+				if (widthQueue.size() + middleQueue.size() > 2) {
+					availableMode.add(1);
+				}
+				// 模式2、3，两上一下或者一上两下，两个是height or middle，另一个是width or middle
+				if ((heightQueue.size() + middleQueue.size()) > 1 && (widthQueue.size() + middleQueue.size()) > 0) {
+					availableMode.add(2);
+					availableMode.add(3);
 				}
 
-				if (heightQueue.size() > 2) {//模式2,左边2个vertical线性布局，右边一个充满
-					boolean apply = Math.abs(random.nextInt()) % 2 == 0 ? false : true;
-					apply = apply || (middleQueue.size() + widthQueue.size() == 0);//模式3必须要求至少2张属于height or middle, 另外一张是width or middle
-					if (apply) {
-						Log.d(TAG, "size 3 apply mode 2");
-						subList = new ArrayList<ImageValue>();
-
-						ImageValue value = heightQueue.poll();
-						value.setTag(2);//第一个添加模式标志
-						subList.add(value);
-						subList.add(heightQueue.poll());
-						subList.add(heightQueue.poll());
-						list.add(subList);
-						if (widthQueue.size() == 0 && heightQueue.size() == 0 && middleQueue.size() == 0) {
-							hasMore = false;
-						}
-						continue;
-					}
+				// 如果上面两种都不满足，把两上一下(3)暂定义为百搭模式
+				if (availableMode.size() == 0) {
+					availableMode.add(3);
 				}
 
-				//模式3，上面2个横向线性布局，下面一个充满。要求上面两个是height or middle，下面一个是width or middle
-				Log.d(TAG, "size 3 apply mode 3");
-				subList = new ArrayList<ImageValue>();
+				// 在可生成的模式中随机一种
+				int mode = availableMode.get(Math.abs(random.nextInt()) % availableMode.size());
 
-				ImageValue value = heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll();
-				value.setTag(3);//第一个添加模式标志
-				subList.add(value);
-				subList.add(heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll());
-				subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
-				list.add(subList);
+				if (mode == 1) {// 3个纵向排列
+					subList = new ArrayList<>();
+
+					//第一个添加模式标志，Bookpage在显示的时候根据该tag
+					//从而判断运用哪种显示模式
+					ImageValue value = widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll();
+					value.setTag(mode);
+					subList.add(value);
+					subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
+					subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
+					list.add(subList);
+					if (widthQueue.size() == 0 && heightQueue.size() == 0 && middleQueue.size() == 0) {
+						hasMore = false;
+					}
+				}
+				else if (mode == 2) {// 一上两下
+					subList = new ArrayList<>();
+
+					ImageValue value = widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll();
+					value.setTag(mode);//第一个添加模式标志
+					subList.add(value);
+					subList.add(heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll());
+					subList.add(heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll());
+					list.add(subList);
+				}
+				else {// mode = 3, 两上一下
+					subList = new ArrayList<>();
+
+					ImageValue value = heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll();
+					value.setTag(mode);//第一个添加模式标志
+					subList.add(value);
+					subList.add(heightQueue.size() == 0 ? middleQueue.poll() : heightQueue.poll());
+					subList.add(widthQueue.size() == 0 ? middleQueue.poll() : widthQueue.poll());
+					list.add(subList);
+				}
 			}
 			else if (size == 4) {
-				subList = new ArrayList<ImageValue>();
+				subList = new ArrayList<>();
 				subList.add(heightQueue.poll());
 				subList.add(heightQueue.poll());
 				subList.add(heightQueue.poll());
 				subList.add(heightQueue.poll());
+				list.add(subList);
+			}
+			else if (size == 6) {
+
+				List<Integer> availableMode = new ArrayList<>();
+				if (middleQueue.size() > 5) {
+					availableMode.add(1);
+				}
+				if (heightQueue.size() > 2 && widthQueue.size() > 2) {
+					availableMode.add(2);
+				}
+
+				int mode = availableMode.get(Math.abs(random.nextInt()) % availableMode.size());
+				subList = new ArrayList<>();
+				if (mode == 1) {
+					ImageValue value = middleQueue.poll();
+					value.setTag(mode);
+					subList.add(value);
+					subList.add(middleQueue.poll());
+					subList.add(middleQueue.poll());
+					subList.add(middleQueue.poll());
+					subList.add(middleQueue.poll());
+					subList.add(middleQueue.poll());
+				}
+				else {
+					ImageValue value = widthQueue.poll();
+					value.setTag(mode);
+					subList.add(value);
+					subList.add(heightQueue.poll());
+					subList.add(heightQueue.poll());
+					subList.add(widthQueue.poll());
+					subList.add(widthQueue.poll());
+					subList.add(heightQueue.poll());
+				}
 				list.add(subList);
 			}
 
