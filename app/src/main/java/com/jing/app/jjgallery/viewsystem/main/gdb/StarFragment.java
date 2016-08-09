@@ -4,16 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.StarProxy;
-import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -93,70 +90,20 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     public void onIconClick(View view) {
         if (view.getId() == R.id.actionbar_sort) {
-            showSortPopup(view);
+            new RecordSortPopup().showSortPopup(getActivity(), view, new RecordSortPopup.SortCallback() {
+                @Override
+                public void onSortModeSelected(int sortMode, boolean refresh) {
+                    if (currentSortMode != sortMode) {
+                        currentSortMode = sortMode;
+                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
+                        if (refresh) {
+                            refresh();
+                        }
+                    }
+                }
+            });
         }
     }
-
-    private void showSortPopup(View v) {
-        PopupMenu menu = new PopupMenu(getActivity(), v);
-        menu.getMenuInflater().inflate(R.menu.sort_gdb_star_page, menu.getMenu());
-        menu.show();
-        menu.setOnMenuItemClickListener(sortListener);
-    }
-
-    PopupMenu.OnMenuItemClickListener sortListener = new PopupMenu.OnMenuItemClickListener() {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.menu_by_date:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_DATE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_DATE;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
-                    break;
-                case R.id.menu_by_name:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_NAME) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_NAME;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
-                    break;
-                case R.id.menu_by_score:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_SCORE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_SCORE;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
-                    break;
-                case R.id.menu_by_fk:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_FK) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_FK;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
-                    break;
-                case R.id.menu_by_cum:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_CUM) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_CUM;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        refresh();
-                    }
-                    break;
-
-                case R.id.menu_by_none:
-                default:
-                    if (currentSortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
-                        currentSortMode = PreferenceValue.GDB_SR_ORDERBY_NONE;
-                        SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        // no action
-                    }
-                    break;
-            }
-            return true;
-        }
-    };
 
     private void refresh() {
         mPresenter.sortRecords(starProxy.getStar().getRecordList(), currentSortMode);
