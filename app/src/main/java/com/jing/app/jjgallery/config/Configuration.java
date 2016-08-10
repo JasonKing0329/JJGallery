@@ -46,6 +46,7 @@ public class Configuration {
 	public static final String APP_DIR_CONF = APP_ROOT + "/conf";
 	public static final String APP_DIR_CONF_PREF = APP_DIR_CONF + "/shared_prefs";
 	public static final String APP_DIR_CONF_PREF_DEF = APP_DIR_CONF_PREF + "/default";
+	public static final String APP_DIR_CONF_CRASH = APP_DIR_CONF + "/crash";
 
 	private static int screenWidth;
 	private static int screenHeight;
@@ -111,6 +112,10 @@ public class Configuration {
 				file.mkdir();
 			}
 			file = new File(APP_DIR_CONF_PREF_DEF);
+			if (!file.exists()) {
+				file.mkdir();
+			}
+			file = new File(APP_DIR_CONF_CRASH);
 			if (!file.exists()) {
 				file.mkdir();
 			}
