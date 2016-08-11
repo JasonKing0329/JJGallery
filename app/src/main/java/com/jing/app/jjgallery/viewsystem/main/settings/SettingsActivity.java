@@ -194,11 +194,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
+
+        //general
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_TIMELINE_VIEW));
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_BOOK_SWITCH));
+
+        //file manager
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_FM_INDEX_ITEM_OPEN));
+
+        //sorder
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_VIEW));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_PAGE_NUM));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SORDER_CASCADE_NUM));
@@ -207,8 +214,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         EditTextPreference preference = (EditTextPreference) findPreference(PreferenceKey.PREF_SORDER_CARD_TOP_NUMBER);
         bindPreferenceSummaryToValue(preference);
         limitEditRange(preference.getEditText(), 5, 20);
+
+        //surf
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_MODE));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_SURF_PLAY_SPEED));
+
+        //waterfall
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
     }
@@ -315,6 +326,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HOME_VIEW));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_CASUAL_NUMBER));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_TIMELINE_VIEW));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_BOOK_SWITCH));
         }
 
     }

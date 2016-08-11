@@ -31,18 +31,8 @@ public class ImageValueController {
 	public void queryImagePixelFrom(List<String> pathList, List<ImageValue> values) {
 		if (pathList != null && values != null) {
 
+			// pathList中如果有已经不存在的路径，values将不会包含，所以查询后values的size和pathList可能不对等
 			queryImagePixel(pathList, values);
-			
-			for (int i = 0; i < values.size(); i ++) {
-				if (values.get(i) == null) {
-					ImageValue value = new ImageValue();
-					value.setPath(pathList.get(i));
-					values.set(i, value);
-				}
-				else {
-					values.get(i).setPath(pathList.get(i));
-				}
-			}
 		}
 	}
 
@@ -55,14 +45,15 @@ public class ImageValueController {
 		if (pathList != null && values != null) {
 			SqlConnection.getInstance().connect(DBInfor.DB_PATH);
 			ImageValueDao dao = new ImageValueDaoImpl();
-			
+
+			// pathList中如果有已经不存在的路径，values将不会包含，所以查询后values的size和pathList可能不对等
 			dao.queryImageValues(pathList, values, SqlConnection.getInstance().getConnection());
 
 			SqlConnection.getInstance().close();
 
 		}
 	}
-	
+
 	public void queryImagePixelFrom(List<FilePageItem> list) {
 
 		if (list != null) {
@@ -74,13 +65,6 @@ public class ImageValueController {
 			}
 			
 			queryImagePixel(pathList, values);
-			
-			for (int i = 0; i < list.size(); i ++) {
-				if (values.get(i) != null) {
-					values.get(i).setPath(list.get(i).getFile().getPath());
-					list.get(i).setImageValue(values.get(i));
-				}
-			}
 		}
 	}
 

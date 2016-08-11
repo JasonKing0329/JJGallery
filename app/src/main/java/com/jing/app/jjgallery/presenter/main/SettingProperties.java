@@ -363,4 +363,13 @@ public class SettingProperties {
         String mode = preferences.getString(PreferenceKey.PREF_SORDER_CARD_TOP_NUMBER, "" + PreferenceValue.SORDER_CARD_TOP_NUMBER);
         return Integer.parseInt(mode);
     }
+
+    /**
+     * Book翻页模式
+     */
+    public static String getBookSwitchMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mode = preferences.getString(PreferenceKey.PREF_BOOK_SWITCH, "" + PreferenceValue.VALUE_BOOK_SWITCH_LAND);
+        return mode;
+    }
 }

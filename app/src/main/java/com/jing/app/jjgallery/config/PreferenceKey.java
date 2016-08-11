@@ -36,6 +36,8 @@ public class PreferenceKey {
     public static final String PREF_TIMELINE_VIEW = "pref_timeline_view";
     // 随便看看数量
     public static final String PREF_CASUAL_NUMBER = "pref_casual_number";
+    // book翻页模式
+    public static final String PREF_BOOK_SWITCH = "pref_book_switch_mode";
 
     /**
      * home

@@ -22,6 +22,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jing.app.jjgallery.JJApplication;
 import com.jing.app.jjgallery.config.Configuration;
 
 /**
@@ -82,9 +83,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
             } catch (InterruptedException e) {
                 Log.e(TAG, "error : ", e);
             }
+
+            JJApplication.closeAll();
             //退出程序
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
         }
     }
 
@@ -107,6 +110,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 Looper.loop();
             }
         }.start();
+        ex.printStackTrace();
         //收集设备参数信息
         collectDeviceInfo(mContext);
         //保存日志文件

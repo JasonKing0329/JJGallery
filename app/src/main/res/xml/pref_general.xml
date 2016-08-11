@@ -31,7 +31,7 @@
         android:title="@string/setting_timeline_view_default"/>
 
     <ListPreference
-        android:defaultValue="Landscape"
+        android:defaultValue="Horizontal"
         android:entries="@array/pref_book_switch_mode"
         android:entryValues="@array/pref_book_switch_mode"
         android:key="pref_book_switch_mode"

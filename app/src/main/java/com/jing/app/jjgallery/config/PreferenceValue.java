@@ -17,6 +17,9 @@ public class PreferenceValue {
     public static final String VALUE_TIMELINE_VIEW_TIMELINE = "Timeline";
     public static final String VALUE_TIMELINE_VIEW_WATERFALL = "Waterfall";
 
+    public static final String VALUE_BOOK_SWITCH_VER = "Vertical";
+    public static final String VALUE_BOOK_SWITCH_LAND = "Horizontal";
+
     public static final int START_VIEW_FILEMANAGER = 0;
     public static final int START_VIEW_SORDER = 1;
     public static final int START_VIEW_TIMELINE = 2;

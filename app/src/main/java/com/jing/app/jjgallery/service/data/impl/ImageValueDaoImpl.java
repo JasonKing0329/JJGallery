@@ -18,7 +18,7 @@ import java.util.List;
 public class ImageValueDaoImpl implements ImageValueDao {
 
     @Override
-    public ImageValue queryImageValue(String key, Connection connection) {
+    public ImageValue queryImageValue(String path, Connection connection) {
         Statement stmt = null;
         ImageValue value = null;
         try {
@@ -26,11 +26,11 @@ public class ImageValueDaoImpl implements ImageValueDao {
             ResultSet set = null;
 
             set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_FILES
-                    + " WHERE " + DBInfor.TF_COL_PATH + " = '" + key + "'");
+                    + " WHERE " + DBInfor.TF_COL_PATH + " = '" + path + "'");
 
             if (set.next()) {
                 value = new ImageValue();
-                value.setName(key);
+                value.setPath(path);
                 value.setId(set.getInt(DBInfor.TF_COL_ID));
                 value.setWidth(set.getInt(DBInfor.TF_COL_WIDTH));
                 value.setHeight(set.getInt(DBInfor.TF_COL_HEIGHT));
@@ -72,7 +72,7 @@ public class ImageValueDaoImpl implements ImageValueDao {
                 set = stmt.executeQuery();
                 if (set.next()) {
                     value = new ImageValue();
-                    value.setName(pathList.get(i));
+                    value.setPath(pathList.get(i));
                     value.setId(set.getInt(DBInfor.TF_COL_ID));
                     value.setWidth(set.getInt(DBInfor.TF_COL_WIDTH));
                     value.setHeight(set.getInt(DBInfor.TF_COL_HEIGHT));

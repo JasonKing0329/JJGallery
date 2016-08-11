@@ -46,6 +46,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     private boolean isActionbarFloating;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((JJApplication) getApplication()).addActivity(this);
         if (isFullScreen()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             DisplayHelper.enableFullScreen();
@@ -185,6 +186,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ((JJApplication) getApplication()).removeActivity();
         BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.service.image.ImageValueController;
+import com.jing.app.jjgallery.util.DebugLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public class BookHelper {
 
 		List<ImageValue> values = new ArrayList<>();
 		controller.queryImagePixelFrom(imgPathList, values);
+		DebugLog.e("img list size:" + imgPathList.size() + ", values size:" + values.size());
 
 		sortImageValue(list, values);
 		return list;

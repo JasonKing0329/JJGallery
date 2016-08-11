@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.sub.BookPresenter;
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -38,6 +40,12 @@ public abstract class BookFragment extends Fragment implements IBookView {
 
         View view = inflater.inflate(R.layout.page_book, null);
         flipView = (FlipView) view.findViewById(R.id.book_flip_view);
+        if (SettingProperties.getBookSwitchMode(getActivity()).equals(PreferenceValue.VALUE_BOOK_SWITCH_VER)) {
+            flipView.setIsVertical(true);
+        }
+        else {
+            flipView.setIsVertical(false);
+        }
         flipView.setOnFlipListener(flipAction);
         flipView.setOverFlipMode(OverFlipMode.RUBBER_BAND);
         flipView.setEmptyView(getActivity().findViewById(R.id.book_empty));

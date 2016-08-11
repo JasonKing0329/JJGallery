@@ -1180,6 +1180,10 @@ public class FlipView extends FrameLayout {
 		return mIsFlippingVertically;
 	}
 
+	public void setIsVertical(boolean isVertical) {
+		mIsFlippingVertically = isVertical;
+	}
+
 	/**
 	 * The OnFlipListener will notify you when a page has been fully turned.
 	 * 

@@ -47,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        ((JJApplication) getApplication()).addActivity(this);
         if (isFullScreen()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             DisplayHelper.enableFullScreen();
@@ -180,6 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ((JJApplication) getApplication()).removeActivity();
         BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 

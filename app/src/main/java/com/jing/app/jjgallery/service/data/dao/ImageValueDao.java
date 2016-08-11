@@ -13,11 +13,11 @@ public interface ImageValueDao {
 
     /**
      * 查询图片大小等参数
-     * @param key
+     * @param path
      * @param connection
      * @return
      */
-    ImageValue queryImageValue(String key, Connection connection);
+    ImageValue queryImageValue(String path, Connection connection);
 
     /**
      * 查询一批ImageValue
