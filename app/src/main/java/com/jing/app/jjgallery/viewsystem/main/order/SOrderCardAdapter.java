@@ -18,15 +18,28 @@ import com.loopeer.cardstack.StackAdapter;
  */
 public class SOrderCardAdapter extends StackAdapter<SOrder> {
 
+    public interface OnExpandActionListener {
+        void onSurfView(SOrder order);
+        void onWallView(SOrder order);
+        void onBookView(SOrder order);
+        void onPreView(SOrder order);
+    }
+
     public enum HitMode {
         Total, Year, Month, Week, Day
     }
     private HitMode hitMode;
 
+    private OnExpandActionListener onExpandActionListener;
+
     public SOrderCardAdapter(Context context, HitMode mode) {
         super(context);
         hitMode = mode;
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk5);
+    }
+
+    public void setOnExpandActionListener(OnExpandActionListener onExpandActionListener) {
+        this.onExpandActionListener = onExpandActionListener;
     }
 
     @Override
@@ -67,11 +80,14 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         TextView mTextContent;
         TextView mTextTitle;
         RoundedImageView imageView;
+        CardExpandMenu expandMenu;
+        private CardExpandAdapter menuAdapter;
 
         public ColorItemViewHolder(View view) {
             super(view);
             mLayout = view.findViewById(R.id.frame_list_card_item);
             mContainerContent = view.findViewById(R.id.container_list_content);
+            expandMenu = (CardExpandMenu) view.findViewById(R.id.card_expand_menu);
             mTextTitle = (TextView) view.findViewById(R.id.text_list_card_title);
             imageView = (RoundedImageView) view.findViewById(R.id.text_list_card_image);
             mTextContent = (TextView) view.findViewById(R.id.text_list_card_content);
@@ -80,6 +96,13 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         @Override
         public void onItemExpand(boolean b) {
             mContainerContent.setVisibility(b ? View.VISIBLE : View.GONE);
+            if (menuAdapter == null) {
+                menuAdapter = new CardExpandAdapter(getContext());
+                expandMenu.setAdapter(menuAdapter);
+            }
+            else {
+                menuAdapter.notifyDataSetChanged();
+            }
         }
 
         public void onBind(SOrder data, int position) {
@@ -96,11 +119,14 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         TextView mTextContent;
         TextView mTextTitle;
         RoundedImageView imageView;
+        CardExpandMenu expandMenu;
+        private CardExpandAdapter menuAdapter;
 
         public ColorItemLargeHeaderViewHolder(View view) {
             super(view);
             mLayout = view.findViewById(R.id.frame_list_card_item);
             mContainerContent = view.findViewById(R.id.container_list_content);
+            expandMenu = (CardExpandMenu) view.findViewById(R.id.card_expand_menu);
             mTextTitle = (TextView) view.findViewById(R.id.text_list_card_title);
             imageView = (RoundedImageView) view.findViewById(R.id.text_list_card_image);
             mTextContent = (TextView) view.findViewById(R.id.text_list_card_content);
@@ -109,6 +135,13 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         @Override
         public void onItemExpand(boolean b) {
             mContainerContent.setVisibility(b ? View.VISIBLE : View.GONE);
+            if (menuAdapter == null) {
+                menuAdapter = new CardExpandAdapter(getContext());
+                expandMenu.setAdapter(menuAdapter);
+            }
+            else {
+                menuAdapter.notifyDataSetChanged();
+            }
         }
 
         @Override

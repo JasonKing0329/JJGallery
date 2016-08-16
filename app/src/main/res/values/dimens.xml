@@ -119,6 +119,7 @@
     <dimen name="sorder_card_image_size">336dp</dimen>
     <dimen name="sorder_card_stack_height">160dp</dimen>
     <dimen name="sorder_card_stack_large_height">320dp</dimen>
+    <dimen name="sorder_card_expand_height">100dp</dimen>
     <!-- actionbar  -->
     <dimen name="actionbar_padding">5dp</dimen>
     <dimen name="actionbar_title_text_size">20dp</dimen>

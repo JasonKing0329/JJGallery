@@ -186,7 +186,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((JJApplication) getApplication()).removeActivity();
+        ((JJApplication) getApplication()).removeActivity(this);
         BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 

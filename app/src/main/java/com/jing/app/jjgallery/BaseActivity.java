@@ -181,7 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((JJApplication) getApplication()).removeActivity();
+        ((JJApplication) getApplication()).removeActivity(this);
         BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 

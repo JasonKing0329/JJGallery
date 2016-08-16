@@ -36,14 +36,12 @@
             android:textColor="@android:color/white"/>
     </FrameLayout>
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/container_list_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="60dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:animateLayoutChanges="true">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_list_card_content"
@@ -52,7 +50,12 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="20dp"
-            android:paddingBottom="50dp"/>
-    </ScrollView>
+            android:paddingBottom="20dp"/>
+
+        <com.jing.app.jjgallery.viewsystem.main.order.CardExpandMenu
+            android:id="@+id/card_expand_menu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sorder_card_expand_height"/>
+    </LinearLayout>
 
 </LinearLayout>
