@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.king.service.gdb.bean.Record;
 
@@ -92,7 +93,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
     @Override
     public void onClickRecordItem(Record record) {
-
+        ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
 
     public void onTextChanged(String text, int start, int before, int count) {

@@ -81,6 +81,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".viewsystem.main.gdb.StarActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".viewsystem.main.gdb.RecordActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

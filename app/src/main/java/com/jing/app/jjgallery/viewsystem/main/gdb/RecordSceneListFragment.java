@@ -15,6 +15,7 @@ import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
@@ -101,6 +102,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     public void onLoadRecordList(List<Record> list) {
         List<RecordProxy> resultList = gdbPresenter.collectRecordsByScene(list, currentSortMode);
         mAdapter = new RecordSceneAdapter(getActivity(), resultList);
+        mAdapter.setOnRecordClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -111,7 +113,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     }
 
     @Override
-    public void onRecordClick(Record star) {
-
+    public void onRecordClick(Record record) {
+        ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
 }

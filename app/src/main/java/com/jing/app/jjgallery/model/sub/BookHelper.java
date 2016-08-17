@@ -117,6 +117,7 @@ public class BookHelper {
 				}
 			}
 
+			// 目前不支持5图模式
 			if (size == 5) {
 				size --;
 			}
@@ -141,7 +142,9 @@ public class BookHelper {
 			}
 
 			/************************************************************/
-
+			/**
+			 * 到这里，size代表的数的模式一定可以运用，即queue中的图片数量是一定满足模式的
+			 */
 			Log.d(TAG, "real size=" + size);
 			if (size == 1) {//可以添加任意尺寸图片
 				//从最多的queue里取
@@ -233,7 +236,7 @@ public class BookHelper {
 					list.add(subList);
 				}
 			}
-			else if (size == 4) {
+			else if (size == 4) {// 4个height
 				subList = new ArrayList<>();
 				subList.add(heightQueue.poll());
 				subList.add(heightQueue.poll());
@@ -253,7 +256,7 @@ public class BookHelper {
 
 				int mode = availableMode.get(Math.abs(random.nextInt()) % availableMode.size());
 				subList = new ArrayList<>();
-				if (mode == 1) {
+				if (mode == 1) {// 6个middle
 					ImageValue value = middleQueue.poll();
 					value.setTag(mode);
 					subList.add(value);
@@ -263,7 +266,7 @@ public class BookHelper {
 					subList.add(middleQueue.poll());
 					subList.add(middleQueue.poll());
 				}
-				else {
+				else {// width,height; height, width; width, height
 					ImageValue value = widthQueue.poll();
 					value.setTag(mode);
 					subList.add(value);

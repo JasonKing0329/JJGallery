@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
@@ -11,9 +12,11 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
 import com.jing.app.jjgallery.viewsystem.main.gdb.GDBHomeActivity;
+import com.jing.app.jjgallery.viewsystem.main.gdb.RecordActivity;
 import com.jing.app.jjgallery.viewsystem.main.gdb.StarActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
@@ -25,6 +28,7 @@ import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
 import com.jing.app.jjgallery.viewsystem.sub.surf.UiController;
 import com.jing.app.jjgallery.viewsystem.sub.wall.WallActivity;
 import com.jing.app.jjgallery.viewsystem.sub.waterfall.WaterfallActivity;
+import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
 import java.io.File;
@@ -211,6 +215,12 @@ public class ActivityManager {
         Intent intent = new Intent().setClass(from, StarActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
+        applyAnimation(from);
+    }
+
+    public static void startGdbRecordActivity(Activity from, Record record) {
+        ObjectCache.putData(record);
+        from.startActivity(new Intent().setClass(from, RecordActivity.class));
         applyAnimation(from);
     }
 }

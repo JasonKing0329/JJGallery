@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
@@ -112,6 +113,6 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     @Override
     public void onClickRecordItem(Record record) {
-
+        ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
 }

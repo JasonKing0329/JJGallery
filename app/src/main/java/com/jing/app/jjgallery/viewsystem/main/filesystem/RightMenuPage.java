@@ -35,7 +35,7 @@ public class RightMenuPage implements View.OnClickListener {
         }
         else {
             currentGroup = content.findViewById(R.id.sliding_right_fm_list);
-            focusBgGroup = content.findViewById(R.id.sliding_right_fm_index_bk);
+            focusBgGroup = content.findViewById(R.id.sliding_right_fm_list_bk);
         }
         updateCurrentGroup();
     }

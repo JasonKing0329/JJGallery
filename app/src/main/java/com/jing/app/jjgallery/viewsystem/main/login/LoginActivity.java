@@ -46,6 +46,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     private TextView progressTextView;
 
     private boolean executeInsertProcess;
+    private boolean isServiceBound;
 
     @Override
     protected boolean isActionBarNeed() {
@@ -240,7 +241,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                             executeInsertProcess = true;
                             showLoading();
                             if (!isServiceRunning()) {
-                                bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
+                                isServiceBound = bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
                                         , connection, BIND_AUTO_CREATE);
                             }
                         }
@@ -248,7 +249,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
                             showLoading();
                             if (!isServiceRunning()) {
-                                bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
+                                isServiceBound = bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
                                         , connection, BIND_AUTO_CREATE);
                             }
                         }
@@ -313,7 +314,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
         try {
             // if select all no, then FC occurs in xiaomi phone(Caused by: java.lang.IllegalArgumentException: Service not registered)
-            unbindService(connection);
+            if (isServiceBound) {
+                unbindService(connection);
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

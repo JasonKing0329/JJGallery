@@ -4,22 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
-import com.jing.app.jjgallery.presenter.main.GdbPresenter;
-import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
-import com.king.service.gdb.bean.RecordOneVOne;
-import com.king.service.gdb.bean.RecordSingleScene;
-import com.king.service.gdb.bean.Star;
 
 import java.util.List;
-import java.util.Random;
 
 import cc.solart.turbo.BaseTurboAdapter;
 import cc.solart.turbo.BaseViewHolder;
@@ -35,7 +27,6 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
 
     private List<RecordProxy> originList;
     private int nameColorNormal, nameColorBareback;
-    private Random random;
 
     public interface OnRecordClickListener {
         void onRecordClick(Record record);
@@ -58,7 +49,6 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
         originList = data;
         nameColorNormal = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, false));
         nameColorBareback = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, true));
-        random = new Random();
     }
 
     public void setOnRecordClickListener(OnRecordClickListener listener) {

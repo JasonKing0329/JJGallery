@@ -228,4 +228,5 @@
     <dimen name="gdb_record_name_left">10dp</dimen>
     <dimen name="gdb_record_sub_text_size">14dp</dimen>
     <dimen name="gdb_record_main_text_size">16dp</dimen>
+    <dimen name="gdb_record_page_star1_img_height">260dp</dimen>
 </resources>
