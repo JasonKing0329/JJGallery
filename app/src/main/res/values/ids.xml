@@ -3,4 +3,7 @@
     <item type="id" name="tag_lru2_imageloader_task"></item>
 
     <item type="id" name="book_item_position"></item>
+
+    <item type="id" name="card_menu_item_id"></item>
+    <item type="id" name="card_menu_item_viewholder"></item>
 </resources>

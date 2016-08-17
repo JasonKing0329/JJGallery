@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 
+import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.util.DisplayHelper;
 
 /**
@@ -20,7 +21,7 @@ import com.jing.app.jjgallery.util.DisplayHelper;
 public class CardExpandMenu extends LinearLayout implements View.OnClickListener {
 
     public interface OnExpandMenuClickListener {
-        void onExpandMenuItemClick(int position);
+        void onExpandMenuItemClick(View parent, int position);
     }
 
     private BaseAdapter mAdapter;
@@ -110,7 +111,8 @@ public class CardExpandMenu extends LinearLayout implements View.OnClickListener
         else {
             addView(mAdapter.getView(index, null, this), params);
         }
-        getChildAt(index).setTag(index);
+        // 在adapter中，默认tag被用于存放ViewHolder了
+        getChildAt(index).setTag(R.id.card_menu_item_id, index);
         getChildAt(index).setOnClickListener(this);
     }
 
@@ -130,8 +132,8 @@ public class CardExpandMenu extends LinearLayout implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (onExpandMenuClickListener != null) {
-            int position = (int) v.getTag();
-            onExpandMenuClickListener.onExpandMenuItemClick(position);
+            int position = (int) v.getTag(R.id.card_menu_item_id);
+            onExpandMenuClickListener.onExpandMenuItemClick(this, position);
         }
     }
 

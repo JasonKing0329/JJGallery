@@ -51,10 +51,10 @@ public class CardExpandAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.adapter_card_expand_item, parent, false);
             holder.tv = (TextView) convertView.findViewById(R.id.card_expand_item_text);
             holder.container = convertView.findViewById(R.id.card_expand_item_container);
-            convertView.setTag(holder);
+            convertView.setTag(R.id.card_menu_item_viewholder, holder);
         }
         else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag(R.id.card_menu_item_viewholder);
         }
         holder.tv.setText(items[position]);
         holder.container.setBackgroundColor(ColorUtils.randomWhiteTextBgColor());

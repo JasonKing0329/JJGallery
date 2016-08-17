@@ -16,7 +16,7 @@ import com.loopeer.cardstack.StackAdapter;
  * Created by JingYang on 2016/8/4 0004.
  * Description:
  */
-public class SOrderCardAdapter extends StackAdapter<SOrder> {
+public class SOrderCardAdapter extends StackAdapter<SOrder> implements CardExpandMenu.OnExpandMenuClickListener {
 
     public interface OnExpandActionListener {
         void onSurfView(SOrder order);
@@ -74,6 +74,28 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         }
     }
 
+    @Override
+    public void onExpandMenuItemClick(View parent, int position) {
+
+        if (onExpandActionListener != null) {
+            SOrder order = (SOrder) parent.getTag();
+            switch (position) {
+                case 0://surf
+                    onExpandActionListener.onSurfView(order);
+                    break;
+                case 1://wall
+                    onExpandActionListener.onWallView(order);
+                    break;
+                case 2://book
+                    onExpandActionListener.onBookView(order);
+                    break;
+                case 3://preview
+                    onExpandActionListener.onPreView(order);
+                    break;
+            }
+        }
+    }
+
     class ColorItemViewHolder extends CardStackView.ViewHolder {
         View mLayout;
         View mContainerContent;
@@ -106,6 +128,8 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         }
 
         public void onBind(SOrder data, int position) {
+            expandMenu.setTag(data);
+            expandMenu.setOnExpandMenuClickListener(SOrderCardAdapter.this);
             bindImageView(data, position, imageView);
             bindTitle(data, position, mTextTitle);
             bindContent(data, position, mTextContent);
@@ -156,6 +180,8 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> {
         }
 
         public void onBind(SOrder data, int position) {
+            expandMenu.setTag(data);
+            expandMenu.setOnExpandMenuClickListener(SOrderCardAdapter.this);
             bindImageView(data, position, imageView);
             bindTitle(data, position, mTextTitle);
             bindContent(data, position, mTextContent);

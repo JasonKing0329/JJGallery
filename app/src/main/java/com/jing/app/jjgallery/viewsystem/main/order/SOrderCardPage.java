@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.order;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
@@ -27,7 +29,7 @@ import java.util.List;
  * Created by JingYang on 2016/8/4 0004.
  * Description:
  */
-public class SOrderCardPage implements IPage {
+public class SOrderCardPage implements IPage, SOrderCardAdapter.OnExpandActionListener {
 
     private Context context;
     private SOrderPresenter mPresenter;
@@ -59,14 +61,19 @@ public class SOrderCardPage implements IPage {
         List<SOrder> dayList = mPresenter.loadTopDayList(rankNumber);
         totalAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Total);
         totalAdapter.updateData(totalList);
+        totalAdapter.setOnExpandActionListener(this);
         yearAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Year);
         yearAdapter.updateData(yearList);
+        yearAdapter.setOnExpandActionListener(this);
         monthAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Month);
         monthAdapter.updateData(monthList);
+        monthAdapter.setOnExpandActionListener(this);
         weekAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Week);
         weekAdapter.updateData(weekList);
+        weekAdapter.setOnExpandActionListener(this);
         dayAdapter = new SOrderCardAdapter(context, SOrderCardAdapter.HitMode.Day);
         dayAdapter.updateData(dayList);
+        dayAdapter.setOnExpandActionListener(this);
 
         // 延迟加载，渲染的过程较慢，又不能在非UI线程处理
         new Handler().postDelayed(new Runnable() {
@@ -145,4 +152,26 @@ public class SOrderCardPage implements IPage {
 
     }
 
+    @Override
+    public void onSurfView(SOrder order) {
+        mPresenter.accessOrder(order);
+        ActivityManager.startSurfActivity((Activity) context, order);
+    }
+
+    @Override
+    public void onWallView(SOrder order) {
+        mPresenter.accessOrder(order);
+        ActivityManager.startWallActivity((Activity) context, order);
+    }
+
+    @Override
+    public void onBookView(SOrder order) {
+        mPresenter.accessOrder(order);
+        ActivityManager.startBookActivity((Activity) context, order);
+    }
+
+    @Override
+    public void onPreView(SOrder order) {
+        new PreviewDialog(context, order).show();
+    }
 }
