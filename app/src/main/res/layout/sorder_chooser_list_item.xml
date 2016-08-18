@@ -3,14 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical">
+	<com.github.siyamed.shapeimageview.CircularImageView
+		android:id="@+id/sorder_chooser_list_img"
+		android:layout_width="@dimen/sorder_chooser_img_size"
+		android:layout_height="@dimen/sorder_chooser_img_size"
+		android:src="@drawable/ic_folder_sub"
+		android:layout_marginTop="10dp"
+		android:layout_marginBottom="10dp"
+		android:layout_marginLeft="20dp"/>
 	<TextView
 	    android:id="@+id/sorder_chooser_list_text"
 	    android:layout_width="0dp"
 	    android:layout_weight="1"
 	    android:layout_height="wrap_content"
-	    android:paddingLeft="20dp"
-		android:paddingTop="20dp"
-		android:paddingBottom="20dp"
+		android:layout_marginLeft="10dp"
 		android:textSize="20sp"
 		android:textColor="@color/black"/>
 	<ImageView 
@@ -19,5 +25,5 @@
 	    android:layout_height="@dimen/sorder_chooser_preview_width"
 	    android:scaleType="fitCenter"
 	    android:src="@drawable/ic_apps_white_36dp"
-	    android:layout_marginRight="20dp"/>
+	    android:layout_marginRight="40dp"/>
 </LinearLayout>

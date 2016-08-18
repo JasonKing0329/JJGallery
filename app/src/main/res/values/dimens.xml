@@ -64,6 +64,7 @@
     <dimen name="sorder_preview_width">60dp</dimen>
     <dimen name="sorder_preview_space">2dp</dimen>
     <dimen name="sorder_chooser_preview_width">30dp</dimen>
+    <dimen name="sorder_chooser_img_size">50dp</dimen>
     <!-- soderpage  -->
     <dimen name="rgame_image_thread_width">120dp</dimen>
 

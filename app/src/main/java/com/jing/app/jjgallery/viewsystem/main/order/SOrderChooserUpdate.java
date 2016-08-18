@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +31,7 @@ import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.lib.colorpicker.ColorPicker;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
 
@@ -39,9 +39,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author JingYang
+ * description: add to order dialog
+ */
 public class SOrderChooserUpdate extends CustomDialog implements OnItemClickListener
 		, OnItemLongClickListener, ColorPicker.OnColorPickerListener, SOrderCallback {
 
+	/**
+	 * select order action
+	 */
 	public interface OnOrderSelectListener {
 		void onSelect(SOrder order);
 	}
@@ -53,26 +60,32 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 	private ImageView addButton;
 	private ImageView colorButton;
 
+	/**
+	 * all orders
+	 */
 	private List<SOrder> totalOrderList;
+	/**
+	 * orders to show(search result)
+	 */
 	private List<SOrder> orderList;
+	/**
+	 * selected order index
+	 */
 	private int chosenIndex = -1;
+	/**
+	 * control the priority of items
+	 */
 	private PriorityController priorityController;
+	/**
+	 * priority menu array
+	 */
 	private int currentMenuResId;
 
+	private WaveSideBarView waveSideBarView;
+
 	private ColorPicker colorPicker;
-	private int themeBasicColor;
 
 	private SOrderChooserController controller;
-
-	public void setLightTheme() {
-		addButton.setImageResource(R.drawable.ic_add_grey_600_36dp);
-		//searchButton.setImageResource(R.drawable.search_dark);
-		//closeButton.setImageResource(R.drawable.close_dark);
-	}
-
-	public void setTitleCustom(String title) {
-		setTitle(title);
-	}
 
 	public SOrderChooserUpdate(Context context, OnCustomDialogActionListener listener) {
 		super(context, listener);
@@ -105,23 +118,23 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 
 	private void resetColors() {
 		setBackgroundColor(JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_BK, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_BK, R.color.sorder_chooser_bk));
 		setTitleColor(JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_TITLE, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_TITLE, R.color.sorder_chooser_title));
 		setDividerColor(JResource.getColor(context
 				, ColorRes.SORDER_CHOOSER_DIVIDER
 				, R.color.white));
 		updateIconBk(addButton, JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_ICON_BK, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_ICON_BK, R.color.sorder_chooser_icon_bk));
 		updateIconBk(colorButton, JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_ICON_BK, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_ICON_BK, R.color.sorder_chooser_icon_bk));
 		updateToobarIconBk(JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_ICON_BK, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_ICON_BK, R.color.sorder_chooser_icon_bk));
 		updateTitleBk(JResource.getColor(context
 				, ColorRes.SORDER_CHOOSER_TITLE_BK
-				, R.color.white));
+				, R.color.sorder_chooser_title_bk));
 		updateTitleBorderColor(JResource.getColor(context
-				, ColorRes.SORDER_CHOOSER_TITLE_BOARDER, themeBasicColor));
+				, ColorRes.SORDER_CHOOSER_TITLE_BOARDER, R.color.actionbar_bk_blue));
 		if (listAdapter != null) {
 			listAdapter.resetColor();
 		}
@@ -137,6 +150,9 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		controller.sortOrderByName(list);//sort by name
 		priorityController.updateOrdersByPriority(totalOrderList);
 		if (totalOrderList != null && totalOrderList.size() > 0) {
+			// show side index bar
+			waveSideBarView.setVisibility(View.VISIBLE);
+
 			orderList = new ArrayList<SOrder>();
 			for (SOrder order:totalOrderList) {
 				orderList.add(order);
@@ -149,6 +165,9 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		}
 	}
 
+	/**
+	 * compute dialog's height in different orientation and device
+	 */
 	public void computeHeight() {
 		if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 			int screenHeight = ScreenUtils.getScreenHeight(context);
@@ -367,7 +386,16 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		noOrderText = (TextView) view.findViewById(R.id.order_chooser_noorder);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
-
+		waveSideBarView = (WaveSideBarView) view.findViewById(R.id.order_chooser_side);
+		waveSideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
+			@Override
+			public void onLetterChange(String letter) {
+				if (listAdapter != null) {
+					int position = listAdapter.getLetterPosition(letter);
+					listView.smoothScrollToPosition(position);
+				}
+			}
+		});
 		return view;
 	}
 	@Override
@@ -456,7 +484,6 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 
 	@Override
 	public void show() {
-		themeBasicColor = ThemeManager.getInstance().getBasicColorResId(context);
 		resetColors();
 		super.show();
 	}

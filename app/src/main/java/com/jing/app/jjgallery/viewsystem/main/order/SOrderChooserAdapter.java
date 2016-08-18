@@ -9,10 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class SOrderChooserAdapter extends BaseAdapter {
 		itemNormalColor = context.getResources().getColor(R.color.transparent);
 		hasPriorityColor = true;
 		previewListener = new PreviewListener();
+
+		SImageLoader.getInstance().setDefaultImgRes(R.drawable.ic_folder_sub);
 	}
 	
 	public void resetColor() {
@@ -101,6 +105,7 @@ public class SOrderChooserAdapter extends BaseAdapter {
 					.inflate(R.layout.sorder_chooser_list_item, null);
 			holder.textView = (TextView) convertView.findViewById(R.id.sorder_chooser_list_text);
 			holder.imageView = (ImageView) convertView.findViewById(R.id.sorder_chooser_list_preview);
+			holder.headImageView = (CircularImageView) convertView.findViewById(R.id.sorder_chooser_list_img);
 			
 			convertView.setTag(holder);
 		}
@@ -129,16 +134,31 @@ public class SOrderChooserAdapter extends BaseAdapter {
 		else {
 			convertView.setBackgroundColor(itemNormalColor);
 		}
+		SImageLoader.getInstance().displayImage(order.getCoverPath(), holder.headImageView);
 		return convertView;
 	}
 
 	public void hasPriorityColor(boolean hascolor) {
 		hasPriorityColor = hascolor;
 	}
-	
+
+	public int getLetterPosition(String letter) {
+		char index = letter.charAt(0);
+		if (index < 'A' || index > 'Z') {
+			return 0;
+		}
+		for (int i = priorityNumber; i < sorderList.size(); i ++) {
+			if (sorderList.get(i).getName().startsWith(letter)) {
+				return i;
+			}
+		}
+		return  0;
+	}
+
 	private class ViewHolder {
 		TextView textView;
 		ImageView imageView;
+		CircularImageView headImageView;
 	}
 	
 	private class PreviewListener implements OnClickListener {
