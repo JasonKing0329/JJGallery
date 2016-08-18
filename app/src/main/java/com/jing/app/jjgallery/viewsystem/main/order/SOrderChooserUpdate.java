@@ -392,7 +392,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 			public void onLetterChange(String letter) {
 				if (listAdapter != null) {
 					int position = listAdapter.getLetterPosition(letter);
-					listView.smoothScrollToPosition(position);
+					listView.setSelection(position);
 				}
 			}
 		});
