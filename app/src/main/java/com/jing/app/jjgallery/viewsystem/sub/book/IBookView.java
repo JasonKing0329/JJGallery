@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.sub.book;
 
+import com.jing.app.jjgallery.bean.BookInforBean;
 import com.jing.app.jjgallery.service.image.ImageValue;
 
 import java.util.List;
@@ -9,5 +10,5 @@ import java.util.List;
  * Description:
  */
 public interface IBookView {
-    void onDatasReady(List<List<ImageValue>> list);
+    void onDatasReady(List<List<ImageValue>> list, BookInforBean inforBean);
 }

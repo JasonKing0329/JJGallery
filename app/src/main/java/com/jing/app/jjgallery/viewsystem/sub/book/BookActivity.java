@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.sub.book;
 
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
@@ -34,6 +35,8 @@ public class BookActivity extends BaseActivity {
 
 	@Override
 	protected void initView() {
+		touchStartRange = getResources().getDimensionPixelSize(R.dimen.book_touch_start_range);
+		touchDistance = getResources().getDimensionPixelSize(R.dimen.book_touch_distance);
 		onBookPage(getIntent().getIntExtra(KEY_TYPE, FOLDER));
 	}
 
@@ -71,4 +74,26 @@ public class BookActivity extends BaseActivity {
 		super.onBackPressed();
 	}
 
+	private float touchStartY;
+	private float touchStartRange;
+	private float touchDistance;
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+
+		switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				touchStartY = event.getRawY();
+				break;
+			case MotionEvent.ACTION_MOVE:
+				if (touchStartY < touchStartRange) {
+					if (event.getRawY() - touchStartY > touchDistance) {
+						fragment.showInforView();
+					}
+				}
+				break;
+			case MotionEvent.ACTION_UP:
+				break;
+		}
+		return super.dispatchTouchEvent(event);
+	}
 }

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -151,7 +152,7 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		priorityController.updateOrdersByPriority(totalOrderList);
 		if (totalOrderList != null && totalOrderList.size() > 0) {
 			// show side index bar
-			waveSideBarView.setVisibility(View.VISIBLE);
+			showSideBar();
 
 			orderList = new ArrayList<SOrder>();
 			for (SOrder order:totalOrderList) {
@@ -163,6 +164,19 @@ public class SOrderChooserUpdate extends CustomDialog implements OnItemClickList
 		else {
 			noOrderText.setVisibility(View.VISIBLE);
 		}
+	}
+
+	private void showSideBar() {
+		waveSideBarView.setVisibility(View.VISIBLE);
+		// post刷新mSideBarView，根据调试发现重写初始化后WaveSideBarView会重新执行onMeasure(width,height=0)->onDraw->onMeasure(width,height=正确值)
+		// 缺少重新onDraw的过程，因此通过delay执行mSideBarView.invalidate()可以激活onDraw事件，根据正确的值重新绘制
+		// 用mSideBarView.post/postDelayed总是不准确
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				waveSideBarView.invalidate();
+			}
+		}, 100);
 	}
 
 	/**

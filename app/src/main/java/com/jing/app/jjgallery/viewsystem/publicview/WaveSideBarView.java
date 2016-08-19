@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.util.DebugLog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +22,17 @@ import java.util.List;
  * 波浪侧边栏
  * author: imilk
  * https://github.com/Solartisan/WaveSideBar.git
+ *
+ * author: JingYang
+ * WaveSideBarView从一开始就显示布局，不会有什么问题
+ * 在我的项目中有两个情况发现WaveSideBarView有个问题：
+ * 1. WaveSideBarView布局在第一个fragment，从第二个fragment切换回第一个fragment的时候
+ * 2. WaveSideBarView布局在dialog里，一开始是GONE，等数据异步加载完成后再使其VISIBLE
+ * 这两种情况发生后，WaveSideBarView的字母index没有显示，并且波浪出现在父控件的左上角
+ *
+ * 分析代码可以发现是onMeasure里的计算问题，width,height没有获取到实际值而进行的onDraw
+ * 通过调试发现在onDraw后还有一次onMeasure，width,height获取到了实际值，但是没有再onDraw
+ * 所以在这两种情况下，在相应的代码后面用 Handler postDelay 一个Runnable来执行 invalidate强制重绘就可以解决这个问题
  */
 public class WaveSideBarView extends View {
 
@@ -171,10 +183,12 @@ public class WaveSideBarView extends View {
         mWidth = getWidth();
         mItemHeight = (mHeight - mPadding) / mLetters.size();
         mPosX = mWidth - 1.6f * mTextSize;
+        DebugLog.e("mHeight=" + mHeight + ", mWidth=" + mWidth + ", mItemHeight=" + mItemHeight + ", mPosX=" + mPosX);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        DebugLog.e("");
         super.onDraw(canvas);
         //绘制字母列表
         drawLetters(canvas);

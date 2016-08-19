@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.presenter.sub;
 
 import android.os.AsyncTask;
 
+import com.jing.app.jjgallery.bean.BookInforBean;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
@@ -35,6 +36,7 @@ public class BookPresenter {
     }
 
     private class LoadTask extends AsyncTask<Object, Void, List<List<ImageValue>>> {
+        private BookInforBean inforBean;
         @Override
         protected List<List<ImageValue>> doInBackground(Object... params) {
             List<String> pathList = null;
@@ -47,12 +49,14 @@ public class BookPresenter {
                 manager.loadOrderItems(order);
                 pathList = order.getImgPathList();
             }
-            return bookHelper.orderPageItems(pathList);
+            List<List<ImageValue>> list = bookHelper.orderPageItems(pathList);
+            inforBean = bookHelper.getBookInforBean();
+            return list;
         }
 
         @Override
         protected void onPostExecute(List<List<ImageValue>> datas) {
-            bookView.onDatasReady(datas);
+            bookView.onDatasReady(datas, inforBean);
             super.onPostExecute(datas);
         }
     }

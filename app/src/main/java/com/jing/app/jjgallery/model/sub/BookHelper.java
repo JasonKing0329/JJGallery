@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.model.sub;
 
 import android.util.Log;
 
+import com.jing.app.jjgallery.bean.BookInforBean;
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.service.image.ImageValueController;
 import com.jing.app.jjgallery.util.DebugLog;
@@ -16,6 +17,9 @@ import java.util.Random;
 public class BookHelper {
 
 	private final String TAG = "BookHelper";
+
+	private BookInforBean bookInforBean;
+
 	public BookHelper() {
 
 	}
@@ -24,7 +28,7 @@ public class BookHelper {
 		if (imgPathList == null) {
 			return null;
 		}
-		List<List<ImageValue>> list = new ArrayList<List<ImageValue>>();
+		List<List<ImageValue>> list = new ArrayList<>();
 		Collections.shuffle(imgPathList);
 		ImageValueController controller = new ImageValueController();
 
@@ -60,6 +64,9 @@ public class BookHelper {
 	 */
 	private void sortImageValue(List<List<ImageValue>> list,
 									   List<ImageValue> values) {
+
+		bookInforBean = new BookInforBean();
+		bookInforBean.setTotal(values.size());
 		// 分配队列
 		// 所有宽大于高1.2倍以上的图片
 		Queue<ImageValue> widthQueue = new LinkedList<>();
@@ -86,6 +93,9 @@ public class BookHelper {
 				}
 			}
 		}
+		bookInforBean.setWidthQueue(widthQueue.size());
+		bookInforBean.setHeightQueue(heightQueue.size());
+		bookInforBean.setMiddleQueue(middleQueue.size());
 
 		Random random = new Random();
 		//支持的页面类型（页面包含的图片数）
@@ -283,5 +293,9 @@ public class BookHelper {
 				hasMore = false;
 			}
 		}
+	}
+
+	public BookInforBean getBookInforBean() {
+		return bookInforBean;
 	}
 }

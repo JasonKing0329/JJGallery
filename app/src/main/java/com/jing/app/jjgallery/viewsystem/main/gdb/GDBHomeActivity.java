@@ -48,6 +48,9 @@ public class GDBHomeActivity extends BaseActivity {
             starFragment = new StarListFragment();
             starFragment.setActionbar(mActionBar);
         }
+        else {
+            starFragment.reInit();
+        }
         currentFragment = starFragment;
 
         ft.replace(R.id.gdb_fragment_container, currentFragment, "StarListFragment");

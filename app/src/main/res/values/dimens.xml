@@ -261,4 +261,8 @@
     <dimen name="gdb_record_main_text_size">14dp</dimen>
     <dimen name="gdb_record_page_star1_img_height">100dp</dimen>
     <dimen name="gdb_record_table_distance">10dp</dimen>
+
+    <!-- wave side bar -->
+    <dimen name="book_touch_start_range">30dp</dimen>
+    <dimen name="book_touch_distance">100dp</dimen>
 </resources>
