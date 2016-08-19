@@ -7,6 +7,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -48,6 +51,9 @@ public abstract class WaterfallFragment extends Fragment implements IWaterfall, 
 
     private ActionBar mActionbar;
     protected SOrderProvider sOrderProvider;
+
+    // 当前是否是随机序列
+    protected boolean isRandomSequence;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -199,5 +205,40 @@ public abstract class WaterfallFragment extends Fragment implements IWaterfall, 
     protected List<String> getSelectedList() {
         return getAdapter().getSelectedList();
     }
+
+    public void createMenu(MenuInflater menuInflater, Menu menu) {
+        loadMenu(menuInflater, menu);
+    }
+
+
+    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
+        loadMenu(menuInflater, menu);
+    }
+
+    public void loadMenu(MenuInflater menuInflater, Menu menu) {
+        menu.clear();
+        menuInflater.inflate(R.menu.waterfall, menu);
+        menu.findItem(R.id.menu_waterfall_origin).setVisible(isRandomSequence);
+    }
+
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_waterfall_origin:
+                if (isRandomSequence) {// 当前是随机序列
+                    isRandomSequence = false;
+                    onOriginSequence();
+                }
+                break;
+            case R.id.menu_waterfall_random:
+                isRandomSequence = true;
+                onRandomSequence();
+                break;
+        }
+        return true;
+    }
+
+    protected abstract void onOriginSequence();
+
+    protected abstract void onRandomSequence();
 
 }

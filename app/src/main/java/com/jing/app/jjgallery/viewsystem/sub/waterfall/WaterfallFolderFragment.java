@@ -69,4 +69,13 @@ public class WaterfallFolderFragment extends WaterfallFragment {
         sOrderProvider.deleteItemFromFolder(getSelectedList());
     }
 
+    @Override
+    protected void onOriginSequence() {
+        mAdapter.onOriginSequence();
+    }
+
+    @Override
+    protected void onRandomSequence() {
+        mAdapter.onRandomSequence();
+    }
 }

@@ -25,7 +25,8 @@ public class CardExpandAdapter extends BaseAdapter {
                 context.getString(R.string.menu_fullscreen),
                 context.getString(R.string.openby_wall),
                 context.getString(R.string.menu_book_view),
-                context.getString(R.string.sorder_preview)
+                context.getString(R.string.sorder_preview),
+                context.getString(R.string.menu_thumb_waterfall)
         };
     }
     @Override

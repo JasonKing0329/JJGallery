@@ -122,6 +122,9 @@ public class SOrderPresenter extends BasePresenter implements SOrderCallback {
         sOrderManager.loadAllOrders(orderBy);
     }
 
+    public void loadOrderItems(SOrder order) {
+        sOrderManager.loadOrderItems(order);
+    }
     @Override
     /**
      * loadAllOrders回调

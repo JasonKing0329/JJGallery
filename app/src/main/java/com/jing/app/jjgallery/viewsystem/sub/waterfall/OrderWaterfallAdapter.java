@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem.sub.waterfall;
 import android.content.Context;
 import android.util.SparseBooleanArray;
 
+import com.jing.app.jjgallery.bean.filesystem.FileBean;
 import com.jing.app.jjgallery.bean.order.SOrder;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 public class OrderWaterfallAdapter extends BaseWaterfallAdapter {
 
     private SOrder sOrder;
+    private List<String> originList;
 
     public OrderWaterfallAdapter(Context context, SOrder sOrder, int column) {
         super(context, column);
@@ -62,5 +64,41 @@ public class OrderWaterfallAdapter extends BaseWaterfallAdapter {
     protected void removeItem(int index) {
         sOrder.getImgPathList().remove(index);
         notifyItemRemoved(index);
+    }
+
+    @Override
+    public void onOriginSequence() {
+        if (originList != null) {
+            if (sOrder.getImgPathList() != null) {
+                // 恢复原始序列
+                sOrder.getImgPathList().clear();
+                for (String path:originList) {
+                    sOrder.getImgPathList().add(path);
+                }
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onRandomSequence() {
+        if (originList == null) {
+            originList = new ArrayList<>();
+            if (sOrder.getImgPathList() != null) {
+                // 保存原始序列
+                for (String path:sOrder.getImgPathList()) {
+                    originList.add(path);
+                }
+                // 打乱现有序列
+                Collections.shuffle(sOrder.getImgPathList());
+
+                notifyDataSetChanged();
+            }
+        }
+        else {
+            // 打乱现有序列
+            Collections.shuffle(sOrder.getImgPathList());
+            notifyDataSetChanged();
+        }
     }
 }

@@ -132,11 +132,11 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         return false;
     }
 
-    protected void showToastLong(String text) {
+    public void showToastLong(String text) {
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
-    protected void showToastShort(String text) {
+    public void showToastShort(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
@@ -209,6 +209,7 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
      * @param disableParentOperation 禁止BaseActivity的dispatch touch处理，由派生类自己改写操作(例如WallActivity涉及top bottom两个bar的控制)
      */
     public void requestActionbarFloating(boolean disableParentOperation) {
+        mActionBar.setBackgroundColor(getResources().getColor(ThemeManager.getInstance().getWallActionbarColorId(this)));
         RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
         params.removeRule(RelativeLayout.BELOW);

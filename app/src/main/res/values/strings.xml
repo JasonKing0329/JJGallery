@@ -116,6 +116,9 @@
 
     <string name="menu_gdb_record">Records</string>
     <string name="menu_gdb_star">Stars</string>
+
+    <string name="menu_waterfall_random">Random sequence</string>
+    <string name="menu_waterfall_origin">Origin sequence</string>
     <!--************************** mainview file list **************************-->
     <string name="filemanager_encrypt">Encrypt</string>
     <string name="filemanager_decipher">Decipher</string>

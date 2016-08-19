@@ -11,8 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.BasePresenter;
+import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
+import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
@@ -173,5 +175,17 @@ public class SOrderCardPage implements IPage, SOrderCardAdapter.OnExpandActionLi
     @Override
     public void onPreView(SOrder order) {
         new PreviewDialog(context, order).show();
+    }
+
+    @Override
+    public void onWaterfallView(SOrder order) {
+        mPresenter.loadOrderItems(order);
+        if (order.getImgPathList() != null && order.getImgPathList().size() >= Constants.WATERFALL_MIN_NUMBER) {
+            mPresenter.accessOrder(order);
+            ActivityManager.startWaterfallActivity((Activity) context, order);
+        }
+        else {
+            ((BaseSlidingActivity) context).showToastLong(String.format(context.getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+        }
     }
 }

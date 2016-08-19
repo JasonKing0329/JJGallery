@@ -189,4 +189,15 @@ public abstract class BaseWaterfallAdapter extends RecyclerView.Adapter<BaseWate
             image.setLayoutParams(params);
         }
     }
+
+    /**
+     * 对当前recycler list进行原始排序
+     */
+    public abstract void onOriginSequence();
+
+    /**
+     * 对当前recycler list进行随机排序
+     */
+    public abstract void onRandomSequence();
+
 }

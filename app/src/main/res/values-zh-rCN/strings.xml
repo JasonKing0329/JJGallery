@@ -107,6 +107,9 @@
     <string name="menu_cover_cascade">层叠封面</string>
     <string name="menu_cover_cascade_rotate">旋转层叠封面</string>
     <string name="menu_cover_grid">宫格封面</string>
+
+    <string name="menu_waterfall_random">随机序列</string>
+    <string name="menu_waterfall_origin">原始序列</string>
     <!--************************** mainview file list **************************-->
     <string name="filemanager_encrypt">加密</string>
     <string name="filemanager_decipher">解密</string>

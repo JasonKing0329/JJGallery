@@ -2,7 +2,9 @@ package com.jing.app.jjgallery.viewsystem.main.timeline;
 
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
@@ -85,4 +87,24 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
         return null;
     }
 
+    @Override
+    public void createMenu(MenuInflater menuInflater, Menu menu) {
+        super.createMenu(menuInflater, menu);
+        fragment.createMenu(menuInflater, menu);
+    }
+
+    @Override
+    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
+        super.onPrepareMenu(menuInflater, menu);
+        fragment.onPrepareMenu(menuInflater, menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        boolean resSuper = super.onMenuItemClick(item);
+        if (resSuper) {
+            return true;
+        }
+        return fragment.onMenuItemClick(item);
+    }
 }

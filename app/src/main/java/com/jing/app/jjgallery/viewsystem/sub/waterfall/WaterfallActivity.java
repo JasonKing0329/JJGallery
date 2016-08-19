@@ -1,6 +1,9 @@
 package com.jing.app.jjgallery.viewsystem.sub.waterfall;
 
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -86,5 +89,23 @@ public class WaterfallActivity extends BaseActivity {
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
+        super.onPrepareMenu(menuInflater, menu);
+        fragment.onPrepareMenu(menuInflater, menu);
+    }
+
+    @Override
+    public void createMenu(MenuInflater menuInflater, Menu menu) {
+        super.createMenu(menuInflater, menu);
+        fragment.createMenu(menuInflater, menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        super.onMenuItemClick(item);
+        return fragment.onMenuItemClick(item);
     }
 }

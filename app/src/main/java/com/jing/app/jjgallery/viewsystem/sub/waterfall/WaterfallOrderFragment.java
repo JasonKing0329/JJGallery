@@ -69,4 +69,14 @@ public class WaterfallOrderFragment extends WaterfallFragment {
         sOrderProvider.deleteItemFromOrder(sOrder, mAdapter.getSelectedIndex());
     }
 
+    @Override
+    protected void onOriginSequence() {
+        mAdapter.onOriginSequence();
+    }
+
+    @Override
+    protected void onRandomSequence() {
+        mAdapter.onRandomSequence();
+    }
+
 }

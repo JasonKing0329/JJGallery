@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class FolderWaterfallAdapter extends BaseWaterfallAdapter {
 
+    private List<FileBean> originList;
     private List<FileBean> list;
 
     public FolderWaterfallAdapter(Context context, List<FileBean> list, int column) {
@@ -61,5 +62,41 @@ public class FolderWaterfallAdapter extends BaseWaterfallAdapter {
     protected void removeItem(int index) {
         list.remove(index);
         notifyItemRemoved(index);
+    }
+
+    @Override
+    public void onOriginSequence() {
+        if (originList != null) {
+            if (list != null) {
+                // 恢复原始序列
+                list.clear();
+                for (FileBean bean:originList) {
+                    list.add(bean);
+                }
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onRandomSequence() {
+        if (originList == null) {
+            originList = new ArrayList<>();
+            if (list != null) {
+                // 保存原始序列
+                for (FileBean bean:list) {
+                    originList.add(bean);
+                }
+                // 打乱现有序列
+                Collections.shuffle(list);
+
+                notifyDataSetChanged();
+            }
+        }
+        else {
+            // 打乱现有序列
+            Collections.shuffle(list);
+            notifyDataSetChanged();
+        }
     }
 }

@@ -23,6 +23,7 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> implements CardExpan
         void onWallView(SOrder order);
         void onBookView(SOrder order);
         void onPreView(SOrder order);
+        void onWaterfallView(SOrder order);
     }
 
     public enum HitMode {
@@ -91,6 +92,9 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> implements CardExpan
                     break;
                 case 3://preview
                     onExpandActionListener.onPreView(order);
+                    break;
+                case 4://waterfall
+                    onExpandActionListener.onWaterfallView(order);
                     break;
             }
         }
