@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/gdb_star_headimg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="15dp"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/gdb_star_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_toRightOf="@id/gdb_star_headimg"
         android:textSize="20dp"
-        android:layout_marginLeft="16dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
         android:background="?android:selectableItemBackground"/>
 </RelativeLayout>

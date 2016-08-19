@@ -5,7 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.king.service.gdb.bean.Star;
 
 import java.util.List;
@@ -23,9 +27,10 @@ import cc.solart.turbo.BaseViewHolder;
 public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> implements View.OnClickListener {
 
     private List<Star> originList;
+    private GdbPresenter mPresenter;
 
     public interface OnStarClickListener {
-        void onStarClick(Star star);
+        void onStarClick(StarProxy star);
     }
 
     private int colors[] = new int[] {
@@ -43,6 +48,10 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
     public StarListAdapter(Context context, List<Star> data) {
         super(context, data);
         originList = data;
+    }
+
+    public void setPresenter(GdbPresenter mPresenter) {
+        this.mPresenter = mPresenter;
     }
 
     public void setOnStarClickListener(OnStarClickListener listener) {
@@ -91,9 +100,19 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
         else if (holder instanceof NameHolder) {
             NameHolder nHolder = (NameHolder) holder;
             nHolder.name.setText(item.getName());
-            nHolder.name.setTag(item);
+            StarProxy proxy = new StarProxy();
+            proxy.setStar(item);
+            String headPath = mPresenter.getStarImage(item.getName());
+            if (headPath == null) {
+                nHolder.imageView.setVisibility(View.GONE);
+            }
+            else {
+                nHolder.imageView.setVisibility(View.VISIBLE);
+                SImageLoader.getInstance().displayImage(headPath, nHolder.imageView);
+            }
+            proxy.setImagePath(headPath);
+            nHolder.name.setTag(proxy);
             nHolder.name.setOnClickListener(this);
-
         }
     }
 
@@ -120,16 +139,18 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
     public class NameHolder extends BaseViewHolder {
 
         TextView name;
+        CircularImageView imageView;
         public NameHolder(View view) {
             super(view);
             name = findViewById(R.id.gdb_star_name);
+            imageView = findViewById(R.id.gdb_star_headimg);
         }
     }
 
     @Override
     public void onClick(View v) {
         if (onStarClickListener != null) {
-            Star star = (Star) v.getTag();
+            StarProxy star = (StarProxy) v.getTag();
             onStarClickListener.onStarClick(star);
         }
     }

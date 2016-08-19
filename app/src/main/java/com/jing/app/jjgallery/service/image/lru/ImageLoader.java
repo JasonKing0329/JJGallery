@@ -111,6 +111,13 @@ public class ImageLoader implements ISImageLoader
 		mSemaphoreThreadPool = new Semaphore(threadCount);
 	}
 
+	@Override
+	public void removeCache(String path) {
+		if (mLruCache != null) {
+			mLruCache.remove(path);
+		}
+	}
+
 	/**
 	 * 初始化后台轮询线程
 	 */

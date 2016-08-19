@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
@@ -60,6 +63,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
             }
         });
 
+        ((ProgressProvider) getActivity()).showProgressCycler();
         gdbPresenter.loadStarList();
         return view;
     }
@@ -78,13 +82,19 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
     @Override
     public void onLoadStarList(List<Star> list) {
         mAdapter = new StarListAdapter(getActivity(), list);
+        mAdapter.setPresenter(gdbPresenter);
         mAdapter.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
+        ((ProgressProvider) getActivity()).dismissProgressCycler();
     }
 
     @Override
-    public void onStarClick(Star star) {
-        ActivityManager.startStarActivity(getActivity(), star);
+    public void onStarClick(StarProxy star) {
+        // 由于当前界面加载的star图片都是50*50的小图，但是lru包里的ImageLoader会在缓存中保存图片实例
+        // 进入Star page后，加载的图片key没有变，就会从缓存读取，最后就只能显示很模糊的小图
+        // 因此，在这里要删除掉该图的缓存，迫使其重新加载
+        SImageLoader.getInstance().removeCache(star.getImagePath());
+        ActivityManager.startStarActivity(getActivity(), star.getStar());
     }
 
     public void onTextChanged(String text, int start, int before, int count) {

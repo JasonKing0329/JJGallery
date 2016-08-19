@@ -102,5 +102,10 @@ public class ImageShowManager {
 		}
 	}
 
+	public void deleteInMemery(String key) {
+		if (key != null) {
+			mMemoryCache.remove(key);
+		}
+	}
 
 }
