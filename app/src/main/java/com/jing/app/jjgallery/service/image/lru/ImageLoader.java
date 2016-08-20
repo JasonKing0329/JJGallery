@@ -113,7 +113,7 @@ public class ImageLoader implements ISImageLoader
 
 	@Override
 	public void removeCache(String path) {
-		if (mLruCache != null) {
+		if (path != null) {
 			mLruCache.remove(path);
 		}
 	}
