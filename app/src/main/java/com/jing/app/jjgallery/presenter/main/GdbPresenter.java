@@ -75,22 +75,23 @@ public class GdbPresenter {
     /**
      *
      * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
+     * @param desc
      */
-    public void loadRecordList(int sortMode) {
-        new LoadRecordListTask().execute(sortMode);
+    public void loadRecordList(int sortMode, boolean desc) {
+        new LoadRecordListTask().execute(sortMode, desc);
     }
 
     public void loadStar(int starId) {
         new LoadStarTask().execute(starId);
     }
 
-    public void sortRecords(List<Record> recordList, int sortMode) {
+    public void sortRecords(List<Record> recordList, int sortMode, boolean desc) {
         if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
-            Collections.sort(recordList, new RecordComparator(sortMode));
+            Collections.sort(recordList, new RecordComparator(sortMode, desc));
         }
     }
 
-    public void sortSceneRecords(List<RecordProxy> recordList, int sortMode) {
+    public void sortSceneRecords(List<RecordProxy> recordList, int sortMode, boolean desc) {
         if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
             List<Record> list = null;
             int index = 0;
@@ -98,7 +99,7 @@ public class GdbPresenter {
             for (RecordProxy proxy:recordList) {
                 if (proxy.isHeader()) {
                     if (list != null) {
-                        Collections.sort(list, new RecordComparator(sortMode));
+                        Collections.sort(list, new RecordComparator(sortMode, desc));
                         for (int i = 0; i < list.size(); i ++) {
                             recordList.get(headIndex + 1 + i).setRecord(list.get(i));
                         }
@@ -165,7 +166,7 @@ public class GdbPresenter {
         }
     }
 
-    private class LoadRecordListTask extends AsyncTask<Integer, Void, List<Record>> {
+    private class LoadRecordListTask extends AsyncTask<Object, Void, List<Record>> {
         @Override
         protected void onPostExecute(List<Record> list) {
 
@@ -175,9 +176,9 @@ public class GdbPresenter {
         }
 
         @Override
-        protected List<Record> doInBackground(Integer... params) {
+        protected List<Record> doInBackground(Object... params) {
             List<Record> list = gdbProvider.getAllRecords();
-            sortRecords(list, params[0]);
+            sortRecords(list, (Integer) params[0], (Boolean) params[1]);
             return list;
         }
     }
@@ -233,106 +234,239 @@ public class GdbPresenter {
     private class RecordComparator implements Comparator<Record> {
 
         private int sortMode;
-        public RecordComparator(int sortMode) {
+        private boolean desc;
+        public RecordComparator(int sortMode, boolean desc) {
             this.sortMode = sortMode;
+            this.desc = desc;
         }
 
         @Override
         public int compare(Record lhs, Record rhs) {
+            RecordOneVOne left = null;
+            RecordOneVOne right = null;
+            if (lhs instanceof RecordOneVOne) {
+                left = (RecordOneVOne) lhs;
+            }
+            if (rhs instanceof RecordOneVOne) {
+                right = (RecordOneVOne) rhs;
+            }
+            
             int result = 0;
             switch (sortMode) {
                 case PreferenceValue.GDB_SR_ORDERBY_NAME:// asc
-                    result = lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+                    if (desc) {
+                        result = rhs.getName().toLowerCase().compareTo(lhs.getName().toLowerCase());
+                    }
+                    else {
+                        result = lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+                    }
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_DATE:// desc
-                    result = (int) (rhs.getLastModifyTime() - lhs.getLastModifyTime());
+                case PreferenceValue.GDB_SR_ORDERBY_DATE:
+                    if (desc) {
+                        result = (int) (rhs.getLastModifyTime() - lhs.getLastModifyTime());
+                    }
+                    else {
+                        result = (int) (lhs.getLastModifyTime() - rhs.getLastModifyTime());
+                    }
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_SCORE:// desc
-                    result = rhs.getScore() - lhs.getScore();
+                case PreferenceValue.GDB_SR_ORDERBY_SCORE:
+                    if (desc) {
+                        result = rhs.getScore() - lhs.getScore();
+                    }
+                    else {
+                        result = lhs.getScore() - rhs.getScore();
+                    }
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_FK:// desc
-                    int leftScore = 0;
-                    if (lhs instanceof RecordSingleScene) {
-                        leftScore = ((RecordSingleScene) lhs).getScoreFk();
+                case PreferenceValue.GDB_SR_ORDERBY_FK:
+                    if (desc) {
+                        result = right.getScoreFk() - left.getScoreFk();
                     }
-                    int rightScore = 0;
-                    if (rhs instanceof RecordSingleScene) {
-                        rightScore = ((RecordSingleScene) rhs).getScoreFk();
+                    else {
+                        result = left.getScoreFk() - right.getScoreFk();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_CUM:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordSingleScene) {
-                        leftScore = ((RecordSingleScene) lhs).getScoreCum();
+                case PreferenceValue.GDB_SR_ORDERBY_CUM:
+                    if (desc) {
+                        result = right.getScoreCum() - left.getScoreCum();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordSingleScene) {
-                        rightScore = ((RecordSingleScene) rhs).getScoreCum();
+                    else {
+                        result = left.getScoreCum() - right.getScoreCum();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_BJOB:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordSingleScene) {
-                        leftScore = ((RecordSingleScene) lhs).getScoreBJob();
+                case PreferenceValue.GDB_SR_ORDERBY_BJOB:
+                    if (desc) {
+                        result = right.getScoreBJob() - left.getScoreBJob();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordSingleScene) {
-                        rightScore = ((RecordSingleScene) rhs).getScoreBJob();
+                    else {
+                        result = left.getScoreBJob() - right.getScoreBJob();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_STAR1:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordOneVOne) {
-                        leftScore = ((RecordOneVOne) lhs).getScoreStar1();
+                case PreferenceValue.GDB_SR_ORDERBY_STAR1:
+                    if (desc) {
+                        result = right.getScoreStar1() - left.getScoreStar1();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordOneVOne) {
-                        rightScore = ((RecordOneVOne) rhs).getScoreStar1();
+                    else {
+                        result = left.getScoreStar1() - right.getScoreStar1();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_STAR2:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordOneVOne) {
-                        leftScore = ((RecordOneVOne) lhs).getScoreStar2();
+                case PreferenceValue.GDB_SR_ORDERBY_STAR2:
+                    if (desc) {
+                        result = right.getScoreStar2() - left.getScoreStar2();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordOneVOne) {
-                        rightScore = ((RecordOneVOne) rhs).getScoreStar2();
+                    else {
+                        result = left.getScoreStar2() - right.getScoreStar2();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_STARCC1:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordOneVOne) {
-                        leftScore = ((RecordOneVOne) lhs).getScoreStarC1();
+                case PreferenceValue.GDB_SR_ORDERBY_STARCC1:
+                    if (desc) {
+                        result = right.getScoreStarC1() - left.getScoreStarC1();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordOneVOne) {
-                        rightScore = ((RecordOneVOne) rhs).getScoreStarC1();
+                    else {
+                        result = left.getScoreStarC1() - right.getScoreStarC1();
                     }
-                    result = rightScore - leftScore;
                     break;
-                case PreferenceValue.GDB_SR_ORDERBY_STARCC2:// desc
-                    leftScore = 0;
-                    if (lhs instanceof RecordOneVOne) {
-                        leftScore = ((RecordOneVOne) lhs).getScoreStarC2();
+                case PreferenceValue.GDB_SR_ORDERBY_STARCC2:
+                    if (desc) {
+                        result = right.getScoreStarC2() - left.getScoreStarC2();
                     }
-                    rightScore = 0;
-                    if (rhs instanceof RecordOneVOne) {
-                        rightScore = ((RecordOneVOne) rhs).getScoreStarC2();
+                    else {
+                        result = left.getScoreStarC2() - right.getScoreStarC2();
                     }
-                    result = rightScore - leftScore;
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_BAREBACK:
+                    if (desc) {
+                        result = right.getScoreNoCond() - left.getScoreNoCond();
+                    }
+                    else {
+                        result = left.getScoreNoCond() - right.getScoreNoCond();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_SCOREFEEL:
+                    if (desc) {
+                        result = right.getScoreFeel() - left.getScoreFeel();
+                    }
+                    else {
+                        result = left.getScoreFeel() - right.getScoreFeel();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STORY:
+                    if (desc) {
+                        result = right.getScoreStory() - left.getScoreStory();
+                    }
+                    else {
+                        result = left.getScoreStory() - right.getScoreStory();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FOREPLAY:
+                    if (desc) {
+                        result = right.getScoreForePlay() - left.getScoreForePlay();
+                    }
+                    else {
+                        result = left.getScoreForePlay() - right.getScoreForePlay();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_RIM:
+                    if (desc) {
+                        result = right.getScoreRim() - left.getScoreRim();
+                    }
+                    else {
+                        result = left.getScoreRim() - right.getScoreRim();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_RHYTHM:
+                    if (desc) {
+                        result = right.getScoreRhythm() - left.getScoreRhythm();
+                    }
+                    else {
+                        result = left.getScoreRhythm() - right.getScoreRhythm();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_SCENE:
+                    if (desc) {
+                        result = right.getScoreScene() - left.getScoreScene();
+                    }
+                    else {
+                        result = left.getScoreScene() - right.getScoreScene();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_CSHOW:
+                    if (desc) {
+                        result = right.getScoreCShow() - left.getScoreCShow();
+                    }
+                    else {
+                        result = left.getScoreCShow() - right.getScoreCShow();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_SPECIAL:
+                    if (desc) {
+                        result = right.getScoreSpeicial() - left.getScoreSpeicial();
+                    }
+                    else {
+                        result = left.getScoreSpeicial() - right.getScoreSpeicial();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_HD:
+                    if (desc) {
+                        result = rhs.getHDLevel() - lhs.getHDLevel();
+                    }
+                    else {
+                        result = lhs.getHDLevel() - rhs.getHDLevel();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK1:
+                    if (desc) {
+                        result = right.getScoreFkType1() - left.getScoreFkType1();
+                    }
+                    else {
+                        result = left.getScoreFkType1() - right.getScoreFkType1();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK2:
+                    if (desc) {
+                        result = right.getScoreFkType2() - left.getScoreFkType2();
+                    }
+                    else {
+                        result = left.getScoreFkType2() - right.getScoreFkType2();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK3:
+                    if (desc) {
+                        result = right.getScoreFkType3() - left.getScoreFkType3();
+                    }
+                    else {
+                        result = left.getScoreFkType3() - right.getScoreFkType3();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK4:
+                    if (desc) {
+                        result = right.getScoreFkType4() - left.getScoreFkType4();
+                    }
+                    else {
+                        result = left.getScoreFkType4() - right.getScoreFkType4();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK5:
+                    if (desc) {
+                        result = right.getScoreFkType5() - left.getScoreFkType5();
+                    }
+                    else {
+                        result = left.getScoreFkType5() - right.getScoreFkType5();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_FK6:
+                    if (desc) {
+                        result = right.getScoreFkType6() - left.getScoreFkType6();
+                    }
+                    else {
+                        result = left.getScoreFkType6() - right.getScoreFkType6();
+                    }
                     break;
             }
             return result;
         }
     }
 
-    public List<RecordProxy> collectRecordsByScene(List<Record> list, int sortMode) {
+    public List<RecordProxy> collectRecordsByScene(List<Record> list, int sortMode, boolean desc) {
         List<RecordProxy> resultList = new ArrayList<>();
         Map<String, List<Record>> map = new HashMap<>();
         List<Record> subList;
@@ -361,7 +495,7 @@ public class GdbPresenter {
         }
         Collections.sort(scenes, new NameComparator());
 
-        RecordComparator comparator = new RecordComparator(sortMode);
+        RecordComparator comparator = new RecordComparator(sortMode, desc);
         // 将list转化为包含header模型的proxy模型
         for (int i = 0; i < scenes.size(); i ++) {
             RecordProxy proxy = new RecordProxy();

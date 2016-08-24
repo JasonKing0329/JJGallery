@@ -369,5 +369,8 @@
     <!--************************** gdb **************************-->
     <string name="gdb_star_file_numbers">%d video files</string>
     <string name="gdb_no_conf">No database found in conf folder.</string>
+    <string name="gdb_sort_asc">ASC</string>
+    <string name="gdb_sort_desc">DESC</string>
+    <string name="gdb_sort_title">Sort</string>
 
 </resources>

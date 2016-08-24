@@ -27,6 +27,7 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
 
     private List<RecordProxy> originList;
     private int nameColorNormal, nameColorBareback;
+    private int sortMode;
 
     public interface OnRecordClickListener {
         void onRecordClick(Record record);
@@ -53,6 +54,10 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
 
     public void setOnRecordClickListener(OnRecordClickListener listener) {
         onRecordClickListener = listener;
+    }
+
+    public void setSortMode(int sortMode) {
+        this.sortMode = sortMode;
     }
 
     public List<RecordProxy> getRecordList() {
@@ -139,7 +144,7 @@ public class RecordSceneAdapter extends BaseTurboAdapter<RecordProxy, BaseViewHo
         }
 
         public void bind(RecordProxy item) {
-            viewHolder.bind(item);
+            viewHolder.bind(item, sortMode);
         }
     }
 

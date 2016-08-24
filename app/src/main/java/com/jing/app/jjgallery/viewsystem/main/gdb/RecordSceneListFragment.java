@@ -5,10 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.RecordProxy;
@@ -17,10 +15,12 @@ import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.bean.Record;
-import com.king.service.gdb.bean.Star;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JingYang on 2016/8/5 0005.
@@ -33,6 +33,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
 
     private RecordSceneAdapter mAdapter;
     private int currentSortMode = -1;
+    private boolean currentSortDesc = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         });
         mRecyclerView.addItemDecoration(decoration);
 
-        gdbPresenter.loadRecordList(PreferenceValue.GDB_SR_ORDERBY_NONE);
+        gdbPresenter.loadRecordList(PreferenceValue.GDB_SR_ORDERBY_NONE, currentSortDesc);
         return view;
     }
 
@@ -74,18 +75,32 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     public void onIconClick(View view) {
         switch (view.getId()) {
             case R.id.actionbar_sort:
-                new RecordSortPopup().showSortPopup(getActivity(), view, new RecordSortPopup.SortCallback() {
+                new SortDialog(getActivity(), new CustomDialog.OnCustomDialogActionListener() {
                     @Override
-                    public void onSortModeSelected(int sortMode, boolean refresh) {
-                        if (currentSortMode != sortMode) {
+                    public boolean onSave(Object object) {
+                        Map<String, Object> map = (Map<String, Object>) object;
+                        int sortMode = (int) map.get("sortMode");
+                        boolean desc = (Boolean) map.get("desc");
+                        if (currentSortMode != sortMode || currentSortDesc != desc) {
                             currentSortMode = sortMode;
+                            currentSortDesc = desc;
                             SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                        }
-                        if (refresh) {
                             refresh();
                         }
+                        return false;
                     }
-                });
+
+                    @Override
+                    public boolean onCancel() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onLoadData(HashMap<String, Object> data) {
+                        data.put("sortMode", currentSortMode);
+                        data.put("desc", currentSortDesc);
+                    }
+                }).show();
                 break;
             case R.id.actionbar_hide:
                 ((GDBHomeActivity) getContext()).onRecordListPage();
@@ -94,15 +109,17 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     }
 
     private void refresh() {
-        gdbPresenter.sortSceneRecords(mAdapter.getRecordList(), currentSortMode);
+        gdbPresenter.sortSceneRecords(mAdapter.getRecordList(), currentSortMode, currentSortDesc);
+        mAdapter.setSortMode(currentSortMode);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoadRecordList(List<Record> list) {
-        List<RecordProxy> resultList = gdbPresenter.collectRecordsByScene(list, currentSortMode);
+        List<RecordProxy> resultList = gdbPresenter.collectRecordsByScene(list, currentSortMode, currentSortDesc);
         mAdapter = new RecordSceneAdapter(getActivity(), resultList);
         mAdapter.setOnRecordClickListener(this);
+        mAdapter.setSortMode(currentSortMode);
         mRecyclerView.setAdapter(mAdapter);
     }
 

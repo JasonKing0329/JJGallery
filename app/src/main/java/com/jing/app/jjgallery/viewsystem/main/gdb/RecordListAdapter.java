@@ -26,6 +26,8 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implem
     private int nameColorNormal, nameColorBareback;
     private OnRecordItemClickListener itemClickListener;
 
+    private int sortMode;
+
     public RecordListAdapter(Context context, List<Record> list) {
         this.originList = list;
         recordList = new ArrayList<>();
@@ -44,6 +46,10 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implem
         this.itemClickListener = itemClickListener;
     }
 
+    public void setSortMode(int sortMode) {
+        this.sortMode = sortMode;
+    }
+
     @Override
     public RecordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecordHolder holder = new RecordHolder(parent);
@@ -53,6 +59,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implem
 
     @Override
     public void onBindViewHolder(RecordHolder holder, int position) {
+        holder.setSortMode(sortMode);
         holder.bind(recordList.get(position), position);
     }
 

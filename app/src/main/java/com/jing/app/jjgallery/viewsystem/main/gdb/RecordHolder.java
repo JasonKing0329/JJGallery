@@ -13,6 +13,8 @@ import com.king.service.gdb.bean.Record;
 public class RecordHolder extends RecyclerListAdapter.ViewHolder<Record> {
 
     private RecordViewHolder viewHolder;
+    private int sortMode;
+
     public RecordHolder(ViewGroup parent) {
         this(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_record_item, parent, false));
     }
@@ -29,6 +31,10 @@ public class RecordHolder extends RecyclerListAdapter.ViewHolder<Record> {
 
     @Override
     public void bind(Record item, int position) {
-        viewHolder.bind(item, position);
+        viewHolder.bind(item, position, sortMode);
+    }
+
+    public void setSortMode(int sortMode) {
+        this.sortMode = sortMode;
     }
 }

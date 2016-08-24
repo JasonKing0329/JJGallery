@@ -16,8 +16,12 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
 import com.king.service.gdb.bean.Record;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by JingYang on 2016/8/1 0001.
@@ -32,6 +36,7 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     public ActionBar mActionbar;
     private int currentSortMode = -1;
+    private boolean currentSortDesc = true;
     private StarProxy starProxy;
 
     public StarFragment(int starId) {
@@ -79,10 +84,11 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     @Override
     public void onStarLoaded(StarProxy star) {
         starProxy = star;
-        mPresenter.sortRecords(star.getStar().getRecordList(), currentSortMode);
+        mPresenter.sortRecords(star.getStar().getRecordList(), currentSortMode, currentSortDesc);
 
         mAdapter = new StarRecordsAdapter(star, mRecyclerView);
         mAdapter.setItemClickListener(this);
+        mAdapter.setSortMode(currentSortMode);
         mRecyclerView.setAdapter(mAdapter);
         if (getActivity() instanceof ProgressProvider) {
             ((ProgressProvider) getActivity()).dismissProgressCycler();
@@ -91,23 +97,38 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     public void onIconClick(View view) {
         if (view.getId() == R.id.actionbar_sort) {
-            new RecordSortPopup().showSortPopup(getActivity(), view, new RecordSortPopup.SortCallback() {
+            new SortDialog(getActivity(), new CustomDialog.OnCustomDialogActionListener() {
                 @Override
-                public void onSortModeSelected(int sortMode, boolean refresh) {
-                    if (currentSortMode != sortMode) {
+                public boolean onSave(Object object) {
+                    Map<String, Object> map = (Map<String, Object>) object;
+                    int sortMode = (int) map.get("sortMode");
+                    boolean desc = (Boolean) map.get("desc");
+                    if (currentSortMode != sortMode || currentSortDesc != desc) {
                         currentSortMode = sortMode;
+                        currentSortDesc = desc;
                         SettingProperties.setGdbStarRecordOrderMode(getActivity(), currentSortMode);
-                        if (refresh) {
-                            refresh();
-                        }
+                        refresh();
                     }
+                    return false;
                 }
-            });
+
+                @Override
+                public boolean onCancel() {
+                    return false;
+                }
+
+                @Override
+                public void onLoadData(HashMap<String, Object> data) {
+                    data.put("sortMode", currentSortMode);
+                    data.put("desc", currentSortDesc);
+                }
+            }).show();
         }
     }
 
     private void refresh() {
-        mPresenter.sortRecords(starProxy.getStar().getRecordList(), currentSortMode);
+        mPresenter.sortRecords(starProxy.getStar().getRecordList(), currentSortMode, currentSortDesc);
+        mAdapter.setSortMode(currentSortMode);
         mAdapter.notifyDataSetChanged();
     }
 

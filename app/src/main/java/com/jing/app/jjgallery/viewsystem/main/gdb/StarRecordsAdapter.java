@@ -31,6 +31,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     private int nameColorNormal, nameColorBareback;
     private OnRecordItemClickListener itemClickListener;
 
+    private int sortMode;
+
     public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
         this.star = star;
         this.recyclerView = recyclerView;
@@ -58,6 +60,10 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
 
     public void setItemClickListener(OnRecordItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setSortMode(int sortMode) {
+        this.sortMode = sortMode;
     }
 
     @Override
@@ -89,7 +95,9 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             super.onBindViewHolder(holder, position);
         }
         else {
-            ((RecordHolder) holder).bind(listData.get(position - 1), position - 1);
+            RecordHolder vh = (RecordHolder) holder;
+            vh.setSortMode(sortMode);
+            vh.bind(listData.get(position - 1), position - 1);
         }
     }
 
