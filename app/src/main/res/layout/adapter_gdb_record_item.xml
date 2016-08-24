@@ -123,9 +123,9 @@
         android:id="@+id/record_score_sort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="15dp"
         android:visibility="gone"
-        android:layout_above="@id/record_score"/>
+        android:layout_toLeftOf="@id/record_score"/>
 </RelativeLayout>

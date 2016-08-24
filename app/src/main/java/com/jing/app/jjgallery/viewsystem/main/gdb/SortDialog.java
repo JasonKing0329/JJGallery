@@ -64,6 +64,7 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
 
     public SortDialog(Context context, OnCustomDialogActionListener actionListener) {
         super(context, actionListener);
+        applyLightThemeStyle();
         setTitle(R.string.gdb_sort_title);
         textPadding = DensityUtil.dip2px(getContext(), 20);
         focusColor = context.getResources().getColor(R.color.actionbar_bk_orange);

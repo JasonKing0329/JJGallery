@@ -329,11 +329,11 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		}
 	}
 
-	private void applyLightThemeStyle() {
+	public void applyLightThemeStyle() {
 		rootView.setBackgroundColor(context.getResources().getColor(R.color.dialog_background));
 	}
 
-	private void applyDarkThemeStyle() {
+	public void applyDarkThemeStyle() {
 		rootView.setBackgroundColor(context.getResources().getColor(R.color.dialog_background_dark_theme));
 	}
 

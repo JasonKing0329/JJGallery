@@ -83,16 +83,16 @@ public class RecordViewHolder {
             SImageLoader.getInstance().displayImage(path, imageView);
         }
 
-        seqView.setText("" + (position + 1));
-        nameView.setText(item.getName());
-        dirView.setText(item.getDirectory());
-        scoreView.setText("" + item.getScore());
+        seqView.setText("" + "" + (position + 1));
+        nameView.setText("" + item.getName());
+        dirView.setText("" + item.getDirectory());
+        scoreView.setText("" + "" + item.getScore());
         if (item instanceof RecordSingleScene) {
             RecordSingleScene record = (RecordSingleScene) item;
-            sceneView.setText(record.getSceneName() + "(" + record.getScoreScene() + ")");
-            fkView.setText("fk(" + record.getScoreFk() + ")");
-            cumView.setText("cum(" + record.getScoreCum() + ")");
-            bjobView.setText("bjob(" + record.getScoreBJob() + ")");
+            sceneView.setText("" + record.getSceneName() + "(" + record.getScoreScene() + ")");
+            fkView.setText("" + "fk(" + record.getScoreFk() + ")");
+            cumView.setText("" + "cum(" + record.getScoreCum() + ")");
+            bjobView.setText("" + "bjob(" + record.getScoreBJob() + ")");
 
             if (record.getScoreNoCond() == GDBProperites.BAREBACK) {
                 nameView.setTextColor(nameColorBareback);
@@ -108,17 +108,17 @@ public class RecordViewHolder {
             RecordOneVOne record = (RecordOneVOne) item;
             Star star1 = record.getStar1();
             if (star1 == null) {
-                star1View.setText(GDBProperites.STAR_UNKNOWN);
+                star1View.setText("" + GDBProperites.STAR_UNKNOWN);
             }
             else {
-                star1View.setText(star1.getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
+                star1View.setText("" + star1.getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
             }
             Star star2 = record.getStar2();
             if (star2 == null) {
-                star2View.setText(GDBProperites.STAR_UNKNOWN);
+                star2View.setText("" + GDBProperites.STAR_UNKNOWN);
             }
             else {
-                star2View.setText(star2.getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
+                star2View.setText("" + star2.getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
             }
 
             StringBuffer buffer = new StringBuffer();
@@ -142,7 +142,7 @@ public class RecordViewHolder {
             }
             String text = buffer.toString();
             if (text.length() > 0) {
-                fkSubView.setText(text.substring(0, text.length() - 3));
+                fkSubView.setText("" + text.substring(0, text.length() - 3));
             }
         }
 
@@ -153,23 +153,23 @@ public class RecordViewHolder {
         switch (sortMode) {
             case PreferenceValue.GDB_SR_ORDERBY_BAREBACK:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreNoCond());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreNoCond());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_BJOB:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreBJob());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreBJob());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_CSHOW:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreCShow());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreCShow());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_CUM:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreCum());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreCum());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreFk());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreFk());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK1:
                 sortScoreView.setVisibility(View.VISIBLE);
@@ -197,51 +197,51 @@ public class RecordViewHolder {
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FOREPLAY:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreForePlay());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreForePlay());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_HD:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(item.getHDLevel());
+                sortScoreView.setText("" + item.getHDLevel());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_RHYTHM:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreRhythm());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreRhythm());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_RIM:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreRim());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreRim());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_SCENE:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreScene());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreScene());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_SCOREFEEL:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(item.getScoreFeel());
+                sortScoreView.setText("" + item.getScoreFeel());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_SPECIAL:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordSingleScene) item).getScoreSpeicial());
+                sortScoreView.setText("" + ((RecordSingleScene) item).getScoreSpeicial());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_STAR1:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getScoreStar1());
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStar1());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_STAR2:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getScoreStar2());
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStar2());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_STARCC1:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getScoreStarC1());
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStarC1());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_STARCC2:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getScoreStarC2());
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStarC2());
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_STORY:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(item.getScoreStory());
+                sortScoreView.setText("" + item.getScoreStory());
                 break;
             default:
                 sortScoreView.setVisibility(View.GONE);
