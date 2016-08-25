@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,6 +10,7 @@ import com.jing.app.jjgallery.bean.StarProxy;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
@@ -82,23 +84,28 @@ public class RecordActivity extends BaseActivity implements IStarView {
         fktype5RateView = (TextView) findViewById(R.id.gdb_record_score_fk_type5_rate);
         fktype6View = (TextView) findViewById(R.id.gdb_record_score_fk_type6);
         fktype6RateView = (TextView) findViewById(R.id.gdb_record_score_fk_type6_rate);
+
+        star1ImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityManager.startStarActivity(RecordActivity.this, record.getStar1());
+                finish();
+            }
+        });
+        star2ImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityManager.startStarActivity(RecordActivity.this, record.getStar1());
+                finish();
+            }
+        });
     }
 
     @Override
     protected void initBackgroundWork() {
         initValue();
-        if (record.getStar1() != null) {
-            mPresenter.loadStar(record.getStar1().getId());
-        }
-        else {
-            star1ImageView.setImageResource(R.drawable.theme_dark);
-        }
-        if (record.getStar2() != null) {
-            mPresenter.loadStar(record.getStar2().getId());
-        }
-        else {
-            star2ImageView.setImageResource(R.drawable.theme_dark);
-        }
+        mPresenter.loadStar(record.getStar1().getId());
+        mPresenter.loadStar(record.getStar2().getId());
     }
 
     private void initValue() {
@@ -135,7 +142,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
         rimView.setText("" + record.getScoreRim());
         cshowView.setText("" + record.getScoreCShow());
         fkView.setText("" + record.getScoreFk());
-        footView.setText("" + record.getScoreNoCond());
+        footView.setText("" + record.getScoreFoot());
         fktype1View.setText("" + record.getScoreFkType1());
         fktype1RateView.setText("" + record.getRateFkType1());
         fktype2View.setText("" + record.getScoreFkType2());
