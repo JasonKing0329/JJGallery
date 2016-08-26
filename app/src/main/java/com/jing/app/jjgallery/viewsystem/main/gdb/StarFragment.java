@@ -39,7 +39,7 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     private boolean currentSortDesc = true;
     private StarProxy starProxy;
 
-    public StarFragment(int starId) {
+    public void setStarId(int starId) {
         this.starId = starId;
     }
 
@@ -59,10 +59,28 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
         mRecyclerView = (PullZoomRecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        initValue();
+    }
+
+    public void initValue() {
         if (getActivity() instanceof ProgressProvider) {
             ((ProgressProvider) getActivity()).showProgressCycler();
         }
-        mPresenter.loadStar(starId);
+        mPresenter.loadStar(starId);onResume();
+    }
+
+    /**
+     * 由于StarActivity被设置为了singleTask，重新启动一个StarActivity的时候不会执行onCreate，这时候就需要在
+     * StarActivity的onNewIntent设置完成后在onResume里重新获取starId进行重新加载了
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        int id = getActivity().getIntent().getIntExtra(StarActivity.KEY_STAR_ID, -1);
+        if (starId != id) {
+            starId = id;
+            initValue();
+        }
     }
 
     public void setActionbar(ActionBar actionbar) {
@@ -136,4 +154,5 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     public void onClickRecordItem(Record record) {
         ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
+
 }

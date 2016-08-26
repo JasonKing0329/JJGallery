@@ -95,7 +95,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
         star2ImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityManager.startStarActivity(RecordActivity.this, record.getStar1());
+                ActivityManager.startStarActivity(RecordActivity.this, record.getStar2());
                 finish();
             }
         });
