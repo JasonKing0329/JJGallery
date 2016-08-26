@@ -98,8 +98,11 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
             }
         }
         else if (holder instanceof NameHolder) {
+            if (item.getRecordNumber() == 0) {
+                mPresenter.loadStarRecordNumber(item);
+            }
             NameHolder nHolder = (NameHolder) holder;
-            nHolder.name.setText(item.getName());
+            nHolder.name.setText(item.getName() + " (" + item.getRecordNumber() + ")");
             StarProxy proxy = new StarProxy();
             proxy.setStar(item);
             String headPath = mPresenter.getStarImage(item.getName());

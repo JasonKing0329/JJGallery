@@ -21,6 +21,10 @@ public class GDBProvider {
         sqliteDao = new SqliteDao();
     }
 
+    /**
+     * 查询所有的1v1 record
+     * @return
+     */
     public List<RecordOneVOne> getOneVOneRecords() {
         try {
             SqlConnection.getInstance().connect(databasePath);
@@ -33,6 +37,10 @@ public class GDBProvider {
         return null;
     }
 
+    /**
+     * 查询所有的star
+     * @return
+     */
     public List<Star> getStars() {
         try {
             SqlConnection.getInstance().connect(databasePath);
@@ -45,6 +53,11 @@ public class GDBProvider {
         return null;
     }
 
+    /**
+     * 查询star对应的所有record
+     * @param starId
+     * @return
+     */
     public Star getStarRecords(int starId) {
         try {
             SqlConnection.getInstance().connect(databasePath);
@@ -59,6 +72,10 @@ public class GDBProvider {
         return null;
     }
 
+    /**
+     * 查询所有的record
+     * @return
+     */
     public List<Record> getAllRecords() {
         try {
             SqlConnection.getInstance().connect(databasePath);
@@ -74,5 +91,20 @@ public class GDBProvider {
             SqlConnection.getInstance().close();
         }
         return null;
+    }
+
+    /**
+     * 加载star对应的record数量
+     * @param star
+     */
+    public void loadStarRecordNumber(Star star) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            sqliteDao.loadStarRecordNumber(SqlConnection.getInstance().getConnection(), star);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
     }
 }

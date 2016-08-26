@@ -30,11 +30,14 @@ public class FileListAdapter extends BaseAdapter {
 	private ImageValueController imageValueController;
 	private boolean showImageWH;
 
+	private boolean isShowOriginName;
+
 	public FileListAdapter(List<FilePageItem> list, Context context) {
 		this.context = context;
 		this.list = list;
 		dayFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
 		imageValueController = new ImageValueController();
+		isShowOriginName = SettingProperties.isShowFileOriginMode(context);
 		setImageList();
 	}
 
@@ -109,7 +112,7 @@ public class FileListAdapter extends BaseAdapter {
 		holder.icon.setBackgroundResource(imgList.get(position));
 
 		FilePageItem filePageItem = list.get(position);
-		if (SettingProperties.isShowFileOriginMode(context)) {
+		if (isShowOriginName) {
 			String name = filePageItem.getOriginName();
 			if (name == null) {
 				holder.name.setText(filePageItem.getFile().getName());

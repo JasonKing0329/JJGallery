@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.encrypt.action.Generater;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -266,6 +267,29 @@ public class FileListController {
 		}
 	}
 
+	/**
+	 * 判断加载当前目录的内容用同步还是异步
+	 * 异步的条件：
+	 * 目录内容全是加密文件
+	 * 文件个数大于20
+	 * @param path
+	 * @return
+     */
+	private boolean needLoadAsync(String path) {
+		File file = new File(path);
+		if (file.exists() && file.isDirectory()) {
+			File[] files = file.listFiles();
+			if (files.length > 20*2) {// 加密文件是由jfe和jne两个文件构成
+				for (File f:files) {
+					if (!f.isDirectory()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public void findUnEncryptedFile() {
 		Log.i(TAG, "findUnEncryptedFile");
 		File[] files = new File(currentPath).listFiles(new FilenameFilter() {
@@ -295,7 +319,39 @@ public class FileListController {
 
 	}
 
+	private Handler findFileHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			fileChangeListener.onFindFileFinish();
+			((ProgressProvider) mContext).dismissProgressCycler();
+			super.handleMessage(msg);
+		}
+	};
+
+	/**
+	 * 加载目录改为区分字目录形式
+	 * 若字目录是全文件夹，同步加载
+	 * 若字目录全是加密文件，异步加载
+	 */
 	public void findFile() {
+		// 子目录都是加密文件且大于20，需要解析原文件名，异步加载
+		if (needLoadAsync(currentPath)) {
+			((ProgressProvider) mContext).showProgressCycler();
+			new Thread() {
+				public void run() {
+					startFindFile();
+					findFileHandler.sendEmptyMessage(1);
+				}
+			}.start();
+		}
+		// 子目录都是文件夹（不用解析原文件名），直接同步加载
+		else {
+			startFindFile();
+			fileChangeListener.onFindFileFinish();
+		}
+	}
+
+	private void startFindFile() {
 		if (isFindAll) {
 			findAllFile();
 		}
@@ -312,8 +368,6 @@ public class FileListController {
 		else if (sortMode == SORT_BY_DATE) {
 			sortByTime(sortDateDesc);
 		}
-
-		fileChangeListener.onFindFileFinish();
 	}
 
 	public void findParent() {

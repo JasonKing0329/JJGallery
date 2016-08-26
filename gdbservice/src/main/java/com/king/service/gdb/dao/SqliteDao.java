@@ -369,6 +369,36 @@ public class SqliteDao {
 		star.setRecordList(rList);
 	}
 
+	/**
+	 * 加载star对应的record数量
+	 * @param connection
+	 * @param star
+     */
+	public void loadStarRecordNumber(Connection connection, Star star) {
+		if (star == null) {
+			return;
+		}
+		String sql = "SELECT COUNT(id) FROM " + TABLE_RECORD_1V1 + " WHERE star1_id=" + star.getId() + " OR star2_id=" + star.getId();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				star.setRecordNumber(set.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void clearTableRecord1v1(Connection connection) {
 		Statement statement = null;
 		try {

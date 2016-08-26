@@ -85,6 +85,14 @@ public class GdbPresenter {
         new LoadStarTask().execute(starId);
     }
 
+    /**
+     * 加载star对应的record数量
+     * @param star
+     */
+    public void loadStarRecordNumber(Star star) {
+        gdbProvider.loadStarRecordNumber(star);
+    }
+
     public void sortRecords(List<Record> recordList, int sortMode, boolean desc) {
         if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
             Collections.sort(recordList, new RecordComparator(sortMode, desc));
