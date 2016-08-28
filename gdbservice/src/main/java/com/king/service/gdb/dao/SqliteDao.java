@@ -103,6 +103,7 @@ public class SqliteDao {
 			record.setRateFkType4(Integer.parseInt(set.getString(36)));
 			record.setRateFkType5(Integer.parseInt(set.getString(37)));
 			record.setRateFkType6(Integer.parseInt(set.getString(38)));
+			record.setLastModifyTime(set.getLong(41));
 			list.add(record);
 		}
 	}
@@ -115,9 +116,9 @@ public class SqliteDao {
 				.append(",scoreForePlay,scoreRim,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
 				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreCum,scoreScene,scoreStory")
 				.append(",scoreNoCond,scoreCShow,scoreFoot,scoreSpecial,scoreFk,rateFkType1,rateFkType2")
-				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id)")
+				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate)")
 				.append(" VALUES(?");
-		for (int i = 0; i < 38; i ++) {
+		for (int i = 0; i < 39; i ++) {
 			buffer.append(",?");
 		}
 		buffer.append(")");
@@ -162,9 +163,9 @@ public class SqliteDao {
 			stmt.setString(35, "" + record.getRateFkType4());
 			stmt.setString(36, "" + record.getRateFkType5());
 			stmt.setString(37, "" + record.getRateFkType6());
-			System.out.println("id1=" + record.getStar1().getId() + ", id2=" + record.getStar2().getId());
 			stmt.setInt(38, record.getStar1().getId());
 			stmt.setInt(39, record.getStar2().getId());
+			stmt.setLong(40, record.getLastModifyTime());
 			stmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -184,6 +185,7 @@ public class SqliteDao {
 	}
 
 	public Star queryStarByName(Connection connection, String name) {
+		// 带"'"号的要特殊处理
 		if (name.contains("'")) {
 			name = name.replace("'", "''");
 		}
@@ -197,6 +199,7 @@ public class SqliteDao {
 				star = new Star();
 				star.setId(set.getInt(1));
 				star.setName(set.getString(2));
+				star.setRecordNumber(set.getInt(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -236,6 +239,35 @@ public class SqliteDao {
 		return false;
 	}
 
+	public boolean updateStar(Connection connection, Star star) {
+		// 带"'"号的要特殊处理
+		String name = star.getName();
+		if (name.contains("'")) {
+			name = name.replace("'", "''");
+		}
+		String sql = "UPDATE " + TABLE_STAR + " SET name='" + name
+				+ "' ,records=" + star.getRecordList().size() + " WHERE id=" + star.getId();
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 	public Star queryStarById(Connection connection, int id) {
 		String sql = "SELECT * FROM " + TABLE_STAR + " WHERE id=" + id;
 		Statement statement = null;
@@ -247,6 +279,7 @@ public class SqliteDao {
 				star = new Star();
 				star.setId(set.getInt(1));
 				star.setName(set.getString(2));
+				star.setRecordNumber(set.getInt(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -274,6 +307,7 @@ public class SqliteDao {
 				star = new Star();
 				star.setId(set.getInt(1));
 				star.setName(set.getString(2));
+				star.setRecordNumber(set.getInt(3));
 				list.add(star);
 			}
 		} catch (SQLException e) {
@@ -322,7 +356,7 @@ public class SqliteDao {
 			statement = connection.createStatement();
 			ResultSet set = statement.executeQuery(sql);
 			if (set.next()) {
-				id = set.getInt(1);
+				id = set.getInt(2);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -9,11 +9,15 @@ import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.RecordSingleScene;
 import com.king.service.gdb.bean.Star;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by 景阳 on 2016/8/6 0006.
@@ -151,6 +155,12 @@ public class RecordViewHolder {
 
     private void showSortScore(Record item, int sortMode) {
         switch (sortMode) {
+            case PreferenceValue.GDB_SR_ORDERBY_DATE:
+                sortScoreView.setVisibility(View.VISIBLE);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = sdf.format(new Date(item.getLastModifyTime()));
+                sortScoreView.setText(date);
+                break;
             case PreferenceValue.GDB_SR_ORDERBY_BAREBACK:
                 sortScoreView.setVisibility(View.VISIBLE);
                 sortScoreView.setText("" + ((RecordSingleScene) item).getScoreNoCond());

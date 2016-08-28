@@ -271,7 +271,17 @@ public class GdbPresenter {
                     break;
                 case PreferenceValue.GDB_SR_ORDERBY_DATE:
                     if (desc) {
-                        result = (int) (rhs.getLastModifyTime() - lhs.getLastModifyTime());
+                        long lr = rhs.getLastModifyTime() - lhs.getLastModifyTime();
+                        // 直接把负数long型强制转化为int会有问题，所以还是要通过判断来返回真正的带符号的整型
+                        if (lr > 0) {
+                            return 1;
+                        }
+                        else if (lr < 0) {
+                            return -1;
+                        }
+                        else {
+                            return 0;
+                        }
                     }
                     else {
                         result = (int) (lhs.getLastModifyTime() - rhs.getLastModifyTime());
