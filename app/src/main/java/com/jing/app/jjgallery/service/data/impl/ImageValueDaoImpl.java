@@ -25,6 +25,11 @@ public class ImageValueDaoImpl implements ImageValueDao {
             stmt = connection.createStatement();
             ResultSet set = null;
 
+            // 带"'"号的要特殊处理
+            if (path.contains("'")) {
+                path = path.replace("'", "''");
+            }
+
             set = stmt.executeQuery("SELECT * FROM " + DBInfor.TABLE_FILES
                     + " WHERE " + DBInfor.TF_COL_PATH + " = '" + path + "'");
 

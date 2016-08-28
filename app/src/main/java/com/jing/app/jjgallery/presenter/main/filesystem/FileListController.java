@@ -12,6 +12,8 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.encrypt.action.Generater;
+import com.jing.app.jjgallery.service.image.ImageValue;
+import com.jing.app.jjgallery.service.image.ImageValueController;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 
 import java.io.File;
@@ -33,6 +35,7 @@ public class FileListController {
 	private Handler handler;
 	private String currentPath;
 	private FileChangeListener fileChangeListener;
+	private ImageValueController imageValueController;
 
 	private List<FilePageItem> filePageItemList;
 
@@ -73,6 +76,7 @@ public class FileListController {
 		fileChangeListener = listener;
 		encrypter = EncrypterFactory.create();
 		generater = EncrypterFactory.generater();
+		imageValueController = new ImageValueController();
 		currentPath = Configuration.APP_DIR_IMG;
 		isFindAll = true;
 		sortMode = SORT_BY_NONE;
@@ -250,15 +254,28 @@ public class FileListController {
 				item = new FilePageItem();
 				item.setFile(f);
 				item.setDate(f.lastModified());
-				if (encrypter.isEncrypted(f)) {
-					item.setOriginName(encrypter.decipherOriginName(f));
-				}
-				if (showOriginName && item.getOriginName() != null) {
-					item.setDisplayName(item.getOriginName());
+
+				if (!f.isDirectory()) {
+					// 解析原文件名
+					if (encrypter.isEncrypted(f)) {
+						item.setOriginName(encrypter.decipherOriginName(f));
+					}
+					if (showOriginName && item.getOriginName() != null) {
+						item.setDisplayName(item.getOriginName());
+					}
+					else {
+						item.setDisplayName(f.getName());
+					}
+
+					// 解析图片大小
+					ImageValue value = imageValueController.queryImagePixel(f.getPath());
+					item.setImageValue(value);
+
 				}
 				else {
 					item.setDisplayName(f.getName());
 				}
+
 				filePageItemList.add(item);
 			}
 		}
@@ -322,7 +339,15 @@ public class FileListController {
 	private Handler findFileHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			fileChangeListener.onFindFileFinish();
+			if (sortMode == SORT_BY_NAME) {
+				sortByName(sortNameDesc);
+			}
+			else if (sortMode == SORT_BY_DATE) {
+				sortByTime(sortDateDesc);
+			}
+			else {
+				fileChangeListener.onFindFileFinish();
+			}
 			((ProgressProvider) mContext).dismissProgressCycler();
 			super.handleMessage(msg);
 		}
@@ -347,7 +372,15 @@ public class FileListController {
 		// 子目录都是文件夹（不用解析原文件名），直接同步加载
 		else {
 			startFindFile();
-			fileChangeListener.onFindFileFinish();
+			if (sortMode == SORT_BY_NAME) {
+				sortByName(sortNameDesc);
+			}
+			else if (sortMode == SORT_BY_DATE) {
+				sortByTime(sortDateDesc);
+			}
+			else {
+				fileChangeListener.onFindFileFinish();
+			}
 		}
 	}
 
@@ -360,13 +393,6 @@ public class FileListController {
 		}
 		else if (isFindUnEncrypted) {
 			findUnEncryptedFile();
-		}
-
-		if (sortMode == SORT_BY_NAME) {
-			sortByName(sortNameDesc);
-		}
-		else if (sortMode == SORT_BY_DATE) {
-			sortByTime(sortDateDesc);
 		}
 	}
 

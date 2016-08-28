@@ -550,7 +550,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 				//update scroll position
 				listController.updateParentPosition(fileListView.getFirstVisiblePosition());
 				//need be called after onFindFileFinish
-				fileListView.setSelection(listController.getScrollPosition());
+//				fileListView.setSelection(listController.getScrollPosition());
 			}
 			else if (listController.isEncryptedFile(file)) {
 				if (AccessController.getInstance().getAccessMode() > AccessController.ACCESS_MODE_PRIVATE) {
