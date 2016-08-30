@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="material_grey_900">#ff212121</color>
+    <color name="material_grey_100">#fff5f5f5</color>
+
     <color name="divider">#7c7c7c</color>
 
     <color name="spicture_backgroud">#000000</color>

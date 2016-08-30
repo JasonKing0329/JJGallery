@@ -83,11 +83,8 @@ public class BookPage {
 				break;
 			case 1:
 			default:
-				LinearLayout layout = new LinearLayout(mContext);
-				imageViews[0] = new ImageView(mContext);
-				imageViews[0].setScaleType(ScaleType.FIT_CENTER);
-				layout.addView(imageViews[0], new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-				view = layout;
+				view = LayoutInflater.from(mContext).inflate(R.layout.bookpage_1item, null);
+				imageViews[0] = (ImageView) view.findViewById(R.id.bookpage_1item_image);
 				break;
 		}
 		return view;

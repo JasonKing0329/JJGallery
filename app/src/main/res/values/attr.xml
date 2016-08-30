@@ -15,6 +15,7 @@
     <attr name="circlemenu_color_press" format="reference"/>
 
     <!-- actionbar -->
+    <attr name="book_page_bg" format="reference"/>
     <attr name="actionbar_bk_color" format="reference"/>
     <attr name="actionbar_bk_color_alpha" format="reference"/>
     <attr name="actionbar_ic_add" format="reference"/>

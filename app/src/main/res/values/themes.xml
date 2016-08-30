@@ -13,6 +13,7 @@
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal_dark</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
 
+        <item name="book_page_bg">@color/material_grey_900</item>
         <item name="actionbar_bk_color">@color/actionbar_bk_dark</item>
         <item name="actionbar_bk_color_alpha">@color/actionbar_bk_dark_alpha</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_green_900_36dp</item>
@@ -54,6 +55,7 @@
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal_light</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
 
+        <item name="book_page_bg">@color/material_grey_100</item>
         <item name="actionbar_bk_color">@color/actionbar_bk_light</item>
         <item name="actionbar_bk_color_alpha">@color/actionbar_bk_light</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_purple_200_36dp</item>
@@ -95,6 +97,7 @@
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
 
+        <item name="book_page_bg">@color/material_grey_100</item>
         <item name="actionbar_bk_color">@color/actionbar_bk_normal</item>
         <item name="actionbar_bk_color_alpha">@color/actionbar_bk_normal_alpha</item>
         <item name="actionbar_ic_add">@drawable/ic_add_to_photos_white_36dp</item>
