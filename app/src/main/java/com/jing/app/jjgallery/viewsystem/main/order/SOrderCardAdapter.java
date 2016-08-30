@@ -19,11 +19,11 @@ import com.loopeer.cardstack.StackAdapter;
 public class SOrderCardAdapter extends StackAdapter<SOrder> implements CardExpandMenu.OnExpandMenuClickListener {
 
     public interface OnExpandActionListener {
-        void onSurfView(SOrder order);
-        void onWallView(SOrder order);
-        void onBookView(SOrder order);
-        void onPreView(SOrder order);
-        void onWaterfallView(SOrder order);
+        void onSurfView(SOrder order, View view);
+        void onWallView(SOrder order, View view);
+        void onBookView(SOrder order, View view);
+        void onPreView(SOrder order, View view);
+        void onWaterfallView(SOrder order, View view);
     }
 
     public enum HitMode {
@@ -76,25 +76,25 @@ public class SOrderCardAdapter extends StackAdapter<SOrder> implements CardExpan
     }
 
     @Override
-    public void onExpandMenuItemClick(View parent, int position) {
+    public void onExpandMenuItemClick(View parent, View view, int position) {
 
         if (onExpandActionListener != null) {
             SOrder order = (SOrder) parent.getTag();
             switch (position) {
                 case 0://surf
-                    onExpandActionListener.onSurfView(order);
+                    onExpandActionListener.onSurfView(order, view);
                     break;
                 case 1://wall
-                    onExpandActionListener.onWallView(order);
+                    onExpandActionListener.onWallView(order, view);
                     break;
                 case 2://book
-                    onExpandActionListener.onBookView(order);
+                    onExpandActionListener.onBookView(order, view);
                     break;
                 case 3://preview
-                    onExpandActionListener.onPreView(order);
+                    onExpandActionListener.onPreView(order, view);
                     break;
                 case 4://waterfall
-                    onExpandActionListener.onWaterfallView(order);
+                    onExpandActionListener.onWaterfallView(order, view);
                     break;
             }
         }

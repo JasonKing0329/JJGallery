@@ -578,7 +578,8 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                             long id) {
         SOrder order = currentPageOrders.get(position);
         mPresenter.accessOrder(order);
-        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderGridItemOpenMode(context));
+
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderGridItemOpenMode(context), view);
     }
 
     @Override
@@ -604,7 +605,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                 , new CircleMenuView.OnMenuItemListener() {
 
             @Override
-            public void onMenuClick(int which) {
+            public void onMenuClick(View view, int which) {
 
                 sOrderMenuDialog.dismiss();
 
@@ -624,18 +625,18 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                 }
                 else if (which == 3) {//fullscreen
                     mPresenter.accessOrder(currentPageOrders.get(pos));
-                    ActivityManager.startSurfActivity((Activity) context, currentPageOrders.get(pos));
+                    ActivityManager.startSurfActivity((Activity) context, currentPageOrders.get(pos), view);
                 }
                 else if (which == 4) {//view access count
                     showAccessCount(currentPageOrders.get(pos));
                 }
                 else if (which == 5) {
                     mPresenter.accessOrder(currentPageOrders.get(pos));
-                    ActivityManager.startWallActivity((Activity) context, currentPageOrders.get(pos));
+                    ActivityManager.startWallActivity((Activity) context, currentPageOrders.get(pos), view);
                 }
                 else if (which == 6) {
                     mPresenter.accessOrder(currentPageOrders.get(pos));
-                    ActivityManager.startBookActivity((Activity) context, currentPageOrders.get(pos));
+                    ActivityManager.startBookActivity((Activity) context, currentPageOrders.get(pos), view);
                 }
                 else if (which == 7) {
                     new PreviewDialog(context, currentPageOrders.get(pos)).show();

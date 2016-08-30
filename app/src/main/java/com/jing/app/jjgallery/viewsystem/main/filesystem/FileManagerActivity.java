@@ -3,6 +3,8 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,17 +38,25 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     private IFragment mListFragment, mIndexFragment, mThumbFragment;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_file_manager;
     }
 
     @Override
-    protected void initController() {
+    public void initView() {
+        super.initView();
+        Transition transition =
+                TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+        getWindow().setEnterTransition(transition);
+    }
+
+    @Override
+    public void initController() {
         mPresenter = new FileManagerPresenter(this);
         BackgroundManager.getInstance().addFMBgSubscriber(this);
     }
@@ -67,7 +77,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 
@@ -213,7 +223,7 @@ public class FileManagerActivity extends AbsHomeActivity implements IFileManager
     }
 
     @Override
-    protected void onOrentaionChanged(Configuration newConfig) {
+    public void onOrentaionChanged(Configuration newConfig) {
         super.onOrentaionChanged(newConfig);
         mCurrentFragment.getPage().onConfigurationChanged(newConfig);
     }

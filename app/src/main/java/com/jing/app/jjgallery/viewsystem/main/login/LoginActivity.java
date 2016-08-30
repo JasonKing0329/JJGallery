@@ -49,23 +49,23 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     private boolean isServiceBound;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_login;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
 
         loginPresenter = new LoginPresenter(this, this);
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
 
         mActionBar.addBackIcon();
 
@@ -76,7 +76,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
         showInitProgress();
         new InitTask().execute();
     }

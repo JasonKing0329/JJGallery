@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery;
 
-import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -10,18 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.jing.app.jjgallery.controller.ThemeManager;
-import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.ActionBarManager;
-import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 
 /**
  * Created by Administrator on 2016/6/23 0023.
@@ -30,105 +21,54 @@ import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
  * progress view
  * activity/fragment animation
  */
-public abstract class BaseActivity extends AppCompatActivity implements ActionBar.ActionIconListener
+public abstract class BaseActivity extends AppCompatActivity implements ActivityAction, ActionBar.ActionIconListener
     , ActionBar.ActionMenuListener, ActionBar.ActionSearchListener, ProgressProvider {
 
-    private ViewGroup mActionbarGroup;
-    private ViewGroup mContentGroup;
-
+    private CommonActivity commonActivity = new CommonActivity();
     protected ActionBar mActionBar;
 
-    private ProgressDialog progressDialog;
-    private int curOrientation;
-
-    private ProgressManager progressManager;
-    private ActionBarManager actionBarManager;
-    private boolean isActionbarFloating;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 
-        ((JJApplication) getApplication()).addActivity(this);
-        if (isFullScreen()) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            DisplayHelper.enableFullScreen();
-        }
-        DisplayHelper.disableScreenshot(this);
-
-        setTheme(ThemeManager.getInstance().getDefaultTheme(this));
+        commonActivity.preOnCreate(this, this);
         super.onCreate(savedInstanceState);
 
-        curOrientation = getResources().getConfiguration().orientation;
-
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_base);
-
-        mActionbarGroup = (ViewGroup) findViewById(R.id.actionbar);
-        mContentGroup = (ViewGroup) findViewById(R.id.content);
-
-        if (isActionBarNeed()) {
-            View view = getLayoutInflater().inflate(R.layout.actionbar_l, null);
-            mActionbarGroup.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mActionBar = new ActionBar(this, view);
-            actionBarManager = new ActionBarManager(this, mActionBar);
-            mActionBar.setActionIconListener(this);
-            mActionBar.setActionMenuListener(this);
-            mActionBar.setActionSearchListener(this);
-        }
-        View content = getLayoutInflater().inflate(getContentView(), null);
-        mContentGroup.addView(content, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        progressDialog = new ProgressDialog(this);
-        initController();
-        initView();
-
-        initBackgroundWork();
+        commonActivity.onCreate(savedInstanceState);
     }
 
-    protected boolean isFullScreen() {
-        return  true;
+    /**
+     * 统一设置为全屏
+     * @return
+     */
+    @Override
+    public boolean isFullScreen() {
+        return true;
     }
 
-    protected abstract boolean isActionBarNeed();
-
-    protected abstract int getContentView();
-
-    protected abstract void initController();
-
-    protected abstract void initView();
-
-    protected abstract void initBackgroundWork();
+    @Override
+    public void setActionBar(ActionBar actionBar) {
+        mActionBar = actionBar;
+    }
 
     @Override
     public void showProgress(String text) {
-        progressDialog.setMessage(text);
-        progressDialog.show();
+        commonActivity.showProgress(text);
     }
 
     @Override
     public boolean dismissProgress() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-            return true;
-        }
-        return  false;
+        return  commonActivity.dismissProgress();
     }
 
     @Override
     public void showProgressCycler() {
-        if (progressManager == null) {
-            progressManager = new ProgressManager(this);
-            BackgroundManager.getInstance().addProgressSubscriber(progressManager);
-        }
-        progressManager.showProgressCycler();
+        commonActivity.showProgressCycler();
     }
 
     @Override
     public boolean dismissProgressCycler() {
-        if (progressManager.isShowing()) {
-            progressManager.dismissProgressCycler();
-            return true;
-        }
-        return false;
+        return  commonActivity.dismissProgressCycler();
     }
 
     protected void showToastLong(String text) {
@@ -181,19 +121,18 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ((JJApplication) getApplication()).removeActivity(this);
-        BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
+        commonActivity.onDestroy();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (newConfig.orientation != curOrientation) {
-            curOrientation = newConfig.orientation;
-            if (mActionBar != null) {
-                mActionBar.onConfiguration(newConfig.orientation);
-            }
-        }
+        commonActivity.onConfigurationChanged(newConfig);
         super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onOrentaionChanged(Configuration newConfig) {
+
     }
 
     /**
@@ -201,26 +140,12 @@ public abstract class BaseActivity extends AppCompatActivity implements ActionBa
      * @param disableParentOperation 禁止BaseActivity的dispatch touch处理，由派生类自己改写操作(例如WallActivity涉及top bottom两个bar的控制)
      */
     public void requestActionbarFloating(boolean disableParentOperation) {
-        mActionBar.setBackgroundColor(getResources().getColor(ThemeManager.getInstance().getWallActionbarColorId(this)));
-        RelativeLayout container = (RelativeLayout) findViewById(R.id.main_container);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentGroup.getLayoutParams();
-        params.removeRule(RelativeLayout.BELOW);
-        container.removeView(mContentGroup);
-        container.removeView(mActionbarGroup);
-        container.addView(mContentGroup, 0);
-        container.addView(mActionbarGroup, 1);
-        if (!disableParentOperation) {
-            isActionbarFloating = true;
-        }
+        commonActivity.requestActionbarFloating(disableParentOperation);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        if (isActionbarFloating) {
-            if (actionBarManager != null) {
-                actionBarManager.dispatchTouchEvent(event);
-            }
-        }
+        commonActivity.dispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 

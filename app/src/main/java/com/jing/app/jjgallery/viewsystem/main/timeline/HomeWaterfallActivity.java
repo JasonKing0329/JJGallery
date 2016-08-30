@@ -20,17 +20,17 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
     private WaterfallFragment fragment;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_home_waterfall;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
     }
 
     @Override
@@ -47,7 +47,7 @@ public class HomeWaterfallActivity extends AbsHomeActivity {
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 

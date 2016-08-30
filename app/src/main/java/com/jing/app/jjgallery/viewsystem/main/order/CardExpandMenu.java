@@ -21,7 +21,7 @@ import com.jing.app.jjgallery.util.DisplayHelper;
 public class CardExpandMenu extends LinearLayout implements View.OnClickListener {
 
     public interface OnExpandMenuClickListener {
-        void onExpandMenuItemClick(View parent, int position);
+        void onExpandMenuItemClick(View parent, View view, int position);
     }
 
     private BaseAdapter mAdapter;
@@ -133,7 +133,7 @@ public class CardExpandMenu extends LinearLayout implements View.OnClickListener
     public void onClick(View v) {
         if (onExpandMenuClickListener != null) {
             int position = (int) v.getTag(R.id.card_menu_item_id);
-            onExpandMenuClickListener.onExpandMenuItemClick(this, position);
+            onExpandMenuClickListener.onExpandMenuItemClick(this, v, position);
         }
     }
 

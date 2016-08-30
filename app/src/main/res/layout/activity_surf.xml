@@ -7,7 +7,8 @@
 	<com.jing.app.jjgallery.viewsystem.sub.surf.ExtendedViewPager
 	    android:id="@+id/surf_view_pager"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+	    android:layout_height="match_parent"
+		android:transitionName="@string/trans_surf_center" />
 
     <!-- layout_height必须设置固定值,wrap_content仍然会充满全屏 -->
 	<android.support.v7.widget.RecyclerView  

@@ -80,22 +80,22 @@ public class SurfActivity extends BaseActivity implements /*OnItemSelectListener
 	private int orientation;
 
 	@Override
-	protected boolean isActionBarNeed() {
+	public boolean isActionBarNeed() {
 		return false;
 	}
 
 	@Override
-	protected int getContentView() {
+	public int getContentView() {
 		return R.layout.activity_surf;
 	}
 
 	@Override
-	protected void initController() {
+	public void initController() {
 		uiAction = new UiController(this);
 	}
 
 	@Override
-	protected void initView() {
+	public void initView() {
 
 		orientation = getResources().getConfiguration().orientation;
 
@@ -133,7 +133,7 @@ public class SurfActivity extends BaseActivity implements /*OnItemSelectListener
 	}
 
 	@Override
-	protected void initBackgroundWork() {
+	public void initBackgroundWork() {
 
 	}
 

@@ -31,23 +31,23 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     private IFragment mGridFragment, mIndexFragment, mThumbFragment, mAccessFragment;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_sorder;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
         mPresenter = new SOrderPresenter(this);
         BackgroundManager.getInstance().addSOrderSubscriber(this);
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
     @Override
@@ -273,7 +273,7 @@ public class SOrderActivity extends AbsHomeActivity implements ISOrderView, SOrd
     }
 
     @Override
-    protected void onOrentaionChanged(Configuration newConfig) {
+    public void onOrentaionChanged(Configuration newConfig) {
         super.onOrentaionChanged(newConfig);
         mCurrentFragment.getPage().onConfigurationChanged(newConfig);
     }

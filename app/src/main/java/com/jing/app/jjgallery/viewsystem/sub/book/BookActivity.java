@@ -1,6 +1,9 @@
 package com.jing.app.jjgallery.viewsystem.sub.book;
 
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 
 import com.jing.app.jjgallery.BaseActivity;
@@ -16,28 +19,41 @@ public class BookActivity extends BaseActivity {
 	public static final String KEY_FOLDER_PATH = "book_folder_path";
 	public static final String KEY_ORDER_ID = "book_order_id";
 
+	/**
+	 * 转场动画时间
+	 */
+	private final int TIME_TRANS_ANIM_DURITION = 500;
+
 	private BookFragment fragment;
 
 	@Override
-	protected boolean isActionBarNeed() {
+	public boolean isActionBarNeed() {
 		return false;
 	}
 
 	@Override
-	protected int getContentView() {
+	public int getContentView() {
 		return R.layout.activity_book;
 	}
 
 	@Override
-	protected void initController() {
+	public void initController() {
 
 	}
 
 	@Override
-	protected void initView() {
+	public void initView() {
 		touchStartRange = getResources().getDimensionPixelSize(R.dimen.book_touch_start_range);
 		touchDistance = getResources().getDimensionPixelSize(R.dimen.book_touch_distance);
 		onBookPage(getIntent().getIntExtra(KEY_TYPE, FOLDER));
+
+		// 加入转场动画，从上个界面注册的transitionName = trans_wall的view放大而出
+		findViewById(R.id.book_parent).setTransitionName(getString(R.string.trans_book));
+		TransitionSet set = new TransitionSet();
+		Slide slide = new Slide(Gravity.BOTTOM);
+		slide.addTarget(R.id.book_parent);
+		slide.setDuration(TIME_TRANS_ANIM_DURITION);
+		getWindow().setEnterTransition(set);
 	}
 
 	/**
@@ -64,7 +80,7 @@ public class BookActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void initBackgroundWork() {
+	public void initBackgroundWork() {
 
 	}
 

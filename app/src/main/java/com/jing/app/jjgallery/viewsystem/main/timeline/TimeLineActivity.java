@@ -45,17 +45,17 @@ public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, 
 	private View noContentView;
 
 	@Override
-	protected boolean isActionBarNeed() {
+	public boolean isActionBarNeed() {
 		return false;
 	}
 
 	@Override
-	protected int getContentView() {
+	public int getContentView() {
 		return R.layout.activity_timeline_update;
 	}
 
 	@Override
-	protected void initController() {
+	public void initController() {
 		mPresenter = new TimeLinePresenter(this);
 	}
 
@@ -123,7 +123,7 @@ public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, 
 	}
 
 	@Override
-	protected void initBackgroundWork() {
+	public void initBackgroundWork() {
 		showProgressCycler();
 		mPresenter.loadTimeLineItems();
 	}
@@ -159,11 +159,11 @@ public class TimeLineActivity extends AbsHomeActivity implements ITimeLineView, 
 	@Override
 	public void onClick(View v) {
 		if (v == fmButton) {
-			ActivityManager.startFileManagerActivity(this);
+			ActivityManager.startFileManagerActivity(this, null);
 			finish();
 		}
 		else if (v == sorderButton) {
-			ActivityManager.startSOrderActivity(this);
+			ActivityManager.startSOrderActivity(this, null);
 			finish();
 		}
 		else if (v == guideButton) {

@@ -21,7 +21,7 @@ import java.util.List;
 public class CircleMenuView extends AbsoluteLayout implements OnClickListener {
 
 	public interface OnMenuItemListener {
-		void onMenuClick(int index);
+		void onMenuClick(View view, int index);
 	}
 
 	private final String TAG = "CircleMenuView";
@@ -320,7 +320,7 @@ public class CircleMenuView extends AbsoluteLayout implements OnClickListener {
 	public void onClick(View view) {
 		int index = (Integer) view.getTag();
 		if (onMenuItemListener != null) {
-			onMenuItemListener.onMenuClick(index);
+			onMenuItemListener.onMenuClick(view, index);
 		}
 	}
 }

@@ -185,7 +185,7 @@ public class FileManagerIndexPage implements IPage, IFileDataCallback, OnKeyword
     @Override
     public void onKeywordClick(View view, Keyword keyword) {
         String path = (String) keyword.getObject();
-        ActivityManager.startExploreActivity((Activity) context, path, SettingProperties.getFileManagerIndexItemOpenMode(context));
+        ActivityManager.startExploreActivity((Activity) context, path, SettingProperties.getFileManagerIndexItemOpenMode(context), view);
     }
 
     public void onIndexBgChanged(String path) {

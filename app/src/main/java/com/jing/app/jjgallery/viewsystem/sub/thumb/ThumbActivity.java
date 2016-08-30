@@ -14,22 +14,22 @@ public class ThumbActivity extends BaseActivity {
     private ThumbPresenter mPresenter;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_thumb;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
         mPresenter = new ThumbPresenter();
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 //        mFragment = new ThumbFragment();
         mFragment.setActionbar(mActionBar);
@@ -39,7 +39,7 @@ public class ThumbActivity extends BaseActivity {
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 }

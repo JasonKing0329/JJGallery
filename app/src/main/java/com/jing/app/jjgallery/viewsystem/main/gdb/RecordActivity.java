@@ -32,24 +32,24 @@ public class RecordActivity extends BaseActivity implements IStarView {
             , fktype1View, fktype1RateView, fktype2View, fktype2RateView, fktype3View, fktype3RateView
             , fktype4View, fktype4RateView, fktype5View, fktype5RateView, fktype6View, fktype6RateView;
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return false;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.gdb_record_1v1;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
         record = (RecordOneVOne) ObjectCache.getData();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk5);
         mPresenter = new GdbPresenter(this);
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         recordImageView = (ImageView) findViewById(R.id.gdb_record_img);
         star1ImageView = (ImageView) findViewById(R.id.gdb_record_star1_img);
         star2ImageView = (ImageView) findViewById(R.id.gdb_record_star2_img);
@@ -102,7 +102,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
         initValue();
         mPresenter.loadStar(record.getStar1().getId());
         mPresenter.loadStar(record.getStar2().getId());

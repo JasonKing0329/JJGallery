@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main.timeline;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
@@ -40,14 +41,15 @@ public class RightMenuPage implements View.OnClickListener {
             case R.id.sliding_right_timeline:
                 if (v != currentGroup) {
                     Activity from = (Activity) currentGroup.getContext();
-                    ActivityManager.startTimeLineActivity(from);
+                    ActivityManager.startTimeLineActivity(from, null);
                     from.finish();
                 }
                 break;
             case R.id.sliding_right_waterfall:
                 if (v != currentGroup) {
                     Activity from = (Activity) currentGroup.getContext();
-                    ActivityManager.startWaterfallActivity((Activity) currentGroup.getContext());
+                    Bundle bundle = null;
+                    ActivityManager.startWaterfallActivity((Activity) currentGroup.getContext(), bundle);
                     from.finish();
                 }
                 break;

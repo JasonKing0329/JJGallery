@@ -1,6 +1,9 @@
 package com.jing.app.jjgallery.viewsystem.sub.waterfall;
 
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,30 +22,43 @@ public class WaterfallActivity extends BaseActivity {
     public static final String KEY_FOLDER_PATH = "waterfall_folder_path";
     public static final String KEY_ORDER_ID = "waterfall_order_id";
 
+    /**
+     * 转场动画时间
+     */
+    private final int TIME_TRANS_ANIM_DURITION = 500;
+
     private WaterfallFragment fragment;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_waterfall;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
 
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         onWaterfallPage(getIntent().getIntExtra(KEY_TYPE, FOLDER));
+
+        // 加入转场动画，从上个界面注册的transitionName = trans_wall的view放大而出
+        findViewById(R.id.waterfall_parent).setTransitionName(getString(R.string.trans_waterfall));
+        TransitionSet set = new TransitionSet();
+        Slide slide = new Slide(Gravity.BOTTOM);
+        slide.addTarget(R.id.waterfall_parent);
+        slide.setDuration(TIME_TRANS_ANIM_DURITION);
+        getWindow().setEnterTransition(set);
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 

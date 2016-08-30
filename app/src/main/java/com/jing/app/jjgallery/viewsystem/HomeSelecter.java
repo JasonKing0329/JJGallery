@@ -2,6 +2,8 @@ package com.jing.app.jjgallery.viewsystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceValue;
@@ -46,13 +48,23 @@ public class HomeSelecter implements  HomeProvider {
 
     @Override
     public void startDefaultHome(Activity from, Object datas) {
+        startDefaultHome(from, datas, null);
+    }
+
+    @Override
+    public void startDefaultHome(Activity from, Object datas, Bundle bundle) {
         AccessController.getInstance().changeAccessMode(AccessController.ACCESS_MODE_SUPERUSER);
         int startViewMode = SettingProperties.getStartViewMode(from);
-        startHome(from, startViewMode, datas);
+        startHome(from, startViewMode, datas, bundle);
     }
 
     @Override
     public boolean startHome(Activity from, int key, Object datas) {
+        return startHome(from, key, datas, null);
+    }
+
+    @Override
+    public boolean startHome(Activity from, int key, Object datas, Bundle bundle) {
         boolean result = true;
         switch (key) {
             case PreferenceValue.START_VIEW_TIMELINE:
@@ -62,10 +74,10 @@ public class HomeSelecter implements  HomeProvider {
                 }
                 String mode = SettingProperties.getTimelineDefaultMode(from);
                 if (PreferenceValue.VALUE_TIMELINE_VIEW_WATERFALL.equals(mode)) {
-                    ActivityManager.startWaterfallActivity(from);
+                    ActivityManager.startWaterfallActivity(from, bundle);
                 }
                 else if (PreferenceValue.VALUE_TIMELINE_VIEW_TIMELINE.equals(mode)){
-                    ActivityManager.startTimeLineActivity(from);
+                    ActivityManager.startTimeLineActivity(from, bundle);
                 }
                 break;
             case PreferenceValue.START_VIEW_GUIDE:
@@ -76,17 +88,17 @@ public class HomeSelecter implements  HomeProvider {
                     result = false;
                     break;
                 }
-                ActivityManager.startSOrderActivity(from);
+                ActivityManager.startSOrderActivity(from, bundle);
                 break;
             case PreferenceValue.START_GDB:
                 if (from instanceof GDBHomeActivity) {//禁止重复打开当前页面
                     result = false;
                     break;
                 }
-                result = ActivityManager.startGDBHomeActivity(from);
+                result = ActivityManager.startGDBHomeActivity(from, bundle);
                 break;
             default:
-                ActivityManager.startFileManagerActivity(from);
+                ActivityManager.startFileManagerActivity(from, bundle);
                 break;
         }
         return result;

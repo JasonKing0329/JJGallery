@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.view.View;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -43,29 +45,53 @@ public class ActivityManager {
         activity.overridePendingTransition(R.anim.activity_left_in, R.anim.activity_right_out);
     }
 
-    public static void startFileManagerActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, FileManagerActivity.class));
-        applyAnimation(from);
+    public static void startFileManagerActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, FileManagerActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
     }
 
-    public static void startTimeLineActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, TimeLineActivity.class));
-        applyAnimation(from);
+    public static void startTimeLineActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, TimeLineActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
     }
 
-    public static boolean startGDBHomeActivity(Activity from) {
+    public static boolean startGDBHomeActivity(Activity from, Bundle bundle) {
         if (!new File(ConfManager.GDB_DB_PATH).exists()) {
             Toast.makeText(from, R.string.gdb_no_conf, Toast.LENGTH_LONG).show();
             return false;
         }
-        from.startActivity(new Intent().setClass(from, GDBHomeActivity.class));
-        applyAnimation(from);
+        Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
         return true;
     }
 
-    public static void startWaterfallActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, HomeWaterfallActivity.class));
-        applyAnimation(from);
+    public static void startWaterfallActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, HomeWaterfallActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
     }
 
     public static void startWaterfallActivity(Activity from, String filePath) {
@@ -85,10 +111,33 @@ public class ActivityManager {
         from.startActivity(intent);
         applyAnimation(from);
     }
+    public static void startWaterfallActivity(Activity from, SOrder order, View view) {
+        if (view == null) {
+            startWaterfallActivity(from, order);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, WaterfallActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(view, from.getString(R.string.trans_waterfall));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        intent.putExtra(WaterfallActivity.KEY_TYPE, WaterfallActivity.SORDER);
+        intent.putExtra(WaterfallActivity.KEY_ORDER_ID, order.getId());
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
+    }
 
-    public static void startSOrderActivity(Activity from) {
-        from.startActivity(new Intent().setClass(from, SOrderActivity.class));
-        applyAnimation(from);
+    public static void startSOrderActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, SOrderActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
     }
 
     public static void startSettingActivity(Activity from, int requestCode) {
@@ -105,6 +154,24 @@ public class ActivityManager {
         from.startActivity(intent);
         applyAnimation(from);
     }
+    public static void startSurfActivity(Activity from, String path, View animView) {
+        if (animView == null) {
+            startSurfActivity(from, path);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, SurfActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(animView, from.getString(R.string.trans_surf_center));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt("src_mode", UiController.SRC_MODE_FOLDER);
+        bundle.putString("path", path);
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
+    }
+
     public static void startSurfActivity(Activity from, SOrder order) {
         Bundle bundle = new Bundle();
         bundle.putInt("src_mode", UiController.SRC_MODE_ORDER);
@@ -114,6 +181,23 @@ public class ActivityManager {
         from.startActivity(intent);
         applyAnimation(from);
     }
+    public static void startSurfActivity(Activity from, SOrder order, View view) {
+        if (view == null) {
+            startSurfActivity(from, order);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, SurfActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(view, from.getString(R.string.trans_surf_center));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt("src_mode", UiController.SRC_MODE_ORDER);
+        bundle.putInt("orderId", order.getId());
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
+    }
 
     public static void startRandomSurfActivity(Activity from) {
         from.startActivity(new Intent().setClass(from, RandomSurfActivity.class));
@@ -121,22 +205,57 @@ public class ActivityManager {
     }
 
     public static void startWallActivity(Activity from, String path) {
+        Intent intent = new Intent().setClass(from, WallActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_FOLDER);
         bundle.putString(WallActivity.MODE_VALUE_KEY, path);
-        Intent intent = new Intent().setClass(from, WallActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);
     }
+    public static void startWallActivity(Activity from, String path, View animView) {
+        if (animView == null) {
+            startWallActivity(from, path);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, WallActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(animView, from.getString(R.string.trans_wall));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_FOLDER);
+        bundle.putString(WallActivity.MODE_VALUE_KEY, path);
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
+    }
+
     public static void startWallActivity(Activity from, SOrder order) {
+        Intent intent = new Intent().setClass(from, WallActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_ORDER);
         bundle.putInt(WallActivity.MODE_VALUE_KEY, order.getId());
-        Intent intent = new Intent().setClass(from, WallActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);
+    }
+    public static void startWallActivity(Activity from, SOrder order, View animView) {
+        if (animView == null) {
+            startWallActivity(from, order);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, WallActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(animView, from.getString(R.string.trans_wall));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt(WallActivity.MODE_KEY, WallActivity.MODE_ORDER);
+        bundle.putInt(WallActivity.MODE_VALUE_KEY, order.getId());
+        intent.putExtras(bundle);
+        from.startActivity(intent, bundle);
     }
 
     public static void startBookActivity(Activity from, String path) {
@@ -148,6 +267,23 @@ public class ActivityManager {
         from.startActivity(intent);
         applyAnimation(from);
     }
+    public static void startBookActivity(Activity from, String path, View animView) {
+        if (animView == null) {
+            startBookActivity(from, path);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, BookActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(animView, from.getString(R.string.trans_book));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt(BookActivity.KEY_TYPE, BookActivity.FOLDER);
+        bundle.putString(BookActivity.KEY_FOLDER_PATH, path);
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
+    }
 
     public static void startBookActivity(Activity from, SOrder order) {
         Bundle bundle = new Bundle();
@@ -157,6 +293,23 @@ public class ActivityManager {
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);
+    }
+    public static void startBookActivity(Activity from, SOrder order, View animView) {
+        if (animView == null) {
+            startBookActivity(from, order);
+            return;
+        }
+        Intent intent = new Intent().setClass(from, BookActivity.class);
+        // transition animation
+        Pair participants = new Pair<>(animView, from.getString(R.string.trans_book));
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        from, participants);
+        Bundle bundle = transitionActivityOptions.toBundle();
+        bundle.putInt(BookActivity.KEY_TYPE, BookActivity.SORDER);
+        bundle.putInt(BookActivity.KEY_ORDER_ID, order.getId());
+        intent.putExtras(bundle);
+        ActivityCompat.startActivity(from, intent, bundle);
     }
 
     public static void onSettingResult(Context context) {
@@ -180,14 +333,17 @@ public class ActivityManager {
      * @param order
      */
     public static void startExploreActivity(Activity from, SOrder order, String mode) {
+        startExploreActivity(from, order, mode, null);
+    }
+    public static void startExploreActivity(Activity from, SOrder order, String mode, View view) {
         if (PreferenceValue.EXPLORE_OPEN_WALL.equals(mode)) {
-            startWallActivity(from, order);
+            startWallActivity(from, order, view);
         }
         else if (PreferenceValue.EXPLORE_OPEN_BOOK.equals(mode)) {
-            startBookActivity(from, order);
+            startBookActivity(from, order, view);
         }
         else {
-            startSurfActivity(from, order);
+            startSurfActivity(from, order, view);
         }
     }
 
@@ -198,14 +354,17 @@ public class ActivityManager {
      * @param path
      */
     public static void startExploreActivity(Activity from, String path, String mode) {
+        startExploreActivity(from, path, mode, null);
+    }
+    public static void startExploreActivity(Activity from, String path, String mode, View view) {
         if (PreferenceValue.EXPLORE_OPEN_WALL.equals(mode)) {
-            startWallActivity(from, path);
+            startWallActivity(from, path, view);
         }
         else if (PreferenceValue.EXPLORE_OPEN_BOOK.equals(mode)) {
-            startBookActivity(from, path);
+            startBookActivity(from, path, view);
         }
         else {
-            startSurfActivity(from, path);
+            startSurfActivity(from, path, view);
         }
     }
 
@@ -223,4 +382,5 @@ public class ActivityManager {
         from.startActivity(new Intent().setClass(from, RecordActivity.class));
         applyAnimation(from);
     }
+
 }

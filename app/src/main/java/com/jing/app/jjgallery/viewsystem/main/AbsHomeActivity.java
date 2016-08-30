@@ -51,7 +51,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     private long lastTime = 0L;
 
     @Override
-    protected void initView() {
+    public void initView() {
 
         // initialize sliding menu
         initSlidingMenu();
@@ -344,7 +344,7 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
     }
 
     @Override
-    protected void onOrentaionChanged(Configuration newConfig) {
+    public void onOrentaionChanged(Configuration newConfig) {
         if (slidingViewManager != null) {
             slidingViewManager.onOrentaionChanged(newConfig.orientation);
         }

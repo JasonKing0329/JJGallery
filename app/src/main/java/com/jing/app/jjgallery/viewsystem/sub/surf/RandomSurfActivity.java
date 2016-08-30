@@ -80,17 +80,17 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 	private SOrderProvider sOrderProvider;
 
 	@Override
-	protected boolean isActionBarNeed() {
+	public boolean isActionBarNeed() {
 		return false;
 	}
 
 	@Override
-	protected int getContentView() {
+	public int getContentView() {
 		return R.layout.activity_fullscreen_surf;
 	}
 
 	@Override
-	protected void initController() {
+	public void initController() {
 
 		random = new Random();
 		myGestureDetector = new MyGestureDetector();
@@ -120,7 +120,7 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 	}
 
 	@Override
-	protected void initView() {
+	public void initView() {
 		DisplayHelper.keepScreenOn(this);
 
 		imageView1 = (ImageView) findViewById(R.id.fullscreen_image1);
@@ -147,7 +147,7 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 	}
 
 	@Override
-	protected void initBackgroundWork() {
+	public void initBackgroundWork() {
 		randomManager = new WholeRandomManager();
 		executeWholeRandom();
 

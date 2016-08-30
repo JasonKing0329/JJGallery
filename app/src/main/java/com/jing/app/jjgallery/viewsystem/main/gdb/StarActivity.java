@@ -18,21 +18,21 @@ public class StarActivity extends BaseActivity {
     private StarFragment starFragment;
 
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_pull_zoom_header;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         starFragment = new StarFragment();
         starFragment.setStarId(getIntent().getIntExtra(KEY_STAR_ID, -1));
         starFragment.setActionbar(mActionBar);
@@ -42,7 +42,7 @@ public class StarActivity extends BaseActivity {
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 

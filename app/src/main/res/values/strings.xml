@@ -373,4 +373,9 @@
     <string name="gdb_sort_desc">DESC</string>
     <string name="gdb_sort_title">Sort</string>
 
+    <!--************************** transition **************************-->
+    <string name="trans_surf_center" translatable="false">trans_surf_center</string>
+    <string name="trans_wall" translatable="false">trans_wall</string>
+    <string name="trans_book" translatable="false">trans_book</string>
+    <string name="trans_waterfall" translatable="false">trans_waterfall</string>
 </resources>

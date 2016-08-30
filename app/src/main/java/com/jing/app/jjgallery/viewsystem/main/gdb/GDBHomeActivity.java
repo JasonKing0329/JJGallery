@@ -23,22 +23,22 @@ public class GDBHomeActivity extends BaseActivity {
     private RecordListFragment recordFragment;
     private RecordSceneListFragment sceneListFragment;
     @Override
-    protected boolean isActionBarNeed() {
+    public boolean isActionBarNeed() {
         return true;
     }
 
     @Override
-    protected int getContentView() {
+    public int getContentView() {
         return R.layout.activity_gdb_home;
     }
 
     @Override
-    protected void initController() {
+    public void initController() {
 
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         onStarListPage();
     }
 
@@ -82,7 +82,7 @@ public class GDBHomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void initBackgroundWork() {
+    public void initBackgroundWork() {
 
     }
 
@@ -90,7 +90,7 @@ public class GDBHomeActivity extends BaseActivity {
     public void onIconClick(View view) {
         super.onIconClick(view);
         if (view.getId() == R.id.actionbar_home) {
-            new HomeSelecter(this).startDefaultHome(this, null);
+            new HomeSelecter(this).startDefaultHome(this, null, null);
             finish();
         }
         else {

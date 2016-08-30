@@ -155,34 +155,34 @@ public class SOrderCardPage implements IPage, SOrderCardAdapter.OnExpandActionLi
     }
 
     @Override
-    public void onSurfView(SOrder order) {
+    public void onSurfView(SOrder order, View view) {
         mPresenter.accessOrder(order);
-        ActivityManager.startSurfActivity((Activity) context, order);
+        ActivityManager.startSurfActivity((Activity) context, order, view);
     }
 
     @Override
-    public void onWallView(SOrder order) {
+    public void onWallView(SOrder order, View view) {
         mPresenter.accessOrder(order);
-        ActivityManager.startWallActivity((Activity) context, order);
+        ActivityManager.startWallActivity((Activity) context, order, view);
     }
 
     @Override
-    public void onBookView(SOrder order) {
+    public void onBookView(SOrder order, View view) {
         mPresenter.accessOrder(order);
-        ActivityManager.startBookActivity((Activity) context, order);
+        ActivityManager.startBookActivity((Activity) context, order, view);
     }
 
     @Override
-    public void onPreView(SOrder order) {
+    public void onPreView(SOrder order, View view) {
         new PreviewDialog(context, order).show();
     }
 
     @Override
-    public void onWaterfallView(SOrder order) {
+    public void onWaterfallView(SOrder order, View view) {
         mPresenter.loadOrderItems(order);
         if (order.getImgPathList() != null && order.getImgPathList().size() >= Constants.WATERFALL_MIN_NUMBER) {
             mPresenter.accessOrder(order);
-            ActivityManager.startWaterfallActivity((Activity) context, order);
+            ActivityManager.startWaterfallActivity((Activity) context, order, view);
         }
         else {
             ((BaseSlidingActivity) context).showToastLong(String.format(context.getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));

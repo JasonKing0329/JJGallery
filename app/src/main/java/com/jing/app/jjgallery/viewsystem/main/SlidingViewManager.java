@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -21,7 +19,6 @@ import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.viewsystem.main.bg.SlidingSubscriber;
 import com.jing.app.jjgallery.viewsystem.publicview.CircleImageView;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -225,6 +222,7 @@ public class SlidingViewManager implements SlidingSubscriber, SlidingSelectorAda
 
     @Override
     public void onSelectPage(int index) {
+
         if (homeProvider.startHome((Activity) mContext, homeList.get(index).getPreferenceKey(), null)) {
             ((Activity) mContext).finish();
         }

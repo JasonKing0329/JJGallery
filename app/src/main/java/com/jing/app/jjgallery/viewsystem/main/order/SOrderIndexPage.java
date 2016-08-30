@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.BasePresenter;
-import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.PreferenceKey;
@@ -187,7 +186,8 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     public void onKeywordClick(View view, Keyword keyword) {
         SOrder order = (SOrder) keyword.getObject();
         mPresenter.accessOrder(order);
-        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context));
+
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context), view);
     }
 
     public void onIndexBgChanged(String path) {

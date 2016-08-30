@@ -9,7 +9,13 @@ import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.SparseBooleanArray;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,6 +67,10 @@ public class WallActivity extends BaseActivity implements Callback
 	public static final String MODE_VALUE_KEY = "value";
 
 	/**
+	 * 转场动画时间
+	 */
+	private final int TIME_TRANS_ANIM_DURITION = 500;
+	/**
 	 * 删除时的透明过程
 	 */
 	private final int TIME_GALLERY_ANIM_REMOVE = 200;
@@ -98,17 +108,17 @@ public class WallActivity extends BaseActivity implements Callback
 	private ActionTouchListener actionTouchListener;
 
 	@Override
-	protected boolean isActionBarNeed() {
+	public boolean isActionBarNeed() {
 		return true;
 	}
 
 	@Override
-	protected int getContentView() {
+	public int getContentView() {
 		return R.layout.layout_wall_update;
 	}
 
 	@Override
-	protected void initController() {
+	public void initController() {
 		orientation = getResources().getConfiguration().orientation;
 		isActionBarShow = true;
 
@@ -154,7 +164,7 @@ public class WallActivity extends BaseActivity implements Callback
 	}
 
 	@Override
-	protected void initView() {
+	public void initView() {
 
 		requestActionbarFloating(true);
 
@@ -197,10 +207,23 @@ public class WallActivity extends BaseActivity implements Callback
 		});
 
 		showImageDialog = new ShowImageDialog(this, null, 0);
+
+
+//		Transition transitionExplode =
+//				TransitionInflater.from(this).inflateTransition(R.transition.explode);
+//		getWindow().setEnterTransition(transitionExplode);
+		// 加入转场动画，从上个界面注册的transitionName = trans_wall的view放大而出
+		findViewById(R.id.wall_background).setTransitionName(getString(R.string.trans_wall));
+		TransitionSet set = new TransitionSet();
+		Slide slide = new Slide(Gravity.BOTTOM);
+		slide.addTarget(R.id.wall_background);
+		slide.setDuration(TIME_TRANS_ANIM_DURITION);
+		getWindow().setEnterTransition(set);
+
 	}
 
 	@Override
-	protected void initBackgroundWork() {
+	public void initBackgroundWork() {
 		Bundle bundle = getIntent().getExtras();
 		currentMode = bundle.getInt(MODE_KEY);
 		if (currentMode == MODE_FOLDER) {
@@ -216,7 +239,13 @@ public class WallActivity extends BaseActivity implements Callback
 		}
 		changeActionbarTitle();
 
-		initGallery();
+		// 由于加入了转场动画，整个activity的高度会从最小到最大，如果预先initGallery会导致item的高度过小，因此用delay的方式延迟较好
+		wallGallery.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				initGallery();
+			}
+		}, TIME_TRANS_ANIM_DURITION);
 	}
 
 	private void computeActionbarLayout() {

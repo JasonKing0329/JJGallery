@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/wall_background"
-    android:background="@android:color/black" >
+    android:background="@android:color/black">
     
 	<android.support.v7.widget.RecyclerView  
         android:id="@+id/wall_gallery"  
