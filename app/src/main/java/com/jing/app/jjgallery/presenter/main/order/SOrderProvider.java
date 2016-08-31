@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
@@ -23,6 +22,7 @@ import com.jing.app.jjgallery.service.data.dao.SOrderDao;
 import com.jing.app.jjgallery.service.data.impl.SOrderDaoImpl;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderChooserUpdate;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
@@ -97,7 +97,7 @@ public class SOrderProvider implements Handler.Callback {
                     if (order.getName() != null) {
                         msg = msg.replace("%s", order.getName());
                     }
-                    Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                    ((ProgressProvider) mContext).showToastLong(msg, ProgressProvider.TOAST_SUCCESS);
 				}
 				return true;
 			}
@@ -148,7 +148,7 @@ public class SOrderProvider implements Handler.Callback {
                             }
                         }
                         else {
-                            Toast.makeText(mContext, R.string.login_pwd_error, Toast.LENGTH_LONG).show();
+                            ((ProgressProvider) mContext).showToastLong(mContext.getString(R.string.login_pwd_error), ProgressProvider.TOAST_ERROR);
                         }
                     }
                     mCallback.onAddToOrderFinished();
@@ -182,7 +182,7 @@ public class SOrderProvider implements Handler.Callback {
 			msg = msg.replace("%s", order.getName());
 		}
 		if (showResult) {
-			Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+            ((ProgressProvider) mContext).showToastLong(msg, ProgressProvider.TOAST_INFOR);
 		}
     }
 

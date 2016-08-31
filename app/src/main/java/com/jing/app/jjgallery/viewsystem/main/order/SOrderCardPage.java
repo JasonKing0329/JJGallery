@@ -19,6 +19,7 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.main.order.SOrderPresenter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.loopeer.cardstack.AllMoveDownAnimatorAdapter;
 import com.loopeer.cardstack.CardStackView;
@@ -185,7 +186,8 @@ public class SOrderCardPage implements IPage, SOrderCardAdapter.OnExpandActionLi
             ActivityManager.startWaterfallActivity((Activity) context, order, view);
         }
         else {
-            ((BaseSlidingActivity) context).showToastLong(String.format(context.getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+            ((ProgressProvider) context).showToastLong(String.format(context.getString(R.string.wall_waterfall_notenough)
+                    , Constants.WATERFALL_MIN_NUMBER), ProgressProvider.TOAST_WARNING);
         }
     }
 }

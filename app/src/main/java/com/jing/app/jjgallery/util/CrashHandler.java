@@ -176,13 +176,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
         try {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
+            String folder = time.substring(0, 10);
             String fileName = "crash-" + time + "-" + timestamp + ".txt";
-            String path = Configuration.APP_DIR_CONF_CRASH + "/" + fileName;
+            String path = Configuration.APP_DIR_CONF_CRASH + "/" + folder;
             File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            FileOutputStream fos = new FileOutputStream(path + fileName);
+            FileOutputStream fos = new FileOutputStream(path + "/" + fileName);
             fos.write(sb.toString().getBytes());
             fos.close();
             return fileName;

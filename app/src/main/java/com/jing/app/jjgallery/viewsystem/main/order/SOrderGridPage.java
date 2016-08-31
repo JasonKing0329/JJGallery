@@ -24,7 +24,6 @@ import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BasePresenter;
@@ -550,10 +549,10 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             public boolean onSave(Object object) {
 
                 if (object == null) {
-                    Toast.makeText(context, R.string.sorder_create_fail, Toast.LENGTH_LONG).show();
+                    ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_create_fail), ProgressProvider.TOAST_ERROR);
                 }
                 else {
-                    Toast.makeText(context, R.string.sorder_success, Toast.LENGTH_LONG).show();
+                    ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_success), ProgressProvider.TOAST_SUCCESS);
                     refresh();
                 }
                 return true;
@@ -686,7 +685,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                 ((ProgressProvider) context).dismissProgressCycler();
             }
             if (msg.what == 1) {
-                Toast.makeText(context, R.string.sorder_success, Toast.LENGTH_LONG).show();
+                ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_success), ProgressProvider.TOAST_SUCCESS);
             }
             super.handleMessage(msg);
         }
@@ -698,7 +697,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             refresh();
         }
         else {
-            Toast.makeText(context, R.string.sorder_delete_fail, Toast.LENGTH_LONG).show();
+            ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_delete_fail), ProgressProvider.TOAST_ERROR);
         }
     }
 
@@ -750,7 +749,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
             String name = edit.getText().toString();
             if (name != null && name.length() > 0) {
                 if (mPresenter.isOrderExist(name)) {
-                    Toast.makeText(context, R.string.sorder_name_already_exist, Toast.LENGTH_LONG).show();
+                    ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_name_already_exist), ProgressProvider.TOAST_WARNING);
                 }
                 else {
                     SOrder order = rOrder;
@@ -759,7 +758,7 @@ public class SOrderGridPage implements IPage, ISOrderDataCallback, AdapterView.O
                         refresh();
                     }
                     else {
-                        Toast.makeText(context, R.string.sorder_rename_fail, Toast.LENGTH_LONG).show();
+                        ((ProgressProvider) context).showToastLong(context.getString(R.string.sorder_rename_fail), ProgressProvider.TOAST_ERROR);
                     }
                 }
             }

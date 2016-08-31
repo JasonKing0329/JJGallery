@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BasePresenter;
@@ -39,6 +38,7 @@ import com.jing.app.jjgallery.presenter.main.filesystem.FileManagerPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
@@ -179,7 +179,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 		//v6.3.7 deprecated this display mode, replace it with indicator path view
 		//currentPathView.setText(listController.getCurrentPath());
 		if (listController.getFilePageItemList() == null) {
-			Toast.makeText(context, R.string.error_app_root_not_exist, Toast.LENGTH_LONG).show();
+			((ProgressProvider) context).showToastLong(context.getString(R.string.error_app_root_not_exist), ProgressProvider.TOAST_ERROR);
 			return;
 		}
 		Log.i(TAG, "notifyAdapterRefresh -> " + listController.getCurrentPath());
@@ -237,11 +237,11 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 					public void onOk(String name) {
 						String filePath = listController.getCurrentPath() + "/" + name;
 						if (listController.createFolder(new File(filePath))) {
-							Toast.makeText(context, R.string.success, Toast.LENGTH_LONG).show();
+							((ProgressProvider) context).showToastLong(context.getString(R.string.success), ProgressProvider.TOAST_SUCCESS);
 							refresh();
 						}
 						else {
-							Toast.makeText(context, R.string.filelist_folder_already_exist, Toast.LENGTH_LONG).show();
+							((ProgressProvider) context).showToastLong(context.getString(R.string.filelist_folder_already_exist), ProgressProvider.TOAST_WARNING);
 						}
 					}
 				});
@@ -396,10 +396,10 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 			}
 			else {
 				if (msg.what == FileListController.FILE_TYPE_ENCRYPTED) {
-					Toast.makeText(context, R.string.filelist_encrypt_fail, Toast.LENGTH_LONG).show();
+					((ProgressProvider) context).showToastLong(context.getString(R.string.filelist_encrypt_fail), ProgressProvider.TOAST_ERROR);
 				}
 				else if (msg.what == FileListController.FILE_TYPE_UNENCRYPTED) {
-					Toast.makeText(context, R.string.filelist_decipher_fail, Toast.LENGTH_LONG).show();
+					((ProgressProvider) context).showToastLong(context.getString(R.string.filelist_decipher_fail), ProgressProvider.TOAST_ERROR);
 				}
 			}
 			cancelProgress();

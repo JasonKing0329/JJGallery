@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 
@@ -141,7 +141,7 @@ public class FolderDialog extends CustomDialog implements
 				return;
 			}
 			if (selectedView.hasExpand()) {
-				Toast.makeText(getContext(), R.string.folderdlg_option_rule1, Toast.LENGTH_LONG).show();
+				((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.folderdlg_option_rule1), ProgressProvider.TOAST_WARNING);
 				return;
 			}
 
@@ -165,7 +165,7 @@ public class FolderDialog extends CustomDialog implements
 						}
 						File file = folderManager.createFolder(parent, name);
 						if (file == null) {
-							Toast.makeText(getContext(), R.string.folderdlg_alreadyexist, Toast.LENGTH_LONG).show();
+							((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.folderdlg_alreadyexist), ProgressProvider.TOAST_WARNING);
 							return;
 						}
 

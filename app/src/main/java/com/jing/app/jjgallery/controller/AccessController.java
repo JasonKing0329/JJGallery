@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 
 public class AccessController {
 
@@ -53,7 +53,7 @@ public class AccessController {
 					listener.pass();
 				}
 				else {
-					Toast.makeText(context, R.string.login_pwd_error, Toast.LENGTH_LONG).show();
+					((ProgressProvider) context).showToastLong(context.getString(R.string.login_pwd_error), ProgressProvider.TOAST_SUCCESS);
 					listener.fail();
 				}
 			}

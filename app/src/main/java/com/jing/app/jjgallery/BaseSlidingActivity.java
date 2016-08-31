@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingAppCompatActivity;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -72,12 +71,24 @@ public abstract class BaseSlidingActivity extends SlidingAppCompatActivity imple
         return  commonActivity.dismissProgressCycler();
     }
 
+    @Override
     public void showToastLong(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+        commonActivity.showToastLong(text);
     }
 
+    @Override
     public void showToastShort(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        commonActivity.showToastShort(text);
+    }
+
+    @Override
+    public void showToastLong(String text, int type) {
+        commonActivity.showToastLong(text, type);
+    }
+
+    @Override
+    public void showToastShort(String text, int type) {
+        commonActivity.showToastShort(text, type);
     }
 
     @Override

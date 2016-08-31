@@ -13,7 +13,6 @@ import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
@@ -23,6 +22,7 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.presenter.sub.SurfPresenter;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 
 import java.util.ArrayList;
@@ -180,7 +180,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 			}
 			else if (view == seizeButton) {
 				if (mPresenter.isGifImage(currentImagePath)) {
-					Toast.makeText(surfActivity, R.string.surf_seize_not_support, Toast.LENGTH_SHORT).show();
+					surfActivity.showToastLong(surfActivity.getString(R.string.surf_seize_not_support), ProgressProvider.TOAST_WARNING);
 				}
 				else {
 					if (currentImagePath != null) {
@@ -257,7 +257,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 			msg = surfActivity.getResources().getString(R.string.surf_delete_fail);
 		}
 
-		Toast.makeText(surfActivity, msg, Toast.LENGTH_LONG).show();
+		surfActivity.showToastLong(msg, ProgressProvider.TOAST_INFOR);
 	}
 
 	@Override
@@ -299,7 +299,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 			else {
 				String msg = surfActivity.getResources().getString(R.string.spicture_autoplay_tooless);
 				msg = String.format(msg, SettingProperties.getMinNumberToPlay(surfActivity));
-				Toast.makeText(surfActivity, msg, Toast.LENGTH_LONG).show();
+				surfActivity.showToastLong(msg, ProgressProvider.TOAST_WARNING);
 			}
 		}
 	}
@@ -324,7 +324,7 @@ public class UiController implements SurfUiAction, OnMenuItemClickListener
 			if (currentPosition == mImageList.size()) {
 				currentPosition --;
 				stopAutoPlay();
-				Toast.makeText(surfActivity, R.string.spicture_autoplay_finish, Toast.LENGTH_LONG).show();
+				surfActivity.showToastLong(surfActivity.getString(R.string.spicture_autoplay_finish), ProgressProvider.TOAST_INFOR);
 			}
 		}
 		return false;

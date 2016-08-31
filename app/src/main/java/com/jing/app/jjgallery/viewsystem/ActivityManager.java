@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
@@ -69,7 +68,7 @@ public class ActivityManager {
 
     public static boolean startGDBHomeActivity(Activity from, Bundle bundle) {
         if (!new File(ConfManager.GDB_DB_PATH).exists()) {
-            Toast.makeText(from, R.string.gdb_no_conf, Toast.LENGTH_LONG).show();
+            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
         Intent intent = new Intent().setClass(from, GDBHomeActivity.class);

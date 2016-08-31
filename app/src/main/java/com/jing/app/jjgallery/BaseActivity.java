@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -71,12 +70,24 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
         return  commonActivity.dismissProgressCycler();
     }
 
-    protected void showToastLong(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    @Override
+    public void showToastLong(String text) {
+        commonActivity.showToastLong(text);
     }
 
-    protected void showToastShort(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    @Override
+    public void showToastShort(String text) {
+        commonActivity.showToastShort(text);
+    }
+
+    @Override
+    public void showToastLong(String text, int type) {
+        commonActivity.showToastLong(text, type);
+    }
+
+    @Override
+    public void showToastShort(String text, int type) {
+        commonActivity.showToastShort(text, type);
     }
 
     @Override

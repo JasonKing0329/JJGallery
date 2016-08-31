@@ -4,20 +4,21 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBarManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
+import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 
 /**
  * Created by Administrator on 2016/8/29.
@@ -109,6 +110,42 @@ public class CommonActivity {
             return true;
         }
         return false;
+    }
+
+    public void showToastLong(String text) {
+        Toast.makeText(activity, text, Toast.LENGTH_LONG).show();
+    }
+
+    public void showToastShort(String text) {
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToastLong(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_LONG);
+    }
+
+    public void showToastShort(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_SHORT);
+    }
+
+    public void showToastLib(String text, int type, int time) {
+        switch (type) {
+            case ProgressProvider.TOAST_SUCCESS:
+                TastyToast.makeText(activity, text, time, TastyToast.SUCCESS);
+                break;
+            case ProgressProvider.TOAST_ERROR:
+                TastyToast.makeText(activity, text, time, TastyToast.ERROR);
+                break;
+            case ProgressProvider.TOAST_WARNING:
+                TastyToast.makeText(activity, text, time, TastyToast.WARNING);
+                break;
+            case ProgressProvider.TOAST_INFOR:
+                TastyToast.makeText(activity, text, time, TastyToast.INFO);
+                break;
+            case ProgressProvider.TOAST_DEFAULT:
+                TastyToast.makeText(activity, text, time, TastyToast.DEFAULT);
+                break;
+        }
     }
 
     protected void onDestroy() {

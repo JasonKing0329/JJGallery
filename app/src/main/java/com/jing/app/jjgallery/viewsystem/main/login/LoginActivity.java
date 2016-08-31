@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
@@ -27,6 +26,7 @@ import com.jing.app.jjgallery.service.file.FileDBService;
 import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressButton;
@@ -124,10 +124,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         @Override
         protected Boolean doInBackground(Void... params) {
             if (!Configuration.init()) {
-                Toast.makeText(LoginActivity.this, R.string.error_app_root_create_fail, Toast.LENGTH_LONG).show();
+                showToastLong(getString(R.string.error_app_root_create_fail), ProgressProvider.TOAST_ERROR);
             }
             if (!DBInfor.prepareDatabase(LoginActivity.this)) {
-                Toast.makeText(LoginActivity.this, R.string.error_database_create_fail, Toast.LENGTH_LONG).show();
+                showToastLong(getString(R.string.error_database_create_fail), ProgressProvider.TOAST_ERROR);
             }
             Configuration.initVersionChange();
             Configuration.initParams(LoginActivity.this);
@@ -196,7 +196,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     public void onSignFailed(int type, String msg) {
         switch (type) {
             case LoginParams.TYPE_ERROR_WRONG_PWD:
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                showToastLong(msg, ProgressProvider.TOAST_ERROR);
                 break;
             case LoginParams.TYPE_ERROR_CANCEL_FINGERPRINT:
                 finish();
@@ -205,7 +205,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                 break;
             case LoginParams.TYPE_ERROR_UNREGIST_FINGERPRINT:
                 showLoginForm();
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                showToastLong(msg, ProgressProvider.TOAST_ERROR);
                 break;
         }
     }

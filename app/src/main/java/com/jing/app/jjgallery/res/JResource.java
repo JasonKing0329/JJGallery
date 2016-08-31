@@ -1,11 +1,11 @@
 package com.jing.app.jjgallery.res;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.controller.ThemeManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.king.lib.colorpicker.ColorFormatter;
 import com.king.lib.colorpicker.ResourceProvider;
 import com.king.lib.resmanager.JResManager;
@@ -69,10 +69,10 @@ public class JResource {
 		// normal主题才采用自定义颜色
 		if (ThemeManager.getInstance().isNormalTheme(context)) {
 			if (jResManager.saveColorUpdate()) {
-				Toast.makeText(context, R.string.colorpicker_update_success, Toast.LENGTH_SHORT).show();
+				((ProgressProvider) context).showToastLong(context.getString(R.string.colorpicker_update_success), ProgressProvider.TOAST_SUCCESS);
 			}
 			else {
-				Toast.makeText(context, R.string.colorpicker_update_failed, Toast.LENGTH_SHORT).show();
+				((ProgressProvider) context).showToastLong(context.getString(R.string.colorpicker_update_failed), ProgressProvider.TOAST_ERROR);
 			}
 		}
 	}

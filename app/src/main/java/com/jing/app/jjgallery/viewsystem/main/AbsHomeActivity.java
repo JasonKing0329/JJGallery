@@ -21,6 +21,7 @@ import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.EncryptCheckService;
 import com.jing.app.jjgallery.service.file.PreferenceService;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ChangeThemeDialog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.LoadFromDialog;
@@ -317,11 +318,11 @@ public abstract class AbsHomeActivity extends BaseSlidingActivity implements Han
                         .show();
             }
             else {
-                showToastLong(getString(R.string.encrypt_check_service_isnotexist));
+                showToastLong(getString(R.string.encrypt_check_service_isnotexist), ProgressProvider.TOAST_SUCCESS);
             }
         }
         else if (msg.what == EncryptCheckService.SERVICE_ENCRYPT) {
-            showToastLong(getString(R.string.encrypt_check_service_encryptok));
+            showToastLong(getString(R.string.encrypt_check_service_encryptok), ProgressProvider.TOAST_SUCCESS);
         }
 
         dismissProgress();

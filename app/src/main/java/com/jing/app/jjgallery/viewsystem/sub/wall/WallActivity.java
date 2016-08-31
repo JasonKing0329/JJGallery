@@ -9,10 +9,7 @@ import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.transition.Explode;
 import android.transition.Slide;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.transition.TransitionSet;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
@@ -27,13 +24,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.Constants;
-import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.sub.WallController;
 import com.jing.app.jjgallery.model.sub.WholeRandomManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -42,6 +37,7 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
 import com.jing.app.jjgallery.viewsystem.sub.surf.SurfActivity;
@@ -453,7 +449,7 @@ public class WallActivity extends BaseActivity implements Callback
 			case R.id.actionbar_fullscreen:
 				//FIXME full screen mode don't support SHOW_MODE_RANDOM currently
 				if (currentMode == MODE_LIST) {
-					Toast.makeText(this, R.string.spicture_fullscreen_not_support, Toast.LENGTH_LONG).show();
+					showToastLong(getString(R.string.spicture_fullscreen_not_support), ProgressProvider.TOAST_WARNING);
 					return;
 				}
 
@@ -532,7 +528,8 @@ public class WallActivity extends BaseActivity implements Callback
 				finish();
 			}
 			else {
-				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+				showToastLong(String.format(getString(R.string.wall_waterfall_notenough)
+						, Constants.WATERFALL_MIN_NUMBER), ProgressProvider.TOAST_WARNING);
 			}
 		}
 	}
@@ -546,7 +543,8 @@ public class WallActivity extends BaseActivity implements Callback
 				finish();
 			}
 			else {
-				showToastLong(String.format(getString(R.string.wall_waterfall_notenough), Constants.WATERFALL_MIN_NUMBER));
+				showToastLong(String.format(getString(R.string.wall_waterfall_notenough)
+						, Constants.WATERFALL_MIN_NUMBER), ProgressProvider.TOAST_WARNING);
 			}
 		}
 	}

@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
-import android.widget.Toast;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
@@ -32,6 +31,7 @@ import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.sub.gifview.MyGifManager;
 
 import java.util.ArrayList;
@@ -481,7 +481,7 @@ public class RandomSurfActivity extends BaseActivity implements OnClickListener
 		String finish = bundle.getString("autoplay_finish");
 		if (finish != null && finish.equals("true")) {
 			stopAutoPlay();
-			Toast.makeText(this, R.string.spicture_autoplay_finish, Toast.LENGTH_LONG).show();
+			showToastLong(getString(R.string.spicture_autoplay_finish), ProgressProvider.TOAST_INFOR);
 			return;
 		}
 		int index = bundle.getInt("autoplay_index");
