@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.util.DebugLog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -183,12 +182,10 @@ public class WaveSideBarView extends View {
         mWidth = getWidth();
         mItemHeight = (mHeight - mPadding) / mLetters.size();
         mPosX = mWidth - 1.6f * mTextSize;
-        DebugLog.e("mHeight=" + mHeight + ", mWidth=" + mWidth + ", mItemHeight=" + mItemHeight + ", mPosX=" + mPosX);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        DebugLog.e("");
         super.onDraw(canvas);
         //绘制字母列表
         drawLetters(canvas);

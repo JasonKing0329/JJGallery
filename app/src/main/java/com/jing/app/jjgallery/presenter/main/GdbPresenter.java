@@ -1,15 +1,22 @@
 package com.jing.app.jjgallery.presenter.main;
 
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
+import com.jing.app.jjgallery.bean.http.GdbRespBean;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.http.DownloadClient;
+import com.jing.app.jjgallery.service.http.HttpMethods;
+import com.jing.app.jjgallery.service.http.progress.ProgressListener;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
@@ -21,6 +28,9 @@ import com.king.service.gdb.bean.RecordSingleScene;
 import com.king.service.gdb.bean.Star;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,6 +38,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.ResponseBody;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
@@ -135,6 +150,131 @@ public class GdbPresenter {
             }
         }
         return null;
+    }
+
+    public void checkServerStatus() {
+        HttpMethods.getInstance().getGdbService().isServerOnline()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GdbRespBean>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        gdbStarListView.onServerUnavailable();
+                    }
+
+                    @Override
+                    public void onNext(GdbRespBean gdbRespBean) {
+                        if (gdbRespBean.isOnline()) {
+                            gdbStarListView.onServerConnected();
+                        }
+                        else {
+                            gdbStarListView.onServerUnavailable();
+                        }
+                    }
+                });
+    }
+
+    public void checkNewStarFile() {
+        HttpMethods.getInstance().getGdbService().checkNewFile("star")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GdbCheckNewFileBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        gdbStarListView.onRequestFail();
+                    }
+
+                    @Override
+                    public void onNext(GdbCheckNewFileBean bean) {
+                        gdbStarListView.onCheckPass(bean.isStarExisted(), bean.getStarNames());
+                    }
+                });
+    }
+
+    public void checkNewRecordFile() {
+        HttpMethods.getInstance().getGdbService().checkNewFile("record")
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GdbCheckNewFileBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        gdbStarListView.onRequestFail();
+                    }
+
+                    @Override
+                    public void onNext(GdbCheckNewFileBean bean) {
+                        gdbStarListView.onCheckPass(bean.isRecordExisted(), bean.getRecordNames());
+                    }
+                });
+    }
+
+    public void downloadFile(String fileName, String type, ProgressListener progressListener) {
+        new DownloadClient(progressListener).getDownloadService().download(fileName, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        saveApp(responseBody.byteStream());
+                    }
+                });
+    }
+
+    /**
+     * 保存应用
+     *
+     * @param input  输入流
+     */
+    private File saveApp(InputStream input) {
+        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "abc.rar");
+        if (!filePath.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            filePath.mkdirs();
+        }
+        String fileName = "abc.rar";
+        File file = new File(filePath, fileName);
+        FileOutputStream fileOutputStream;
+        try {
+            fileOutputStream = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int ch;
+            while ((ch = input.read(buf)) != -1) {
+                fileOutputStream.write(buf, 0, ch);
+            }
+            fileOutputStream.flush();
+            fileOutputStream.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {

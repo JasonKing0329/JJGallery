@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "2.7.2"
+ext.appVersionName = "2.8.0"
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -10,7 +10,7 @@ android {
         applicationId "com.jing.app.jjgallery"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 78
+        versionCode 79
         versionName appVersionName
     }
 
@@ -94,6 +94,18 @@ dependencies {
     compile 'cc.solart:turbo-recyclerview-helper:1.0.3-beta'
     // apply in publicview/toast
     compile 'com.facebook.rebound:rebound:0.3.8'
+    /*gson*/
+    compile 'com.google.code.gson:gson:2.6.2'
+    /*rxjava*/
+    compile 'io.reactivex:rxjava:1.1.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    /*retrofit2*/
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    /*logger*/
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 
     compile project(':slidingmenu')
     compile project(':swipebacklayout')

@@ -1,8 +1,10 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +13,12 @@ import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.bean.http.GdbRespBean;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
+import com.jing.app.jjgallery.service.http.HttpMethods;
+import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -20,6 +26,10 @@ import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
@@ -86,6 +96,8 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         mAdapter.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         ((ProgressProvider) getActivity()).dismissProgressCycler();
+
+        gdbPresenter.checkServerStatus();
     }
 
     @Override
@@ -114,4 +126,46 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
             }
         }, 100);
     }
+
+    @Override
+    public void onServerConnected() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
+        gdbPresenter.checkNewStarFile();
+    }
+
+    @Override
+    public void onServerUnavailable() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
+    }
+
+    @Override
+    public void onRequestFail() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
+    }
+
+    @Override
+    public void onCheckPass(boolean hasNew, final List<String> fileNames) {
+        if (hasNew) {
+            new AlertDialog.Builder(getActivity())
+                    .setMessage(R.string.gdb_option_download_star)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String fileName = fileNames.get(0);
+                            gdbPresenter.downloadFile(fileName, "star", new ProgressListener() {
+                                @Override
+                                public void update(long bytesRead, long contentLength, boolean done) {
+                                    DebugLog.e("progress:" + (100 * 1f * bytesRead / contentLength));
+                                }
+                            });
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        }
+        else {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
+        }
+    }
+
 }

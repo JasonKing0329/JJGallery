@@ -354,4 +354,10 @@
     <string name="gdb_sort_asc">升序</string>
     <string name="gdb_sort_desc">降序</string>
     <string name="gdb_sort_title">排序</string>
+    <string name="gdb_server_online">成功连接到服务器</string>
+    <string name="gdb_server_offline">无法连接到服务器</string>
+    <string name="gdb_request_fail">请求失败</string>
+    <string name="gdb_option_download_star">发现新的star图片，点击确定下载</string>
+    <string name="gdb_option_download_record">发现新的record图片，点击确定下载</string>
+    <string name="gdb_no_new_images">没有检测到新图片</string>
 </resources>

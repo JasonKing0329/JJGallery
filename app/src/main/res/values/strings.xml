@@ -372,6 +372,12 @@
     <string name="gdb_sort_asc">ASC</string>
     <string name="gdb_sort_desc">DESC</string>
     <string name="gdb_sort_title">Sort</string>
+    <string name="gdb_server_online">Connect to server successfully!</string>
+    <string name="gdb_server_offline">Can\'t connect to server!</string>
+    <string name="gdb_request_fail">Rquest failed!</string>
+    <string name="gdb_option_download_star">Find new star images, click ok to download all.</string>
+    <string name="gdb_option_download_record">Find new record images, click ok to download all.</string>
+    <string name="gdb_no_new_images">No new images found.</string>
 
     <!--************************** transition **************************-->
     <string name="trans_surf_center" translatable="false">trans_surf_center</string>

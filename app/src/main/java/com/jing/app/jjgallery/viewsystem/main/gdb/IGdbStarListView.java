@@ -9,4 +9,8 @@ import java.util.List;
  */
 public interface IGdbStarListView {
     void onLoadStarList(List<Star> list);
+    void onServerConnected();
+    void onServerUnavailable();
+    void onRequestFail();
+    void onCheckPass(boolean hasNew, List<String> fileNames);
 }
