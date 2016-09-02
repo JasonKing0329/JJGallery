@@ -229,4 +229,7 @@
     <dimen name="gdb_record_sub_text_size">14dp</dimen>
     <dimen name="gdb_record_main_text_size">16dp</dimen>
     <dimen name="gdb_record_page_star1_img_height">260dp</dimen>
+
+    <!-- download -->
+    <dimen name="download_dlg_height">800dp</dimen>
 </resources>

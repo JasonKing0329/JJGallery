@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpMethods {
 
-    public static final String BASE_URL = "http://192.168.9.206:8080/JJGalleryServer/";
+    public static final String BASE_URL = "http://192.168.1.107:8080/JJGalleryServer/";
 
     private static final int DEFAULT_TIMEOUT = 5;
 

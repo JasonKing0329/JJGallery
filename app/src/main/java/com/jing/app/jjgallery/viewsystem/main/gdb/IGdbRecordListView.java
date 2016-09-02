@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.king.service.gdb.bean.Record;
 
 import java.util.List;
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface IGdbRecordListView {
     void onLoadRecordList(List<Record> list);
+    void onRequestFail();
+    void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
 }

@@ -16,7 +16,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  */
 public class DownloadClient {
 
-    public static final String BASE_URL = "http://192.168.9.206:8080/JJGalleryServer/";
+    public static final String BASE_URL = "http://192.168.1.107:8080/JJGalleryServer/";
 
     private DownloadService mDownloadService;
 

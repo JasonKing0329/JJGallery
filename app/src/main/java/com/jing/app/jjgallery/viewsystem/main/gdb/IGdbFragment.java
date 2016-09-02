@@ -7,4 +7,6 @@ import android.view.MenuItem;
  */
 public interface IGdbFragment {
     boolean onMenuItemClick(MenuItem item);
+    void onServerConnected();
+    void onServerUnavailable();
 }

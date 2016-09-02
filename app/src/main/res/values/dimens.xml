@@ -265,4 +265,7 @@
     <!-- wave side bar -->
     <dimen name="book_touch_start_range">30dp</dimen>
     <dimen name="book_touch_distance">100dp</dimen>
+
+    <!-- download -->
+    <dimen name="download_dlg_height">400dp</dimen>
 </resources>

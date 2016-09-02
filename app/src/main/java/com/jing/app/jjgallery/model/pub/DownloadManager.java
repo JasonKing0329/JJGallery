@@ -43,10 +43,16 @@ public class DownloadManager {
     private List<DownloadPack> executingdList;
     private DownloadCallback mCallback;
 
+    private String savePath;
+
     public DownloadManager(DownloadCallback callback) {
         mCallback = callback;
         downloadQueue = new LinkedList<>();
         executingdList = new ArrayList<>();
+    }
+
+    public void setSavePath(String path) {
+        savePath = path;
     }
 
     public void downloadFile(String key, String flag, ProgressListener progressListener) {
@@ -137,7 +143,7 @@ public class DownloadManager {
         if (!filename.endsWith(FILE_EXTRA)) {
             filename = filename + FILE_EXTRA;
         }
-        File file = new File(Configuration.GDB_IMG_STAR + "/" + filename);
+        File file = new File(savePath + "/" + filename);
         FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(file);

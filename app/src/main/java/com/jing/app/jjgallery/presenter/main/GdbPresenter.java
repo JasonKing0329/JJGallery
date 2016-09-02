@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.service.http.DownloadClient;
 import com.jing.app.jjgallery.service.http.HttpMethods;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbFragment;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IStarView;
@@ -49,6 +50,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/7/30 0030.
  */
 public class GdbPresenter {
+    private IGdbFragment commonView;
     private IGdbStarListView gdbStarListView;
     private IGdbRecordListView gdbRecordListView;
     private IStarView starView;
@@ -59,14 +61,20 @@ public class GdbPresenter {
      * 在loadAllStars的时候遍历gdb/star目录，解析出所有name对应的path
      */
     private Map<String, String> starImageMap;
+    /**
+     * 在loadAllRecords的时候遍历gdb/record目录，解析出所有name对应的path
+     */
+    private static Map<String, String> recordImageMap;
 
     public GdbPresenter(IGdbStarListView gdbStarListView) {
         this.gdbStarListView = gdbStarListView;
+        commonView = (IGdbFragment) gdbStarListView;
         init();
     }
 
     public GdbPresenter(IGdbRecordListView gdbRecordListView) {
         this.gdbRecordListView = gdbRecordListView;
+        commonView = (IGdbFragment) gdbRecordListView;
         init();
     }
 
@@ -79,6 +87,7 @@ public class GdbPresenter {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
         encrypter = EncrypterFactory.create();
         starImageMap = new HashMap<>();
+        recordImageMap = new HashMap<>();
     }
 
     public void loadStarList() {
@@ -87,6 +96,10 @@ public class GdbPresenter {
 
     public String getStarImage(String starName) {
         return starImageMap.get(starName);
+    }
+
+    public String getRecordImage(String starName) {
+        return recordImageMap.get(starName);
     }
     /**
      *
@@ -140,17 +153,20 @@ public class GdbPresenter {
     }
 
     public static String getRecordPath(String recordName) {
-        // load image path of star
-        List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
-        for (String path:list) {
-            String name = encrypter.decipherOriginName(new File(path));
-            int dot = name.lastIndexOf(".");
-            String preName = name.substring(0, dot);
-            if (preName.equals(recordName)) {
-                return path;
+        String result = recordImageMap.get(recordName);
+        if (result == null) {
+            // load image path of star
+            List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
+            for (String path:list) {
+                String name = encrypter.decipherOriginName(new File(path));
+                int dot = name.lastIndexOf(".");
+                String preName = name.substring(0, dot);
+                if (preName.equals(recordName)) {
+                    return path;
+                }
             }
         }
-        return null;
+        return result;
     }
 
     public void checkServerStatus() {
@@ -165,16 +181,16 @@ public class GdbPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        gdbStarListView.onServerUnavailable();
+                        commonView.onServerUnavailable();
                     }
 
                     @Override
                     public void onNext(GdbRespBean gdbRespBean) {
                         if (gdbRespBean.isOnline()) {
-                            gdbStarListView.onServerConnected();
+                            commonView.onServerConnected();
                         }
                         else {
-                            gdbStarListView.onServerUnavailable();
+                            commonView.onServerUnavailable();
                         }
                     }
                 });
@@ -216,12 +232,12 @@ public class GdbPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        gdbStarListView.onRequestFail();
+                        gdbRecordListView.onRequestFail();
                     }
 
                     @Override
                     public void onNext(GdbCheckNewFileBean bean) {
-                        gdbStarListView.onCheckPass(bean.isRecordExisted(), bean.getRecordItems());
+                        gdbRecordListView.onCheckPass(bean.isRecordExisted(), bean.getRecordItems());
                     }
                 });
     }
@@ -236,6 +252,17 @@ public class GdbPresenter {
         for (DownloadItem item:downloadList) {
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
             if (starImageMap.get(name) == null) {
+                list.add(item);
+            }
+        }
+        return list;
+    }
+
+    public List<DownloadItem> pickRecordToDownload(List<DownloadItem> downloadList) {
+        List<DownloadItem> list = new ArrayList<>();
+        for (DownloadItem item:downloadList) {
+            String name = item.getName().substring(0, item.getName().lastIndexOf("."));
+            if (recordImageMap.get(name) == null) {
                 list.add(item);
             }
         }
@@ -264,7 +291,7 @@ public class GdbPresenter {
             List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
             for (String path:pathList) {
                 String name = encrypter.decipherOriginName(new File(path));
-                String preName = name.split("\\.")[0];
+                String preName = name.substring(0, name.lastIndexOf("."));
                 starImageMap.put(preName, path);
             }
 
@@ -292,6 +319,15 @@ public class GdbPresenter {
         protected List<Record> doInBackground(Object... params) {
             List<Record> list = gdbProvider.getAllRecords();
             sortRecords(list, (Integer) params[0], (Boolean) params[1]);
+
+            // load available images for records
+            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
+            for (String path:pathList) {
+                String name = encrypter.decipherOriginName(new File(path));
+                String preName = name.substring(0, name.lastIndexOf("."));
+                recordImageMap.put(preName, path);
+            }
+
             return list;
         }
     }
@@ -321,7 +357,7 @@ public class GdbPresenter {
                 List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
                 for (String path:list) {
                     String name = encrypter.decipherOriginName(new File(path));
-                    String preName = name.split("\\.")[0];
+                    String preName = name.substring(0, name.lastIndexOf("."));
                     if (preName.equals(star.getName())) {
                         proxy.setImagePath(path);
                         break;
