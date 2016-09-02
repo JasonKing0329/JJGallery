@@ -116,6 +116,8 @@
 
     <string name="menu_gdb_record">Records</string>
     <string name="menu_gdb_star">Stars</string>
+    <string name="menu_gdb_download">Open download manager</string>
+    <string name="menu_gdb_check_server">Check update</string>
 
     <string name="menu_waterfall_random">Random sequence</string>
     <string name="menu_waterfall_origin">Origin sequence</string>
@@ -375,8 +377,7 @@
     <string name="gdb_server_online">Connect to server successfully!</string>
     <string name="gdb_server_offline">Can\'t connect to server!</string>
     <string name="gdb_request_fail">Rquest failed!</string>
-    <string name="gdb_option_download_star">Find new star images, click ok to download all.</string>
-    <string name="gdb_option_download_record">Find new record images, click ok to download all.</string>
+    <string name="gdb_option_download">Find %d images, click ok to download all.</string>
     <string name="gdb_no_new_images">No new images found.</string>
 
     <!--************************** transition **************************-->
@@ -384,4 +385,8 @@
     <string name="trans_wall" translatable="false">trans_wall</string>
     <string name="trans_book" translatable="false">trans_book</string>
     <string name="trans_waterfall" translatable="false">trans_waterfall</string>
+
+    <!--************************** download **************************-->
+    <string name="download_title">Download</string>
+    <string name="download_empty">No items to download.</string>
 </resources>

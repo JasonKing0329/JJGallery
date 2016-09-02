@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.main.gdb;
 
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.king.service.gdb.bean.Star;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface IGdbStarListView {
     void onServerConnected();
     void onServerUnavailable();
     void onRequestFail();
-    void onCheckPass(boolean hasNew, List<String> fileNames);
+    void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
 }

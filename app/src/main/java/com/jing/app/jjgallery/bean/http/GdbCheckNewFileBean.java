@@ -8,8 +8,8 @@ import java.util.List;
 public class GdbCheckNewFileBean {
     private boolean isStarExisted;
     private boolean isRecordExisted;
-    private List<String> starNames;
-    private List<String> recordNames;
+    private List<DownloadItem> starItems;
+    private List<DownloadItem> recordItems;
 
     public boolean isStarExisted() {
         return isStarExisted;
@@ -27,19 +27,19 @@ public class GdbCheckNewFileBean {
         isRecordExisted = recordExisted;
     }
 
-    public List<String> getStarNames() {
-        return starNames;
+    public List<DownloadItem> getStarItems() {
+        return starItems;
     }
 
-    public void setStarNames(List<String> starNames) {
-        this.starNames = starNames;
+    public void setStarItems(List<DownloadItem> starItems) {
+        this.starItems = starItems;
     }
 
-    public List<String> getRecordNames() {
-        return recordNames;
+    public List<DownloadItem> getRecordItems() {
+        return recordItems;
     }
 
-    public void setRecordNames(List<String> recordNames) {
-        this.recordNames = recordNames;
+    public void setRecordItems(List<DownloadItem> recordItems) {
+        this.recordItems = recordItems;
     }
 }

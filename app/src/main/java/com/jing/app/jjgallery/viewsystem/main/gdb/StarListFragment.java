@@ -8,11 +8,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbRespBean;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.http.HttpMethods;
@@ -22,9 +24,13 @@ import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import rx.Subscriber;
@@ -34,7 +40,8 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarListFragment extends Fragment implements IGdbStarListView, StarListAdapter.OnStarClickListener {
+public class StarListFragment extends Fragment implements IGdbStarListView, StarListAdapter.OnStarClickListener
+    , IGdbFragment{
 
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;
@@ -42,6 +49,8 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
     private GdbPresenter gdbPresenter;
     private StarListAdapter mAdapter;
     private ActionBar mActionbar;
+
+    private DownloadDialog downloadDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,7 +138,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
 
     @Override
     public void onServerConnected() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
+//        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
         gdbPresenter.checkNewStarFile();
     }
 
@@ -144,28 +153,48 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
     }
 
     @Override
-    public void onCheckPass(boolean hasNew, final List<String> fileNames) {
+    public void onCheckPass(boolean hasNew, final List<DownloadItem> downloadList) {
         if (hasNew) {
-            new AlertDialog.Builder(getActivity())
-                    .setMessage(R.string.gdb_option_download_star)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String fileName = fileNames.get(0);
-                            gdbPresenter.downloadFile(fileName, "star", new ProgressListener() {
-                                @Override
-                                public void update(long bytesRead, long contentLength, boolean done) {
-                                    DebugLog.e("progress:" + (100 * 1f * bytesRead / contentLength));
-                                }
-                            });
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
+            if (downloadDialog == null) {
+                downloadDialog = new DownloadDialog(getActivity(), new CustomDialog.OnCustomDialogActionListener() {
+                    @Override
+                    public boolean onSave(Object object) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCancel() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onLoadData(HashMap<String, Object> data) {
+                        data.put("items", gdbPresenter.pickStarToDownload(downloadList));
+                    }
+                });
+            }
+            else {
+                downloadDialog.newUpdate(gdbPresenter.pickStarToDownload(downloadList));
+            }
+            downloadDialog.show();
         }
         else {
             ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_gdb_check_server:
+                gdbPresenter.checkNewStarFile();
+                break;
+            case R.id.menu_gdb_download:
+                if (downloadDialog != null) {
+                    downloadDialog.show();
+                }
+                break;
+        }
+        return false;
+    }
 }

@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.bean.StarProxy;
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
 import com.jing.app.jjgallery.bean.http.GdbRespBean;
 import com.jing.app.jjgallery.config.Configuration;
@@ -197,7 +198,7 @@ public class GdbPresenter {
 
                     @Override
                     public void onNext(GdbCheckNewFileBean bean) {
-                        gdbStarListView.onCheckPass(bean.isStarExisted(), bean.getStarNames());
+                        gdbStarListView.onCheckPass(bean.isStarExisted(), bean.getStarItems());
                     }
                 });
     }
@@ -220,61 +221,25 @@ public class GdbPresenter {
 
                     @Override
                     public void onNext(GdbCheckNewFileBean bean) {
-                        gdbStarListView.onCheckPass(bean.isRecordExisted(), bean.getRecordNames());
-                    }
-                });
-    }
-
-    public void downloadFile(String fileName, String type, ProgressListener progressListener) {
-        new DownloadClient(progressListener).getDownloadService().download(fileName, type)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        saveApp(responseBody.byteStream());
+                        gdbStarListView.onCheckPass(bean.isRecordExisted(), bean.getRecordItems());
                     }
                 });
     }
 
     /**
-     * 保存应用
-     *
-     * @param input  输入流
+     * 检查已有图片的star，将其过滤掉
+     * @param downloadList
+     * @return
      */
-    private File saveApp(InputStream input) {
-        File filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + File.separator + "abc.rar");
-        if (!filePath.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            filePath.mkdirs();
-        }
-        String fileName = "abc.rar";
-        File file = new File(filePath, fileName);
-        FileOutputStream fileOutputStream;
-        try {
-            fileOutputStream = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int ch;
-            while ((ch = input.read(buf)) != -1) {
-                fileOutputStream.write(buf, 0, ch);
+    public List<DownloadItem> pickStarToDownload(List<DownloadItem> downloadList) {
+        List<DownloadItem> list = new ArrayList<>();
+        for (DownloadItem item:downloadList) {
+            String name = item.getName().substring(0, item.getName().lastIndexOf("."));
+            if (starImageMap.get(name) == null) {
+                list.add(item);
             }
-            fileOutputStream.flush();
-            fileOutputStream.close();
-            input.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return file;
+        return list;
     }
 
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
