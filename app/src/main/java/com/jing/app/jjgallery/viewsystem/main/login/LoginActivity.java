@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.FileDBService;
 import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
+import com.jing.app.jjgallery.service.http.BaseUrl;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -60,7 +62,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     public void initController() {
-
+        BaseUrl.getInstance().setBaseUrl(SettingProperties.getGdbServerBaseUrl(this));
         loginPresenter = new LoginPresenter(this, this);
     }
 
@@ -157,12 +159,19 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         applyExtendColors();
         // Open SettingActivity when application is started for the first time.
         // Application will be considered as initialized only after sign in successfully.
-        if (SettingProperties.isAppInited(this)) {
-            showPage();
-        }
-        else {
+        if (TextUtils.isEmpty(SettingProperties.getGdbServerBaseUrl(this))) {
+            showToastLong(getString(R.string.server_not_conf), ProgressProvider.TOAST_WARNING);
             Intent intent = new Intent().setClass(this, SettingsActivity.class);
             startActivity(intent);
+        }
+        else {
+            if (SettingProperties.isAppInited(this)) {
+                showPage();
+            }
+            else {
+                Intent intent = new Intent().setClass(this, SettingsActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

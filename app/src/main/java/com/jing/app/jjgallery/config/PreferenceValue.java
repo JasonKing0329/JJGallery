@@ -50,6 +50,12 @@ public class PreferenceValue {
     public static final String EXPLORE_OPEN_WALL = "Wall";
     public static final String EXPLORE_OPEN_BOOK = "Book";
 
+    public static final int HTTP_MAX_DOWNLOAD = 3;
+    /**
+     * 最高同时下载7个
+     */
+    public static final int HTTP_MAX_DOWNLOAD_UPLIMIT = 7;
+
     public static final int GDB_SR_ORDERBY_NONE = 0;
     public static final int GDB_SR_ORDERBY_NAME = 1;
     public static final int GDB_SR_ORDERBY_DATE = 2;

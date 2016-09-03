@@ -139,6 +139,11 @@ public class ActivityManager {
         }
     }
 
+    public static void startSettingActivity(Activity from) {
+        from.startActivity(new Intent().setClass(from, SettingsActivity.class));
+        applyAnimation(from);
+    }
+
     public static void startSettingActivity(Activity from, int requestCode) {
         from.startActivityForResult(new Intent().setClass(from, SettingsActivity.class), requestCode);
         applyAnimation(from);

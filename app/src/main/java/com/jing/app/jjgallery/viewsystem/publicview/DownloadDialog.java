@@ -16,6 +16,7 @@ import com.jing.app.jjgallery.bean.DownloadItemProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.model.pub.DownloadCallback;
 import com.jing.app.jjgallery.model.pub.DownloadManager;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
 
@@ -51,7 +52,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         setTitle(R.string.download_title);
 
         itemList = new ArrayList<>();
-        downloadManager = new DownloadManager(this);
+        downloadManager = new DownloadManager(this, SettingProperties.getMaxDownloadItem(context));
         handler = new Handler(this);
 
         HashMap<String, Object> map = new HashMap<>();

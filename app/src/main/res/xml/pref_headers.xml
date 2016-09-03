@@ -32,4 +32,9 @@
         android:icon="?attr/setting_ic_waterfall"
         android:title="@string/setting_waterfall" />
 
+    <header
+        android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$HttpPreferenceFragment"
+        android:icon="?attr/setting_ic_http"
+        android:title="@string/setting_http_title" />
+
 </preference-headers>

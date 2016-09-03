@@ -155,6 +155,9 @@ public class GDBHomeActivity extends BaseActivity {
             case R.id.menu_change_theme:
                 openChangeThemeDialog();
                 break;
+            case R.id.menu_gdb_setting:
+                ActivityManager.startSettingActivity(this);
+                break;
             default:
                 ((IGdbFragment) currentFragment).onMenuItemClick(item);
                 break;

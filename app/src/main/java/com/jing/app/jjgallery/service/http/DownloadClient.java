@@ -4,7 +4,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.jing.app.jjgallery.service.http.progress.ProgressInterceptor;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
-import com.orhanobut.logger.Logger;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,11 +15,13 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  */
 public class DownloadClient {
 
-    public static final String BASE_URL = "http://192.168.1.107:8080/JJGalleryServer/";
+    private String baseUrl;
 
     private DownloadService mDownloadService;
 
+    // DownloadClient每次都是new，直接获取最新的baseUrl即可
     public DownloadClient(ProgressListener progressListener) {
+        baseUrl = BaseUrl.getInstance().getBaseUrl();
         // 真是太奇怪了，遇到的问题
         // 由于下载大文件容易引起OOM，所以在@Streaming的基础上得把log去掉，但是不加logging这个interceptor的话
         // 如果onNext调用了接受inputStream并保存到磁盘的方法，那么一直会进入onError，异常是networkOnMainThread
@@ -52,7 +53,7 @@ public class DownloadClient {
                     .build();
         }
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();
@@ -62,5 +63,4 @@ public class DownloadClient {
     public DownloadService getDownloadService() {
         return mDownloadService;
     }
-
 }

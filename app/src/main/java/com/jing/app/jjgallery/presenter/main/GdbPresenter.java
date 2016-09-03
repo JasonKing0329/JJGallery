@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.presenter.main;
 
 import android.os.AsyncTask;
-import android.os.Environment;
 
 import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.bean.StarProxy;
@@ -14,10 +13,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.http.DownloadClient;
-import com.jing.app.jjgallery.service.http.HttpMethods;
-import com.jing.app.jjgallery.service.http.progress.ProgressListener;
-import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.service.http.BaseHttpClient;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbFragment;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
@@ -30,9 +26,6 @@ import com.king.service.gdb.bean.RecordSingleScene;
 import com.king.service.gdb.bean.Star;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -170,7 +162,7 @@ public class GdbPresenter {
     }
 
     public void checkServerStatus() {
-        HttpMethods.getInstance().getGdbService().isServerOnline()
+        BaseHttpClient.getInstance().getGdbService().isServerOnline()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -197,7 +189,7 @@ public class GdbPresenter {
     }
 
     public void checkNewStarFile() {
-        HttpMethods.getInstance().getGdbService().checkNewFile("star")
+        BaseHttpClient.getInstance().getGdbService().checkNewFile("star")
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -220,7 +212,7 @@ public class GdbPresenter {
     }
 
     public void checkNewRecordFile() {
-        HttpMethods.getInstance().getGdbService().checkNewFile("record")
+        BaseHttpClient.getInstance().getGdbService().checkNewFile("record")
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

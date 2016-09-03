@@ -372,4 +372,22 @@ public class SettingProperties {
         String mode = preferences.getString(PreferenceKey.PREF_BOOK_SWITCH, "" + PreferenceValue.VALUE_BOOK_SWITCH_LAND);
         return mode;
     }
+
+    /**
+     * http服务器站点
+     */
+    public static String getGdbServerBaseUrl(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String url = preferences.getString(PreferenceKey.PREF_HTTP_SERVER, "");
+        return url;
+    }
+
+    /**
+     * 最大并发下载数量
+     */
+    public static int getMaxDownloadItem(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int num = preferences.getInt(PreferenceKey.PREF_MAX_DOWNLOAD, PreferenceValue.HTTP_MAX_DOWNLOAD);
+        return num;
+    }
 }

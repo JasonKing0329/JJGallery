@@ -10,4 +10,6 @@
         android:title="@string/menu_gdb_download"/>
     <item android:id="@+id/menu_gdb_check_server"
         android:title="@string/menu_gdb_check_server"/>
+    <item android:id="@+id/menu_gdb_setting"
+        android:title="@string/action_settings"/>
 </menu>

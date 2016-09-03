@@ -43,6 +43,8 @@
     <attr name="setting_ic_order" format="reference"/>
     <attr name="setting_ic_surf" format="reference"/>
     <attr name="setting_ic_waterfall" format="reference"/>
+    <attr name="setting_ic_gdb" format="reference"/>
+    <attr name="setting_ic_http" format="reference"/>
 
     <!-- 圆形头像 -->
     <declare-styleable name="CircleImageView">

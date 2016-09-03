@@ -1,9 +1,5 @@
 package com.jing.app.jjgallery.service.http;
 
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.orhanobut.logger.Logger;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,17 +11,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Administrator on 2016/9/1.
  */
-public class HttpMethods {
+public class BaseHttpClient implements BaseUrlSubscriber {
 
-    public static final String BASE_URL = "http://192.168.1.107:8080/JJGalleryServer/";
+    private String baseUrl;
 
     private static final int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
     private GdbService gdbService;
 
-    private HttpMethods() {
+    private BaseHttpClient() {
+        baseUrl = BaseUrl.getInstance().getBaseUrl();
+        BaseUrl.getInstance().addSubscriber(this);
+        createRetrofit();
+    }
 
+    private void createRetrofit() {
         // 查看通信LOG，可以输入OkHttp来过滤
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -37,7 +38,7 @@ public class HttpMethods {
         builder.addInterceptor(loggingInterceptor);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(builder.build())
@@ -46,13 +47,19 @@ public class HttpMethods {
         gdbService = retrofit.create(GdbService.class);
     }
 
+    @Override
+    public void onBaseUrlChanged(String url) {
+        baseUrl = url;
+        createRetrofit();
+    }
+
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
-        private static final HttpMethods INSTANCE = new HttpMethods();
+        private static final BaseHttpClient INSTANCE = new BaseHttpClient();
     }
 
     //获取单例
-    public static HttpMethods getInstance(){
+    public static BaseHttpClient getInstance(){
         return SingletonHolder.INSTANCE;
     }
 

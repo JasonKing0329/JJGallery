@@ -40,6 +40,8 @@
         <item name="setting_ic_order">@drawable/ic_assistant_yellow_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_yellow_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_yellow_fff807_36dp</item>
+        <item name="setting_ic_gdb">@drawable/ic_account_circle_yellow_fff807_36dp</item>
+        <item name="setting_ic_http">@drawable/ic_http_yellow_fff807_36dp</item>
     </style>
 
     <style name="JJThemeLight" parent="AppTheme">
@@ -82,6 +84,8 @@
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
+        <item name="setting_ic_gdb">@drawable/ic_account_circle_black_36dp</item>
+        <item name="setting_ic_http">@drawable/ic_http_black_36dp</item>
     </style>
 
     <style name="JJThemeNormal" parent="AppTheme">
@@ -124,6 +128,8 @@
         <item name="setting_ic_order">@drawable/ic_assistant_black_36dp</item>
         <item name="setting_ic_surf">@drawable/ic_chrome_reader_mode_black_36dp</item>
         <item name="setting_ic_waterfall">@drawable/ic_invert_colors_black_36dp</item>
+        <item name="setting_ic_gdb">@drawable/ic_account_circle_black_36dp</item>
+        <item name="setting_ic_http">@drawable/ic_http_black_36dp</item>
     </style>
 
 </resources>

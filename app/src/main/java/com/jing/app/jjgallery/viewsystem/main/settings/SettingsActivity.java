@@ -21,7 +21,9 @@ import android.widget.EditText;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
+import com.jing.app.jjgallery.service.http.BaseUrl;
 
 import java.util.List;
 
@@ -69,6 +71,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
+            }
+
+            /**
+             * 站点配置变化要及时通知baseUrl变更，重新创建retrofit相关
+             */
+            if (preference.getKey().equals(PreferenceKey.PREF_HTTP_SERVER)) {
+                BaseUrl.getInstance().setBaseUrl(stringValue);
             }
             return true;
         }
@@ -191,6 +200,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_waterfall);
 
+        // Add 'gdb' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.setting_gdb_title);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_http);
+
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
@@ -222,6 +237,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         //waterfall
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
         bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
+
+        //http
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HTTP_SERVER));
+        EditTextPreference edt = (EditTextPreference) findPreference(PreferenceKey.PREF_MAX_DOWNLOAD);
+        bindPreferenceSummaryToValue(edt);
+        limitEditRange(edt.getEditText(), 1, PreferenceValue.HTTP_MAX_DOWNLOAD_UPLIMIT);
     }
 
     public static void limitEditRange(final EditText editText, final int min, final int max) {
@@ -279,6 +300,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || SOrderPreferenceFragment.class.getName().equals(fragmentName)
                 || SurfPreferenceFragment.class.getName().equals(fragmentName)
+                || HttpPreferenceFragment.class.getName().equals(fragmentName)
                 || WaterfallPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -389,6 +411,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_WATERFALL_COL_LAND));
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class HttpPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_http);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HTTP_SERVER));
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_MAX_DOWNLOAD));
         }
 
     }

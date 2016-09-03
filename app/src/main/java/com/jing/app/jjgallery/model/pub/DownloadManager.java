@@ -38,14 +38,15 @@ public class DownloadManager {
     }
 
     private final String FILE_EXTRA = ".png";
-    private static final int MAX_TASK = 2;
+    private int MAX_TASK;
     private Queue<DownloadPack> downloadQueue;
     private List<DownloadPack> executingdList;
     private DownloadCallback mCallback;
 
     private String savePath;
 
-    public DownloadManager(DownloadCallback callback) {
+    public DownloadManager(DownloadCallback callback, int maxTask) {
+        MAX_TASK = maxTask;
         mCallback = callback;
         downloadQueue = new LinkedList<>();
         executingdList = new ArrayList<>();

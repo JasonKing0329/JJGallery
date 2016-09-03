@@ -54,6 +54,8 @@
     <string name="login_loading_text">Service updating&#8230;&#8230;</string>
     <string name="login_start_service_insert">Start insert file service?</string>
     <string name="login_extend_pref_exist">Extend preference file existed, replace it with application preference?</string>
+
+    <string name="server_not_conf">Please set server url!</string>
     <!--************************** mode init **************************-->
     <string name="mode_init_title">Access Mode</string>
     <string name="mode_init_next">Next -></string>
@@ -263,6 +265,10 @@
     <string name="setting_waterfall">Waterfall view</string>
     <string name="setting_timeline_view_default">Default timeline view</string>
     <string name="setting_book_switch_default">Book view switch mode</string>
+    <string name="setting_gdb_title" translatable="false">GDB</string>
+    <string name="setting_http_title">Network</string>
+    <string name="setting_http_server">Config server</string>
+    <string name="setting_http_download_max">Max download item in same time</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
