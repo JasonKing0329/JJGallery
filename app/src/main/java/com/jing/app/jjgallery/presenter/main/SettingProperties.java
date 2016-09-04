@@ -387,7 +387,7 @@ public class SettingProperties {
      */
     public static int getMaxDownloadItem(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int num = preferences.getInt(PreferenceKey.PREF_MAX_DOWNLOAD, PreferenceValue.HTTP_MAX_DOWNLOAD);
-        return num;
+        String num = preferences.getString(PreferenceKey.PREF_MAX_DOWNLOAD, "" + PreferenceValue.HTTP_MAX_DOWNLOAD);
+        return Integer.parseInt(num);
     }
 }
