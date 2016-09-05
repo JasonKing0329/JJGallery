@@ -5,7 +5,9 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.bean.http.AppCheckBean;
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
@@ -26,12 +30,19 @@ import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.service.file.FileDBService;
 import com.jing.app.jjgallery.service.file.OnServiceProgressListener;
 import com.jing.app.jjgallery.service.http.BaseUrl;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressButton;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A login screen that offers login via email/password.
@@ -62,7 +73,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     public void initController() {
+        // 设置base url
         BaseUrl.getInstance().setBaseUrl(SettingProperties.getGdbServerBaseUrl(this));
+
         loginPresenter = new LoginPresenter(this, this);
     }
 
@@ -80,7 +93,17 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     @Override
     public void initBackgroundWork() {
         showInitProgress();
+        // 执行初始化操作
         new InitTask().execute();
+
+        if (!TextUtils.isEmpty(SettingProperties.getGdbServerBaseUrl(this))) {
+            // 检测App更新，必须在配置过服务器以后
+            try {
+                loginPresenter.checkAppUpdate(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showInitProgress() {
@@ -93,6 +116,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         progressButton.stopAnimating();
     }
 
+    /**
+     * 初始化操作包括初始化文件目录、数据库、参数、扩展resource、配置文件
+     */
     private class InitTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected void onPostExecute(Boolean hasPref) {
@@ -125,17 +151,24 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            // 文件目录
             if (!Configuration.init()) {
                 showToastLong(getString(R.string.error_app_root_create_fail), ProgressProvider.TOAST_ERROR);
             }
+            // 数据库
             if (!DBInfor.prepareDatabase(LoginActivity.this)) {
                 showToastLong(getString(R.string.error_database_create_fail), ProgressProvider.TOAST_ERROR);
             }
+            // 已有数据库升级
             Configuration.initVersionChange();
+            // 初始化参数
             Configuration.initParams(LoginActivity.this);
+            // 创建扩展resource资源
             ConfManager.initParams(LoginActivity.this);
-
+            // 加载扩展resource资源
             JResource.initializeColors();
+
+            // 检查扩展配置
             return ConfManager.checkExtendConf(LoginActivity.this);
         }
     }
@@ -189,6 +222,67 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         findViewById(R.id.login_signin).setOnClickListener(this);
         mUserEdit = (AutoCompleteTextView) findViewById(R.id.login_username);
         mPwdEdit = (EditText) findViewById(R.id.login_pwd);
+    }
+
+    @Override
+    public void onAppUpdateFound(final AppCheckBean bean) {
+        String msg = String.format(getString(R.string.app_update_found), bean.getAppVersion());
+        new DefaultDialogManager().showOptionDialog(LoginActivity.this, null, msg
+                , getResources().getString(R.string.yes)
+                , null
+                , getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            startDownloadNewApp(bean);
+                        }
+                    }
+                });
+    }
+
+    private void startDownloadNewApp(final AppCheckBean bean) {
+        final DownloadDialog dialog = new DownloadDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+            @Override
+            public boolean onSave(Object object) {
+                return false;
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+                DownloadItem item = new DownloadItem();
+                item.setKey(bean.getAppName());
+                item.setFlag("app");
+                item.setSize(bean.getAppSize());
+                item.setName(bean.getAppName());
+                List<DownloadItem> list = new ArrayList<>();
+                list.add(item);
+
+                data.put("items", list);
+                data.put("savePath", Configuration.APP_DIR_CONF);
+                data.put("noOption", true);
+            }
+        });
+        dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
+            @Override
+            public void onDownloadFinish(String path) {
+                loginPresenter.installApp(LoginActivity.this, path);
+                dialog.dismiss();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 100);
+            }
+        });
+        dialog.show();
     }
 
     @Override

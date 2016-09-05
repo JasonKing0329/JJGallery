@@ -136,8 +136,26 @@ public class DefaultDialogManager {
 	public void showWarningActionDialog(Context context, String msg, String positiveText
 			, String neutralText, String negativeText,
 										final OnClickListener listener) {
+		showOptionDialog(context, context.getString(R.string.warning), msg, positiveText, neutralText, negativeText, listener);
+	}
+
+	/**
+	 *
+	 * @param context
+	 * @param msg
+	 * @param positiveText
+	 * @param neutralText can be null
+	 * @param negativeText
+	 * @param listener
+	 */
+	public void showOptionDialog(Context context, String title, String msg, String positiveText
+			, String neutralText, String negativeText,
+										final OnClickListener listener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle(R.string.warning);
+		if (title == null) {
+			title = context.getString(R.string.option);
+		}
+		builder.setTitle(title);
 		builder.setMessage(msg);
 		builder.setPositiveButton(positiveText, listener);
 		if (neutralText != null) {

@@ -30,14 +30,33 @@ import java.util.List;
 public class DownloadDialog extends CustomDialog implements DownloadCallback, Handler.Callback {
 
     public interface OnDownloadListener {
-        void onDownloadFinish(String key);
+        void onDownloadFinish(String path);
     }
 
     private TextView emptyView;
     private RecyclerView downloadRecyclerView;
     private DownloadAdapter adapter;
 
+    /**
+     * 全部下载内容
+     */
     private List<DownloadItemProxy> itemList;
+    /**
+     * 直接下载，不提示
+     */
+    private boolean startNoOption;
+    /**
+     * 不直接下载的提示内容
+     */
+    private String optionMessage;
+    /**
+     * 下载目录
+     */
+    private String savePath;
+
+    /**
+     * 标志重新下载（不是重新打开下载框）
+     */
     private boolean newUpdateFlag;
 
     private DownloadManager downloadManager;
@@ -58,7 +77,14 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         HashMap<String, Object> map = new HashMap<>();
         actionListener.onLoadData(map);
         List<DownloadItem> list = (List<DownloadItem>) map.get("items");
-        String savePath = (String) map.get("savePath");
+        savePath = (String) map.get("savePath");
+        if (map.get("noOption") != null) {
+            startNoOption = (Boolean) map.get("noOption");
+        }
+        if (map.get("optionMsg") != null) {
+            optionMessage = (String) map.get("optionMsg");
+        }
+
         downloadManager.setSavePath(savePath);
         fillProxy(list);
         newUpdateFlag = true;
@@ -109,30 +135,36 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
             downloadRecyclerView.setVisibility(View.INVISIBLE);
         }
         else {
-            String msg = String.format(getContext().getString(R.string.gdb_option_download), itemList.size());
-
-            new AlertDialog.Builder(getContext())
-                    .setMessage(msg)
-                    .setPositiveButton(R.string.ok, new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            // 开始下载任务后再show就要显示之前的内容
-                            newUpdateFlag = false;
-
-                            adapter = new DownloadAdapter(getContext(), itemList);
-                            downloadRecyclerView.setAdapter(adapter);
-                            startDownload();
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dismiss();
-                        }
-                    })
-                    .show();
+            if (startNoOption) {
+                showListAndStartDownload();
+            }
+            else {
+                new AlertDialog.Builder(getContext())
+                        .setMessage(optionMessage)
+                        .setPositiveButton(R.string.ok, new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                showListAndStartDownload();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dismiss();
+                            }
+                        })
+                        .show();
+            }
         }
+    }
+
+    private void showListAndStartDownload() {
+        // 开始下载任务后再show就要显示之前的内容
+        newUpdateFlag = false;
+
+        adapter = new DownloadAdapter(getContext(), itemList);
+        downloadRecyclerView.setAdapter(adapter);
+        startDownload();
     }
 
     private void startDownload() {
@@ -167,7 +199,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     @Override
     public void onDownloadFinish(String key) {
         if (onDownloadListener != null) {
-            onDownloadListener.onDownloadFinish(key);
+            onDownloadListener.onDownloadFinish(savePath + "/" + key);
         }
     }
 

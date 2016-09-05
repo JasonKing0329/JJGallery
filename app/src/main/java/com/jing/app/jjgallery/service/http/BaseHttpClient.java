@@ -11,16 +11,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by Administrator on 2016/9/1.
  */
-public class BaseHttpClient implements BaseUrlSubscriber {
+public abstract class BaseHttpClient implements BaseUrlSubscriber {
 
     private String baseUrl;
 
     private static final int DEFAULT_TIMEOUT = 5;
 
     private Retrofit retrofit;
-    private GdbService gdbService;
 
-    private BaseHttpClient() {
+    public BaseHttpClient() {
         baseUrl = BaseUrl.getInstance().getBaseUrl();
         BaseUrl.getInstance().addSubscriber(this);
         createRetrofit();
@@ -44,27 +43,15 @@ public class BaseHttpClient implements BaseUrlSubscriber {
                 .client(builder.build())
                 .build();
 
-        gdbService = retrofit.create(GdbService.class);
+        createService(retrofit);
     }
+
+    protected abstract void createService(Retrofit retrofit);
 
     @Override
     public void onBaseUrlChanged(String url) {
         baseUrl = url;
         createRetrofit();
-    }
-
-    //在访问HttpMethods时创建单例
-    private static class SingletonHolder{
-        private static final BaseHttpClient INSTANCE = new BaseHttpClient();
-    }
-
-    //获取单例
-    public static BaseHttpClient getInstance(){
-        return SingletonHolder.INSTANCE;
-    }
-
-    public GdbService getGdbService() {
-        return gdbService;
     }
 
 }

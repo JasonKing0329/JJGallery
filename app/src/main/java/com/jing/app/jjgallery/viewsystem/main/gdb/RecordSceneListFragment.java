@@ -177,6 +177,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
                     public void onLoadData(HashMap<String, Object> data) {
                         data.put("items", gdbPresenter.pickRecordToDownload(downloadList));
                         data.put("savePath", Configuration.GDB_IMG_RECORD);
+                        data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
                 });
             }

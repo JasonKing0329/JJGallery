@@ -13,7 +13,8 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.http.BaseHttpClient;
+import com.jing.app.jjgallery.service.http.GdbHttpClient;
+import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbFragment;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
@@ -162,7 +163,7 @@ public class GdbPresenter {
     }
 
     public void checkServerStatus() {
-        BaseHttpClient.getInstance().getGdbService().isServerOnline()
+        AppHttpClient.getInstance().getAppService().isServerOnline()
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -189,7 +190,7 @@ public class GdbPresenter {
     }
 
     public void checkNewStarFile() {
-        BaseHttpClient.getInstance().getGdbService().checkNewFile("star")
+        GdbHttpClient.getInstance().getGdbService().checkNewFile("star")
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -212,7 +213,7 @@ public class GdbPresenter {
     }
 
     public void checkNewRecordFile() {
-        BaseHttpClient.getInstance().getGdbService().checkNewFile("record")
+        GdbHttpClient.getInstance().getGdbService().checkNewFile("record")
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -7,6 +7,7 @@
     <string name="save">保存</string>
     <string name="no_content">无内容</string>
     <string name="save_success">保存成功</string>
+    <string name="option">提示</string>
 
     <!-- login -->
     <string name="username">用户名</string>
@@ -56,6 +57,7 @@
     <string name="login_extend_pref_exist">检测到扩展配置文件，是否取代程序当前配置文件？(preference)</string>
 
     <string name="server_not_conf">请配置服务器站点信息！</string>
+    <string name="app_update_found">发现程序新版本%s，点击确定以下载</string>
     <!--************************** mode init **************************-->
     <string name="mode_init_title">登陆模式</string>
     <string name="mode_init_next">下一步 -></string>

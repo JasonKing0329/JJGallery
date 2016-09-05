@@ -161,6 +161,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
                     public void onLoadData(HashMap<String, Object> data) {
                         data.put("items", gdbPresenter.pickStarToDownload(downloadList));
                         data.put("savePath", Configuration.GDB_IMG_STAR);
+                        data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
                 });
             }

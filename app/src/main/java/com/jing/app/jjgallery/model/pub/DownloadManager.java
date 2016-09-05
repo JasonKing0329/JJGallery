@@ -37,7 +37,6 @@ public class DownloadManager {
         }
     }
 
-    private final String FILE_EXTRA = ".png";
     private int MAX_TASK;
     private Queue<DownloadPack> downloadQueue;
     private List<DownloadPack> executingdList;
@@ -141,9 +140,6 @@ public class DownloadManager {
      * @param input  输入流
      */
     private File saveFile(String filename, InputStream input) {
-        if (!filename.endsWith(FILE_EXTRA)) {
-            filename = filename + FILE_EXTRA;
-        }
         File file = new File(savePath + "/" + filename);
         FileOutputStream fileOutputStream;
         try {

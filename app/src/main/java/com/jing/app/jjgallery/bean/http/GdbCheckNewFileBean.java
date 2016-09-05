@@ -11,7 +11,7 @@ public class GdbCheckNewFileBean {
     private List<DownloadItem> starItems;
     private List<DownloadItem> recordItems;
 
-    public boolean isStarExisted() {
+	public boolean isStarExisted() {
         return isStarExisted;
     }
 
