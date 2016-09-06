@@ -35,6 +35,11 @@ public class LoginModel implements ILoginModel {
         return fingerPrintController.isSupported();
     }
 
+    @Override
+    public void cancelFingerCheck() {
+        fingerPrintController.cancelCheck();
+    }
+
     private void startFingerPrintDialog() {
         if (fingerPrintController.hasRegistered()) {
             boolean withPW = false;

@@ -19,9 +19,9 @@ public class FingerPrintController implements IdentifyListener {
 	private SimpleIdentifyListener simpleIdentifyListener;
 
     public interface SimpleIdentifyListener {
-    	public void onSuccess();
-    	public void onFail();
-    	public void onCancel();
+		void onSuccess();
+		void onFail();
+		void onCancel();
     }
     
 	public FingerPrintController(Context context) {
@@ -53,6 +53,12 @@ public class FingerPrintController implements IdentifyListener {
 		
 		boolean hasRegisteredFinger = mSpassFingerprint.hasRegisteredFinger();
 		return hasRegisteredFinger;
+	}
+
+	public void cancelCheck() {
+		if (isSupported) {
+			mSpassFingerprint.cancelIdentify();
+		}
 	}
 	
 	public void showIdentifyDialog(boolean withPW, SimpleIdentifyListener listener) {

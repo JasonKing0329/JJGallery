@@ -24,6 +24,9 @@ import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
 import com.jing.app.jjgallery.service.http.BaseUrl;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
+import com.jing.app.jjgallery.viewsystem.sub.update.UpdateManager;
 
 import java.util.List;
 
@@ -38,7 +41,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity implements ProgressProvider {
     /**
      * Determines whether to always show the simplified settings UI, where
      * settings are presented in a single list. When false, settings are shown
@@ -200,9 +203,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_waterfall);
 
-        // Add 'gdb' preferences, and a corresponding header.
+        // Add 'http' preferences, and a corresponding header.
         fakeHeader = new PreferenceCategory(this);
-        fakeHeader.setTitle(R.string.setting_gdb_title);
+        fakeHeader.setTitle(R.string.setting_http_title);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_http);
 
@@ -243,6 +246,26 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         EditTextPreference edt = (EditTextPreference) findPreference(PreferenceKey.PREF_MAX_DOWNLOAD);
         bindPreferenceSummaryToValue(edt);
         limitEditRange(edt.getEditText(), 1, PreferenceValue.HTTP_MAX_DOWNLOAD_UPLIMIT);
+
+        Preference updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
+        updatePref.setOnPreferenceClickListener(new PrefClickListener(this));
+    }
+
+    private static class PrefClickListener implements Preference.OnPreferenceClickListener {
+
+        private Context mContext;
+        public PrefClickListener(Context context) {
+            mContext = context;
+        }
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE)) {
+                UpdateManager manager = new UpdateManager(mContext);
+                manager.showMessageWarning();
+                manager.startCheck();
+            }
+            return false;
+        }
     }
 
     public static void limitEditRange(final EditText editText, final int min, final int max) {
@@ -425,7 +448,70 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HTTP_SERVER));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_MAX_DOWNLOAD));
+            Preference preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
+            preference.setOnPreferenceClickListener(new PrefClickListener(getActivity()));
         }
 
     }
+
+    @Override
+    public void showProgressCycler() {
+
+    }
+
+    @Override
+    public boolean dismissProgressCycler() {
+        return false;
+    }
+
+    @Override
+    public void showProgress(String text) {
+
+    }
+
+    @Override
+    public boolean dismissProgress() {
+        return false;
+    }
+
+    @Override
+    public void showToastLong(String text) {
+
+    }
+
+    @Override
+    public void showToastShort(String text) {
+
+    }
+
+    @Override
+    public void showToastLong(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_LONG);
+    }
+
+    @Override
+    public void showToastShort(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_SHORT);
+    }
+
+    public void showToastLib(String text, int type, int time) {
+        switch (type) {
+            case ProgressProvider.TOAST_SUCCESS:
+                TastyToast.makeText(this, text, time, TastyToast.SUCCESS);
+                break;
+            case ProgressProvider.TOAST_ERROR:
+                TastyToast.makeText(this, text, time, TastyToast.ERROR);
+                break;
+            case ProgressProvider.TOAST_WARNING:
+                TastyToast.makeText(this, text, time, TastyToast.WARNING);
+                break;
+            case ProgressProvider.TOAST_INFOR:
+                TastyToast.makeText(this, text, time, TastyToast.INFO);
+                break;
+            case ProgressProvider.TOAST_DEFAULT:
+                TastyToast.makeText(this, text, time, TastyToast.DEFAULT);
+                break;
+        }
+    }
+
 }

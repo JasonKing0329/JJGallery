@@ -134,9 +134,8 @@ public class DefaultDialogManager {
 	 * @param listener
 	 */
 	public void showWarningActionDialog(Context context, String msg, String positiveText
-			, String neutralText, String negativeText,
-										final OnClickListener listener) {
-		showOptionDialog(context, context.getString(R.string.warning), msg, positiveText, neutralText, negativeText, listener);
+			, String neutralText, String negativeText, OnClickListener listener) {
+		showOptionDialog(context, context.getString(R.string.warning), msg, positiveText, neutralText, negativeText, listener, null);
 	}
 
 	/**
@@ -146,22 +145,23 @@ public class DefaultDialogManager {
 	 * @param positiveText
 	 * @param neutralText can be null
 	 * @param negativeText
-	 * @param listener
+	 * @param clickListener
+	 * @param dismissListener
 	 */
 	public void showOptionDialog(Context context, String title, String msg, String positiveText
-			, String neutralText, String negativeText,
-										final OnClickListener listener) {
+			, String neutralText, String negativeText, OnClickListener clickListener, DialogInterface.OnDismissListener dismissListener) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		if (title == null) {
 			title = context.getString(R.string.option);
 		}
 		builder.setTitle(title);
 		builder.setMessage(msg);
-		builder.setPositiveButton(positiveText, listener);
+		builder.setPositiveButton(positiveText, clickListener);
 		if (neutralText != null) {
-			builder.setNeutralButton(neutralText, listener);
+			builder.setNeutralButton(neutralText, clickListener);
 		}
-		builder.setNegativeButton(negativeText, listener);
+		builder.setNegativeButton(negativeText, clickListener);
+		builder.setOnDismissListener(dismissListener);
 		builder.show();
 	}
 

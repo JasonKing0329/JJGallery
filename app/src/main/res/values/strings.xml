@@ -271,6 +271,7 @@
     <string name="setting_http_title">Network</string>
     <string name="setting_http_server">Config server</string>
     <string name="setting_http_download_max">Max download item in same time</string>
+    <string name="setting_http_update">Check update</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -397,4 +398,7 @@
     <!--************************** download **************************-->
     <string name="download_title">Download</string>
     <string name="download_empty">No items to download.</string>
+
+    <!--************************** update **************************-->
+    <string name="app_is_latest">Applacation is already the latest version.</string>
 </resources>

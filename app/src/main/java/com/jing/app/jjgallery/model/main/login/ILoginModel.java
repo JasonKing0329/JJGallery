@@ -10,4 +10,6 @@ public interface ILoginModel {
     void signWithFingerPrint();
 
     boolean isFingerPrintEnable();
+
+    void cancelFingerCheck();
 }
