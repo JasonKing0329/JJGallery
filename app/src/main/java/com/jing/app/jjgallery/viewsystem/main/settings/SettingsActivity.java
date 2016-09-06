@@ -25,6 +25,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
 import com.jing.app.jjgallery.service.http.BaseUrl;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 import com.jing.app.jjgallery.viewsystem.sub.update.UpdateManager;
 
@@ -247,8 +248,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         bindPreferenceSummaryToValue(edt);
         limitEditRange(edt.getEditText(), 1, PreferenceValue.HTTP_MAX_DOWNLOAD_UPLIMIT);
 
+        PrefClickListener listener = new PrefClickListener(this);
         Preference updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
-        updatePref.setOnPreferenceClickListener(new PrefClickListener(this));
+        updatePref.setOnPreferenceClickListener(listener);
+        updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
+        updatePref.setOnPreferenceClickListener(listener);
     }
 
     private static class PrefClickListener implements Preference.OnPreferenceClickListener {
@@ -261,6 +265,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE)) {
                 UpdateManager manager = new UpdateManager(mContext);
+                manager.showMessageWarning();
+                manager.startCheck();
+            }
+            else if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE_GDB)) {
+                GdbUpdateManager manager = new GdbUpdateManager(mContext, null);
                 manager.showMessageWarning();
                 manager.startCheck();
             }
@@ -448,8 +457,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
 
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HTTP_SERVER));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_MAX_DOWNLOAD));
+
+            PrefClickListener listener = new PrefClickListener(getActivity());
             Preference preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
-            preference.setOnPreferenceClickListener(new PrefClickListener(getActivity()));
+            preference.setOnPreferenceClickListener(listener);
+            preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
+            preference.setOnPreferenceClickListener(listener);
         }
 
     }

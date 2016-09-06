@@ -17,6 +17,7 @@ import com.king.service.gdb.bean.Star;
 public class SqliteDao {
 
 	private final String TABLE_SEQUENCE = "sqlite_sequence";
+	private final String TABLE_CONF = "conf";
 	private final String TABLE_STAR = "star";
 	private final String TABLE_RECORD_1V1 = "record_1v1";
 
@@ -36,6 +37,30 @@ public class SqliteDao {
 			e.printStackTrace();
 		}
 		return connection;
+	}
+
+	public String queryVersion(Connection connection) {
+		String sql = "SELECT value FROM " + TABLE_CONF + " WHERE key='version'";
+		Statement statement = null;
+		String version = null;
+		try {
+			statement = connection.createStatement();
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				version = set.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return version;
 	}
 
 	public List<RecordOneVOne> queryOneVOneRecords(Connection connection) {

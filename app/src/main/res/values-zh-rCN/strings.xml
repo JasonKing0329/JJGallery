@@ -258,6 +258,7 @@
     <string name="setting_http_server">配置服务器</string>
     <string name="setting_http_download_max">最大并发下载数量</string>
     <string name="setting_http_update">检查更新</string>
+    <string name="setting_http_update_gdb">检测GDB数据库更新</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>
@@ -369,6 +370,7 @@
     <string name="gdb_request_fail">请求失败</string>
     <string name="gdb_option_download">发现%d张图片，点击确定下载</string>
     <string name="gdb_no_new_images">没有检测到新图片</string>
+    <string name="gdb_update_found">发现GDB数据库新版本%s，点击确定以下载</string>
 
     <!--************************** download **************************-->
     <string name="download_title">下载</string>
@@ -376,4 +378,5 @@
 
     <!--************************** update **************************-->
     <string name="app_is_latest">程序已是最新版本</string>
+    <string name="gdb_is_latest">GDB数据库已是最新版本</string>
 </resources>

@@ -272,6 +272,7 @@
     <string name="setting_http_server">Config server</string>
     <string name="setting_http_download_max">Max download item in same time</string>
     <string name="setting_http_update">Check update</string>
+    <string name="setting_http_update_gdb">Check GDB database update</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -394,6 +395,7 @@
     <string name="trans_wall" translatable="false">trans_wall</string>
     <string name="trans_book" translatable="false">trans_book</string>
     <string name="trans_waterfall" translatable="false">trans_waterfall</string>
+    <string name="gdb_update_found">Found new GDB database version %s, click ok to update.</string>
 
     <!--************************** download **************************-->
     <string name="download_title">Download</string>
@@ -401,4 +403,5 @@
 
     <!--************************** update **************************-->
     <string name="app_is_latest">Applacation is already the latest version.</string>
+    <string name="gdb_is_latest">GDB database is already the latest version.</string>
 </resources>

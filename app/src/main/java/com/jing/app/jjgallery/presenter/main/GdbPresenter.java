@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbFragment;
@@ -190,7 +191,7 @@ public class GdbPresenter {
     }
 
     public void checkNewStarFile() {
-        GdbHttpClient.getInstance().getGdbService().checkNewFile("star")
+        GdbHttpClient.getInstance().getGdbService().checkNewFile(Command.TYPE_STAR)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -213,7 +214,7 @@ public class GdbPresenter {
     }
 
     public void checkNewRecordFile() {
-        GdbHttpClient.getInstance().getGdbService().checkNewFile("record")
+        GdbHttpClient.getInstance().getGdbService().checkNewFile(Command.TYPE_RECORD)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

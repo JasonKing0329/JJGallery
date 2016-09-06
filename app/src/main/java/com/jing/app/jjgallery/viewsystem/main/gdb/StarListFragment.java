@@ -18,6 +18,8 @@ import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateListener;
+import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
@@ -96,7 +98,21 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         mRecyclerView.setAdapter(mAdapter);
         ((ProgressProvider) getActivity()).dismissProgressCycler();
 
-        gdbPresenter.checkServerStatus();
+        GdbUpdateManager manager = new GdbUpdateManager(getActivity(), new GdbUpdateListener() {
+            @Override
+            public void onUpdateFinish() {
+                // 数据库更新完成，需要刷新列表
+                ((ProgressProvider) getActivity()).showProgressCycler();
+                gdbPresenter.loadStarList();
+            }
+
+            @Override
+            public void onUpdateCancel() {
+                // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
+                gdbPresenter.checkServerStatus();
+            }
+        });
+        manager.startCheck();
     }
 
     @Override

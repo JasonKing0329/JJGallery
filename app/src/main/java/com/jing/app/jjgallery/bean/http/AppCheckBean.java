@@ -8,7 +8,7 @@ public class AppCheckBean {
 	private boolean isGdbDatabaseUpdate;
 	private String gdbDabaseVersion;
 	private String gdbDabaseName;
-	private String gdbDabaseSize;
+	private long gdbDabaseSize;
     public long getAppSize() {
 		return appSize;
 	}
@@ -17,11 +17,11 @@ public class AppCheckBean {
 		this.appSize = appSize;
 	}
 
-	public String getGdbDabaseSize() {
+	public long getGdbDabaseSize() {
 		return gdbDabaseSize;
 	}
 
-	public void setGdbDabaseSize(String gdbDabaseSize) {
+	public void setGdbDabaseSize(long gdbDabaseSize) {
 		this.gdbDabaseSize = gdbDabaseSize;
 	}
 

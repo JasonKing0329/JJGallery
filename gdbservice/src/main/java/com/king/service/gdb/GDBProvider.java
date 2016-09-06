@@ -22,6 +22,22 @@ public class GDBProvider {
     }
 
     /**
+     * 查询版本号
+     * @return
+     */
+    public String getVersionName() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.queryVersion(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * 查询所有的1v1 record
      * @return
      */

@@ -16,4 +16,7 @@ public interface AppService {
 
     @GET("checkNew")
     Observable<AppCheckBean> checkAppUpdate(@Query("type") String type, @Query("version") String version);
+
+    @GET("checkNew")
+    Observable<AppCheckBean> checkGdbDatabaseUpdate(@Query("type") String type, @Query("version") String version);
 }
