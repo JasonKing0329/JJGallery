@@ -180,6 +180,18 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
                 });
+                downloadDialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
+                    @Override
+                    public void onDownloadFinish(DownloadItem item) {
+
+                    }
+
+                    @Override
+                    public void onDownloadFinish(List<DownloadItem> downloadList) {
+                        // 所有内容下载完成后，统一进行异步encypt，然后更新starImageMap和recordImageMap，完成后通知adapter更新
+                        gdbPresenter.finishDownload(downloadList);
+                    }
+                });
             }
             else {
                 downloadDialog.newUpdate(gdbPresenter.pickStarToDownload(downloadList));
@@ -189,6 +201,11 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         else {
             ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
+    }
+
+    @Override
+    public void onDownloadItemEncrypted() {
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

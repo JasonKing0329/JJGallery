@@ -180,6 +180,17 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
                 });
+                downloadDialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
+                    @Override
+                    public void onDownloadFinish(DownloadItem item) {
+
+                    }
+
+                    @Override
+                    public void onDownloadFinish(List<DownloadItem> downloadList) {
+                        gdbPresenter.finishDownload(downloadList);
+                    }
+                });
             }
             else {
                 downloadDialog.newUpdate(gdbPresenter.pickRecordToDownload(downloadList));
@@ -189,6 +200,11 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         else {
             ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
+    }
+
+    @Override
+    public void onDownloadItemEncrypted() {
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

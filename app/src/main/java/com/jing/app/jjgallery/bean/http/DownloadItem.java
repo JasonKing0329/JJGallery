@@ -21,6 +21,11 @@ public class DownloadItem {
      */
     private long size;
 
+    /**
+     * 下载后的完整目录(客户端生成)
+     */
+    private String path;
+
     public String getKey() {
         return key;
     }
@@ -53,4 +58,11 @@ public class DownloadItem {
         this.size = size;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

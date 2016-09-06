@@ -9,4 +9,9 @@ public interface IGdbFragment {
     boolean onMenuItemClick(MenuItem item);
     void onServerConnected();
     void onServerUnavailable();
+
+    /**
+     * 下载文件全部已加密
+     */
+    void onDownloadItemEncrypted();
 }

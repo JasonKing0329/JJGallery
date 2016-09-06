@@ -11,6 +11,7 @@ import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.http.Command;
@@ -263,6 +264,15 @@ public class GdbPresenter {
         return list;
     }
 
+    /**
+     * 将下载文件进行全部加密，回调在onDownloadItemEncrypted
+     * @param downloadList
+     */
+    public void finishDownload(List<DownloadItem> downloadList) {
+
+        new FinishDownloadTask().execute(downloadList);
+    }
+
     private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
         @Override
         protected void onPostExecute(List<Star> list) {
@@ -359,6 +369,33 @@ public class GdbPresenter {
                 }
             }
             return proxy;
+        }
+    }
+
+    private class FinishDownloadTask extends AsyncTask<List<DownloadItem>, Void, Void> {
+        @Override
+        protected void onPostExecute(Void param) {
+
+            commonView.onDownloadItemEncrypted();
+            super.onPostExecute(param);
+        }
+
+        @Override
+        protected Void doInBackground(List<DownloadItem>... params) {
+            for (DownloadItem item:params[0]) {
+                File file = new File(item.getPath());
+                String cacheKey = file.getName().substring(0, file.getName().lastIndexOf("."));
+                // 加密文件
+                String valuePath = EncryptUtil.encryptFile(file);
+                // 更新key-value池
+                if (item.getFlag().equals(Command.TYPE_STAR)) {
+                    starImageMap.put(cacheKey, valuePath);
+                }
+                else if (item.getFlag().equals(Command.TYPE_RECORD)) {
+                    recordImageMap.put(cacheKey, valuePath);
+                }
+            }
+            return null;
         }
     }
 

@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.sub.UpdatePresenter;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
@@ -135,7 +136,7 @@ public class UpdateManager implements IUpdateView {
             public void onLoadData(HashMap<String, Object> data) {
                 DownloadItem item = new DownloadItem();
                 item.setKey(bean.getAppName());
-                item.setFlag("app");
+                item.setFlag(Command.TYPE_APP);
                 item.setSize(bean.getAppSize());
                 item.setName(bean.getAppName());
                 List<DownloadItem> list = new ArrayList<>();
@@ -148,11 +149,16 @@ public class UpdateManager implements IUpdateView {
         });
         dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
             @Override
-            public void onDownloadFinish(String path) {
+            public void onDownloadFinish(DownloadItem item) {
                 isUpdating = false;
-                mPresenter.installApp((Activity) mContext, path);
+                mPresenter.installApp((Activity) mContext, item.getPath());
                 dialog.dismiss();
                 ((JJApplication) ((Activity) mContext).getApplication()).closeAll();
+            }
+
+            @Override
+            public void onDownloadFinish(List<DownloadItem> downloadList) {
+
             }
         });
         dialog.show();

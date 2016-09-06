@@ -7,15 +7,18 @@ import android.text.TextUtils;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.AppCheckBean;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.presenter.main.GdbUpdatePresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,7 +143,7 @@ public class GdbUpdateManager implements IUpdateView {
             public void onLoadData(HashMap<String, Object> data) {
                 DownloadItem item = new DownloadItem();
                 item.setKey(bean.getGdbDabaseName());
-                item.setFlag("app");
+                item.setFlag(Command.TYPE_GDB_DATABASE);
                 item.setSize(bean.getGdbDabaseSize());
                 item.setName(bean.getGdbDabaseName());
                 List<DownloadItem> list = new ArrayList<>();
@@ -153,11 +156,18 @@ public class GdbUpdateManager implements IUpdateView {
         });
         dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
             @Override
-            public void onDownloadFinish(String path) {
+            public void onDownloadFinish(DownloadItem item) {
+                new File(ConfManager.GDB_DB_JOURNAL).delete();
                 isUpdating = false;
                 if (updateListener != null) {
+                    // 采用自动更新替代gdata.db的方法，因为jornal的存在，会使重新使用这个db出现问题。需要删掉这个文件。
                     updateListener.onUpdateFinish();
                 }
+            }
+
+            @Override
+            public void onDownloadFinish(List<DownloadItem> downloadList) {
+
             }
         });
         dialog.show();

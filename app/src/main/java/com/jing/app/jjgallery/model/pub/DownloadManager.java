@@ -1,8 +1,6 @@
 package com.jing.app.jjgallery.model.pub;
 
-import android.os.Environment;
-
-import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.service.http.DownloadClient;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
@@ -27,12 +25,10 @@ import rx.schedulers.Schedulers;
 public class DownloadManager {
 
     private class DownloadPack {
-        String key;
-        String flag;
+        DownloadItem item;
         ProgressListener progressListener;
-        public DownloadPack(String key, String flag, ProgressListener progressListener) {
-            this.key = key;
-            this.flag = flag;
+        public DownloadPack(DownloadItem item, ProgressListener progressListener) {
+            this.item = item;
             this.progressListener = progressListener;
         }
     }
@@ -55,22 +51,22 @@ public class DownloadManager {
         savePath = path;
     }
 
-    public void downloadFile(String key, String flag, ProgressListener progressListener) {
-        DebugLog.e(key);
+    public void downloadFile(DownloadItem item, ProgressListener progressListener) {
+        DebugLog.e(item.getKey());
         // 检查正在执行的任务，如果已经在执行则放弃重复执行，没有则新建下载任务
         for (DownloadPack pack:executingdList) {
-            if (pack.key.equals(key) && pack.flag.equals(flag)) {
+            if (pack.item.getKey().equals(item.getKey()) && pack.item.getFlag().equals(item.getFlag())) {
                 return;
             }
         }
 
         // 新建下载任务
-        DebugLog.e("new pack:" + key);
-        DownloadPack pack = new DownloadPack(key, flag, progressListener);
+        DebugLog.e("new pack:" + item.getKey());
+        DownloadPack pack = new DownloadPack(item, progressListener);
 
         // 如果正在执行的任务已经达到MAX_TASK，则进入下载队列进行排队
         if (executingdList.size() >= MAX_TASK) {
-            DebugLog.e("进入排队:" + key);
+            DebugLog.e("进入排队:" + item.getKey());
             downloadQueue.offer(pack);
             return;
         }
@@ -82,22 +78,22 @@ public class DownloadManager {
     private boolean startDownloadService(final DownloadPack pack) {
         if (pack == null) {
             DebugLog.e("没有排队的任务了");
-            mCallback.onDownloadAllFinish();
+            // 这里只是确认没有待排队下载的任务了
             return false;
         }
         // 任务可执行，加入到正在执行列表中
-        DebugLog.e("开始执行任务：" + pack.key);
+        DebugLog.e("开始执行任务：" + pack.item.getKey());
         executingdList.add(pack);
 
         // 开始网络请求下载
-        new DownloadClient(pack.progressListener).getDownloadService().download(pack.key, pack.flag)
+        new DownloadClient(pack.progressListener).getDownloadService().download(pack.item.getKey(), pack.item.getFlag())
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<ResponseBody>() {
                 @Override
                 public void onCompleted() {
-                    DebugLog.e("任务完成：" + pack.key);
+                    DebugLog.e("任务完成：" + pack.item.getKey());
                     completeDownload(pack);
                 }
 
@@ -108,13 +104,13 @@ public class DownloadManager {
                         DebugLog.e(element.toString());
                     }
                     completeDownload(pack);
-                    mCallback.onDownloadError(pack.key);
+                    mCallback.onDownloadError(pack.item);
                 }
 
                 @Override
                 public void onNext(final ResponseBody responseBody) {
-                    saveFile(pack.key, responseBody.byteStream());
-                    mCallback.onDownloadFinish(pack.key);
+                    saveFile(pack.item.getKey(), responseBody.byteStream());
+                    mCallback.onDownloadFinish(pack.item);
                 }
             });
         return true;
@@ -132,6 +128,11 @@ public class DownloadManager {
         if (startDownloadService(downloadQueue.peek())) {
             downloadQueue.poll();
         }
+
+        // 所有任务执行完了才是真的全部下载完了
+        if (executingdList.size() == 0) {
+            mCallback.onDownloadAllFinish();
+        }
     }
 
     /**
@@ -141,6 +142,9 @@ public class DownloadManager {
      */
     private File saveFile(String filename, InputStream input) {
         File file = new File(savePath + "/" + filename);
+        if (file.exists()) {
+            file.delete();
+        }
         FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(file);

@@ -30,7 +30,8 @@ import java.util.List;
 public class DownloadDialog extends CustomDialog implements DownloadCallback, Handler.Callback {
 
     public interface OnDownloadListener {
-        void onDownloadFinish(String path);
+        void onDownloadFinish(DownloadItem item);
+        void onDownloadFinish(List<DownloadItem> downloadList);
     }
 
     private TextView emptyView;
@@ -63,6 +64,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     private Handler handler;
 
     private OnDownloadListener onDownloadListener;
+    private List<DownloadItem> downloadList;
 
     public DownloadDialog(Context context, OnCustomDialogActionListener actionListener) {
         super(context, actionListener);
@@ -76,7 +78,8 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
 
         HashMap<String, Object> map = new HashMap<>();
         actionListener.onLoadData(map);
-        List<DownloadItem> list = (List<DownloadItem>) map.get("items");
+
+        downloadList = (List<DownloadItem>) map.get("items");
         savePath = (String) map.get("savePath");
         if (map.get("noOption") != null) {
             startNoOption = (Boolean) map.get("noOption");
@@ -86,7 +89,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         }
 
         downloadManager.setSavePath(savePath);
-        fillProxy(list);
+        fillProxy(downloadList);
         newUpdateFlag = true;
     }
 
@@ -170,12 +173,12 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     private void startDownload() {
         for (int i = 0; i < itemList.size(); i ++) {
             final int index = i;
-            downloadManager.downloadFile(itemList.get(i).getItem().getKey(), itemList.get(i).getItem().getFlag(), new ProgressListener() {
+            downloadManager.downloadFile(itemList.get(i).getItem(), new ProgressListener() {
                 private int lastProgress;
                 @Override
                 public void update(long bytesRead, long contentLength, boolean done) {
                     int progress = (int)(100 * 1f * bytesRead / contentLength);
-                    DebugLog.e("progress:" + progress);
+//                    DebugLog.e("progress:" + progress);
 
                     if (progress - lastProgress > 8 || done) {// 避免更新太过频繁
                         lastProgress = progress;
@@ -197,20 +200,28 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     }
 
     @Override
-    public void onDownloadFinish(String key) {
+    public void onDownloadFinish(DownloadItem item) {
         if (onDownloadListener != null) {
-            onDownloadListener.onDownloadFinish(savePath + "/" + key);
+
+            // 下载完成后才设置文件路径
+            item.setPath(savePath + "/" + item.getName());
+            onDownloadListener.onDownloadFinish(item);
         }
     }
 
     @Override
-    public void onDownloadError(String key) {
+    public void onDownloadError(DownloadItem item) {
 
     }
 
     @Override
     public void onDownloadAllFinish() {
-
+        if (onDownloadListener != null) {
+            for (DownloadItem item:downloadList) {
+                item.setPath(savePath + "/" + item.getName());
+            }
+            onDownloadListener.onDownloadFinish(downloadList);
+        }
     }
 
     @Override
