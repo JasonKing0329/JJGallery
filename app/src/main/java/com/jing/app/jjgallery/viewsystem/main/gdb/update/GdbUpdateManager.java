@@ -159,6 +159,7 @@ public class GdbUpdateManager implements IUpdateView {
             public void onDownloadFinish(DownloadItem item) {
                 new File(ConfManager.GDB_DB_JOURNAL).delete();
                 isUpdating = false;
+                dialog.dismiss();
                 if (updateListener != null) {
                     // 采用自动更新替代gdata.db的方法，因为jornal的存在，会使重新使用这个db出现问题。需要删掉这个文件。
                     updateListener.onUpdateFinish();
