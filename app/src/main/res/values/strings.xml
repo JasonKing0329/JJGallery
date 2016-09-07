@@ -273,6 +273,8 @@
     <string name="setting_http_download_max">Max download item in same time</string>
     <string name="setting_http_update">Check update</string>
     <string name="setting_http_update_gdb">Check GDB database update</string>
+    <string name="setting_http_backup">Backup</string>
+    <string name="setting_http_backup_summary">preference, database, GDB, colors</string>
 
     <string name="setting_mode">Access mode</string>
     <string name="setting_enable_fingerprint">Enable fingerprint identify</string>
@@ -404,4 +406,8 @@
     <!--************************** update **************************-->
     <string name="app_is_latest">Applacation is already the latest version.</string>
     <string name="gdb_is_latest">GDB database is already the latest version.</string>
+
+    <!--************************** upload **************************-->
+    <string name="upload_success">Upload success</string>
+    <string name="upload_fail">Upload fail</string>
 </resources>

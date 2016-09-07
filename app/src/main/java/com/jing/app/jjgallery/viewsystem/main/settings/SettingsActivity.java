@@ -25,11 +25,13 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
 import com.jing.app.jjgallery.presenter.main.GdbUpdatePresenter;
 import com.jing.app.jjgallery.presenter.sub.UpdatePresenter;
+import com.jing.app.jjgallery.presenter.sub.UploadPresenter;
 import com.jing.app.jjgallery.service.http.BaseUrl;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 import com.jing.app.jjgallery.viewsystem.sub.update.UpdateManager;
+import com.jing.app.jjgallery.viewsystem.sub.upload.IUploadView;
 
 import java.util.List;
 
@@ -257,6 +259,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
         updatePref.setSummary("v" + GdbUpdatePresenter.getDbVersionName());
         updatePref.setOnPreferenceClickListener(listener);
+        updatePref = findPreference(PreferenceKey.PREF_CHECK_BACKUP);
+        updatePref.setOnPreferenceClickListener(listener);
     }
 
     private static class PrefClickListener implements Preference.OnPreferenceClickListener {
@@ -276,6 +280,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
                 GdbUpdateManager manager = new GdbUpdateManager(mContext, null);
                 manager.showMessageWarning();
                 manager.startCheck();
+            }
+            else if (preference.getKey().equals(PreferenceKey.PREF_CHECK_BACKUP)) {
+                new UploadPresenter(new IUploadView() {
+                    @Override
+                    public void onUploadSuccess() {
+                        ((SettingsActivity) mContext).showToastLong(mContext.getString(R.string.upload_success), ProgressProvider.TOAST_SUCCESS);
+                    }
+
+                    @Override
+                    public void onUploadFail() {
+                        ((SettingsActivity) mContext).showToastLong(mContext.getString(R.string.upload_fail), ProgressProvider.TOAST_ERROR);
+                    }
+                }).uploadAppData();
             }
             return false;
         }
@@ -466,6 +483,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
             Preference preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
             preference.setOnPreferenceClickListener(listener);
             preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
+            preference.setOnPreferenceClickListener(listener);
+            preference = findPreference(PreferenceKey.PREF_CHECK_BACKUP);
             preference.setOnPreferenceClickListener(listener);
         }
 

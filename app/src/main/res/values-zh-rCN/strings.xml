@@ -259,6 +259,8 @@
     <string name="setting_http_download_max">最大并发下载数量</string>
     <string name="setting_http_update">检查更新</string>
     <string name="setting_http_update_gdb">检测GDB数据库更新</string>
+    <string name="setting_http_backup">备份</string>
+    <string name="setting_http_backup_summary">程序preference，数据库，扩展颜色文件，GDB</string>
 
     <string name="setting_mode">访问模式</string>
     <string name="setting_enable_fingerprint">启用指纹验证</string>
@@ -379,4 +381,8 @@
     <!--************************** update **************************-->
     <string name="app_is_latest">程序已是最新版本</string>
     <string name="gdb_is_latest">GDB数据库已是最新版本</string>
+
+    <!--************************** upload **************************-->
+    <string name="upload_success">上传成功</string>
+    <string name="upload_fail">上传失败</string>
 </resources>
