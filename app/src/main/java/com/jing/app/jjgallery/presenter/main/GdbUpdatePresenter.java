@@ -55,11 +55,21 @@ public class GdbUpdatePresenter {
                 });
     }
 
-    private void requestGdbDatabase() {
-        String versionName = gdbProvider.getVersionName();
+    public static String getDbVersionName() {
+        GDBProvider provider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        return getDbVersionName(provider);
+    }
+
+    public static String getDbVersionName(GDBProvider provider) {
+        String versionName = provider.getVersionName();
         if (versionName == null) {
             versionName = "0";
         }
+        return versionName;
+    }
+
+    private void requestGdbDatabase() {
+        String versionName = getDbVersionName(gdbProvider);
         AppHttpClient.getInstance().getAppService().checkGdbDatabaseUpdate(Command.TYPE_GDB_DATABASE, versionName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

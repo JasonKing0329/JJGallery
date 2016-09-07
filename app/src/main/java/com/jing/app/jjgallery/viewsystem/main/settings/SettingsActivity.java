@@ -23,6 +23,8 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.model.main.login.FingerPrintController;
+import com.jing.app.jjgallery.presenter.main.GdbUpdatePresenter;
+import com.jing.app.jjgallery.presenter.sub.UpdatePresenter;
 import com.jing.app.jjgallery.service.http.BaseUrl;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateManager;
@@ -250,8 +252,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
 
         PrefClickListener listener = new PrefClickListener(this);
         Preference updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
+        updatePref.setSummary("v" + UpdatePresenter.getAppVersionName(this));
         updatePref.setOnPreferenceClickListener(listener);
         updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
+        updatePref.setSummary("v" + GdbUpdatePresenter.getDbVersionName());
         updatePref.setOnPreferenceClickListener(listener);
     }
 

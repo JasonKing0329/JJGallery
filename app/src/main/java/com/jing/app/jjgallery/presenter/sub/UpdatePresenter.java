@@ -1,11 +1,14 @@
 package com.jing.app.jjgallery.presenter.sub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import com.jing.app.jjgallery.bean.http.AppCheckBean;
 import com.jing.app.jjgallery.bean.http.GdbRespBean;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
 import com.jing.app.jjgallery.viewsystem.sub.update.IUpdateView;
@@ -27,7 +30,17 @@ public class UpdatePresenter {
         updateView = view;
     }
 
-    public void checkAppUpdate(final String versionName) {
+    public static String getAppVersionName(Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void checkAppUpdate(Context context) {
+        final String versionName = getAppVersionName(context);
         AppHttpClient.getInstance().getAppService().isServerOnline()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,4 +101,11 @@ public class UpdatePresenter {
         activity.startActivity(intent);
     }
 
+    public void clearAppFolder() {
+        File file = new File(Configuration.APP_DIR_CONF_APP);
+        File files[] = file.listFiles();
+        for (File f:files) {
+            f.delete();
+        }
+    }
 }

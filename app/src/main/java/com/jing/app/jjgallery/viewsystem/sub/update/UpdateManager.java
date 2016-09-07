@@ -54,11 +54,7 @@ public class UpdateManager implements IUpdateView {
     public void startCheck() {
         if (!TextUtils.isEmpty(SettingProperties.getGdbServerBaseUrl(mContext))) {
             // 检测App更新，必须在配置过服务器以后
-            try {
-                mPresenter.checkAppUpdate(mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            mPresenter.checkAppUpdate(mContext);
         }
     }
     @Override
@@ -143,8 +139,11 @@ public class UpdateManager implements IUpdateView {
                 list.add(item);
 
                 data.put("items", list);
-                data.put("savePath", Configuration.APP_DIR_CONF);
+                data.put("savePath", Configuration.APP_DIR_CONF_APP);
                 data.put("noOption", true);
+
+                // 下载之前删掉以前下载的APK
+                mPresenter.clearAppFolder();
             }
         });
         dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
