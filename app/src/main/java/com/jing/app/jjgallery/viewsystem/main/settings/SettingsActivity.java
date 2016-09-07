@@ -481,8 +481,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
 
             PrefClickListener listener = new PrefClickListener(getActivity());
             Preference preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
+            preference.setSummary("v" + UpdatePresenter.getAppVersionName(getActivity()));
             preference.setOnPreferenceClickListener(listener);
             preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE_GDB);
+            preference.setSummary("v" + GdbUpdatePresenter.getDbVersionName());
             preference.setOnPreferenceClickListener(listener);
             preference = findPreference(PreferenceKey.PREF_CHECK_BACKUP);
             preference.setOnPreferenceClickListener(listener);

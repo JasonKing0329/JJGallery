@@ -63,6 +63,30 @@ public class SqliteDao {
 		return version;
 	}
 
+	public boolean updateVersion(Connection connection, String version) {
+		String sql = "UPDATE " + TABLE_CONF + " SET value='" + version
+				+ "' WHERE key='version'";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
 	public List<RecordOneVOne> queryOneVOneRecords(Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1;
