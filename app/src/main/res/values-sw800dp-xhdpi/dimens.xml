@@ -110,6 +110,9 @@
     <dimen name="sorder_card_stack_height">180dp</dimen>
     <dimen name="sorder_card_stack_large_height">350dp</dimen>
     <dimen name="sorder_card_expand_height">600dp</dimen>
+    <dimen name="sorder_index_casual_item_size">80dp</dimen>
+    <dimen name="sorder_index_casual_text_width">100dp</dimen>
+    <dimen name="sorder_index_casual_text_size">14dp</dimen>
     <!-- actionbar  -->
     <dimen name="actionbar_padding">10dp</dimen>
     <dimen name="actionbar_icon_padding">20dp</dimen>

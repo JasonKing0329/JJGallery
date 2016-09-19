@@ -23,7 +23,7 @@ import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.sub.key.AbsKeyAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.CasualLayout;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
 import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
@@ -39,8 +39,8 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     private Context context;
 
     private ImageView bkView;
-    private KeywordsFlow keywordsFlow;
-    private AbsKeyAdapter mKeyAdapter;
+    private CasualLayout casualLayout;
+    private CasualOrderAdapter mAdapter;
 
     private SOrderPresenter mPresenter;
 
@@ -49,10 +49,9 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     public SOrderIndexPage(Context context, View view) {
         this.context = context;
         bkView = (ImageView) view.findViewById(R.id.fm_index_bk);
-        keywordsFlow = (KeywordsFlow) view.findViewById(R.id.view_keyword_flow);
-        keywordsFlow.setBackgroundColor(Color.TRANSPARENT);
-        keywordsFlow.setTextColorMode(KeywordsFlow.TEXT_COLOR_LIGHT);
-        keywordsFlow.setOnKeywordClickListener(this);
+        casualLayout = (CasualLayout) view.findViewById(R.id.view_keyword_flow);
+        casualLayout.setBackgroundColor(Color.TRANSPARENT);
+        casualLayout.setOnKeywordClickListener(this);
 
         updateBackground(context.getResources().getConfiguration().orientation);
     }
@@ -82,12 +81,11 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void onQueryAllOrders(List<SOrder> list) {
         orderList = list;
-        mKeyAdapter = new SOrderIndexAdapter(keywordsFlow, list);
-        if (list != null) {
-            mKeyAdapter.prepareKeyword();
-            mKeyAdapter.feedKeyword();
-            mKeyAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
-        }
+        mAdapter = new CasualOrderAdapter(context, list);
+        casualLayout.setAdapter(mAdapter);
+        mAdapter.feedKeyword();
+        mAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+
         if (context instanceof  ProgressProvider) {
             ((ProgressProvider) context).dismissProgressCycler();
         }
@@ -158,18 +156,18 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         updateBackground(newConfig.orientation);
         // keywordsFlow的item坐标是根据width/height计算的，转屏发生了变化所以必须重布局
         // 并且在布局完成后post重新feedKeyword进行重计算
-        keywordsFlow.requestLayout();
-        keywordsFlow.invalidate();
+        casualLayout.requestLayout();
+        casualLayout.invalidate();
 
         // 防止第一次进入由于加载目录时间过长，转屏过程发生空指针异常
         if (orderList != null) {
             // 必须重新刷新
-            keywordsFlow.post(new Runnable() {
+            casualLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    keywordsFlow.rubKeywords();
-                    mKeyAdapter.feedKeyword();
-                    keywordsFlow.go2Show(KeywordsFlow.ANIMATION_OUT);
+                    casualLayout.rubKeywords();
+                    mAdapter.feedKeyword();
+                    casualLayout.go2Show(KeywordsFlow.ANIMATION_OUT);
                 }
             });
         }
@@ -177,8 +175,8 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
 
     @Override
     public void onTouchEvent(MotionEvent event) {
-        if (mKeyAdapter != null) {
-            mKeyAdapter.onTouchEvent(event);
+        if (mAdapter != null) {
+            mAdapter.onTouchEvent(event);
         }
     }
 

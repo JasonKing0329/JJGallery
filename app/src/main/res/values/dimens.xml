@@ -58,8 +58,11 @@
     <dimen name="sorder_expan_item_padding_hori">10dp</dimen>
     <dimen name="sorder_expan_item_cover_size">60dp</dimen>
     <dimen name="sorder_expan_item_image_size">40dp</dimen>
-    <dimen name="sorder_expan_preview_size">50dp
-    </dimen><!-- just a little bigger than sorder_expan_item_image_size -->
+    <dimen name="sorder_expan_preview_size">50dp</dimen>
+    <dimen name="sorder_index_casual_item_size">50dp</dimen>
+    <dimen name="sorder_index_casual_text_width">70dp</dimen>
+    <dimen name="sorder_index_casual_text_size">12dp</dimen>
+    <!-- just a little bigger than sorder_expan_item_image_size -->
 
     <dimen name="sorder_preview_width">60dp</dimen>
     <dimen name="sorder_preview_space">2dp</dimen>
