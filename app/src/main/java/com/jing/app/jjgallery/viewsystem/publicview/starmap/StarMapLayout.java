@@ -146,6 +146,8 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
      */
     private OnItemClickListener onItemClickListener;
 
+    private List<Region> regionList;
+
     public StarMapLayout(Context context) {
         super(context);
         init();
@@ -269,6 +271,7 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
     private void refreshView() {
         // 每次执行的时候要清空之前的view和params
         removeAllViews();
+        regionList = new ArrayList<>();
         for (int i = 0; i < row; i ++) {
             for (int j = 0; j < col; j++) {
                 mapRegions[i][j].view = null;
@@ -328,7 +331,7 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
     private void arrangeChildView(int position, View child, LayoutParams params, int targetPosition) {
         int x = targetPosition / col;
         int y = targetPosition % col;
-//        child.setTag(R.id.starmap_child_tag_region, mapRegions[x][y]);
+        regionList.add(mapRegions[x][y]);
         mapRegions[x][y].view = child;
         mapRegions[x][y].params = params;
         mapRegions[x][y].viewPosition = position;
@@ -359,7 +362,170 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
     }
 
     private void modifyChildPosition() {
-        //TODO v2.9.1 这一期先不做
+        for (int i = 0; i < regionList.size(); i ++) {
+            Region region = regionList.get(i);
+
+            DebugLog.e("[" + i + "]调整前leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin);
+            // 1.x方向调整，0不调整，1向right调整，2向left调整
+            int flag = random.nextInt(3);
+            if (flag == 1) {
+                int edge = findRightEdge(i);
+                int distance = Math.abs(random.nextInt(edge - region.params.width - region.params.leftMargin));
+                region.params.leftMargin += distance;
+                DebugLog.e("[" + i + "]向右调整distance=" + distance);
+            }
+            else if (flag == 2) {
+                int edge = findLeftEdge(i);
+                int distance = Math.abs(random.nextInt(region.params.leftMargin - edge));
+                region.params.leftMargin -= distance;
+                DebugLog.e("[" + i + "]向左调整distance=" + distance);
+            }
+
+            // 2.y方向调整，0不调整，1向bottom调整，2向top调整
+            flag = random.nextInt(3);
+            if (flag == 1) {
+                int edge = findBottomEdge(i);
+                int distance = Math.abs(random.nextInt(edge - region.params.height - region.params.topMargin));
+                region.params.topMargin += distance;
+                DebugLog.e("[" + i + "]向下调整distance=" + distance);
+            }
+            else if (flag == 2) {
+                int edge = findTopEdge(i);
+                int distance = Math.abs(random.nextInt(region.params.topMargin - edge));
+                region.params.topMargin -= distance;
+                DebugLog.e("[" + i + "]向上调整distance=" + distance);
+            }
+            DebugLog.e("[" + i + "]调整后leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin);
+        }
+    }
+
+    /**
+     *
+     * 检查当前区域上侧可移动范围(left, right, top都不能与其他区域item重叠)
+     * @return curIndex
+     */
+    private int findTopEdge(int curIndex) {
+        LayoutParams params = regionList.get(curIndex).params;
+        //左边缘
+        int curLeft = params.leftMargin;
+        //右边缘
+        int curRight = params.leftMargin + params.width;
+        //上边缘
+        int curTop = params.topMargin;
+        //以layout上边界为初始上边界
+        int maxTop = getTop() - getPaddingTop();
+        //找layout上边界以内最靠近当前item的item
+        for (int i = 0; i < regionList.size(); i ++) {
+            //排除当前item
+            if (i != curIndex) {
+                LayoutParams targetParams = regionList.get(i).params;
+                // 满足条件为：当前Item的top大于目标item的bottom，并且目标Item的left或者right在当前Item的left与right之间
+                if (curTop > targetParams.topMargin + targetParams.height && (targetParams.rightMargin <= curRight && targetParams.rightMargin >= curLeft
+                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft)) {
+                    if (targetParams.topMargin + targetParams.height > maxTop) {
+                        maxTop = targetParams.topMargin + targetParams.height;
+                    }
+                }
+            }
+        }
+        return maxTop;
+    }
+
+    /**
+     *
+     * 检查当前区域下侧可移动范围(left, right, bottom都不能与其他区域item重叠)
+     * @return curIndex
+     */
+    private int findBottomEdge(int curIndex) {
+        LayoutParams params = regionList.get(curIndex).params;
+        //左边缘
+        int curLeft = params.leftMargin;
+        //右边缘
+        int curRight = params.leftMargin + params.width;
+        //下边缘
+        int curBottom = params.topMargin + params.height;
+        //以layout下边界为初始下边界
+        int minBottom = getBottom() - getPaddingBottom();
+        //找layout下边界以内最靠近当前item的item
+        for (int i = 0; i < regionList.size(); i ++) {
+            //排除当前item
+            if (i != curIndex) {
+                LayoutParams targetParams = regionList.get(i).params;
+                // 满足条件为：当前Item的bottom小于目标item的top，并且目标Item的left或者right在当前Item的left与right之间
+                if (curBottom < targetParams.topMargin && (targetParams.rightMargin <= curRight && targetParams.rightMargin >= curLeft
+                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft)) {
+                    if (targetParams.topMargin < minBottom) {
+                        minBottom = targetParams.topMargin;
+                    }
+                }
+            }
+        }
+        return minBottom;
+    }
+
+    /**
+     *
+     * 检查当前区域左侧可移动范围(top, left, bottom都不能与其他区域item重叠)
+     * @param curIndex
+     * @return
+     */
+    private int findLeftEdge(int curIndex) {
+        LayoutParams params = regionList.get(curIndex).params;
+        //左边缘
+        int curLeft = params.leftMargin;
+        //上边缘
+        int curTop = params.topMargin;
+        //下边缘
+        int curBottom = params.topMargin + params.height;
+        //以layout左边界为初始左边界
+        int maxLeft = getLeft() + getPaddingLeft();
+        //找layout左边界以内最靠近当前item的item
+        for (int i = 0; i < regionList.size(); i ++) {
+            //排除当前item
+            if (i != curIndex) {
+                LayoutParams targetParams = regionList.get(i).params;
+                // 满足条件为：当前Item的left大于目标item的right，并且目标Item的top或者bottom在当前Item的top与bottom之间
+                if (curLeft > targetParams.leftMargin + targetParams.width && (targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop
+                        || targetParams.bottomMargin <= curBottom && targetParams.bottomMargin >= curTop)) {
+                    if (targetParams.leftMargin + targetParams.width > maxLeft) {
+                        maxLeft = targetParams.leftMargin + targetParams.width;
+                    }
+                }
+            }
+        }
+        return maxLeft;
+    }
+
+    /**
+     * 检查当前区域右侧可移动范围(top, right, bottom都不能与其他区域item重叠)
+     * @param curIndex
+     * @return
+     */
+    private int findRightEdge(int curIndex) {
+        LayoutParams params = regionList.get(curIndex).params;
+        //右边缘
+        int curRight = params.leftMargin + params.width;
+        //上边缘
+        int curTop = params.topMargin;
+        //下边缘
+        int curBottom = params.topMargin + params.height;
+        //以layout右边界为初始右边界
+        int minRight = getRight() - getPaddingRight();
+        //找layout右边界以内最靠近当前item的item
+        for (int i = 0; i < regionList.size(); i ++) {
+            //排除当前item
+            if (i != curIndex) {
+                LayoutParams targetParams = regionList.get(i).params;
+                // 满足条件为：当前Item的right小于目标item的left，并且目标Item的top或者bottom在当前Item的top与bottom之间
+                if (curRight < targetParams.leftMargin && (targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop
+                        || targetParams.bottomMargin <= curBottom && targetParams.bottomMargin >= curTop)) {
+                    if (targetParams.leftMargin < minRight) {
+                        minRight = targetParams.leftMargin;
+                    }
+                }
+            }
+        }
+        return minRight;
     }
 
     /**
