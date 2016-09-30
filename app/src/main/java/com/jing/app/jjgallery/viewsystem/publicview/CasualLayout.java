@@ -22,6 +22,7 @@ import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
 import java.util.LinkedList;
 import java.util.Random;
 
+@Deprecated
 public class CasualLayout extends FrameLayout implements OnGlobalLayoutListener {
 
     public static final int IDX_X = 0;

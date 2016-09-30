@@ -83,6 +83,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 	private SeekBar gifSeekBar;
 
 	private SOrderProvider sOrderProvider;
+	private ProgressProvider progressProvider;
 	/**
 	 *
 	 * @param context
@@ -91,6 +92,9 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 	 */
 	public ShowImageDialog(Context context, ActionListener listener, int actionbarHeight) {
 		super(context, R.style.TransparentDialog);
+		if (context instanceof  ProgressProvider) {
+			progressProvider = (ProgressProvider) context;
+		}
 		setContentView(R.layout.dialog_showimage_l);
 		this.actionListener = listener;
 		this.actionbarHeight = actionbarHeight;
@@ -470,7 +474,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 					//setCropArea(width, height);
 					setCropAreaCenter(width, height);
 
-					((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.success), ProgressProvider.TOAST_SUCCESS);
+					progressProvider.showToastLong(getContext().getString(R.string.success), ProgressProvider.TOAST_SUCCESS);
 					cropAreaSizePopup.dismiss();
 				}
 			});
@@ -509,7 +513,9 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 				}
 				cropImagePath = CropHelper.saveBitmap(cropBitmap, path, encrypter);
 				displayImagePath = cropImagePath;
-				((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.save_success), ProgressProvider.TOAST_SUCCESS);
+				if (progressProvider != null) {
+					progressProvider.showToastLong(getContext().getString(R.string.save_success), ProgressProvider.TOAST_SUCCESS);
+				}
 			}
 
 			@Override
@@ -545,7 +551,9 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			detailsButton.setVisibility(View.GONE);
 		}
 		else {
-			((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.crop_area_error), ProgressProvider.TOAST_ERROR);
+			if (progressProvider != null) {
+				progressProvider.showToastLong(getContext().getString(R.string.crop_area_error), ProgressProvider.TOAST_ERROR);
+			}
 		}
 	}
 
@@ -589,7 +597,10 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			displayImagePath = folderPath + "/" + name;
 		}
 		imagePath = displayImagePath;
-		((ProgressProvider) getContext()).showToastLong(getContext().getString(R.string.success), ProgressProvider.TOAST_SUCCESS);
+		if (progressProvider != null) {
+			
+		}
+		progressProvider.showToastLong(getContext().getString(R.string.success), ProgressProvider.TOAST_SUCCESS);
 	}
 
 	@Override

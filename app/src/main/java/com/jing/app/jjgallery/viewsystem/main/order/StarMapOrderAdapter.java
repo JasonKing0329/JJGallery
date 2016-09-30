@@ -10,9 +10,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.ColorUtils;
-import com.jing.app.jjgallery.util.DensityUtil;
-import com.jing.app.jjgallery.viewsystem.publicview.CasualBaseAdapter;
-import com.jing.app.jjgallery.viewsystem.publicview.CasualLayout;
+import com.jing.app.jjgallery.viewsystem.publicview.starmap.StarMapBaseAdapter;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 
 import java.util.ArrayList;
@@ -20,26 +18,26 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/9/18.
+ * Created by Administrator on 2016/9/29.
  */
-@Deprecated
-public class CasualOrderAdapter extends CasualBaseAdapter {
+public class StarMapOrderAdapter extends StarMapBaseAdapter {
 
+    public static final int DEFAULT_SHOW_NUMBER = 15;
     private Context context;
     private List<SOrder> totalList;
-    private int itemWidth;
-    private int itemHeight;
-
     private List<SOrder> showList;
+    private int showNumber;
 
-    public CasualOrderAdapter(Context context, List<SOrder> list) {
+    public StarMapOrderAdapter(Context context, List<SOrder> list) {
         this.context = context;
         this.totalList = list;
-        itemWidth = context.getResources().getDimensionPixelSize(R.dimen.sorder_index_casual_item_size);
-        itemHeight = itemWidth + DensityUtil.dip2px(context, 20);
+        showNumber = DEFAULT_SHOW_NUMBER;
         showList = new ArrayList<>();
-        feedKeyword();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.default_user_for_circle);
+    }
+
+    public void setShowNumber(int showNumber) {
+        this.showNumber = showNumber;
     }
 
     @Override
@@ -54,16 +52,33 @@ public class CasualOrderAdapter extends CasualBaseAdapter {
     }
 
     @Override
-    public View getView(int i) {
+    public View createView(int i, View childAt) {
         SOrder order = showList.get(i);
         View view = LayoutInflater.from(context).inflate(R.layout.adapter_order_index_casual, null);
+        view.setTag(order);
+        return view;
+    }
+
+    @Override
+    public void bindViewData(int position, View view, int imageSize) {
+        SOrder order = showList.get(position);
         TextView textView = (TextView) view.findViewById(R.id.sorder_casual_name);
         textView.setText(order.getName());
         textView.setTextColor(ColorUtils.randomLightColor());
-        SImageLoader.getInstance().displayImage(order.getCoverPath()
-            , (CircularImageView) view.findViewById(R.id.sorder_casual_image));
 
-        return view;
+        /**
+         * 先设置param里的大小，否则ImageLoader会根据match_parent的大小加载过大的图片
+         */
+        CircularImageView imageView = (CircularImageView)view.findViewById(R.id.sorder_casual_image);
+        imageView.getLayoutParams().width = imageSize;
+        imageView.getLayoutParams().height = imageSize;
+
+        SImageLoader.getInstance().displayImage(order.getCoverPath(), imageView);
+    }
+
+    @Override
+    public int getTextHeight() {
+        return context.getResources().getDimensionPixelOffset(R.dimen.starmap_item_text_height);
     }
 
     @Override
@@ -75,21 +90,11 @@ public class CasualOrderAdapter extends CasualBaseAdapter {
     }
 
     @Override
-    public int getItemWidth(int i) {
-        return itemWidth;
-    }
-
-    @Override
-    public int getItemHeight(int i) {
-        return itemHeight;
-    }
-
-    @Override
     public void feedKeyword() {
 
         showList.clear();
         Collections.shuffle(totalList);
-        for (int i = 0; i < CasualLayout.MAX && i < totalList.size(); i ++) {
+        for (int i = 0; i < showNumber && i < totalList.size(); i ++) {
             showList.add(totalList.get(i));
         }
     }

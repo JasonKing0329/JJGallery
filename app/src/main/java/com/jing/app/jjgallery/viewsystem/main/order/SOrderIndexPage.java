@@ -23,10 +23,9 @@ import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.IPage;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.CasualLayout;
+import com.jing.app.jjgallery.viewsystem.publicview.starmap.StarMapLayout;
 import com.jing.app.jjgallery.viewsystem.sub.key.Keyword;
 import com.jing.app.jjgallery.viewsystem.sub.key.KeywordsFlow;
-import com.jing.app.jjgallery.viewsystem.sub.key.OnKeywordClickListener;
 
 import java.util.List;
 
@@ -34,13 +33,13 @@ import java.util.List;
  * Created by JingYang on 2016/7/14 0014.
  * Description:
  */
-public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordClickListener {
+public class SOrderIndexPage implements IPage, ISOrderDataCallback, StarMapLayout.OnItemClickListener {
 
     private Context context;
 
     private ImageView bkView;
-    private CasualLayout casualLayout;
-    private CasualOrderAdapter mAdapter;
+    private StarMapLayout starMapLayout;
+    private StarMapOrderAdapter mAdapter;
 
     private SOrderPresenter mPresenter;
 
@@ -49,9 +48,9 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     public SOrderIndexPage(Context context, View view) {
         this.context = context;
         bkView = (ImageView) view.findViewById(R.id.fm_index_bk);
-        casualLayout = (CasualLayout) view.findViewById(R.id.view_keyword_flow);
-        casualLayout.setBackgroundColor(Color.TRANSPARENT);
-        casualLayout.setOnKeywordClickListener(this);
+        starMapLayout = (StarMapLayout) view.findViewById(R.id.view_keyword_flow);
+        starMapLayout.setBackgroundColor(Color.TRANSPARENT);
+        starMapLayout.setOnItemClickListener(this);
 
         updateBackground(context.getResources().getConfiguration().orientation);
     }
@@ -81,10 +80,9 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void onQueryAllOrders(List<SOrder> list) {
         orderList = list;
-        mAdapter = new CasualOrderAdapter(context, list);
-        casualLayout.setAdapter(mAdapter);
-        mAdapter.feedKeyword();
-        mAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
+        mAdapter = new StarMapOrderAdapter(context, list);
+
+        resetStarMapLayout();
 
         if (context instanceof  ProgressProvider) {
             ((ProgressProvider) context).dismissProgressCycler();
@@ -154,23 +152,32 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         updateBackground(newConfig.orientation);
-        // keywordsFlow的item坐标是根据width/height计算的，转屏发生了变化所以必须重布局
+        // starMapLayout的item坐标是根据width/height计算的，转屏发生了变化所以必须重布局
         // 并且在布局完成后post重新feedKeyword进行重计算
-        casualLayout.requestLayout();
-        casualLayout.invalidate();
+        starMapLayout.requestLayout();
+        starMapLayout.invalidate();
 
         // 防止第一次进入由于加载目录时间过长，转屏过程发生空指针异常
         if (orderList != null) {
             // 必须重新刷新
-            casualLayout.post(new Runnable() {
+            starMapLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    casualLayout.rubKeywords();
-                    mAdapter.feedKeyword();
-                    casualLayout.go2Show(KeywordsFlow.ANIMATION_OUT);
+                    resetStarMapLayout();
                 }
-            });
+            }, 200);//这里直接post还获取不到最新的width和height，需要延迟一会
         }
+    }
+
+    private void resetStarMapLayout() {
+        starMapLayout.reset();
+        starMapLayout.setAdapter(mAdapter);
+        int maxNumber = starMapLayout.getMaxItem();
+        if (StarMapOrderAdapter.DEFAULT_SHOW_NUMBER > maxNumber) {
+            mAdapter.setShowNumber(maxNumber);
+        }
+        mAdapter.feedKeyword();
+        mAdapter.goToShow(KeywordsFlow.ANIMATION_IN);
     }
 
     @Override
@@ -178,14 +185,6 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         if (mAdapter != null) {
             mAdapter.onTouchEvent(event);
         }
-    }
-
-    @Override
-    public void onKeywordClick(View view, Keyword keyword) {
-        SOrder order = (SOrder) keyword.getObject();
-        mPresenter.accessOrder(order);
-
-        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context), view);
     }
 
     public void onIndexBgChanged(String path) {
@@ -197,5 +196,13 @@ public class SOrderIndexPage implements IPage, ISOrderDataCallback, OnKeywordCli
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             SImageLoader.getInstance().displayImage(path, bkView);
         }
+    }
+
+    @Override
+    public void onItemClick(View view, Keyword keyword) {
+        SOrder order = (SOrder) keyword.getObject();
+        mPresenter.accessOrder(order);
+
+        ActivityManager.startExploreActivity((Activity) context, order, SettingProperties.getSOrderIndexItemOpenMode(context), view);
     }
 }

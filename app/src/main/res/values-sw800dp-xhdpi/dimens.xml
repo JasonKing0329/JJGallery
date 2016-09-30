@@ -113,6 +113,7 @@
     <dimen name="sorder_index_casual_item_size">80dp</dimen>
     <dimen name="sorder_index_casual_text_width">100dp</dimen>
     <dimen name="sorder_index_casual_text_size">14dp</dimen>
+    <dimen name="starmap_item_text_height">50dp</dimen>
     <!-- actionbar  -->
     <dimen name="actionbar_padding">10dp</dimen>
     <dimen name="actionbar_icon_padding">20dp</dimen>
@@ -235,4 +236,8 @@
 
     <!-- download -->
     <dimen name="download_dlg_height">800dp</dimen>
+
+    <!-- starmap -->
+    <dimen name="starmap_max_item_size">120dp</dimen>
+    <dimen name="starmap_min_item_size">50dp</dimen>
 </resources>
