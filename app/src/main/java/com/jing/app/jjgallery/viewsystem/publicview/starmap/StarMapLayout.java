@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.publicview.starmap;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -49,7 +50,7 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
 
     }
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     private StarMapBaseAdapter mAdapter;
 
     private class Region{
@@ -297,8 +298,14 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
             arrangeChildView(i, child, params, positions.get(i));
         }
 
-        // 第一次修正view的位置
-        modifyChildPosition();
+        if (DEBUG) {
+            printMapRegion();
+        }
+
+        // 进行5次修正view位置，提高随机性
+        for (int i = 0; i < 5; i ++) {
+            modifyChildPosition();
+        }
 
         // 添加view，并执行动画
         for (int i = 0; i < row; i ++) {
@@ -319,6 +326,52 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
                 }
             }
         }
+    }
+
+    /**
+     * just for debug
+     */
+    private void printMapRegion() {
+        for (int i = 0; i < row; i ++) {
+            StringBuffer line = new StringBuffer(i + "-- ");
+            for (int j = 0; j < col; j++) {
+                if (mapRegions[i][j].view != null) {
+                    String left = String.valueOf(mapRegions[i][j].params.leftMargin);
+                    String top = String.valueOf(mapRegions[i][j].params.topMargin);
+                    if (left.length() == 1) {
+                        line.append(left).append("   ");
+                    }
+                    else if (left.length() == 2) {
+                        line.append(left).append("  ");
+                    }
+                    else if (left.length() == 3) {
+                        line.append(left).append(" ");
+                    }
+                    else {
+                        line.append(left);
+                    }
+                    line.append(",");
+                    if (top.length() == 1) {
+                        line.append(top).append("   ");
+                    }
+                    else if (top.length() == 2) {
+                        line.append(top).append("  ");
+                    }
+                    else if (top.length() == 3) {
+                        line.append(top).append(" ");
+                    }
+                    else {
+                        line.append(top);
+                    }
+                    line.append(" ");
+                }
+                else {
+                    line.append("0000,0000 ");
+                }
+            }
+            DebugLog.e(line.toString());
+        }
+
     }
 
     /**
@@ -365,20 +418,28 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
         for (int i = 0; i < regionList.size(); i ++) {
             Region region = regionList.get(i);
 
-            DebugLog.e("[" + i + "]调整前leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin);
+            if (DEBUG) {
+                DebugLog.e("[" + i + "]调整前leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin + ", width=" + region.params.width + ", height=" + region.params.height);
+            }
             // 1.x方向调整，0不调整，1向right调整，2向left调整
             int flag = random.nextInt(3);
             if (flag == 1) {
                 int edge = findRightEdge(i);
                 int distance = Math.abs(random.nextInt(edge - region.params.width - region.params.leftMargin));
                 region.params.leftMargin += distance;
-                DebugLog.e("[" + i + "]向右调整distance=" + distance);
+                if (DEBUG) {
+                    DebugLog.e("findRightEdge " + edge);
+                    DebugLog.e("[" + i + "]向右调整distance=" + distance);
+                }
             }
             else if (flag == 2) {
                 int edge = findLeftEdge(i);
                 int distance = Math.abs(random.nextInt(region.params.leftMargin - edge));
                 region.params.leftMargin -= distance;
-                DebugLog.e("[" + i + "]向左调整distance=" + distance);
+                if (DEBUG) {
+                    DebugLog.e("findLeftEdge " + edge);
+                    DebugLog.e("[" + i + "] 向左调整distance=" + distance);
+                }
             }
 
             // 2.y方向调整，0不调整，1向bottom调整，2向top调整
@@ -387,15 +448,24 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
                 int edge = findBottomEdge(i);
                 int distance = Math.abs(random.nextInt(edge - region.params.height - region.params.topMargin));
                 region.params.topMargin += distance;
-                DebugLog.e("[" + i + "]向下调整distance=" + distance);
+                if (DEBUG) {
+                    DebugLog.e("findBottomEdge " + edge);
+                    DebugLog.e("[" + i + "] 向下调整distance=" + distance);
+                }
             }
             else if (flag == 2) {
                 int edge = findTopEdge(i);
                 int distance = Math.abs(random.nextInt(region.params.topMargin - edge));
                 region.params.topMargin -= distance;
-                DebugLog.e("[" + i + "]向上调整distance=" + distance);
+                if (DEBUG) {
+                    DebugLog.e("findTopEdge " + edge);
+                    DebugLog.e("[" + i + "] 向上调整distance=" + distance);
+                }
             }
-            DebugLog.e("[" + i + "]调整后leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin);
+
+            if (DEBUG) {
+                DebugLog.e("[" + i + "]调整后leftMargin=" + region.params.leftMargin + ", topMargin=" + region.params.topMargin);
+            }
         }
     }
 
@@ -420,8 +490,10 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
             if (i != curIndex) {
                 LayoutParams targetParams = regionList.get(i).params;
                 // 满足条件为：当前Item的top大于目标item的bottom，并且目标Item的left或者right在当前Item的left与right之间
-                if (curTop > targetParams.topMargin + targetParams.height && (targetParams.rightMargin <= curRight && targetParams.rightMargin >= curLeft
-                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft)) {
+                if (curTop > targetParams.topMargin + targetParams.height &&
+                        (targetParams.leftMargin + targetParams.width <= curRight && targetParams.leftMargin + targetParams.width >= curLeft
+                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft
+                        || targetParams.leftMargin <= curLeft && targetParams.leftMargin + targetParams.width >= curRight)) {
                     if (targetParams.topMargin + targetParams.height > maxTop) {
                         maxTop = targetParams.topMargin + targetParams.height;
                     }
@@ -452,8 +524,10 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
             if (i != curIndex) {
                 LayoutParams targetParams = regionList.get(i).params;
                 // 满足条件为：当前Item的bottom小于目标item的top，并且目标Item的left或者right在当前Item的left与right之间
-                if (curBottom < targetParams.topMargin && (targetParams.rightMargin <= curRight && targetParams.rightMargin >= curLeft
-                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft)) {
+                if (curBottom < targetParams.topMargin &&
+                        (targetParams.leftMargin + targetParams.width <= curRight && targetParams.leftMargin + targetParams.width >= curLeft
+                        || targetParams.leftMargin <= curRight && targetParams.leftMargin >= curLeft
+                        || targetParams.leftMargin <= curLeft && targetParams.leftMargin + targetParams.width >= curRight)) {
                     if (targetParams.topMargin < minBottom) {
                         minBottom = targetParams.topMargin;
                     }
@@ -485,8 +559,10 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
             if (i != curIndex) {
                 LayoutParams targetParams = regionList.get(i).params;
                 // 满足条件为：当前Item的left大于目标item的right，并且目标Item的top或者bottom在当前Item的top与bottom之间
-                if (curLeft > targetParams.leftMargin + targetParams.width && (targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop
-                        || targetParams.bottomMargin <= curBottom && targetParams.bottomMargin >= curTop)) {
+                if (curLeft > targetParams.leftMargin + targetParams.width &&
+                        (targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop
+                        || targetParams.topMargin + targetParams.height <= curBottom && targetParams.topMargin + targetParams.height >= curTop
+                        || targetParams.topMargin <= curTop && targetParams.topMargin + targetParams.height >= curBottom)) {
                     if (targetParams.leftMargin + targetParams.width > maxLeft) {
                         maxLeft = targetParams.leftMargin + targetParams.width;
                     }
@@ -511,14 +587,20 @@ public class StarMapLayout extends FrameLayout implements StarMapObserver, ViewT
         int curBottom = params.topMargin + params.height;
         //以layout右边界为初始右边界
         int minRight = getRight() - getPaddingRight();
+
+//        DebugLog.i("current:" + curIndex + "[right,top,bottom][" + curRight + "," + curTop + "," + curBottom + "]");
         //找layout右边界以内最靠近当前item的item
         for (int i = 0; i < regionList.size(); i ++) {
             //排除当前item
             if (i != curIndex) {
                 LayoutParams targetParams = regionList.get(i).params;
+//                StringBuffer buffer = new StringBuffer();
+//                buffer.append(i).append("[left,top,bottom").append(targetParams.leftMargin);
                 // 满足条件为：当前Item的right小于目标item的left，并且目标Item的top或者bottom在当前Item的top与bottom之间
-                if (curRight < targetParams.leftMargin && (targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop
-                        || targetParams.bottomMargin <= curBottom && targetParams.bottomMargin >= curTop)) {
+                if (curRight < targetParams.leftMargin &&
+                        ((targetParams.topMargin <= curBottom && targetParams.topMargin >= curTop) // 目标区域上边缘在当前的top与bottom之间
+                        || (targetParams.topMargin + targetParams.height <= curBottom && targetParams.topMargin + targetParams.height >= curTop) // 目标区域下边缘在当前的top与bottom之间
+                        || (targetParams.topMargin <= curTop && targetParams.topMargin + targetParams.height >= curBottom))) { // 当前的top与bottom完全包含在目标区域的top与bottom之间
                     if (targetParams.leftMargin < minRight) {
                         minRight = targetParams.leftMargin;
                     }

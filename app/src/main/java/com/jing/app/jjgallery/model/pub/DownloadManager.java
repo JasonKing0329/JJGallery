@@ -5,6 +5,9 @@ import com.jing.app.jjgallery.service.http.DownloadClient;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
 
+import android.os.Handler;
+import android.os.Message;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,13 +19,16 @@ import java.util.Queue;
 
 import okhttp3.ResponseBody;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/9/2.
  */
 public class DownloadManager {
+
+    private final int MSG_ERROR = 0;
+    private final int MSG_NEXT = 1;
+    private final int MSG_COMPLETE = 2;
 
     private class DownloadPack {
         DownloadItem item;
@@ -85,35 +91,62 @@ public class DownloadManager {
         DebugLog.e("开始执行任务：" + pack.item.getKey());
         executingdList.add(pack);
 
+        final DownloadHandler handler = new DownloadHandler(pack);
         // 开始网络请求下载
         new DownloadClient(pack.progressListener).getDownloadService().download(pack.item.getKey(), pack.item.getFlag())
-            .subscribeOn(Schedulers.io())
-            .unsubscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<ResponseBody>() {
-                @Override
-                public void onCompleted() {
-                    DebugLog.e("任务完成：" + pack.item.getKey());
-                    completeDownload(pack);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    DebugLog.e(e.toString());
-                    for (StackTraceElement element:e.getStackTrace()) {
-                        DebugLog.e(element.toString());
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        DebugLog.e("任务完成：" + pack.item.getKey());
+                        handler.sendEmptyMessage(MSG_COMPLETE);
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        DebugLog.e(e.toString());
+                        for (StackTraceElement element:e.getStackTrace()) {
+                            DebugLog.e(element.toString());
+                        }
+                        handler.sendEmptyMessage(MSG_ERROR);
+                    }
+
+                    @Override
+                    public void onNext(final ResponseBody responseBody) {
+                        DebugLog.e("");
+                        saveFile(pack.item.getName(), responseBody.byteStream());
+                        handler.sendEmptyMessage(MSG_NEXT);
+                    }
+                });
+        return true;
+    }
+
+    private class DownloadHandler extends Handler {
+
+        private DownloadPack pack;
+
+        public DownloadHandler(DownloadPack pack) {
+            this.pack = pack;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_ERROR:
                     completeDownload(pack);
                     mCallback.onDownloadError(pack.item);
-                }
-
-                @Override
-                public void onNext(final ResponseBody responseBody) {
-                    saveFile(pack.item.getKey(), responseBody.byteStream());
+                    break;
+                case MSG_NEXT:
                     mCallback.onDownloadFinish(pack.item);
-                }
-            });
-        return true;
+                    break;
+                case MSG_COMPLETE:
+                    completeDownload(pack);
+                    break;
+            }
+            super.handleMessage(msg);
+        }
     }
 
     private void completeDownload(DownloadPack pack) {
@@ -151,6 +184,7 @@ public class DownloadManager {
             byte[] buf = new byte[1024];
             int ch;
             while ((ch = input.read(buf)) != -1) {
+                DebugLog.e("read " + ch);
                 fileOutputStream.write(buf, 0, ch);
             }
             fileOutputStream.flush();
