@@ -23,6 +23,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.king.service.gdb.bean.Record;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,7 +176,9 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
 
                     @Override
                     public void onLoadData(HashMap<String, Object> data) {
-                        data.put("items", gdbPresenter.pickRecordToDownload(downloadList));
+                        List<DownloadItem> repeatList = new ArrayList<>();
+                        data.put("items", gdbPresenter.pickRecordToDownload(downloadList, repeatList));
+                        data.put("existedItems", repeatList);
                         data.put("savePath", Configuration.GDB_IMG_RECORD);
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
@@ -193,7 +196,9 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
                 });
             }
             else {
-                downloadDialog.newUpdate(gdbPresenter.pickRecordToDownload(downloadList));
+                List<DownloadItem> repeatList = new ArrayList<>();
+                List<DownloadItem> newList = gdbPresenter.pickRecordToDownload(downloadList, repeatList);
+                downloadDialog.newUpdate(newList, repeatList);
             }
             downloadDialog.show();
         }

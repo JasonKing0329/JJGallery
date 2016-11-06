@@ -233,6 +233,9 @@
     <dimen name="gdb_record_sub_text_size">14dp</dimen>
     <dimen name="gdb_record_main_text_size">16dp</dimen>
     <dimen name="gdb_record_page_star1_img_height">260dp</dimen>
+    <dimen name="gdb_record_listitem_img_width">300dp</dimen>
+    <dimen name="gdb_record_listitem_img_height">200dp</dimen>
+    <dimen name="gdb_sort_grid_height">800dp</dimen>
 
     <!-- download -->
     <dimen name="download_dlg_height">800dp</dimen>
@@ -240,4 +243,5 @@
     <!-- starmap -->
     <dimen name="starmap_max_item_size">120dp</dimen>
     <dimen name="starmap_min_item_size">50dp</dimen>
+    <dimen name="download_size_width">100dp</dimen>
 </resources>

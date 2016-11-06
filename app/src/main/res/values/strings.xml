@@ -402,6 +402,8 @@
     <!--************************** download **************************-->
     <string name="download_title">Download</string>
     <string name="download_empty">No items to download.</string>
+    <string name="download_option_exist">Files below are already existed in file system, select to overwrite: </string>
+    <string name="download_continue">Continue</string>
 
     <!--************************** update **************************-->
     <string name="app_is_latest">Applacation is already the latest version.</string>

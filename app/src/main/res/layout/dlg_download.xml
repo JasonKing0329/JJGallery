@@ -1,20 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/download_empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/download_empty"
-        android:layout_margin="10dp"
-        android:visibility="gone"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/download_list"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/download_option_group"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="@dimen/download_dlg_height"
-        android:layout_marginBottom="10dp"/>
-</LinearLayout>
+        android:visibility="gone"
+        android:padding="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/download_option_exist"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/download_list_existed"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/download_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="right"
+            android:padding="10dp"
+            android:textSize="16dp"
+            android:text="@string/download_continue"
+            android:background="@drawable/ripple_rect_grey"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/download_list_group"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/download_dlg_height"
+        android:visibility="gone"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/download_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/download_empty"
+            android:layout_margin="10dp"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/download_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:id="@+id/download_exist_layout">
+    <TextView
+        android:id="@+id/download_exist_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/download_exist_size"
+        android:layout_width="@dimen/download_size_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"/>
+    <CheckBox
+        android:id="@+id/download_exist_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:layout_marginLeft="5dp"/>
+</LinearLayout>

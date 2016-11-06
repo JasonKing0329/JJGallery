@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.viewsystem.publicview;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -20,17 +19,15 @@ import java.util.List;
  */
 public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ItemHolder> {
 
-    private Context mContext;
     private List<DownloadItemProxy> itemList;
 
-    public DownloadAdapter(Context context, List<DownloadItemProxy> itemList) {
-        mContext = context;
+    public DownloadAdapter(List<DownloadItemProxy> itemList) {
         this.itemList = itemList;
     }
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_download_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_download_list, parent, false);
         return new ItemHolder(view);
     }
 

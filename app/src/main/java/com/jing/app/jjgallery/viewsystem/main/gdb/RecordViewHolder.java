@@ -10,6 +10,7 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.util.DisplayHelper;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
@@ -67,6 +68,10 @@ public class RecordViewHolder {
         fkSubView = (TextView) view.findViewById(R.id.record_score_fk_sub);
         star1View = (TextView) view.findViewById(R.id.record_star1);
         star2View = (TextView) view.findViewById(R.id.record_star2);
+
+        if (!DisplayHelper.isTabModel(view.getContext())) {
+            view.findViewById(R.id.record_show_tablet).setVisibility(View.GONE);
+        }
     }
 
     public void bind(RecordProxy item, int sortMode) {

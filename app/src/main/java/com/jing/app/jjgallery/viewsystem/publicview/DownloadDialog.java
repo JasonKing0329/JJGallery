@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
@@ -38,6 +39,14 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     private RecyclerView downloadRecyclerView;
     private DownloadAdapter adapter;
 
+    private RecyclerView existedRecyclerView;
+    private DownloadExistAdapter existAdapter;
+
+    private ViewGroup optionGroup;
+    private ViewGroup downListGroup;
+
+    private TextView continueButton;
+
     /**
      * 全部下载内容
      */
@@ -65,6 +74,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
 
     private OnDownloadListener onDownloadListener;
     private List<DownloadItem> downloadList;
+    private List<DownloadItem> existedList;
 
     public DownloadDialog(Context context, OnCustomDialogActionListener actionListener) {
         super(context, actionListener);
@@ -80,6 +90,10 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         actionListener.onLoadData(map);
 
         downloadList = (List<DownloadItem>) map.get("items");
+        Object object = map.get("existedItems");
+        if (object != null) {
+            existedList = (List<DownloadItem>) object;
+        }
         savePath = (String) map.get("savePath");
         if (map.get("noOption") != null) {
             startNoOption = (Boolean) map.get("noOption");
@@ -99,6 +113,10 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
 
     private void fillProxy(List<DownloadItem> list) {
         itemList.clear();
+        addProxy(list);
+    }
+
+    private void addProxy(List<DownloadItem> list) {
         for (DownloadItem item:list) {
             DownloadItemProxy proxy = new DownloadItemProxy();
             proxy.setItem(item);
@@ -111,10 +129,19 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     protected View getCustomView() {
         View view = getLayoutInflater().inflate(R.layout.dlg_download, null);
         emptyView = (TextView) view.findViewById(R.id.download_empty);
+        continueButton = (TextView) view.findViewById(R.id.download_continue);
+        continueButton.setOnClickListener(this);
+        optionGroup = (ViewGroup) view.findViewById(R.id.download_option_group);
+        downListGroup = (ViewGroup) view.findViewById(R.id.download_list_group);
+
         downloadRecyclerView = (RecyclerView) view.findViewById(R.id.download_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         downloadRecyclerView.setLayoutManager(layoutManager);
+        existedRecyclerView = (RecyclerView) view.findViewById(R.id.download_list_existed);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        existedRecyclerView.setLayoutManager(layoutManager);
         return view;
     }
 
@@ -128,11 +155,37 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         super.show();
 
         if (newUpdateFlag) {
+
+            // 如果有已存在的下载内容，先进行覆盖筛选
+            if (existedList != null && existedList.size() > 0) {
+                updateExistedList();
+            }
+            else {
+                updateDownloadList();
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        if (view == continueButton) {
+            List<DownloadItem> list = existAdapter.getCheckedItems();
+            downloadList.addAll(list);
+            addProxy(list);
+            optionGroup.setVisibility(View.GONE);
             updateDownloadList();
         }
     }
 
+    private void updateExistedList() {
+        optionGroup.setVisibility(View.VISIBLE);
+        existAdapter = new DownloadExistAdapter(existedList);
+        existedRecyclerView.setAdapter(existAdapter);
+    }
+
     private void updateDownloadList() {
+        downListGroup.setVisibility(View.VISIBLE);
         if (itemList.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             downloadRecyclerView.setVisibility(View.INVISIBLE);
@@ -165,7 +218,7 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         // 开始下载任务后再show就要显示之前的内容
         newUpdateFlag = false;
 
-        adapter = new DownloadAdapter(getContext(), itemList);
+        adapter = new DownloadAdapter(itemList);
         downloadRecyclerView.setAdapter(adapter);
         startDownload();
     }
@@ -194,7 +247,9 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         }
     }
 
-    public void newUpdate(List<DownloadItem> downloadItems) {
+    public void newUpdate(List<DownloadItem> downloadItems, List<DownloadItem> existList) {
+        downloadList = downloadItems;
+        existedList = existList;
         fillProxy(downloadItems);
         newUpdateFlag = true;
     }

@@ -5,7 +5,7 @@
     <GridView
         android:id="@+id/gdb_sort_grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/gdb_sort_grid_height"
         android:numColumns="3"/>
     <RadioGroup
         android:layout_width="match_parent"

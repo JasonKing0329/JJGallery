@@ -26,6 +26,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -145,17 +146,23 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
     @Override
     public void onServerConnected() {
 //        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
-        gdbPresenter.checkNewStarFile();
+        if (isVisible()) {
+            gdbPresenter.checkNewStarFile();
+        }
     }
 
     @Override
     public void onServerUnavailable() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
+        if (isVisible()) {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
+        }
     }
 
     @Override
     public void onRequestFail() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
+        if (isVisible()) {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
+        }
     }
 
     @Override
@@ -175,7 +182,9 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
 
                     @Override
                     public void onLoadData(HashMap<String, Object> data) {
-                        data.put("items", gdbPresenter.pickStarToDownload(downloadList));
+                        List<DownloadItem> repeatList = new ArrayList<>();
+                        data.put("items", gdbPresenter.pickStarToDownload(downloadList, repeatList));
+                        data.put("existedItems", repeatList);
                         data.put("savePath", Configuration.GDB_IMG_STAR);
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
@@ -194,7 +203,9 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
                 });
             }
             else {
-                downloadDialog.newUpdate(gdbPresenter.pickStarToDownload(downloadList));
+                List<DownloadItem> repeatList = new ArrayList<>();
+                List<DownloadItem> newList = gdbPresenter.pickStarToDownload(downloadList, repeatList);
+                downloadDialog.newUpdate(newList, repeatList);
             }
             downloadDialog.show();
         }

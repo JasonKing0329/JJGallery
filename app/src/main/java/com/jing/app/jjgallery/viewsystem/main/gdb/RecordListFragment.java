@@ -21,6 +21,7 @@ import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.king.service.gdb.bean.Record;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,17 +136,23 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     @Override
     public void onServerConnected() {
 //        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
-        gdbPresenter.checkNewRecordFile();
+        if (isVisible()) {
+            gdbPresenter.checkNewRecordFile();
+        }
     }
 
     @Override
     public void onServerUnavailable() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
+        if (isVisible()) {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
+        }
     }
 
     @Override
     public void onRequestFail() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
+        if (isVisible()) {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
+        }
     }
 
     @Override
@@ -165,7 +172,9 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
                     @Override
                     public void onLoadData(HashMap<String, Object> data) {
-                        data.put("items", gdbPresenter.pickRecordToDownload(downloadList));
+                        List<DownloadItem> repeatList = new ArrayList<>();
+                        data.put("items", gdbPresenter.pickRecordToDownload(downloadList, repeatList));
+                        data.put("existedItems", repeatList);
                         data.put("savePath", Configuration.GDB_IMG_RECORD);
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
                     }
@@ -183,7 +192,9 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
                 });
             }
             else {
-                downloadDialog.newUpdate(gdbPresenter.pickRecordToDownload(downloadList));
+                List<DownloadItem> repeatList = new ArrayList<>();
+                List<DownloadItem> newList = gdbPresenter.pickRecordToDownload(downloadList, repeatList);
+                downloadDialog.newUpdate(newList, repeatList);
             }
             downloadDialog.show();
         }

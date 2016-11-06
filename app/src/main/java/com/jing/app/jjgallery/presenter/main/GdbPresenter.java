@@ -239,26 +239,39 @@ public class GdbPresenter {
 
     /**
      * 检查已有图片的star，将其过滤掉
-     * @param downloadList
-     * @return
+     * @param downloadList 服务端提供的下载列表
+     * @param existedList 已存在的下载内容，不能为null
+     * @return 未存在的下载内容
      */
-    public List<DownloadItem> pickStarToDownload(List<DownloadItem> downloadList) {
+    public List<DownloadItem> pickStarToDownload(List<DownloadItem> downloadList, List<DownloadItem> existedList) {
         List<DownloadItem> list = new ArrayList<>();
         for (DownloadItem item:downloadList) {
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
             if (starImageMap.get(name) == null) {
                 list.add(item);
             }
+            else {
+                existedList.add(item);
+            }
         }
         return list;
     }
 
-    public List<DownloadItem> pickRecordToDownload(List<DownloadItem> downloadList) {
+    /**
+     * 从服务端提供的下载列表中选出已存在的和不存在的
+     * @param downloadList 服务端提供的下载列表
+     * @param existedList 已存在的下载内容，不能为null
+     * @return 未存在的下载内容
+     */
+    public List<DownloadItem> pickRecordToDownload(List<DownloadItem> downloadList, List<DownloadItem> existedList) {
         List<DownloadItem> list = new ArrayList<>();
         for (DownloadItem item:downloadList) {
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
             if (recordImageMap.get(name) == null) {
                 list.add(item);
+            }
+            else {
+                existedList.add(item);
             }
         }
         return list;
