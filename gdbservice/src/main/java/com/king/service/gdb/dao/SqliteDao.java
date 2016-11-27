@@ -346,7 +346,7 @@ public class SqliteDao {
 
 	public List<Star> queryAllStars(Connection connection) {
 		List<Star> list = new ArrayList<>();
-		String sql = "SELECT * FROM " + TABLE_STAR;
+		String sql = "SELECT id,name,records FROM " + TABLE_STAR;
 		Statement statement = null;
 		Star star = null;
 		try {

@@ -29,10 +29,6 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
     private List<Star> originList;
     private GdbPresenter mPresenter;
 
-    public interface OnStarClickListener {
-        void onStarClick(StarProxy star);
-    }
-
     private int colors[] = new int[] {
             R.color.actionbar_bk_blue, R.color.actionbar_bk_green
             , R.color.actionbar_bk_orange, R.color.actionbar_bk_purple
@@ -98,9 +94,6 @@ public class StarListAdapter extends BaseTurboAdapter<Star, BaseViewHolder> impl
             }
         }
         else if (holder instanceof NameHolder) {
-            if (item.getRecordNumber() == 0) {
-                mPresenter.loadStarRecordNumber(item);
-            }
             NameHolder nHolder = (NameHolder) holder;
             nHolder.name.setText(item.getName() + " (" + item.getRecordNumber() + ")");
             StarProxy proxy = new StarProxy();

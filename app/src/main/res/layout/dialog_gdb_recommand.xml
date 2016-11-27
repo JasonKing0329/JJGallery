@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/gdb_recommend_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
+    <ProgressBar
+        android:id="@+id/gdb_recommend_progress"
+        style="@android:style/Widget.ProgressBar.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/gdb_recommend_image"
+        android:background="#99000000"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/gdb_recommend_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gdb_record_text_bareback_dark"
+            android:layout_alignParentRight="true"
+            android:textSize="18dp"/>
+        <LinearLayout
+            android:id="@+id/gdb_recommend_click_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/gdb_recommend_score">
+            <TextView
+                android:id="@+id/gdb_recommend_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/gdb_recommend_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_below="@id/gdb_recommend_name"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/gdb_recommend_image"
+        android:background="#99000000"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/gdb_recommend_previous"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_navigate_before_white_36dp"/>
+        <ImageView
+            android:id="@+id/gdb_recommend_next"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_navigate_next_white_36dp"/>
+        <ImageView
+            android:id="@+id/gdb_recommend_setting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings_white_36dp"/>
+    </LinearLayout>
+</RelativeLayout>

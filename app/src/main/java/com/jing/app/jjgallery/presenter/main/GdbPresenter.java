@@ -17,6 +17,7 @@ import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
+import com.jing.app.jjgallery.viewsystem.main.gdb.GdbConstants;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbFragment;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbRecordListView;
 import com.jing.app.jjgallery.viewsystem.main.gdb.IGdbStarListView;
@@ -86,7 +87,13 @@ public class GdbPresenter {
     }
 
     public void loadStarList() {
-        new LoadStarListTask().execute();
+        int orderBy = GdbConstants.STAR_SORT_NAME;
+        new LoadStarListTask().execute(orderBy);
+    }
+
+    public void loadStarListOrderByNumber() {
+        int orderBy = GdbConstants.STAR_SORT_RECORDS;
+        new LoadStarListTask().execute(orderBy);
     }
 
     public String getStarImage(String starName) {
@@ -113,6 +120,7 @@ public class GdbPresenter {
      * 加载star对应的record数量
      * @param star
      */
+    @Deprecated
     public void loadStarRecordNumber(Star star) {
         gdbProvider.loadStarRecordNumber(star);
     }
@@ -286,30 +294,31 @@ public class GdbPresenter {
         new FinishDownloadTask().execute(downloadList);
     }
 
-    private class LoadStarListTask extends AsyncTask<Void, Void, List<Star>> {
+    private class LoadStarListTask extends AsyncTask<Integer, Void, List<Star>> {
+
+        private int orderBy;
+
         @Override
         protected void onPostExecute(List<Star> list) {
 
             List<Star> resultList = new ArrayList<>();
-            // add headers
-            // about header rules, see viewsystem/main/gdb/StarListAdapter.java
-            Star star = null;
-            char index = 'A';
-            for (int i = 0; i < 26; i ++) {
-                star = new Star();
-                star.setId(-1);
-                star.setName("" + index ++);
-                resultList.add(star);
+            if (orderBy == GdbConstants.STAR_SORT_RECORDS) {// order by records number
+                resultList.addAll(list);
+                Collections.sort(resultList, new StarRecordsNumberComparator());
             }
-            resultList.addAll(list);
-            Collections.sort(resultList, new StarComparator());
-
-            // load available images for stars
-            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
-            for (String path:pathList) {
-                String name = encrypter.decipherOriginName(new File(path));
-                String preName = name.substring(0, name.lastIndexOf("."));
-                starImageMap.put(preName, path);
+            else {// order by name
+                // add headers
+                // about header rules, see viewsystem/main/gdb/StarListAdapter.java
+                Star star = null;
+                char index = 'A';
+                for (int i = 0; i < 26; i ++) {
+                    star = new Star();
+                    star.setId(-1);
+                    star.setName("" + index ++);
+                    resultList.add(star);
+                }
+                resultList.addAll(list);
+                Collections.sort(resultList, new StarNameComparator());
             }
 
             gdbStarListView.onLoadStarList(resultList);
@@ -318,7 +327,15 @@ public class GdbPresenter {
         }
 
         @Override
-        protected List<Star> doInBackground(Void... params) {
+        protected List<Star> doInBackground(Integer... params) {
+            orderBy = params[0];
+            // load available images for stars
+            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
+            for (String path:pathList) {
+                String name = encrypter.decipherOriginName(new File(path));
+                String preName = name.substring(0, name.lastIndexOf("."));
+                starImageMap.put(preName, path);
+            }
             return gdbProvider.getStars();
         }
     }
@@ -412,7 +429,10 @@ public class GdbPresenter {
         }
     }
 
-    public class StarComparator implements Comparator<Star> {
+    /**
+     * order by name
+     */
+    public class StarNameComparator implements Comparator<Star> {
 
         @Override
         public int compare(Star l, Star r) {
@@ -421,6 +441,27 @@ public class GdbPresenter {
             }
 
             return l.getName().toLowerCase().compareTo(r.getName().toLowerCase());
+        }
+    }
+
+    /**
+     * order by records number
+     */
+    public class StarRecordsNumberComparator implements Comparator<Star> {
+
+        @Override
+        public int compare(Star l, Star r) {
+            if (l == null || r == null) {
+                return 0;
+            }
+
+            // order by record number desc
+            int result = r.getRecordNumber() - l.getRecordNumber();
+            // if same, then compare name and order by name asc
+            if (result == 0) {
+                result = l.getName().toLowerCase().compareTo(r.getName().toLowerCase());
+            }
+            return result;
         }
     }
 

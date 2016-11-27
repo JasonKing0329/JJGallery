@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.main.gdb.recommend.RecommendDialog;
 import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateListener;
 import com.jing.app.jjgallery.viewsystem.main.gdb.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -33,17 +34,21 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarListFragment extends Fragment implements IGdbStarListView, StarListAdapter.OnStarClickListener
+public class StarListFragment extends Fragment implements IGdbStarListView, OnStarClickListener
     , IGdbFragment{
 
+    private int mSortMode;
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;
 
     private GdbPresenter gdbPresenter;
-    private StarListAdapter mAdapter;
+    private StarListAdapter mNameAdapter;
     private ActionBar mActionbar;
 
+    private StarListNumAdapter mNumberAdapter;
+
     private DownloadDialog downloadDialog;
+    private RecommendDialog recommendDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         mSideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
-                int pos = mAdapter.getLetterPosition(letter);
+                int pos = mNameAdapter.getLetterPosition(letter);
 
                 if (pos != -1) {
                     mRecyclerView.scrollToPosition(pos);
@@ -89,14 +94,46 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         mActionbar.addMenuIcon();
         mActionbar.addSearchIcon();
         mActionbar.addHomeIcon();
+        mActionbar.addSortIcon();
+    }
+
+    public void onIconClick(View view) {
+        switch (view.getId()) {
+            case R.id.actionbar_sort:
+                if (mSortMode == GdbConstants.STAR_SORT_NAME) {
+                    sortByRecordNumbers();
+                }
+                else {
+                    sortByName();
+                }
+                break;
+        }
+    }
+
+    private void sortByName() {
+        mSortMode = GdbConstants.STAR_SORT_NAME;
+        gdbPresenter.loadStarList();
+    }
+
+    private void sortByRecordNumbers() {
+        mSortMode = GdbConstants.STAR_SORT_RECORDS;
+        gdbPresenter.loadStarListOrderByNumber();
     }
 
     @Override
     public void onLoadStarList(List<Star> list) {
-        mAdapter = new StarListAdapter(getActivity(), list);
-        mAdapter.setPresenter(gdbPresenter);
-        mAdapter.setOnStarClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
+        if (mSortMode == GdbConstants.STAR_SORT_RECORDS) {
+            mNumberAdapter = new StarListNumAdapter(list);
+            mNumberAdapter.setPresenter(gdbPresenter);
+            mNumberAdapter.setOnStarClickListener(this);
+            mRecyclerView.setAdapter(mNumberAdapter);
+        }
+        else {
+            mNameAdapter = new StarListAdapter(getActivity(), list);
+            mNameAdapter.setPresenter(gdbPresenter);
+            mNameAdapter.setOnStarClickListener(this);
+            mRecyclerView.setAdapter(mNameAdapter);
+        }
         ((ProgressProvider) getActivity()).dismissProgressCycler();
 
         GdbUpdateManager manager = new GdbUpdateManager(getActivity(), new GdbUpdateListener() {
@@ -126,8 +163,8 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
     }
 
     public void onTextChanged(String text, int start, int before, int count) {
-        if (mAdapter != null) {
-            mAdapter.onStarFilter(text);
+        if (mNameAdapter != null) {
+            mNameAdapter.onStarFilter(text);
         }
     }
 
@@ -216,7 +253,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
 
     @Override
     public void onDownloadItemEncrypted() {
-        mAdapter.notifyDataSetChanged();
+        mNameAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -224,6 +261,12 @@ public class StarListFragment extends Fragment implements IGdbStarListView, Star
         switch (item.getItemId()) {
             case R.id.menu_gdb_check_server:
                 gdbPresenter.checkNewStarFile();
+                break;
+            case R.id.menu_gdb_recommend:
+                if (recommendDialog == null) {
+                    recommendDialog = new RecommendDialog(getActivity());
+                }
+                recommendDialog.show();
                 break;
             case R.id.menu_gdb_download:
                 if (downloadDialog != null) {

@@ -122,6 +122,7 @@
     <string name="menu_gdb_star">Stars</string>
     <string name="menu_gdb_download">Open download manager</string>
     <string name="menu_gdb_check_server">Check update</string>
+    <string name="menu_gdb_recommend">See movies</string>
 
     <string name="menu_waterfall_random">Random sequence</string>
     <string name="menu_waterfall_origin">Origin sequence</string>

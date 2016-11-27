@@ -99,6 +99,7 @@
     <string name="menu_check_all_unencrypted">检查所有未加密文档</string>
     <string name="menu_gdb_download">打开下载管理器</string>
     <string name="menu_gdb_check_server">检查更新</string>
+    <string name="menu_gdb_recommend">看片</string>
     
     <string name="menu_thumb_selectall">全选</string>
     <string name="menu_thumb_deselectall">取消全选</string>

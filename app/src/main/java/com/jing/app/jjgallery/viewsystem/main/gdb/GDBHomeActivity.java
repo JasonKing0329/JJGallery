@@ -100,6 +100,9 @@ public class GDBHomeActivity extends BaseActivity {
             else if (currentFragment == sceneListFragment) {
                 sceneListFragment.onIconClick(view);
             }
+            else if (currentFragment == starFragment) {
+                starFragment.onIconClick(view);
+            }
         }
     }
 

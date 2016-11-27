@@ -4,6 +4,8 @@
         android:title="@string/menu_gdb_record"/>
     <item android:id="@+id/menu_gdb_star"
         android:title="@string/menu_gdb_star"/>
+    <item android:id="@+id/menu_gdb_recommend"
+        android:title="@string/menu_gdb_recommend"/>
     <item android:id="@+id/menu_change_theme"
         android:title="@string/menu_change_theme"/>
     <item android:id="@+id/menu_gdb_download"

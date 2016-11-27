@@ -381,10 +381,12 @@ public class ActivityManager {
         applyAnimation(from);
     }
 
-    public static void startGdbRecordActivity(Activity from, Record record) {
+    public static void startGdbRecordActivity(Context from, Record record) {
         ObjectCache.putData(record);
         from.startActivity(new Intent().setClass(from, RecordActivity.class));
-        applyAnimation(from);
+        if (from instanceof Activity) {
+            applyAnimation((Activity) from);
+        }
     }
 
 }
