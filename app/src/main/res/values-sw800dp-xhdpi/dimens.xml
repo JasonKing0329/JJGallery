@@ -236,6 +236,7 @@
     <dimen name="gdb_record_listitem_img_width">300dp</dimen>
     <dimen name="gdb_record_listitem_img_height">200dp</dimen>
     <dimen name="gdb_sort_grid_height">800dp</dimen>
+    <dimen name="gdb_recommend_height">800dp</dimen>
 
     <!-- download -->
     <dimen name="download_dlg_height">800dp</dimen>

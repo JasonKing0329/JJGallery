@@ -390,4 +390,23 @@ public class SettingProperties {
         String num = preferences.getString(PreferenceKey.PREF_MAX_DOWNLOAD, "" + PreferenceValue.HTTP_MAX_DOWNLOAD);
         return Integer.parseInt(num);
     }
+
+    /**
+     * gdb filter model
+     */
+    public static String getGdbFilterModel(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String json = preferences.getString(PreferenceKey.PREF_GDB_FILTER_MODEL, "");
+        return json;
+    }
+
+    /**
+     * gdb filter model
+     */
+    public static void saveGdbFilterModel(Context context, String json) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_GDB_FILTER_MODEL, json);
+        editor.apply();
+    }
 }

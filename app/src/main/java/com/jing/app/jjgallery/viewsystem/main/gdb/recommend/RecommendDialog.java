@@ -9,15 +9,18 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +37,13 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
     private ProgressBar progressBar;
 
     private RecommendPresenter recommendPresenter;
+    private FilterPresenter filterPresenter;
+
+    /**
+     * 过滤器对话框
+     */
+    private RecordFilterDialog filterDialog;
+
     private Point startPoint, touchPoint;
 
     private class Point {
@@ -64,6 +74,10 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
         findViewById(R.id.gdb_recommend_click_group).setOnClickListener(this);
 
         recommendPresenter = new RecommendPresenter(this);
+        filterPresenter = new FilterPresenter();
+        // 设置过滤器
+        recommendPresenter.setFilterModel(filterPresenter.getFilters(getContext()));
+        // 加载所有记录，通过onRecordRecommand回调
         recommendPresenter.initialize();
     }
 
@@ -92,6 +106,11 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
     @Override
     public void onRecordRecommand(Record record) {
         progressBar.setVisibility(View.GONE);
+
+        if (record == null) {
+            Toast.makeText(getContext(), R.string.gdb_rec_no_match, Toast.LENGTH_LONG).show();
+            return;
+        }
         nameView.setText(record.getDirectory() + "/" + record.getName());
         StringBuffer buffer = new StringBuffer();
         if (record instanceof RecordOneVOne) {
@@ -125,6 +144,29 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
                 recommendPresenter.recommendPrevious();
                 break;
             case R.id.gdb_recommend_setting:
+                if (filterDialog == null) {
+                    filterDialog = new RecordFilterDialog(getContext(), new CustomDialog.OnCustomDialogActionListener() {
+                        @Override
+                        public boolean onSave(Object object) {
+                            FilterModel model = (FilterModel) object;
+                            filterPresenter.saveFilters(getContext(), model);
+                            recommendPresenter.setFilterModel(model);
+                            recommendPresenter.recommendNext();
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onCancel() {
+                            return false;
+                        }
+
+                        @Override
+                        public void onLoadData(HashMap<String, Object> data) {
+                            data.put("model", filterPresenter.getFilters(getContext()));
+                        }
+                    });
+                }
+                filterDialog.show();
                 break;
             case R.id.gdb_recommend_click_group:
                 ActivityManager.startGdbRecordActivity(getContext(), recommendPresenter.getCurrentRecord());

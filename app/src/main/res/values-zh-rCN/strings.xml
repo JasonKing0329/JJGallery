@@ -374,6 +374,10 @@
     <string name="gdb_option_download">发现%d张图片，点击确定下载</string>
     <string name="gdb_no_new_images">没有检测到新图片</string>
     <string name="gdb_update_found">发现GDB数据库新版本%s，点击确定以下载</string>
+    <string name="gdb_rec_filter_min">最低</string>
+    <string name="gdb_rec_filter_max">最高</string>
+    <string name="gdb_rec_filter_title">推荐过滤器</string>
+    <string name="gdb_rec_no_match">没有找到匹配的记录</string>
 
     <!--************************** download **************************-->
     <string name="download_title">下载</string>

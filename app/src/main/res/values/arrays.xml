@@ -203,7 +203,7 @@
         <item>@string/tab_filemanager</item>
         <item>@string/tab_sorder</item>
         <item>@string/setting_start_view_timeline</item>
-        <item>Guide</item>
+        <item>@string/setting_start_view_gdb</item>
     </string-array>
     <string-array name="pref_general_list_home_value" translatable="false">
         <item>0</item>

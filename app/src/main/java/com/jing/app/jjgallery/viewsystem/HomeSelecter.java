@@ -80,9 +80,9 @@ public class HomeSelecter implements  HomeProvider {
                     ActivityManager.startTimeLineActivity(from, bundle);
                 }
                 break;
-            case PreferenceValue.START_VIEW_GUIDE:
+//            case PreferenceValue.START_VIEW_GUIDE:
 //                activity.startActivity(new Intent().setClass(activity, GuideActivity.class));
-                break;
+//                break;
             case PreferenceValue.START_VIEW_SORDER:
                 if (from instanceof SOrderActivity) {//禁止重复打开当前页面
                     result = false;

@@ -110,6 +110,8 @@ public class PreferenceKey {
     public static final String PREF_GDB_RECORD_ORDER = "pref_gdb_record_order";
     // gdb star record排序方式
     public static final String PREF_GDB_STAR_RECORD_ORDER = "pref_gdb_star_record_order";
+    // gdb filter model(json string)
+    public static final String PREF_GDB_FILTER_MODEL = "pref_gdb_filter_model";
 
     /**
      * http
