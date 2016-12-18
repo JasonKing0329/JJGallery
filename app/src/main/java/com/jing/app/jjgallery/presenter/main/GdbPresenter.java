@@ -705,6 +705,38 @@ public class GdbPresenter {
                         result = left.getScoreFkType6() - right.getScoreFkType6();
                     }
                     break;
+                case PreferenceValue.GDB_SR_ORDERBY_SCORE_BASIC:
+                    if (desc) {
+                        result = right.getScoreBasic() - left.getScoreBasic();
+                    }
+                    else {
+                        result = left.getScoreBasic() - right.getScoreBasic();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_SCORE_EXTRA:
+                    if (desc) {
+                        result = right.getScoreExtra() - left.getScoreExtra();
+                    }
+                    else {
+                        result = left.getScoreExtra() - right.getScoreExtra();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STAR:
+                    if (desc) {
+                        result = right.getScoreStar() - left.getScoreStar();
+                    }
+                    else {
+                        result = left.getScoreStar() - right.getScoreStar();
+                    }
+                    break;
+                case PreferenceValue.GDB_SR_ORDERBY_STARC:
+                    if (desc) {
+                        result = right.getScoreStarC() - left.getScoreStarC();
+                    }
+                    else {
+                        result = left.getScoreStarC() - right.getScoreStarC();
+                    }
+                    break;
             }
             return result;
         }

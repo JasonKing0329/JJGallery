@@ -186,10 +186,70 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/gdb_record_table_distance"
+                        android:text="Score basic" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_basic"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+                </TableRow>
+
+                <TableRow style="@style/GdbRecordTable">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Score extra" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_extra"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/gdb_record_table_distance"
                         android:text="Score feel" />
 
                     <TextView
                         android:id="@+id/gdb_record_score_feel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+                </TableRow>
+
+                <TableRow style="@style/GdbRecordTable">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="star" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_star"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/gdb_record_table_distance"
+                        android:text="starC" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_starc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -276,70 +336,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/gdb_record_table_distance"
-                        android:text="special" />
-
-                    <TextView
-                        android:id="@+id/gdb_record_score_special"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right" />
-                </TableRow>
-
-                <TableRow style="@style/GdbRecordTable">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="rim" />
-
-                    <TextView
-                        android:id="@+id/gdb_record_score_rim"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="@dimen/gdb_record_table_distance"
-                        android:text="cshow" />
-
-                    <TextView
-                        android:id="@+id/gdb_record_score_cshow"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right" />
-                </TableRow>
-
-                <TableRow style="@style/GdbRecordTable">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:text="fk" />
 
                     <TextView
                         android:id="@+id/gdb_record_score_fk"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="@dimen/gdb_record_table_distance"
-                        android:text="foot" />
-
-                    <TextView
-                        android:id="@+id/gdb_record_score_foot"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -525,6 +525,54 @@
                         android:layout_weight="1"
                         android:gravity="right" />
                 </TableRow>
+
+                <TableRow style="@style/GdbRecordTable">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="rim" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_rim"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/gdb_record_table_distance"
+                        android:text="cshow" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_cshow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+                </TableRow>
+
+                <TableRow style="@style/GdbRecordTable">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="special" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_special"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+
+                </TableRow>
+
             </TableLayout>
         </LinearLayout>
     </RelativeLayout>

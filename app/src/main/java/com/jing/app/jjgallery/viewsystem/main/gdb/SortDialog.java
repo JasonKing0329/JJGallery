@@ -60,6 +60,10 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
             , new SortItem("FK-stand back", PreferenceValue.GDB_SR_ORDERBY_FK4)
             , new SortItem("FK-side", PreferenceValue.GDB_SR_ORDERBY_FK5)
             , new SortItem("FK-special", PreferenceValue.GDB_SR_ORDERBY_FK6)
+            , new SortItem("ScoreBasic", PreferenceValue.GDB_SR_ORDERBY_SCORE_BASIC)
+            , new SortItem("ScoreExtra", PreferenceValue.GDB_SR_ORDERBY_SCORE_EXTRA)
+            , new SortItem("Star", PreferenceValue.GDB_SR_ORDERBY_STAR)
+            , new SortItem("StarC", PreferenceValue.GDB_SR_ORDERBY_STARC)
     };
 
     public SortDialog(Context context, OnCustomDialogActionListener actionListener) {

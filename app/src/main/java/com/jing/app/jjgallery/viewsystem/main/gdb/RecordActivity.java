@@ -28,7 +28,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
     private ImageView star1ImageView, star2ImageView;
     private TextView star1View, star2View;
     private TextView pathView, sceneView, sceneScoreView, hdView, barebackView, bjobView, cumView, scoreView, scoreFeelView
-            , rhythmView, foreplayView, storyView, specialView, rimView, cshowView, fkView, footView
+            , rhythmView, foreplayView, storyView, specialView, rimView, cshowView, fkView, starView, starCView, scoreBasicView, scoreExtraView
             , fktype1View, fktype1RateView, fktype2View, fktype2RateView, fktype3View, fktype3RateView
             , fktype4View, fktype4RateView, fktype5View, fktype5RateView, fktype6View, fktype6RateView;
     @Override
@@ -71,7 +71,10 @@ public class RecordActivity extends BaseActivity implements IStarView {
         cshowView = (TextView) findViewById(R.id.gdb_record_score_cshow);
         specialView = (TextView) findViewById(R.id.gdb_record_score_special);
         fkView = (TextView) findViewById(R.id.gdb_record_score_fk);
-        footView = (TextView) findViewById(R.id.gdb_record_score_foot);
+        starView = (TextView) findViewById(R.id.gdb_record_score_star);
+        starCView = (TextView) findViewById(R.id.gdb_record_score_starc);
+        scoreBasicView = (TextView) findViewById(R.id.gdb_record_score_basic);
+        scoreExtraView = (TextView) findViewById(R.id.gdb_record_score_extra);
         fktype1View = (TextView) findViewById(R.id.gdb_record_score_fk_type1);
         fktype1RateView = (TextView) findViewById(R.id.gdb_record_score_fk_type1_rate);
         fktype2View = (TextView) findViewById(R.id.gdb_record_score_fk_type2);
@@ -119,7 +122,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
         } else {
             star1View.setText(record.getStar1().getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
         }
-        Star star2 = record.getStar1();
+        Star star2 = record.getStar2();
         if (star2 == null) {
             star2View.setText(GDBProperites.STAR_UNKNOWN + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
         }
@@ -142,7 +145,10 @@ public class RecordActivity extends BaseActivity implements IStarView {
         rimView.setText("" + record.getScoreRim());
         cshowView.setText("" + record.getScoreCShow());
         fkView.setText("" + record.getScoreFk());
-        footView.setText("" + record.getScoreFoot());
+        starView.setText("" + record.getScoreStar());
+        starCView.setText("" + record.getScoreStarC());
+        scoreBasicView.setText("" + record.getScoreBasic());
+        scoreExtraView.setText("" + record.getScoreExtra());
         fktype1View.setText("" + record.getScoreFkType1());
         fktype1RateView.setText("" + record.getRateFkType1());
         fktype2View.setText("" + record.getScoreFkType2());

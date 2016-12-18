@@ -116,43 +116,47 @@ public class SqliteDao {
 			record.setSequence(set.getInt(2));
 			record.setSceneName(set.getString(3));
 			record.setDirectory(set.getString(4));
-			int star1Id = set.getInt(39);
-			int star2Id = set.getInt(40);
-			record.setStar1(queryStarById(connection, star1Id));
-			record.setStar2(queryStarById(connection, star2Id));
 			record.setName(set.getString(7));
 			record.setHDLevel(set.getInt(8));
 			record.setScore(set.getInt(9));
-			record.setScoreFeel(set.getInt(10));
-			record.setScoreStar1(set.getInt(11));
-			record.setScoreStar2(set.getInt(12));
-			record.setScoreStarC1(set.getInt(13));
-			record.setScoreStarC2(set.getInt(14));
-			record.setScoreRhythm(set.getInt(15));
-			record.setScoreForePlay(set.getInt(16));
-			record.setScoreRim(set.getInt(17));
-			record.setScoreBJob(set.getInt(18));
-			record.setScoreFkType1(set.getInt(19));
-			record.setScoreFkType2(set.getInt(20));
-			record.setScoreFkType3(set.getInt(21));
-			record.setScoreFkType4(set.getInt(22));
-			record.setScoreFkType5(set.getInt(23));
-			record.setScoreFkType6(set.getInt(24));
-			record.setScoreCum(set.getInt(25));
-			record.setScoreScene(set.getInt(26));
-			record.setScoreStory(set.getInt(27));
-			record.setScoreNoCond(set.getInt(28));
-			record.setScoreCShow(set.getInt(29));
-			record.setScoreFoot(set.getInt(30));
-			record.setScoreSpeicial(set.getInt(31));
-			record.setScoreFk(set.getInt(32));
-			record.setRateFkType1(Integer.parseInt(set.getString(33)));
-			record.setRateFkType2(Integer.parseInt(set.getString(34)));
-			record.setRateFkType3(Integer.parseInt(set.getString(35)));
-			record.setRateFkType4(Integer.parseInt(set.getString(36)));
-			record.setRateFkType5(Integer.parseInt(set.getString(37)));
-			record.setRateFkType6(Integer.parseInt(set.getString(38)));
-			record.setLastModifyTime(set.getLong(41));
+			record.setScoreBasic(set.getInt(10));
+			record.setScoreExtra(set.getInt(11));
+			record.setScoreFeel(set.getInt(12));
+			record.setScoreStar1(set.getInt(13));
+			record.setScoreStar2(set.getInt(14));
+			record.setScoreStar(set.getInt(15));
+			record.setScoreStarC1(set.getInt(16));
+			record.setScoreStarC2(set.getInt(17));
+			record.setScoreStarC(set.getInt(18));
+			record.setScoreRhythm(set.getInt(19));
+			record.setScoreForePlay(set.getInt(20));
+			record.setScoreBJob(set.getInt(21));
+			record.setScoreFkType1(set.getInt(22));
+			record.setScoreFkType2(set.getInt(23));
+			record.setScoreFkType3(set.getInt(24));
+			record.setScoreFkType4(set.getInt(25));
+			record.setScoreFkType5(set.getInt(26));
+			record.setScoreFkType6(set.getInt(27));
+			record.setScoreFk(set.getInt(28));
+			record.setScoreCum(set.getInt(29));
+			record.setScoreScene(set.getInt(30));
+			record.setScoreStory(set.getInt(31));
+			record.setScoreNoCond(set.getInt(32));
+			record.setScoreCShow(set.getInt(33));
+			record.setScoreRim(set.getInt(34));
+			record.setScoreSpeicial(set.getInt(35));
+			record.setRateFkType1(Integer.parseInt(set.getString(36)));
+			record.setRateFkType2(Integer.parseInt(set.getString(37)));
+			record.setRateFkType3(Integer.parseInt(set.getString(38)));
+			record.setRateFkType4(Integer.parseInt(set.getString(39)));
+			record.setRateFkType5(Integer.parseInt(set.getString(40)));
+			record.setRateFkType6(Integer.parseInt(set.getString(41)));
+			record.setLastModifyTime(set.getLong(44));
+			record.setSpecialDesc(set.getString(45));
+			int star1Id = set.getInt(42);
+			int star2Id = set.getInt(43);
+			record.setStar1(queryStarById(connection, star1Id));
+			record.setStar2(queryStarById(connection, star2Id));
 			list.add(record);
 		}
 	}
@@ -160,14 +164,14 @@ public class SqliteDao {
 	public boolean insertRecord(Connection connection, RecordOneVOne record) {
 		StringBuffer buffer = new StringBuffer("INSERT INTO ");
 		buffer.append(TABLE_RECORD_1V1)
-				.append("(sequence,scene,directory,partner1,partner2,name,HDLevel,score")
-				.append(",scoreFeel,scoreStar1,scoreStar2,scoreStarC1,scoreStarC2,scoreRhythm")
-				.append(",scoreForePlay,scoreRim,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
-				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreCum,scoreScene,scoreStory")
-				.append(",scoreNoCond,scoreCShow,scoreFoot,scoreSpecial,scoreFk,rateFkType1,rateFkType2")
-				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate)")
+				.append("(sequence,scene,directory,partner1,partner2,name,HDLevel,score,scoreBasic,scoreExtra")
+				.append(",scoreFeel,scoreStar1,scoreStar2,scoreStar,scoreStarC1,scoreStarC2,scoreStarC,scoreRhythm")
+				.append(",scoreForePlay,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
+				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreFk,scoreCum,scoreScene,scoreStory")
+				.append(",scoreNoCond,scoreCShow,scoreRim,scoreSpecial,rateFkType1,rateFkType2")
+				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate,specialDesc)")
 				.append(" VALUES(?");
-		for (int i = 0; i < 39; i ++) {
+		for (int i = 0; i < 43; i ++) {
 			buffer.append(",?");
 		}
 		buffer.append(")");
@@ -183,38 +187,42 @@ public class SqliteDao {
 			stmt.setString(6, record.getName());
 			stmt.setInt(7, record.getHDLevel());
 			stmt.setInt(8, record.getScore());
-			stmt.setInt(9, record.getScoreFeel());
-			stmt.setInt(10, record.getScoreStar1());
-			stmt.setInt(11, record.getScoreStar2());
-			stmt.setInt(12, record.getScoreStarC1());
-			stmt.setInt(13, record.getScoreStarC2());
-			stmt.setInt(14, record.getScoreRhythm());
-			stmt.setInt(15, record.getScoreForePlay());
-			stmt.setInt(16, record.getScoreRim());
-			stmt.setInt(17, record.getScoreBJob());
-			stmt.setInt(18, record.getScoreFkType1());
-			stmt.setInt(19, record.getScoreFkType2());
-			stmt.setInt(20, record.getScoreFkType3());
-			stmt.setInt(21, record.getScoreFkType4());
-			stmt.setInt(22, record.getScoreFkType5());
-			stmt.setInt(23, record.getScoreFkType6());
-			stmt.setInt(24, record.getScoreCum());
-			stmt.setInt(25, record.getScoreScene());
-			stmt.setInt(26, record.getScoreStory());
-			stmt.setInt(27, record.getScoreNoCond());
-			stmt.setInt(28, record.getScoreCShow());
-			stmt.setInt(29, record.getScoreFoot());
-			stmt.setInt(30, record.getScoreSpeicial());
-			stmt.setInt(31, record.getScoreFk());
-			stmt.setString(32, "" + record.getRateFkType1());
-			stmt.setString(33, "" + record.getRateFkType2());
-			stmt.setString(34, "" + record.getRateFkType3());
-			stmt.setString(35, "" + record.getRateFkType4());
-			stmt.setString(36, "" + record.getRateFkType5());
-			stmt.setString(37, "" + record.getRateFkType6());
-			stmt.setInt(38, record.getStar1().getId());
-			stmt.setInt(39, record.getStar2().getId());
-			stmt.setLong(40, record.getLastModifyTime());
+			stmt.setInt(9, record.getScoreBasic());
+			stmt.setInt(10, record.getScoreExtra());
+			stmt.setInt(11, record.getScoreFeel());
+			stmt.setInt(12, record.getScoreStar1());
+			stmt.setInt(13, record.getScoreStar2());
+			stmt.setInt(14, record.getScoreStar());
+			stmt.setInt(15, record.getScoreStarC1());
+			stmt.setInt(16, record.getScoreStarC2());
+			stmt.setInt(17, record.getScoreStarC());
+			stmt.setInt(18, record.getScoreRhythm());
+			stmt.setInt(19, record.getScoreForePlay());
+			stmt.setInt(20, record.getScoreBJob());
+			stmt.setInt(21, record.getScoreFkType1());
+			stmt.setInt(22, record.getScoreFkType2());
+			stmt.setInt(23, record.getScoreFkType3());
+			stmt.setInt(24, record.getScoreFkType4());
+			stmt.setInt(25, record.getScoreFkType5());
+			stmt.setInt(26, record.getScoreFkType6());
+			stmt.setInt(27, record.getScoreFk());
+			stmt.setInt(28, record.getScoreCum());
+			stmt.setInt(29, record.getScoreScene());
+			stmt.setInt(30, record.getScoreStory());
+			stmt.setInt(31, record.getScoreNoCond());
+			stmt.setInt(32, record.getScoreCShow());
+			stmt.setInt(33, record.getScoreRim());
+			stmt.setInt(34, record.getScoreSpeicial());
+			stmt.setString(35, "" + record.getRateFkType1());
+			stmt.setString(36, "" + record.getRateFkType2());
+			stmt.setString(37, "" + record.getRateFkType3());
+			stmt.setString(38, "" + record.getRateFkType4());
+			stmt.setString(39, "" + record.getRateFkType5());
+			stmt.setString(40, "" + record.getRateFkType6());
+			stmt.setInt(41, record.getStar1().getId());
+			stmt.setInt(42, record.getStar2().getId());
+			stmt.setLong(43, record.getLastModifyTime());
+			stmt.setString(44, record.getSpecialDesc());
 			stmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -318,7 +326,7 @@ public class SqliteDao {
 	}
 
 	public Star queryStarById(Connection connection, int id) {
-		String sql = "SELECT * FROM " + TABLE_STAR + " WHERE id=" + id;
+		String sql = "SELECT id,name,records FROM " + TABLE_STAR + " WHERE id=" + id;
 		Statement statement = null;
 		Star star = null;
 		try {

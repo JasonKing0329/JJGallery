@@ -9,7 +9,6 @@ import com.jing.app.jjgallery.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.presenter.main.GdbPresenter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
@@ -41,6 +40,9 @@ public class RecordViewHolder {
     private TextView fkSubView;
     private TextView star1View;
     private TextView star2View;
+    private TextView scoreBasicView;
+    private TextView scoreExtraView;
+    private TextView actorView;
 
     private int nameColorNormal, nameColorBareback;
     private View.OnClickListener onClickListener;
@@ -68,6 +70,9 @@ public class RecordViewHolder {
         fkSubView = (TextView) view.findViewById(R.id.record_score_fk_sub);
         star1View = (TextView) view.findViewById(R.id.record_star1);
         star2View = (TextView) view.findViewById(R.id.record_star2);
+        scoreBasicView = (TextView) view.findViewById(R.id.record_score_basic);
+        scoreExtraView = (TextView) view.findViewById(R.id.record_score_extra);
+        actorView = (TextView) view.findViewById(R.id.record_score_actor);
 
         if (!DisplayHelper.isTabModel(view.getContext())) {
             view.findViewById(R.id.record_show_tablet).setVisibility(View.GONE);
@@ -96,6 +101,8 @@ public class RecordViewHolder {
         nameView.setText("" + item.getName());
         dirView.setText("" + item.getDirectory());
         scoreView.setText("" + "" + item.getScore());
+        scoreBasicView.setText("basic(" + item.getScoreBasic() + ")");
+        scoreExtraView.setText("extra(" + item.getScoreExtra() + ")");
         if (item instanceof RecordSingleScene) {
             RecordSingleScene record = (RecordSingleScene) item;
             sceneView.setText("" + record.getSceneName() + "(" + record.getScoreScene() + ")");
@@ -115,6 +122,9 @@ public class RecordViewHolder {
         }
         if (item instanceof RecordOneVOne) {
             RecordOneVOne record = (RecordOneVOne) item;
+
+            actorView.setText("star(" + record.getScoreStar() + "/" + record.getScoreStarC() + ")");
+
             Star star1 = record.getStar1();
             if (star1 == null) {
                 star1View.setText("" + GDBProperites.STAR_UNKNOWN);
@@ -257,6 +267,22 @@ public class RecordViewHolder {
             case PreferenceValue.GDB_SR_ORDERBY_STORY:
                 sortScoreView.setVisibility(View.VISIBLE);
                 sortScoreView.setText("" + item.getScoreStory());
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCORE_BASIC:
+                sortScoreView.setVisibility(View.VISIBLE);
+                sortScoreView.setText("" + item.getScoreBasic());
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCORE_EXTRA:
+                sortScoreView.setVisibility(View.VISIBLE);
+                sortScoreView.setText("" + item.getScoreExtra());
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STAR:
+                sortScoreView.setVisibility(View.VISIBLE);
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStar());
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STARC:
+                sortScoreView.setVisibility(View.VISIBLE);
+                sortScoreView.setText("" + ((RecordOneVOne) item).getScoreStarC());
                 break;
             default:
                 sortScoreView.setVisibility(View.GONE);

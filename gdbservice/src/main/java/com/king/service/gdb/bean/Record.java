@@ -9,6 +9,8 @@ public abstract class Record {
 	private String name;
 	private String path;
 	private int score;
+	private int scoreBasic;
+	private int scoreExtra;
 	private int scoreFeel;
 	private int scoreStory;
 	private int HDLevel;
@@ -55,6 +57,18 @@ public abstract class Record {
 	}
 	public void setScore(int score) {
 		this.score = score;
+	}
+	public int getScoreBasic() {
+		return scoreBasic;
+	}
+	public void setScoreBasic(int scoreBasic) {
+		this.scoreBasic = scoreBasic;
+	}
+	public int getScoreExtra() {
+		return scoreExtra;
+	}
+	public void setScoreExtra(int scoreExtra) {
+		this.scoreExtra = scoreExtra;
 	}
 	public int getScoreFeel() {
 		return scoreFeel;

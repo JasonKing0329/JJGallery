@@ -83,5 +83,9 @@ public class PreferenceValue {
     public static final int GDB_SR_ORDERBY_FK4 =24;
     public static final int GDB_SR_ORDERBY_FK5 =25;
     public static final int GDB_SR_ORDERBY_FK6 =26;
+    public static final int GDB_SR_ORDERBY_SCORE_BASIC =27;
+    public static final int GDB_SR_ORDERBY_SCORE_EXTRA =28;
+    public static final int GDB_SR_ORDERBY_STAR =29;
+    public static final int GDB_SR_ORDERBY_STARC =30;
 
 }
