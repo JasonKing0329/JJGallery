@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.GDBHomeActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
@@ -22,8 +23,6 @@ import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
-import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
-import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
@@ -53,9 +52,12 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     private DownloadDialog downloadDialog;
     private RecommendDialog recommendDialog;
 
+    public void setGdbPresenter(GdbPresenter gdbPresenter) {
+        this.gdbPresenter = gdbPresenter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        gdbPresenter = new GdbPresenter(this);
         initActionbar();
 
         View view = inflater.inflate(R.layout.page_gdb_starlist, null);
@@ -84,6 +86,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         });
 
         ((ProgressProvider) getActivity()).showProgressCycler();
+
         gdbPresenter.loadStarList();
         return view;
     }
@@ -139,21 +142,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         }
         ((ProgressProvider) getActivity()).dismissProgressCycler();
 
-        GdbUpdateManager manager = new GdbUpdateManager(getActivity(), new GdbUpdateListener() {
-            @Override
-            public void onUpdateFinish() {
-                // 数据库更新完成，需要刷新列表
-                ((ProgressProvider) getActivity()).showProgressCycler();
-                gdbPresenter.loadStarList();
-            }
-
-            @Override
-            public void onUpdateCancel() {
-                // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
-                gdbPresenter.checkServerStatus();
-            }
-        });
-        manager.startCheck();
+        ((GDBHomeActivity) getActivity()).onStarLoadFinished();
     }
 
     @Override
@@ -278,5 +267,14 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                 break;
         }
         return false;
+    }
+
+    public void reloadStarList() {
+        gdbPresenter.loadStarList();
+    }
+
+    public void checkServerStatus() {
+        // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
+        gdbPresenter.checkServerStatus();
     }
 }

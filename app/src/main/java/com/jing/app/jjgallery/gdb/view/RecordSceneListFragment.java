@@ -46,9 +46,12 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
 
     private DownloadDialog downloadDialog;
 
+    public void setGdbPresenter(GdbPresenter gdbPresenter) {
+        this.gdbPresenter = gdbPresenter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        gdbPresenter = new GdbPresenter(this);
         initActionbar();
 
         currentSortMode = SettingProperties.getGdbRecordOrderMode(getActivity());

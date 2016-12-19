@@ -403,4 +403,16 @@ public class SimpleEncrypter implements Encrypter {
 		return false;
 	}
 
+	@Override
+	public void deleteFile(File file) {
+		if (file.exists()) {
+			String name = file.getName();
+			String filenames[] = name.split("\\.");
+			String jneName = file.getParent() + "/" + filenames[0] + NAME_EXTRA;
+			file.delete();
+			File jneFile = new File(jneName);
+			jneFile.delete();
+		}
+	}
+
 }

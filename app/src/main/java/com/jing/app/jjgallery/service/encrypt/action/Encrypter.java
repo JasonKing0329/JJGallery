@@ -69,4 +69,10 @@ public interface Encrypter {
 	public String decipherOriginName(File file);
 	
 	public boolean isGifFile(String path);
+
+	/**
+	 * delete encrypted file
+	 * @param file
+     */
+	void deleteFile(File file);
 }

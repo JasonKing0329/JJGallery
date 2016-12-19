@@ -46,7 +46,8 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mPresenter = new GdbPresenter(this);
+        mPresenter = new GdbPresenter();
+        mPresenter.setViewCallback(this);
         currentSortMode = SettingProperties.getGdbStarRecordOrderMode(getActivity());
         return inflater.inflate(R.layout.fragment_pull_zoom_header, container, false);
     }

@@ -45,9 +45,13 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
     private DownloadDialog downloadDialog;
 
+    public void setGdbPresenter(GdbPresenter gdbPresenter) {
+        this.gdbPresenter = gdbPresenter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        gdbPresenter = new GdbPresenter(this);
+
         currentSortMode = SettingProperties.getGdbRecordOrderMode(getActivity());
         initActionbar();
 

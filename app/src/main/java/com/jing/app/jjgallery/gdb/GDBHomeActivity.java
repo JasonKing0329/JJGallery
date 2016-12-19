@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -9,8 +10,11 @@ import android.view.View;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.model.FileService;
+import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
+import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.gdb.view.IGdbFragment;
 import com.jing.app.jjgallery.gdb.view.RecordListFragment;
 import com.jing.app.jjgallery.gdb.view.RecordSceneListFragment;
@@ -26,6 +30,9 @@ public class GDBHomeActivity extends BaseActivity {
     private StarListFragment starFragment;
     private RecordListFragment recordFragment;
     private RecordSceneListFragment sceneListFragment;
+
+    private GdbPresenter gdbPresenter;
+
     @Override
     public boolean isActionBarNeed() {
         return true;
@@ -38,7 +45,7 @@ public class GDBHomeActivity extends BaseActivity {
 
     @Override
     public void initController() {
-
+        gdbPresenter = new GdbPresenter();
     }
 
     @Override
@@ -50,11 +57,13 @@ public class GDBHomeActivity extends BaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (starFragment == null) {
             starFragment = new StarListFragment();
+            starFragment.setGdbPresenter(gdbPresenter);
             starFragment.setActionbar(mActionBar);
         }
         else {
             starFragment.reInit();
         }
+        gdbPresenter.setViewCallback(starFragment);
         currentFragment = starFragment;
 
         ft.replace(R.id.gdb_fragment_container, currentFragment, "StarListFragment");
@@ -65,8 +74,10 @@ public class GDBHomeActivity extends BaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (recordFragment == null) {
             recordFragment = new RecordListFragment();
+            recordFragment.setGdbPresenter(gdbPresenter);
             recordFragment.setActionbar(mActionBar);
         }
+        gdbPresenter.setViewCallback(recordFragment);
         currentFragment = recordFragment;
 
         ft.replace(R.id.gdb_fragment_container, currentFragment, "RecordListFragment");
@@ -77,8 +88,10 @@ public class GDBHomeActivity extends BaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (sceneListFragment == null) {
             sceneListFragment = new RecordSceneListFragment();
+            sceneListFragment.setGdbPresenter(gdbPresenter);
             sceneListFragment.setActionbar(mActionBar);
         }
+        gdbPresenter.setViewCallback(sceneListFragment);
         currentFragment = sceneListFragment;
 
         ft.replace(R.id.gdb_fragment_container, sceneListFragment, "RecordSceneListFragment");
@@ -94,7 +107,7 @@ public class GDBHomeActivity extends BaseActivity {
     public void onIconClick(View view) {
         super.onIconClick(view);
         if (view.getId() == R.id.actionbar_home) {
-            new HomeSelecter(this).startDefaultHome(this, null, null);
+            ActivityManager.startFileManagerActivity(this, null);
             finish();
         }
         else {
@@ -192,4 +205,40 @@ public class GDBHomeActivity extends BaseActivity {
             }
         }).show();
     }
+
+    /**
+     * 加载star全部完成
+     */
+    public void onStarLoadFinished() {
+        // check database update
+        checkUpdate();
+        // start file service
+        startFileService();
+    }
+
+    private void checkUpdate() {
+        GdbUpdateManager manager = new GdbUpdateManager(this, new GdbUpdateListener() {
+            @Override
+            public void onUpdateFinish() {
+                // 数据库更新完成，需要刷新列表
+                showProgressCycler();
+                if (currentFragment == starFragment) {
+                    starFragment.reloadStarList();
+                }
+            }
+
+            @Override
+            public void onUpdateCancel() {
+                if (currentFragment == starFragment) {
+                    starFragment.checkServerStatus();
+                }
+            }
+        });
+        manager.startCheck();
+    }
+
+    private void startFileService() {
+        startService(new Intent().setClass(this, FileService.class));
+    }
+
 }
