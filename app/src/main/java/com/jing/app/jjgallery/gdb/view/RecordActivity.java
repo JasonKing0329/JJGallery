@@ -45,7 +45,8 @@ public class RecordActivity extends BaseActivity implements IStarView {
     public void initController() {
         record = (RecordOneVOne) ObjectCache.getData();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk5);
-        mPresenter = new GdbPresenter(this);
+        mPresenter = new GdbPresenter();
+        mPresenter.setViewCallback(this);
     }
 
     @Override

@@ -142,11 +142,10 @@ public class FileService extends Service {
 
     private void deleteUnavailable(File file) {
 
-        // FIXME 操作不可逆，测试时先注销掉仅打印待删除的文件
-//        encrypter.deleteFile(new File(file));
-
         DebugLog.e(file.getPath()
-            + ", originName:" + encrypter.decipherFileName(file.getPath()));
+                + ", originName:" + encrypter.decipherOriginName(file));
+        // 操作不可逆，测试时先注销掉仅打印待删除的文件
+        encrypter.deleteFile(file);
 
     }
 
