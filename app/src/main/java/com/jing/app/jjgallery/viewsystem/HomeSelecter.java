@@ -3,13 +3,12 @@ package com.jing.app.jjgallery.viewsystem;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.viewsystem.main.gdb.GDBHomeActivity;
+import com.jing.app.jjgallery.gdb.GDBHomeActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
