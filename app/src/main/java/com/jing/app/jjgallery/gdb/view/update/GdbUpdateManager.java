@@ -16,7 +16,7 @@ import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
-import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
+import com.jing.app.jjgallery.gdb.view.DownloadDialog;
 
 import java.io.File;
 import java.util.ArrayList;

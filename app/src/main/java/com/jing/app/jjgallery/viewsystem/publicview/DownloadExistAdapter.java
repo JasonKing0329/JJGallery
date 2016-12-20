@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.FileSizeUtil;
 
 import java.util.ArrayList;
@@ -58,15 +60,15 @@ public class DownloadExistAdapter extends RecyclerView.Adapter<DownloadExistAdap
 
         private ViewGroup group;
         private TextView name;
-        private TextView size;
+        private ImageView image;
         private CheckBox check;
         private int position;
 
         public ItemHolder(View view) {
             super(view);
-            group = (ViewGroup) view.findViewById(R.id.download_exist_layout);
+            group = (ViewGroup) view.findViewById(R.id.download_exist_group);
             name = (TextView) view.findViewById(R.id.download_exist_name);
-            size = (TextView) view.findViewById(R.id.download_exist_size);
+            image = (ImageView) view.findViewById(R.id.download_exist_image);
             check = (CheckBox) view.findViewById(R.id.download_exist_check);
         }
 
@@ -74,7 +76,7 @@ public class DownloadExistAdapter extends RecyclerView.Adapter<DownloadExistAdap
             this.position = position;
             group.setOnClickListener(this);
             name.setText(itemList.get(position).getName());
-            size.setText(FileSizeUtil.convertFileSize(itemList.get(position).getSize()));
+            SImageLoader.getInstance().displayImage(itemList.get(position).getPath(), image);
         }
 
         @Override

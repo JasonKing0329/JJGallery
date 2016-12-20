@@ -25,7 +25,6 @@ import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.Star;
 

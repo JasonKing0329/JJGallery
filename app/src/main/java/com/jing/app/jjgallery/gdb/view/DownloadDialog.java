@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.gdb.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,11 +16,14 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.DownloadItemProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
-import com.jing.app.jjgallery.model.pub.DownloadCallback;
-import com.jing.app.jjgallery.model.pub.DownloadManager;
+import com.jing.app.jjgallery.gdb.model.DownloadCallback;
+import com.jing.app.jjgallery.gdb.model.DownloadManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
-import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DownloadAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.DownloadExistAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,9 +143,13 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         downloadRecyclerView.setLayoutManager(layoutManager);
         existedRecyclerView = (RecyclerView) view.findViewById(R.id.download_list_existed);
-        layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        existedRecyclerView.setLayoutManager(layoutManager);
+
+        int col = 2;
+        if (DisplayHelper.isTabModel(getContext())) {
+            col = 3;
+        }
+        GridLayoutManager gridManager = new GridLayoutManager(getContext(), col);
+        existedRecyclerView.setLayoutManager(gridManager);
         return view;
     }
 

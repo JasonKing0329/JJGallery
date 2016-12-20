@@ -3,7 +3,6 @@ package com.jing.app.jjgallery.viewsystem.sub.update;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.jing.app.jjgallery.JJApplication;
@@ -18,7 +17,7 @@ import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
-import com.jing.app.jjgallery.viewsystem.publicview.DownloadDialog;
+import com.jing.app.jjgallery.gdb.view.DownloadDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;

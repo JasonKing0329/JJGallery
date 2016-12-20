@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.model.pub;
+package com.jing.app.jjgallery.gdb.model;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 
