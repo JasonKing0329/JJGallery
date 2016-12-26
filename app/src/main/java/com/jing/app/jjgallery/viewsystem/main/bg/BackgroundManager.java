@@ -248,6 +248,18 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         bean.setPreferenceKey(PreferenceKey.PREF_BG_PROGRESS);
         bean.setDetailName("Progress view");
         list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_GDB_GAME_BG);
+        bean.setDetailName("GDB->guide->game bg");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_GDB_STAR_BG);
+        bean.setDetailName("GDB->guide->star bg");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_GDB_RECORD_BG);
+        bean.setDetailName("GDB->guide->record bg");
+        list.add(bean);
         return list;
     }
 

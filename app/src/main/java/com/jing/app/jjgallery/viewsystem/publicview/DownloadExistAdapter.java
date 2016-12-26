@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.jing.app.jjgallery.util.FileSizeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

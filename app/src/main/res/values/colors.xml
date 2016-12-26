@@ -50,6 +50,8 @@
     <color name="gdb_record_text_bareback_light">#00a5c4</color>
     <color name="gdb_record_text_normal_dark">#ffffff</color>
     <color name="gdb_record_text_normal_light">#3c3c3c</color>
+    <color name="gdb_guide_sec_normal">#66000000</color>
+    <color name="gdb_guide_sec_press">#66ffffff</color>
 
     <color name="dialog_background">#eeeeeeee</color>
     <color name="dialog_background_dark_theme">#e51a3c49</color>

@@ -96,8 +96,8 @@
 
         <activity
             android:name=".gdb.GdbGuideActivity"
-            android:label="@string/title_activity_gdb_guide"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/JJThemeLight.NoActionBar"/>
     </application>
 
 </manifest>

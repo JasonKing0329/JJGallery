@@ -260,6 +260,7 @@ public class GdbPresenter {
                 list.add(item);
             }
             else {
+                item.setPath(starImageMap.get(name));
                 existedList.add(item);
             }
         }

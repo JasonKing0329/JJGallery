@@ -8,7 +8,7 @@
         android:id="@+id/download_exist_image"
         android:layout_width="@dimen/download_exist_image_width"
         android:layout_height="@dimen/download_exist_image_height"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitXY"/>
     <CheckBox
         android:id="@+id/download_exist_check"
         android:layout_width="wrap_content"
@@ -26,6 +26,5 @@
         android:gravity="center"
         android:layout_alignBottom="@id/download_exist_image"
         android:focusable="true"
-        android:ellipsize="end"
-        android:visibility="gone"/>
+        android:ellipsize="end"/>
 </RelativeLayout>

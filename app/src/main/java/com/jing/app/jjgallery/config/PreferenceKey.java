@@ -112,6 +112,12 @@ public class PreferenceKey {
     public static final String PREF_GDB_STAR_RECORD_ORDER = "pref_gdb_star_record_order";
     // gdb filter model(json string)
     public static final String PREF_GDB_FILTER_MODEL = "pref_gdb_filter_model";
+    // guide game image
+    public static final String PREF_GDB_GAME_BG = "pref_gdb_guide_game_bg";
+    // guide star image
+    public static final String PREF_GDB_STAR_BG = "pref_gdb_guide_star_bg";
+    // guide record image
+    public static final String PREF_GDB_RECORD_BG = "pref_gdb_guide_record_bg";
 
     /**
      * http

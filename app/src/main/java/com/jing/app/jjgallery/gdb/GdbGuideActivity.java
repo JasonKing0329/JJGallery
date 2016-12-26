@@ -1,38 +1,51 @@
 package com.jing.app.jjgallery.gdb;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.gdb.view.recommend.RecommendFragment;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 
-public class GdbGuideActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+/**
+ * 可能是由于用到了DrawerLayout，采用BaseActivity运营统一的样式总是隐藏不了actionbar
+ * 只能单独继承AppCompatActivity，并在manifest中将theme设置为.NoActionbar的才行
+ */
+public class GdbGuideActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private DrawerLayout drawerLayout;
+    private ImageView gameView;
+    private ImageView starView;
+    private ImageView recordView;
 
     @Override
-    public boolean isActionBarNeed() {
-        return false;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        DisplayHelper.disableScreenshot(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gdb_guide);
+        initView();
     }
 
-    @Override
-    public int getContentView() {
-        return R.layout.activity_gdb_guide;
-    }
-
-    @Override
-    public void initController() {
-
-    }
-
-    @Override
+    //    @Override
     public void initView() {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -51,11 +64,31 @@ public class GdbGuideActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        initRecommentd();
+        initCenter();
     }
 
-    @Override
-    public void initBackgroundWork() {
+    private void initRecommentd() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.gdb_guide_recommend, new RecommendFragment(), "RecommendFragment");
+        ft.commit();
+    }
 
+    private void initCenter() {
+        starView = (ImageView) findViewById(R.id.gdb_guide_star);
+        gameView = (ImageView) findViewById(R.id.gdb_guide_game);
+        recordView = (ImageView) findViewById(R.id.gdb_guide_record);
+        findViewById(R.id.gdb_guide_star_text).setOnClickListener(this);
+        findViewById(R.id.gdb_guide_game_text).setOnClickListener(this);
+        findViewById(R.id.gdb_guide_record_text).setOnClickListener(this);
+
+        String path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_GAME_BG);
+        SImageLoader.getInstance().displayImage(path, gameView);
+        path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_STAR_BG);
+        SImageLoader.getInstance().displayImage(path, starView);
+        path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_RECORD_BG);
+        SImageLoader.getInstance().displayImage(path, recordView);
     }
 
     @Override
@@ -98,6 +131,7 @@ public class GdbGuideActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            ActivityManager.startFileManagerActivity(this, null);
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -115,4 +149,16 @@ public class GdbGuideActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.gdb_guide_game_text:
+                break;
+            case R.id.gdb_guide_star_text:
+                ActivityManager.startGDBMainActivity(this, null);
+                break;
+            case R.id.gdb_guide_record_text:
+                break;
+        }
+    }
 }
