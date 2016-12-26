@@ -92,7 +92,12 @@
         <service
             android:name=".gdb.model.FileService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".gdb.GdbGuideActivity"
+            android:label="@string/title_activity_gdb_guide"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

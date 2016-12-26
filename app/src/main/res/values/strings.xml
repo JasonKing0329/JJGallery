@@ -417,4 +417,8 @@
     <!--************************** upload **************************-->
     <string name="upload_success">Upload success</string>
     <string name="upload_fail">Upload fail</string>
+    <string name="title_activity_gdb_guide">GdbGuideActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

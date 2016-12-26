@@ -237,6 +237,13 @@
     <dimen name="gdb_record_listitem_img_height">200dp</dimen>
     <dimen name="gdb_sort_grid_height">800dp</dimen>
     <dimen name="gdb_recommend_height">800dp</dimen>
+    <dimen name="gdb_guide_rec_height">450dp</dimen>
+    <dimen name="gdb_guide_scroll_item_width">400dp</dimen>
+    <dimen name="gdb_guide_scroll_item_height">225dp</dimen>
+    <dimen name="gdb_guide_star_width">537dp</dimen>
+    <dimen name="gdb_guide_star_height">302dp</dimen>
+    <dimen name="gdb_guide_game_width">263dp</dimen>
+    <dimen name="gdb_guide_game_height">605dp</dimen>
 
     <!-- download -->
     <dimen name="download_dlg_height">800dp</dimen>
