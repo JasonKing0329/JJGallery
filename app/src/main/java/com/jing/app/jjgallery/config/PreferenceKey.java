@@ -118,6 +118,8 @@ public class PreferenceKey {
     public static final String PREF_GDB_STAR_BG = "pref_gdb_guide_star_bg";
     // guide record image
     public static final String PREF_GDB_RECORD_BG = "pref_gdb_guide_record_bg";
+    // guide nav header
+    public static final String PREF_GDB_NAV_HEADER_BG = "pref_gdb_nav_header_bg";
 
     /**
      * http

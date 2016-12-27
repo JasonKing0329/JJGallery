@@ -53,6 +53,7 @@ public class GdbUpdateManager implements IUpdateView {
             mPresenter.checkGdbDatabase();
         }
         else {
+            ((ProgressProvider) mContext).showToastLong(mContext.getString(R.string.server_not_conf), ProgressProvider.TOAST_WARNING);
             if (updateListener != null) {
                 updateListener.onUpdateCancel();
             }

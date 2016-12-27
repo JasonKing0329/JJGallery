@@ -14,19 +14,37 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/gdb_guide_rec_height"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gdb_guide_autoscroll_group"
+        android:layout_alignParentBottom="true">
+        <com.jing.app.jjgallery.gdb.view.AutoScrollView
+            android:id="@+id/gdb_guide_autoscroll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/gdb_guide_scroll_item_height"/>
+        <TextView
+            android:id="@+id/gdb_guide_no_latest"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/gdb_guide_scroll_item_height"
+            android:text="No records"
+            style="@style/GdbGuideText" />
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/gdb_guide_center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_below="@id/gdb_guide_recommend">
+        android:layout_below="@id/gdb_guide_recommend"
+        android:layout_above="@id/gdb_guide_autoscroll_group">
         <RelativeLayout
             android:layout_width="@dimen/gdb_guide_game_width"
-            android:layout_height="@dimen/gdb_guide_game_height">
+            android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/gdb_guide_game"
                 android:layout_width="@dimen/gdb_guide_game_width"
-                android:layout_height="@dimen/gdb_guide_game_height"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>
             <TextView
                 android:id="@+id/gdb_guide_game_text"
@@ -41,31 +59,33 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:id="@+id/gdb_guide_star"
-                    android:layout_width="@dimen/gdb_guide_star_width"
-                    android:layout_height="@dimen/gdb_guide_star_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:id="@+id/gdb_guide_star_text"
-                    android:layout_width="@dimen/gdb_guide_star_width"
-                    android:layout_height="@dimen/gdb_guide_star_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="Star"
                     style="@style/GdbGuideText" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                android:layout_weight="1">
                 <ImageView
                     android:id="@+id/gdb_guide_record"
-                    android:layout_width="@dimen/gdb_guide_star_width"
-                    android:layout_height="@dimen/gdb_guide_star_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:id="@+id/gdb_guide_record_text"
-                    android:layout_width="@dimen/gdb_guide_star_width"
-                    android:layout_height="@dimen/gdb_guide_star_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="Record"
                     style="@style/GdbGuideText" />
             </RelativeLayout>

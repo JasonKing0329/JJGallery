@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.gdb.presenter.recommend;
+package com.jing.app.jjgallery.gdb.presenter;
 
 import android.os.AsyncTask;
 
@@ -25,9 +25,10 @@ import java.util.Random;
 
 /**
  * Created by Administrator on 2016/11/27 0027.
+ * the presenter of gdb guide view
  */
 
-public class RecommendPresenter {
+public class GdbGuidePresenter {
 
     private IRecommend recommendView;
     private GDBProvider gdbProvider;
@@ -47,11 +48,19 @@ public class RecommendPresenter {
      */
     private FilterModel filterModel;
 
-    public RecommendPresenter(IRecommend recommendView) {
-        this.recommendView = recommendView;
+    public GdbGuidePresenter() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
         encrypter = EncrypterFactory.create();
         recordImageMap = new HashMap<>();
+    }
+
+    public GdbGuidePresenter(IRecommend recommendView) {
+        this();
+        this.recommendView = recommendView;
+    }
+
+    public void setRecommendView(IRecommend recommendView) {
+        this.recommendView = recommendView;
     }
 
     public void initialize() {
@@ -93,6 +102,9 @@ public class RecommendPresenter {
      * @return
      */
     private Record newRecord() {
+        if (recordList == null || recordList.size() == 0) {
+            return null;
+        }
         // 没有设置过滤器的情况，直接随机位置
         if (filterModel == null) {
             Random random = new Random();
@@ -250,7 +262,9 @@ public class RecommendPresenter {
         @Override
         protected void onPostExecute(List<Record> list) {
 
-            recommendView.onRecordsLoaded(list);
+            if (recommendView != null) {
+                recommendView.onRecordsLoaded(list);
+            }
 
             super.onPostExecute(list);
         }
@@ -271,6 +285,11 @@ public class RecommendPresenter {
         }
     }
 
+    /**
+     * get image path on disk by the original name of record
+     * @param recordName
+     * @return
+     */
     public String getRecordPath(String recordName) {
         String result = recordImageMap.get(recordName);
         if (result == null) {
@@ -288,4 +307,7 @@ public class RecommendPresenter {
         return result;
     }
 
+    public List<Record> getLatestRecord(int number) {
+        return gdbProvider.getLatestRecords(number);
+    }
 }

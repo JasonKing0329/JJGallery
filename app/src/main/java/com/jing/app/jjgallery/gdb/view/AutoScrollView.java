@@ -18,7 +18,7 @@ import android.widget.ImageView.ScaleType;
 
 /**
  * 采用4个ImageView循环交替的方式实现自动滚动视图
- * 初始化时4个ImageView从左到右排列，仅2个在科室区域
+ * 初始化时4个ImageView从左到右排列，仅2个在可视区域
  * 利用线程每隔50ms发送位置更新通知，使每个ImageView位置左移
  * 当首个ImageView完全隐藏后将其拼接到最末端，采用循环队列的思想
  * @author JingYang
@@ -26,6 +26,7 @@ import android.widget.ImageView.ScaleType;
  */
 public class AutoScrollView extends RelativeLayout implements OnClickListener {
 
+	private static final int MIN_ITEM = 2;
 	private class ScrollImage {
 		ImageView imageView;
 		LayoutParams layoutParams;
@@ -33,11 +34,20 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 	}
 
 	public interface ActionListener {
-		public void onAutoScrollViewClick(View parent, View view);
+		void onAutoScrollViewClick(View parent, View view);
+	}
+
+	public class ItemNotEnoughException extends Exception {
+		public ItemNotEnoughException() {
+			super("There should be at least " + MIN_ITEM + " items.");
+		}
 	}
 
 	/** 循环队列，实现ImageView的循环拼接。为了方便处理，用LinkedList扩展Queue的功能 **/
 	private LinkedList<ScrollImage> imageQueue;
+
+	/** 结合传统的Adapter思想，为item设置虚拟position **/
+	private int itemPosition;
 
 	private int itemWidth;
 	private int SCROLL_DISTANCE_PER_TIME = 5;
@@ -61,7 +71,7 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 	}
 
 	private void init() {
-		itemWidth = getResources().getDimensionPixelSize(R.dimen.guide_line3_width);
+		itemWidth = getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width);
 
 		ScrollImage scrollImage1 = new ScrollImage();
 		scrollImage1.imageView = new ImageView(getContext());
@@ -98,16 +108,22 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 		scrollImage4.xPos = itemWidth * 3;
 		ViewHelper.setTranslationX(scrollImage4.imageView, itemWidth * 3);
 
-		imageQueue = new LinkedList<ScrollImage>();
+		imageQueue = new LinkedList<>();
 		imageQueue.offer(scrollImage1);
 		imageQueue.offer(scrollImage2);
 		imageQueue.offer(scrollImage3);
 		imageQueue.offer(scrollImage4);
 	}
 
-	public void setAdapter(AutoScrollAdapter adapter) {
-		autoScrollAdapter = adapter;
-		refreshData();
+	public void setAdapter(AutoScrollAdapter adapter) throws ItemNotEnoughException {
+		if (adapter.getCount() < MIN_ITEM) {
+			throw new ItemNotEnoughException();
+		}
+		else {
+			autoScrollAdapter = adapter;
+			autoScrollAdapter.setAutoScrollView(this);
+			refreshData();
+		}
 	}
 
 	public void setActionListener (ActionListener listener) {
@@ -116,10 +132,23 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 
 	private void refreshData() {
 		if (autoScrollAdapter != null) {
-			autoScrollAdapter.loadNextImage(imageQueue.get(0).imageView);
-			autoScrollAdapter.loadNextImage(imageQueue.get(1).imageView);
-			autoScrollAdapter.loadNextImage(imageQueue.get(2).imageView);
-			autoScrollAdapter.loadNextImage(imageQueue.get(3).imageView);
+			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(0).imageView);
+			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(1).imageView);
+			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(2).imageView);
+			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(3).imageView);
+		}
+	}
+
+	/**
+	 * 超过最大数量时从0开始循环
+	 * @return
+     */
+	private int getNextPosition() {
+		if (itemPosition >= autoScrollAdapter.getCount()) {
+			return 0;
+		}
+		else {
+			return itemPosition ++;
 		}
 	}
 
@@ -181,7 +210,7 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 					ScrollImage head = imageQueue.peek();
 					if (head.xPos < -itemWidth) {
 						head.xPos = imageQueue.get(imageQueue.size() - 1).xPos + itemWidth;
-						autoScrollAdapter.loadNextImage(head.imageView);
+						autoScrollAdapter.loadImage(getNextPosition(), head.imageView);
 						imageQueue.offer(imageQueue.poll());
 					}
 					break;

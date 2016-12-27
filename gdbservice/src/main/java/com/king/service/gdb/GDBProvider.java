@@ -110,6 +110,27 @@ public class GDBProvider {
     }
 
     /**
+     * 查询所有的record
+     * @return
+     */
+    public List<Record> getLatestRecords(int number) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            List<Record> list = new ArrayList<>();
+            List<RecordOneVOne> oList = sqliteDao.queryLatestRecords(number, SqlConnection.getInstance().getConnection());
+            for (RecordOneVOne record:oList) {
+                list.add(record);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * 加载star对应的record数量
      * @param star
      */

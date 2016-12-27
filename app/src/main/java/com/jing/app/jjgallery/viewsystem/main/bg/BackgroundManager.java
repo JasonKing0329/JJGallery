@@ -141,6 +141,7 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
             else if (key.equals(PreferenceKey.PREF_BG_PROGRESS)) {
                 notifyProgressSrcChanged(path);
             }
+            // gdb相关页面都是离开后随即销毁，不通知更新
         }
     }
     
@@ -259,6 +260,10 @@ public class BackgroundManager implements SlidingObserver, FMBgObserver, SOrderB
         bean = new BkBean();
         bean.setPreferenceKey(PreferenceKey.PREF_GDB_RECORD_BG);
         bean.setDetailName("GDB->guide->record bg");
+        list.add(bean);
+        bean = new BkBean();
+        bean.setPreferenceKey(PreferenceKey.PREF_GDB_NAV_HEADER_BG);
+        bean.setDetailName("GDB->guide->navigation header view");
         list.add(bean);
         return list;
     }

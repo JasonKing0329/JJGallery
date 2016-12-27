@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,39 +15,77 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
+import com.jing.app.jjgallery.gdb.view.AutoScrollView;
+import com.jing.app.jjgallery.gdb.view.adapter.GuideScrollAdapter;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendFragment;
+import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
+import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 
 /**
  * 可能是由于用到了DrawerLayout，采用BaseActivity运营统一的样式总是隐藏不了actionbar
  * 只能单独继承AppCompatActivity，并在manifest中将theme设置为.NoActionbar的才行
  */
 public class GdbGuideActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressProvider {
 
+    private ImageView navHeaderView;
     private DrawerLayout drawerLayout;
     private ImageView gameView;
     private ImageView starView;
     private ImageView recordView;
+    private AutoScrollView autoScrollView;
+    private GuideScrollAdapter scrollAdapter;
+    private GdbGuidePresenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         DisplayHelper.disableScreenshot(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_gdb_guide);
+
+        mPresenter = new GdbGuidePresenter();
         initView();
+
+        // check database update
+        checkUpdate();
     }
 
     //    @Override
     public void initView() {
+
+        // public region
+        initCommon();
+        // nav header
+        initNavHeader();
+        // recommend region
+        initRecommentd();
+        // center region: game, star, record
+        initCenter();
+    }
+
+    /**
+     * 加载records的操作由recommend fragment发起，由于想共享数据，
+     * auto scroll的初始化就放在record加载完成之后
+     */
+    public void onRecordsLoaded() {
+        // latest records
+        initAutoScroll();
+    }
+
+    private void initCommon() {
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -64,9 +103,13 @@ public class GdbGuideActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+        navHeaderView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_header_bg);
+    }
 
-        initRecommentd();
-        initCenter();
+    private void initNavHeader() {
+        String path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_NAV_HEADER_BG);
+        SImageLoader.getInstance().displayImage(path, navHeaderView);
     }
 
     private void initRecommentd() {
@@ -89,6 +132,38 @@ public class GdbGuideActivity extends AppCompatActivity
         SImageLoader.getInstance().displayImage(path, starView);
         path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_RECORD_BG);
         SImageLoader.getInstance().displayImage(path, recordView);
+    }
+
+    private void initAutoScroll() {
+        autoScrollView = (AutoScrollView) findViewById(R.id.gdb_guide_autoscroll);
+        scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(30));
+        scrollAdapter.setPresenter(mPresenter);
+        try {
+            autoScrollView.setAdapter(scrollAdapter);
+            autoScrollView.startScroll();
+        } catch (AutoScrollView.ItemNotEnoughException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public GdbGuidePresenter getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected void onStop() {
+        if (autoScrollView != null) {
+            autoScrollView.stop();
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        if (autoScrollView != null) {
+            autoScrollView.restart();
+        }
+        super.onResume();
     }
 
     @Override
@@ -130,19 +205,24 @@ public class GdbGuideActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_setting) {
+            ActivityManager.startSettingActivity(this);
+        }
+        else if (id == R.id.nav_exit) {
+            finish();
+        }
+        else if (id == R.id.nav_main) {
             ActivityManager.startFileManagerActivity(this, null);
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        }
+        else if (id == R.id.nav_timeline) {
+            ActivityManager.startTimeLineActivity(this, null);
+        }
+        else if (id == R.id.nav_waterfall) {
+            Bundle bundle = null;
+            ActivityManager.startWaterfallActivity(this, bundle);
+        }
+        else if (id == R.id.nav_update) {
+            checkUpdate();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -158,6 +238,85 @@ public class GdbGuideActivity extends AppCompatActivity
                 ActivityManager.startGDBMainActivity(this, null);
                 break;
             case R.id.gdb_guide_record_text:
+                ActivityManager.startGDBMainActivity(this, null);
+                break;
+        }
+    }
+
+    /**
+     * check gdb database update
+     */
+    private void checkUpdate() {
+        GdbUpdateManager manager = new GdbUpdateManager(this, new GdbUpdateListener() {
+            @Override
+            public void onUpdateFinish() {
+                ActivityManager.reload(GdbGuideActivity.this);
+            }
+
+            @Override
+            public void onUpdateCancel() {
+
+            }
+        });
+        manager.startCheck();
+    }
+
+    @Override
+    public void showProgressCycler() {
+
+    }
+
+    @Override
+    public boolean dismissProgressCycler() {
+        return false;
+    }
+
+    @Override
+    public void showProgress(String text) {
+
+    }
+
+    @Override
+    public boolean dismissProgress() {
+        return false;
+    }
+
+    @Override
+    public void showToastLong(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showToastShort(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToastLong(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_LONG);
+    }
+
+    @Override
+    public void showToastShort(String text, int type) {
+        showToastLib(text, type, TastyToast.LENGTH_SHORT);
+    }
+
+    public void showToastLib(String text, int type, int time) {
+        switch (type) {
+            case ProgressProvider.TOAST_SUCCESS:
+                TastyToast.makeText(this, text, time, TastyToast.SUCCESS);
+                break;
+            case ProgressProvider.TOAST_ERROR:
+                TastyToast.makeText(this, text, time, TastyToast.ERROR);
+                break;
+            case ProgressProvider.TOAST_WARNING:
+                TastyToast.makeText(this, text, time, TastyToast.WARNING);
+                break;
+            case ProgressProvider.TOAST_INFOR:
+                TastyToast.makeText(this, text, time, TastyToast.INFO);
+                break;
+            case ProgressProvider.TOAST_DEFAULT:
+                TastyToast.makeText(this, text, time, TastyToast.DEFAULT);
                 break;
         }
     }

@@ -541,4 +541,26 @@ public class SqliteDao {
 			}
 		}
 	}
+
+	public List<RecordOneVOne> queryLatestRecords(int number, Connection connection) {
+		List<RecordOneVOne> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " ORDER BY lastModifyDate DESC LIMIT 0," + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
 }

@@ -210,31 +210,8 @@ public class GDBHomeActivity extends BaseActivity {
      * 加载star全部完成
      */
     public void onStarLoadFinished() {
-        // check database update
-        checkUpdate();
         // start file service
         startFileService();
-    }
-
-    private void checkUpdate() {
-        GdbUpdateManager manager = new GdbUpdateManager(this, new GdbUpdateListener() {
-            @Override
-            public void onUpdateFinish() {
-                // 数据库更新完成，需要刷新列表
-                showProgressCycler();
-                if (currentFragment == starFragment) {
-                    starFragment.reloadStarList();
-                }
-            }
-
-            @Override
-            public void onUpdateCancel() {
-                if (currentFragment == starFragment) {
-                    starFragment.checkServerStatus();
-                }
-            }
-        });
-        manager.startCheck();
     }
 
     private void startFileService() {

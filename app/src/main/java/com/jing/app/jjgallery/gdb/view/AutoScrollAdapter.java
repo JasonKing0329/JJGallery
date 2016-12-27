@@ -14,5 +14,7 @@ public abstract class AutoScrollAdapter {
 		autoScrollView.notifyDataSetChanged();
 	}
 
-	public abstract void loadNextImage(ImageView imageView);
+	public abstract void loadImage(int position, ImageView imageView);
+
+	public abstract int getCount();
 }

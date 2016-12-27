@@ -17,7 +17,7 @@ import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
-import com.jing.app.jjgallery.gdb.presenter.recommend.RecommendPresenter;
+import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
@@ -39,7 +39,7 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
     private TextView scoreView;
     private ProgressBar progressBar;
 
-    private RecommendPresenter recommendPresenter;
+    private GdbGuidePresenter gdbGuidePresenter;
     private FilterPresenter filterPresenter;
 
     /**
@@ -76,12 +76,12 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
         findViewById(R.id.gdb_recommend_setting).setOnClickListener(this);
         findViewById(R.id.gdb_recommend_click_group).setOnClickListener(this);
 
-        recommendPresenter = new RecommendPresenter(this);
+        gdbGuidePresenter = new GdbGuidePresenter(this);
         filterPresenter = new FilterPresenter();
         // 设置过滤器
-        recommendPresenter.setFilterModel(filterPresenter.getFilters(getContext()));
+        gdbGuidePresenter.setFilterModel(filterPresenter.getFilters(getContext()));
         // 加载所有记录，通过onRecordRecommand回调
-        recommendPresenter.initialize();
+        gdbGuidePresenter.initialize();
     }
 
     public void setWidth(int w) {
@@ -103,7 +103,7 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
 
     @Override
     public void onRecordsLoaded(List<Record> list) {
-        recommendPresenter.recommendNext();
+        gdbGuidePresenter.recommendNext();
     }
 
     @Override
@@ -134,17 +134,17 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
         }
         starView.setText(buffer.toString());
         scoreView.setText("" + record.getScore());
-        SImageLoader.getInstance().displayImage(recommendPresenter.getRecordPath(record.getName()), imageView);
+        SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(record.getName()), imageView);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.gdb_recommend_next:
-                recommendPresenter.recommendNext();
+                gdbGuidePresenter.recommendNext();
                 break;
             case R.id.gdb_recommend_previous:
-                recommendPresenter.recommendPrevious();
+                gdbGuidePresenter.recommendPrevious();
                 break;
             case R.id.gdb_recommend_setting:
                 if (filterDialog == null) {
@@ -153,8 +153,8 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
                         public boolean onSave(Object object) {
                             FilterModel model = (FilterModel) object;
                             filterPresenter.saveFilters(getContext(), model);
-                            recommendPresenter.setFilterModel(model);
-                            recommendPresenter.recommendNext();
+                            gdbGuidePresenter.setFilterModel(model);
+                            gdbGuidePresenter.recommendNext();
                             return true;
                         }
 
@@ -172,7 +172,7 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
                 filterDialog.show();
                 break;
             case R.id.gdb_recommend_click_group:
-                ActivityManager.startGdbRecordActivity(getContext(), recommendPresenter.getCurrentRecord());
+                ActivityManager.startGdbRecordActivity(getContext(), gdbGuidePresenter.getCurrentRecord());
                 break;
         }
     }
