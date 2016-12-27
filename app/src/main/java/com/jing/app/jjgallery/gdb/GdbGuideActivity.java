@@ -142,6 +142,7 @@ public class GdbGuideActivity extends AppCompatActivity
             autoScrollView.setAdapter(scrollAdapter);
             autoScrollView.startScroll();
         } catch (AutoScrollView.ItemNotEnoughException e) {
+            findViewById(R.id.gdb_guide_no_latest).setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
     }

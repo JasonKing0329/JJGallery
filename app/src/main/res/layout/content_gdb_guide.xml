@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/gdb_guide_scroll_item_height"
             android:text="No records"
+            android:visibility="gone"
             style="@style/GdbGuideText" />
     </FrameLayout>
 
