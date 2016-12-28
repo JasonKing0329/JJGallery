@@ -10,6 +10,15 @@
         android:layout_height="@dimen/gdb_guide_scroll_item_height"
         android:scaleType="centerCrop"/>
 
+    <TextView
+        android:id="@+id/gdb_guide_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textSize="12dp"
+        android:textColor="@color/tab_actionbar_text_focus"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

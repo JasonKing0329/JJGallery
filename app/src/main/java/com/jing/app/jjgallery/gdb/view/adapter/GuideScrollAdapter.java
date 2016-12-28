@@ -11,6 +11,7 @@ import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.AutoScrollAdapter;
 import com.jing.app.jjgallery.gdb.view.AutoScrollView;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.FormatUtil;
 import com.king.service.gdb.bean.Record;
 
 import java.util.List;
@@ -60,9 +61,10 @@ public class GuideScrollAdapter extends AutoScrollAdapter<GuideScrollAdapter.Ite
     public void onBindView(int position, ItemHolder holder) {
         Record record = mList.get(position);
         holder.name.setText(record.getDirectory() + "/" + record.getName());
-        holder.score.setText(record.getScore());
+        holder.score.setText(String.valueOf(record.getScore()));
         holder.group.setTag(position);
         holder.group.setOnClickListener(this);
+        holder.date.setText(FormatUtil.formatDate(record.getLastModifyTime()));
 
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.gdb_record_default);
         SImageLoader.getInstance().displayImage(presenter.getRecordPath(record.getName()), holder.image);
@@ -84,12 +86,14 @@ public class GuideScrollAdapter extends AutoScrollAdapter<GuideScrollAdapter.Ite
     public static class ItemHolder extends AutoScrollView.ViewHolder {
 
         ImageView image;
+        TextView date;
         TextView name;
         TextView score;
         ViewGroup group;
 
         public ItemHolder(View view) {
             super(view);
+            date = (TextView) view.findViewById(R.id.gdb_guide_item_date);
             group = (ViewGroup) view.findViewById(R.id.gdb_guide_item_group);
             image = (ImageView) view.findViewById(R.id.gdb_guide_item_image);
             name = (TextView) view.findViewById(R.id.gdb_guide_item_name);

@@ -101,7 +101,7 @@ public class AutoScrollView extends RelativeLayout {
 
 		ScrollItem scrollItem2 = new ScrollItem();
 		scrollItem2.holder = autoScrollAdapter.onCreateViewHolder(this);
-		scrollItem2.view = scrollItem1.holder.getContentView();
+		scrollItem2.view = scrollItem2.holder.getContentView();
 		scrollItem2.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
 		addView(scrollItem2.view, scrollItem2.layoutParams);
 		scrollItem2.xPos = itemWidth;
@@ -109,7 +109,7 @@ public class AutoScrollView extends RelativeLayout {
 
 		ScrollItem scrollItem3 = new ScrollItem();
 		scrollItem3.holder = autoScrollAdapter.onCreateViewHolder(this);
-		scrollItem3.view = scrollItem1.holder.getContentView();
+		scrollItem3.view = scrollItem3.holder.getContentView();
 		scrollItem3.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
 		addView(scrollItem3.view, scrollItem3.layoutParams);
 		scrollItem3.xPos = itemWidth * 2;
@@ -117,7 +117,7 @@ public class AutoScrollView extends RelativeLayout {
 
 		ScrollItem scrollItem4 = new ScrollItem();
 		scrollItem4.holder = autoScrollAdapter.onCreateViewHolder(this);
-		scrollItem4.view = scrollItem1.holder.getContentView();
+		scrollItem4.view = scrollItem4.holder.getContentView();
 		scrollItem4.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
 		addView(scrollItem4.view, scrollItem4.layoutParams);
 		scrollItem4.xPos = itemWidth * 3;
@@ -181,7 +181,7 @@ public class AutoScrollView extends RelativeLayout {
 		public void run() {
 			while (isRun) {
 				try {
-					Thread.sleep(50);
+					Thread.sleep(20);
 					mHandler.sendEmptyMessage(MSG_UPDATE_POSITION);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
