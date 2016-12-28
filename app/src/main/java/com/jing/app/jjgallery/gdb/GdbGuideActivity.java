@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,13 +30,15 @@ import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
+import com.king.service.gdb.bean.Record;
 
 /**
  * 可能是由于用到了DrawerLayout，采用BaseActivity运营统一的样式总是隐藏不了actionbar
  * 只能单独继承AppCompatActivity，并在manifest中将theme设置为.NoActionbar的才行
  */
 public class GdbGuideActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressProvider {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressProvider
+        , GuideScrollAdapter.OnScrollItemClickListener{
 
     private ImageView navHeaderView;
     private DrawerLayout drawerLayout;
@@ -136,8 +137,10 @@ public class GdbGuideActivity extends AppCompatActivity
 
     private void initAutoScroll() {
         autoScrollView = (AutoScrollView) findViewById(R.id.gdb_guide_autoscroll);
-        scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(30));
+        scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(30)
+                , getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width));
         scrollAdapter.setPresenter(mPresenter);
+        scrollAdapter.setOnScrollItemClickListener(this);
         try {
             autoScrollView.setAdapter(scrollAdapter);
             autoScrollView.startScroll();
@@ -320,5 +323,10 @@ public class GdbGuideActivity extends AppCompatActivity
                 TastyToast.makeText(this, text, time, TastyToast.DEFAULT);
                 break;
         }
+    }
+
+    @Override
+    public void onScrollItemClick(View view, Record record) {
+        ActivityManager.startGdbRecordActivity(this, record);
     }
 }

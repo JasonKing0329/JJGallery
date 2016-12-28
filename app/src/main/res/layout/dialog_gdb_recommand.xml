@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/gdb_recommend_image"
-        android:background="#99000000"
+        android:background="@color/gdb_float_infor_bg"
         android:padding="10dp">
         <TextView
             android:id="@+id/gdb_recommend_score"

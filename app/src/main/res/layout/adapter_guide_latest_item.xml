@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/gdb_guide_item_group">
+
+    <ImageView
+        android:id="@+id/gdb_guide_item_image"
+        android:layout_width="@dimen/gdb_guide_scroll_item_width"
+        android:layout_height="@dimen/gdb_guide_scroll_item_height"
+        android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/gdb_guide_item_image">
+        <TextView
+            android:id="@+id/gdb_guide_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/gdb_float_infor_bg"
+            android:padding="5dp"
+            android:textSize="12dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/gdb_guide_item_score"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/shape_gdb_guide_num_round"
+            android:gravity="center"
+            android:text="489"
+            android:textSize="12dp"
+            android:textColor="@color/tab_actionbar_text_focus"/>
+    </RelativeLayout>
+
+</RelativeLayout>

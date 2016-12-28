@@ -118,6 +118,7 @@
     <color name="tab_actionbar_text">#ffffff</color>
     <color name="tab_actionbar_text_focus">#FFFF00</color>
 
+    <color name="gdb_float_infor_bg">#99000000</color>
 
     <color name="circlemenu_color_normal_dark">#218676</color>
     <color name="circlemenu_color_normal_light">#3f3a71</color>
@@ -268,5 +269,5 @@
     <color name="darkblue">#00008B</color><!--暗蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
     <color name="black">#000000</color><!--黑色 -->
-    <color name="clay">#cc6600</color><!--红土色 -->
+    <color name="clay">#cc6600</color>
 </resources>

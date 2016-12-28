@@ -274,9 +274,9 @@
     <dimen name="gdb_guide_rec_height">202dp</dimen>
     <dimen name="gdb_guide_scroll_item_width">180dp</dimen>
     <dimen name="gdb_guide_scroll_item_height">101dp</dimen>
-    <dimen name="gdb_guide_star_width">300dp</dimen>
+    <dimen name="gdb_guide_star_width">260dp</dimen>
     <dimen name="gdb_guide_star_height">168dp</dimen>
-    <dimen name="gdb_guide_game_width">60dp</dimen>
+    <dimen name="gdb_guide_game_width">100dp</dimen>
     <dimen name="gdb_guide_game_height">337dp</dimen>
 
     <!-- wave side bar -->

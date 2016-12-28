@@ -1,8 +1,8 @@
 package com.jing.app.jjgallery.gdb.view;
 
-import android.widget.ImageView;
+import android.view.ViewGroup;
 
-public abstract class AutoScrollAdapter {
+public abstract class AutoScrollAdapter<T extends AutoScrollView.ViewHolder> {
 
 	private AutoScrollView autoScrollView;
 	
@@ -14,7 +14,11 @@ public abstract class AutoScrollAdapter {
 		autoScrollView.notifyDataSetChanged();
 	}
 
-	public abstract void loadImage(int position, ImageView imageView);
-
 	public abstract int getCount();
+
+	public abstract T onCreateViewHolder(ViewGroup parent);
+
+	public abstract void onBindView(int position, T holder);
+
+	public abstract int getItemWidth();
 }

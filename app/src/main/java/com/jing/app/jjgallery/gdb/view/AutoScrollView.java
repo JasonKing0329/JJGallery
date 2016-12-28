@@ -2,7 +2,6 @@ package com.jing.app.jjgallery.gdb.view;
 
 import java.util.LinkedList;
 
-import com.jing.app.jjgallery.R;
 import com.nineoldandroids.view.ViewHelper;
 
 import android.annotation.SuppressLint;
@@ -11,10 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ImageView.ScaleType;
 
 /**
  * 采用4个ImageView循环交替的方式实现自动滚动视图
@@ -24,17 +20,27 @@ import android.widget.ImageView.ScaleType;
  * @author JingYang
  *
  */
-public class AutoScrollView extends RelativeLayout implements OnClickListener {
+public class AutoScrollView extends RelativeLayout {
 
 	private static final int MIN_ITEM = 2;
-	private class ScrollImage {
-		ImageView imageView;
-		LayoutParams layoutParams;
-		float xPos;
+
+	public static abstract class ViewHolder {
+
+		private View contentView;
+		public ViewHolder(View view) {
+			this.contentView = view;
+		}
+
+		public View getContentView() {
+			return contentView;
+		}
 	}
 
-	public interface ActionListener {
-		void onAutoScrollViewClick(View parent, View view);
+	private class ScrollItem {
+		View view;
+		LayoutParams layoutParams;
+		float xPos;
+		ViewHolder holder;
 	}
 
 	public class ItemNotEnoughException extends Exception {
@@ -44,7 +50,7 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 	}
 
 	/** 循环队列，实现ImageView的循环拼接。为了方便处理，用LinkedList扩展Queue的功能 **/
-	private LinkedList<ScrollImage> imageQueue;
+	private LinkedList<ScrollItem> imageQueue;
 
 	/** 结合传统的Adapter思想，为item设置虚拟position **/
 	private int itemPosition;
@@ -58,8 +64,6 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 	private final int MSG_UPDATE_POSITION = 0;
 	private ScrollThread scrollThread;
 
-	private ActionListener actionListener;
-
 	public AutoScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
@@ -71,48 +75,6 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 	}
 
 	private void init() {
-		itemWidth = getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width);
-
-		ScrollImage scrollImage1 = new ScrollImage();
-		scrollImage1.imageView = new ImageView(getContext());
-		scrollImage1.imageView.setScaleType(ScaleType.CENTER_CROP);
-		scrollImage1.imageView.setOnClickListener(this);
-		scrollImage1.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
-		scrollImage1.xPos = 0;
-		addView(scrollImage1.imageView, scrollImage1.layoutParams);
-
-		ScrollImage scrollImage2 = new ScrollImage();
-		scrollImage2.imageView = new ImageView(getContext());
-		scrollImage2.imageView.setScaleType(ScaleType.CENTER_CROP);
-		scrollImage2.imageView.setOnClickListener(this);
-		scrollImage2.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
-		addView(scrollImage2.imageView, scrollImage2.layoutParams);
-		scrollImage2.xPos = itemWidth;
-		ViewHelper.setTranslationX(scrollImage2.imageView, itemWidth);
-
-		ScrollImage scrollImage3 = new ScrollImage();
-		scrollImage3.imageView = new ImageView(getContext());
-		scrollImage3.imageView.setScaleType(ScaleType.CENTER_CROP);
-		scrollImage3.imageView.setOnClickListener(this);
-		scrollImage3.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
-		addView(scrollImage3.imageView, scrollImage3.layoutParams);
-		scrollImage3.xPos = itemWidth * 2;
-		ViewHelper.setTranslationX(scrollImage3.imageView, itemWidth * 2);
-
-		ScrollImage scrollImage4 = new ScrollImage();
-		scrollImage4.imageView = new ImageView(getContext());
-		scrollImage4.imageView.setScaleType(ScaleType.CENTER_CROP);
-		scrollImage4.imageView.setOnClickListener(this);
-		scrollImage4.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
-		addView(scrollImage4.imageView, scrollImage4.layoutParams);
-		scrollImage4.xPos = itemWidth * 3;
-		ViewHelper.setTranslationX(scrollImage4.imageView, itemWidth * 3);
-
-		imageQueue = new LinkedList<>();
-		imageQueue.offer(scrollImage1);
-		imageQueue.offer(scrollImage2);
-		imageQueue.offer(scrollImage3);
-		imageQueue.offer(scrollImage4);
 	}
 
 	public void setAdapter(AutoScrollAdapter adapter) throws ItemNotEnoughException {
@@ -122,20 +84,58 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 		else {
 			autoScrollAdapter = adapter;
 			autoScrollAdapter.setAutoScrollView(this);
+			initAdapter();
 			refreshData();
 		}
 	}
 
-	public void setActionListener (ActionListener listener) {
-		actionListener = listener;
+	private void initAdapter() {
+		itemWidth = autoScrollAdapter.getItemWidth();
+
+		ScrollItem scrollItem1 = new ScrollItem();
+		scrollItem1.holder = autoScrollAdapter.onCreateViewHolder(this);
+		scrollItem1.view = scrollItem1.holder.getContentView();
+		scrollItem1.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
+		scrollItem1.xPos = 0;
+		addView(scrollItem1.view, scrollItem1.layoutParams);
+
+		ScrollItem scrollItem2 = new ScrollItem();
+		scrollItem2.holder = autoScrollAdapter.onCreateViewHolder(this);
+		scrollItem2.view = scrollItem1.holder.getContentView();
+		scrollItem2.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
+		addView(scrollItem2.view, scrollItem2.layoutParams);
+		scrollItem2.xPos = itemWidth;
+		ViewHelper.setTranslationX(scrollItem2.view, itemWidth);
+
+		ScrollItem scrollItem3 = new ScrollItem();
+		scrollItem3.holder = autoScrollAdapter.onCreateViewHolder(this);
+		scrollItem3.view = scrollItem1.holder.getContentView();
+		scrollItem3.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
+		addView(scrollItem3.view, scrollItem3.layoutParams);
+		scrollItem3.xPos = itemWidth * 2;
+		ViewHelper.setTranslationX(scrollItem3.view, itemWidth * 2);
+
+		ScrollItem scrollItem4 = new ScrollItem();
+		scrollItem4.holder = autoScrollAdapter.onCreateViewHolder(this);
+		scrollItem4.view = scrollItem1.holder.getContentView();
+		scrollItem4.layoutParams = new LayoutParams(itemWidth, LayoutParams.MATCH_PARENT);
+		addView(scrollItem4.view, scrollItem4.layoutParams);
+		scrollItem4.xPos = itemWidth * 3;
+		ViewHelper.setTranslationX(scrollItem4.view, itemWidth * 3);
+
+		imageQueue = new LinkedList<>();
+		imageQueue.offer(scrollItem1);
+		imageQueue.offer(scrollItem2);
+		imageQueue.offer(scrollItem3);
+		imageQueue.offer(scrollItem4);
 	}
 
 	private void refreshData() {
 		if (autoScrollAdapter != null) {
-			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(0).imageView);
-			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(1).imageView);
-			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(2).imageView);
-			autoScrollAdapter.loadImage(getNextPosition(), imageQueue.get(3).imageView);
+			autoScrollAdapter.onBindView(getNextPosition(), imageQueue.get(0).holder);
+			autoScrollAdapter.onBindView(getNextPosition(), imageQueue.get(1).holder);
+			autoScrollAdapter.onBindView(getNextPosition(), imageQueue.get(2).holder);
+			autoScrollAdapter.onBindView(getNextPosition(), imageQueue.get(3).holder);
 		}
 	}
 
@@ -203,14 +203,14 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 					//所有view位置一起左移相同距离
 					for (int i = 0; i < imageQueue.size(); i ++) {
 						imageQueue.get(i).xPos = imageQueue.get(i).xPos - SCROLL_DISTANCE_PER_TIME;
-						ViewHelper.setTranslationX(imageQueue.get(i).imageView, imageQueue.get(i).xPos);
+						ViewHelper.setTranslationX(imageQueue.get(i).view, imageQueue.get(i).xPos);
 					}
 
 					//第一个view完全隐藏时将其拼接到末端
-					ScrollImage head = imageQueue.peek();
+					ScrollItem head = imageQueue.peek();
 					if (head.xPos < -itemWidth) {
 						head.xPos = imageQueue.get(imageQueue.size() - 1).xPos + itemWidth;
-						autoScrollAdapter.loadImage(getNextPosition(), head.imageView);
+						autoScrollAdapter.onBindView(getNextPosition(), head.holder);
 						imageQueue.offer(imageQueue.poll());
 					}
 					break;
@@ -225,13 +225,6 @@ public class AutoScrollView extends RelativeLayout implements OnClickListener {
 
 	public void notifyDataSetChanged() {
 		refreshData();
-	}
-
-	@Override
-	public void onClick(View v) {
-		if (actionListener != null) {
-			actionListener.onAutoScrollViewClick(this, v);
-		}
 	}
 
 }
