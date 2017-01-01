@@ -288,7 +288,9 @@
     <string name="setting_start_view_filemanager">文件管理器</string>
     <string name="setting_start_view_guide">导视</string>
     <string name="setting_start_view_timeline">时间线</string>
-    
+
+    <string name="setting_gdb_latest_num">最近添加记录数量</string>
+
     <string name="login_finger_not_support">该设备不支持指纹识别！</string>
     <!--************************** thumb folder **************************-->
     <string name="thumb_folder_warning_delete">确认删除选中%d项?</string>

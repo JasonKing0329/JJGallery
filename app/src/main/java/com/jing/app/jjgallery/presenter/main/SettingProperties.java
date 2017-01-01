@@ -409,4 +409,14 @@ public class SettingProperties {
         editor.putString(PreferenceKey.PREF_GDB_FILTER_MODEL, json);
         editor.apply();
     }
+
+    /**
+     * latest records number
+     */
+    public static int getGdbLatestRecordsNumber(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String num = preferences.getString(PreferenceKey.PREF_GDB_LATEST_NUM, "" + PreferenceValue.GDB_LATEST_NUM);
+        return Integer.parseInt(num);
+    }
+
 }

@@ -304,6 +304,8 @@
     <string name="setting_start_view_timeline">Timeline</string>
     <string name="setting_start_view_gdb" translatable="false">GDB</string>
 
+    <string name="setting_gdb_latest_num">Latest records number</string>
+
     <string name="login_finger_not_support">Fingerprint is not supported on current device!</string>
     <!--************************** thumb folder **************************-->
     <string name="thumb_folder_warning_delete">Sure to delete selected %d items?</string>

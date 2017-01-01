@@ -83,12 +83,30 @@ public class ActivityManager {
         return true;
     }
 
-    public static boolean startGDBMainActivity(Activity from, Bundle bundle) {
+    public static boolean startGDBStarListActivity(Activity from, Bundle bundle) {
         if (!new File(ConfManager.GDB_DB_PATH).exists()) {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
         Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
+        intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.STAR);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
+        return true;
+    }
+
+    public static boolean startGDBRecordListActivity(Activity from, Bundle bundle) {
+        if (!new File(ConfManager.GDB_DB_PATH).exists()) {
+            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
+            return false;
+        }
+        Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
+        intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.RECORD);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

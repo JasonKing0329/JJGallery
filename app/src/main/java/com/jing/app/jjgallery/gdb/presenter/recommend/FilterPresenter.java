@@ -43,8 +43,10 @@ public class FilterPresenter {
     private FilterModel createFilters(Context context) {
         String[] keys = new String[] {
                 GdbConstants.FILTER_KEY_SCORE, GdbConstants.FILTER_KEY_SCORE_FEEL,
+                GdbConstants.FILTER_KEY_SCORE_BASIC, GdbConstants.FILTER_KEY_SCORE_EXTRA,
                 GdbConstants.FILTER_KEY_SCORE_CUM, GdbConstants.FILTER_KEY_SCORE_FK,
                 GdbConstants.FILTER_KEY_SCORE_STAR1, GdbConstants.FILTER_KEY_SCORE_STAR2,
+                GdbConstants.FILTER_KEY_SCORE_STAR,
                 GdbConstants.FILTER_KEY_SCORE_BJOB, GdbConstants.FILTER_KEY_SCORE_BAREBACK,
                 GdbConstants.FILTER_KEY_SCORE_STORY, GdbConstants.FILTER_KEY_SCORE_RHYTHM,
                 GdbConstants.FILTER_KEY_SCORE_SCECE, GdbConstants.FILTER_KEY_SCORE_RIM,

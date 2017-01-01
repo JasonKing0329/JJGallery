@@ -214,6 +214,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_http);
 
+        // Add 'gdb' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.setting_gdb_title);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_gdb);
+
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
@@ -261,6 +267,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         updatePref.setOnPreferenceClickListener(listener);
         updatePref = findPreference(PreferenceKey.PREF_CHECK_BACKUP);
         updatePref.setOnPreferenceClickListener(listener);
+
+        //gdb
+        bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_GDB_LATEST_NUM));
+
     }
 
     private static class PrefClickListener implements Preference.OnPreferenceClickListener {
@@ -354,7 +364,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
                 || SOrderPreferenceFragment.class.getName().equals(fragmentName)
                 || SurfPreferenceFragment.class.getName().equals(fragmentName)
                 || HttpPreferenceFragment.class.getName().equals(fragmentName)
-                || WaterfallPreferenceFragment.class.getName().equals(fragmentName);
+                || WaterfallPreferenceFragment.class.getName().equals(fragmentName)
+                || GdbPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     @Override
@@ -488,6 +499,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
             preference.setOnPreferenceClickListener(listener);
             preference = findPreference(PreferenceKey.PREF_CHECK_BACKUP);
             preference.setOnPreferenceClickListener(listener);
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class GdbPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_gdb);
+            setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_GDB_LATEST_NUM));
         }
 
     }

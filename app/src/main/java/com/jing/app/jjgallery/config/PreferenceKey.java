@@ -134,4 +134,10 @@ public class PreferenceKey {
     public static final String PREF_CHECK_UPDATE_GDB = "pref_http_update_gdb";
     // 备份数据
     public static final String PREF_CHECK_BACKUP = "pref_http_backup";
+
+    /**
+     * gdb
+     */
+    // latest records number
+    public static final String PREF_GDB_LATEST_NUM = "pref_gdb_latest_num";
 }

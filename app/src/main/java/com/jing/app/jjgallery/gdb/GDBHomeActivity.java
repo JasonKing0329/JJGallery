@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.gdb;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -10,21 +9,24 @@ import android.view.View;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.model.FileService;
 import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
-import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
-import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
+import com.jing.app.jjgallery.gdb.view.IHomeShare;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.gdb.view.IGdbFragment;
 import com.jing.app.jjgallery.gdb.view.RecordListFragment;
 import com.jing.app.jjgallery.gdb.view.RecordSceneListFragment;
 import com.jing.app.jjgallery.gdb.view.StarListFragment;
+import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.ChangeThemeDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
 import java.util.HashMap;
 
-public class GDBHomeActivity extends BaseActivity {
+public class GDBHomeActivity extends BaseActivity implements IHomeShare {
+
+    public static final int STAR = 0;
+    public static final int RECORD = 1;
+    public static final String START_MODE = "start_mode";
 
     private Fragment currentFragment;
     private StarListFragment starFragment;
@@ -50,15 +52,19 @@ public class GDBHomeActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        onStarListPage();
+        int startMode = getIntent().getIntExtra(START_MODE, STAR);
+        if (startMode == RECORD) {
+            onRecordListPage();
+        }
+        else {
+            onStarListPage();
+        }
     }
 
     public void onStarListPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (starFragment == null) {
             starFragment = new StarListFragment();
-            starFragment.setGdbPresenter(gdbPresenter);
-            starFragment.setActionbar(mActionBar);
         }
         else {
             starFragment.reInit();
@@ -74,8 +80,6 @@ public class GDBHomeActivity extends BaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (recordFragment == null) {
             recordFragment = new RecordListFragment();
-            recordFragment.setGdbPresenter(gdbPresenter);
-            recordFragment.setActionbar(mActionBar);
         }
         gdbPresenter.setViewCallback(recordFragment);
         currentFragment = recordFragment;
@@ -88,14 +92,22 @@ public class GDBHomeActivity extends BaseActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (sceneListFragment == null) {
             sceneListFragment = new RecordSceneListFragment();
-            sceneListFragment.setGdbPresenter(gdbPresenter);
-            sceneListFragment.setActionbar(mActionBar);
         }
         gdbPresenter.setViewCallback(sceneListFragment);
         currentFragment = sceneListFragment;
 
         ft.replace(R.id.gdb_fragment_container, sceneListFragment, "RecordSceneListFragment");
         ft.commit();
+    }
+
+    @Override
+    public GdbPresenter getPresenter() {
+        return gdbPresenter;
+    }
+
+    @Override
+    public ActionBar getActionbar() {
+        return mActionBar;
     }
 
     @Override
@@ -204,18 +216,6 @@ public class GDBHomeActivity extends BaseActivity {
                 return false;
             }
         }).show();
-    }
-
-    /**
-     * 加载star全部完成
-     */
-    public void onStarLoadFinished() {
-        // start file service
-        startFileService();
-    }
-
-    private void startFileService() {
-        startService(new Intent().setClass(this, FileService.class));
     }
 
 }

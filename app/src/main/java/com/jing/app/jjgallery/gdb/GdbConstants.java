@@ -10,10 +10,13 @@ public class GdbConstants {
 
     public static final String FILTER_KEY_SCORE = "score";
     public static final String FILTER_KEY_SCORE_FEEL = "feel";
+    public static final String FILTER_KEY_SCORE_BASIC = "scoreBasic";
+    public static final String FILTER_KEY_SCORE_EXTRA = "scoreExtra";
     public static final String FILTER_KEY_SCORE_CUM = "cum";
     public static final String FILTER_KEY_SCORE_FK = "fk";
     public static final String FILTER_KEY_SCORE_STAR1 = "star1";
     public static final String FILTER_KEY_SCORE_STAR2 = "star2";
+    public static final String FILTER_KEY_SCORE_STAR = "star";
     public static final String FILTER_KEY_SCORE_BJOB = "bjob";
     public static final String FILTER_KEY_SCORE_BAREBACK = "bareback";
     public static final String FILTER_KEY_SCORE_STORY = "story";

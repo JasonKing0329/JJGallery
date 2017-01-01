@@ -16,7 +16,6 @@ import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GdbConstants;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListNumAdapter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -42,21 +41,19 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     private RecyclerView mRecyclerView;
     private WaveSideBarView mSideBarView;
 
-    private GdbPresenter gdbPresenter;
     private StarListAdapter mNameAdapter;
-    private ActionBar mActionbar;
 
     private StarListNumAdapter mNumberAdapter;
+    private IHomeShare iHomeShare;
 
     private DownloadDialog downloadDialog;
     private RecommendDialog recommendDialog;
 
-    public void setGdbPresenter(GdbPresenter gdbPresenter) {
-        this.gdbPresenter = gdbPresenter;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        
+        iHomeShare = (IHomeShare) getActivity();
+        
         initActionbar();
 
         View view = inflater.inflate(R.layout.page_gdb_starlist, null);
@@ -86,20 +83,16 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
 
         ((ProgressProvider) getActivity()).showProgressCycler();
 
-        gdbPresenter.loadStarList();
+        iHomeShare.getPresenter().loadStarList();
         return view;
     }
 
-    public void setActionbar(ActionBar actionbar) {
-        this.mActionbar = actionbar;
-    }
-
     private void initActionbar() {
-        mActionbar.clearActionIcon();
-        mActionbar.addMenuIcon();
-        mActionbar.addSearchIcon();
-        mActionbar.addHomeIcon();
-        mActionbar.addSortIcon();
+        iHomeShare.getActionbar().clearActionIcon();
+        iHomeShare.getActionbar().addMenuIcon();
+        iHomeShare.getActionbar().addSearchIcon();
+        iHomeShare.getActionbar().addHomeIcon();
+        iHomeShare.getActionbar().addSortIcon();
     }
 
     public void onIconClick(View view) {
@@ -117,31 +110,31 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
 
     private void sortByName() {
         mSortMode = GdbConstants.STAR_SORT_NAME;
-        gdbPresenter.loadStarList();
+        iHomeShare.getPresenter().loadStarList();
     }
 
     private void sortByRecordNumbers() {
         mSortMode = GdbConstants.STAR_SORT_RECORDS;
-        gdbPresenter.loadStarListOrderByNumber();
+        iHomeShare.getPresenter().loadStarListOrderByNumber();
     }
 
     @Override
     public void onLoadStarList(List<Star> list) {
         if (mSortMode == GdbConstants.STAR_SORT_RECORDS) {
             mNumberAdapter = new StarListNumAdapter(list);
-            mNumberAdapter.setPresenter(gdbPresenter);
+            mNumberAdapter.setPresenter(iHomeShare.getPresenter());
             mNumberAdapter.setOnStarClickListener(this);
             mRecyclerView.setAdapter(mNumberAdapter);
         }
         else {
             mNameAdapter = new StarListAdapter(getActivity(), list);
-            mNameAdapter.setPresenter(gdbPresenter);
+            mNameAdapter.setPresenter(iHomeShare.getPresenter());
             mNameAdapter.setOnStarClickListener(this);
             mRecyclerView.setAdapter(mNameAdapter);
         }
         ((ProgressProvider) getActivity()).dismissProgressCycler();
 
-        ((GDBHomeActivity) getActivity()).onStarLoadFinished();
+        iHomeShare.getPresenter().checkNewStarFile();
     }
 
     @Override
@@ -175,7 +168,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     public void onServerConnected() {
 //        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
         if (isVisible()) {
-            gdbPresenter.checkNewStarFile();
+            iHomeShare.getPresenter().checkNewStarFile();
         }
     }
 
@@ -211,7 +204,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                     @Override
                     public void onLoadData(HashMap<String, Object> data) {
                         List<DownloadItem> repeatList = new ArrayList<>();
-                        data.put("items", gdbPresenter.pickStarToDownload(downloadList, repeatList));
+                        data.put("items", iHomeShare.getPresenter().pickStarToDownload(downloadList, repeatList));
                         data.put("existedItems", repeatList);
                         data.put("savePath", Configuration.GDB_IMG_STAR);
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
@@ -226,13 +219,13 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                     @Override
                     public void onDownloadFinish(List<DownloadItem> downloadList) {
                         // 所有内容下载完成后，统一进行异步encypt，然后更新starImageMap和recordImageMap，完成后通知adapter更新
-                        gdbPresenter.finishDownload(downloadList);
+                        iHomeShare.getPresenter().finishDownload(downloadList);
                     }
                 });
             }
             else {
                 List<DownloadItem> repeatList = new ArrayList<>();
-                List<DownloadItem> newList = gdbPresenter.pickStarToDownload(downloadList, repeatList);
+                List<DownloadItem> newList = iHomeShare.getPresenter().pickStarToDownload(downloadList, repeatList);
                 downloadDialog.newUpdate(newList, repeatList);
             }
             downloadDialog.show();
@@ -251,7 +244,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_gdb_check_server:
-                gdbPresenter.checkNewStarFile();
+                iHomeShare.getPresenter().checkNewStarFile();
                 break;
             case R.id.menu_gdb_recommend:
                 if (recommendDialog == null) {
@@ -269,11 +262,11 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     }
 
     public void reloadStarList() {
-        gdbPresenter.loadStarList();
+        iHomeShare.getPresenter().loadStarList();
     }
 
     public void checkServerStatus() {
         // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
-        gdbPresenter.checkServerStatus();
+        iHomeShare.getPresenter().checkServerStatus();
     }
 }

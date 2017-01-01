@@ -145,11 +145,9 @@ public class AutoScrollView extends RelativeLayout {
      */
 	private int getNextPosition() {
 		if (itemPosition >= autoScrollAdapter.getCount()) {
-			return 0;
+			itemPosition = 0;
 		}
-		else {
-			return itemPosition ++;
-		}
+		return itemPosition ++;
 	}
 
 	public void startScroll() {

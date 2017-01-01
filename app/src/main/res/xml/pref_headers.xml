@@ -37,4 +37,9 @@
         android:icon="?attr/setting_ic_http"
         android:title="@string/setting_http_title" />
 
+    <header
+        android:fragment="com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity$GdbPreferenceFragment"
+        android:icon="?attr/setting_ic_gdb"
+        android:title="@string/setting_gdb_title" />
+
 </preference-headers>

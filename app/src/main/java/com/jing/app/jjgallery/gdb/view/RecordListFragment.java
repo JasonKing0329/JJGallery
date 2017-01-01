@@ -13,7 +13,6 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GDBHomeActivity;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordListAdapter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
@@ -34,9 +33,8 @@ import java.util.Map;
 public class RecordListFragment extends Fragment implements IGdbRecordListView, RecordListAdapter.OnRecordItemClickListener
     , IGdbFragment {
 
+    private IHomeShare iHomeShare;
     private RecyclerView mRecyclerView;
-    private GdbPresenter gdbPresenter;
-    public ActionBar mActionbar;
 
     private RecordListAdapter mAdapter;
     private int currentSortMode = -1;
@@ -44,13 +42,10 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
     private DownloadDialog downloadDialog;
 
-    public void setGdbPresenter(GdbPresenter gdbPresenter) {
-        this.gdbPresenter = gdbPresenter;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        iHomeShare = (IHomeShare) getActivity();
         currentSortMode = SettingProperties.getGdbRecordOrderMode(getActivity());
         initActionbar();
 
@@ -58,7 +53,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_srecord_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        gdbPresenter.loadRecordList(currentSortMode, currentSortDesc);
+        iHomeShare.getPresenter().loadRecordList(currentSortMode, currentSortDesc);
         return view;
     }
 
@@ -69,20 +64,16 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
         mAdapter.setSortMode(currentSortMode);
         mRecyclerView.setAdapter(mAdapter);
 
-        gdbPresenter.checkServerStatus();
-    }
-
-    public void setActionbar(ActionBar actionbar) {
-        this.mActionbar = actionbar;
+        iHomeShare.getPresenter().checkServerStatus();
     }
 
     private void initActionbar() {
-        mActionbar.clearActionIcon();
-        mActionbar.addSortIcon();
-        mActionbar.addSearchIcon();
-        mActionbar.addShowIcon();
-        mActionbar.addMenuIcon();
-        mActionbar.addHomeIcon();
+        iHomeShare.getActionbar().clearActionIcon();
+        iHomeShare.getActionbar().addSortIcon();
+        iHomeShare.getActionbar().addSearchIcon();
+        iHomeShare.getActionbar().addShowIcon();
+        iHomeShare.getActionbar().addMenuIcon();
+        iHomeShare.getActionbar().addHomeIcon();
     }
 
     public void onIconClick(View view) {
@@ -122,7 +113,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     }
 
     private void refresh() {
-        gdbPresenter.sortRecords(mAdapter.getRecordList(), currentSortMode, currentSortDesc);
+        iHomeShare.getPresenter().sortRecords(mAdapter.getRecordList(), currentSortMode, currentSortDesc);
         mAdapter.setSortMode(currentSortMode);
         mAdapter.notifyDataSetChanged();
     }
@@ -142,7 +133,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     public void onServerConnected() {
 //        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
         if (isVisible()) {
-            gdbPresenter.checkNewRecordFile();
+            iHomeShare.getPresenter().checkNewRecordFile();
         }
     }
 
@@ -178,7 +169,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
                     @Override
                     public void onLoadData(HashMap<String, Object> data) {
                         List<DownloadItem> repeatList = new ArrayList<>();
-                        data.put("items", gdbPresenter.pickRecordToDownload(downloadList, repeatList));
+                        data.put("items", iHomeShare.getPresenter().pickRecordToDownload(downloadList, repeatList));
                         data.put("existedItems", repeatList);
                         data.put("savePath", Configuration.GDB_IMG_RECORD);
                         data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
@@ -192,13 +183,13 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
 
                     @Override
                     public void onDownloadFinish(List<DownloadItem> downloadList) {
-                        gdbPresenter.finishDownload(downloadList);
+                        iHomeShare.getPresenter().finishDownload(downloadList);
                     }
                 });
             }
             else {
                 List<DownloadItem> repeatList = new ArrayList<>();
-                List<DownloadItem> newList = gdbPresenter.pickRecordToDownload(downloadList, repeatList);
+                List<DownloadItem> newList = iHomeShare.getPresenter().pickRecordToDownload(downloadList, repeatList);
                 downloadDialog.newUpdate(newList, repeatList);
             }
             downloadDialog.show();
@@ -217,7 +208,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_gdb_check_server:
-                gdbPresenter.checkNewRecordFile();
+                iHomeShare.getPresenter().checkNewRecordFile();
                 break;
             case R.id.menu_gdb_download:
                 if (downloadDialog != null) {

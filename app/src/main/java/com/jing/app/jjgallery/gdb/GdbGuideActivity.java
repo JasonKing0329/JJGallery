@@ -1,5 +1,7 @@
 package com.jing.app.jjgallery.gdb;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.gdb.model.FileService;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.AutoScrollView;
 import com.jing.app.jjgallery.gdb.view.adapter.GuideScrollAdapter;
@@ -26,11 +29,14 @@ import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 import com.king.service.gdb.bean.Record;
+
+import java.util.List;
 
 /**
  * 可能是由于用到了DrawerLayout，采用BaseActivity运营统一的样式总是隐藏不了actionbar
@@ -62,6 +68,11 @@ public class GdbGuideActivity extends AppCompatActivity
 
         // check database update
         checkUpdate();
+
+        if (!isServiceWork(FileService.class.getName())) {
+            // start file check service
+            startFileService();
+        }
     }
 
     //    @Override
@@ -137,7 +148,8 @@ public class GdbGuideActivity extends AppCompatActivity
 
     private void initAutoScroll() {
         autoScrollView = (AutoScrollView) findViewById(R.id.gdb_guide_autoscroll);
-        scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(30)
+        scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(
+                SettingProperties.getGdbLatestRecordsNumber(this))
                 , getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width));
         scrollAdapter.setPresenter(mPresenter);
         scrollAdapter.setOnScrollItemClickListener(this);
@@ -239,10 +251,10 @@ public class GdbGuideActivity extends AppCompatActivity
             case R.id.gdb_guide_game_text:
                 break;
             case R.id.gdb_guide_star_text:
-                ActivityManager.startGDBMainActivity(this, null);
+                ActivityManager.startGDBStarListActivity(this, null);
                 break;
             case R.id.gdb_guide_record_text:
-                ActivityManager.startGDBMainActivity(this, null);
+                ActivityManager.startGDBRecordListActivity(this, null);
                 break;
         }
     }
@@ -328,5 +340,37 @@ public class GdbGuideActivity extends AppCompatActivity
     @Override
     public void onScrollItemClick(View view, Record record) {
         ActivityManager.startGdbRecordActivity(this, record);
+    }
+
+    /**
+     * 检查文件系统，删除无用文件
+     */
+    private void startFileService() {
+        DebugLog.e("");
+        startService(new Intent().setClass(this, FileService.class));
+    }
+
+    /**
+     * 判断某个服务是否正在运行的方法
+     *
+     * @param serviceName
+     *            是包名+服务的类名（例如：net.loonggg.testbackstage.TestService）
+     * @return true代表正在运行，false代表服务没有正在运行
+     */
+    public boolean isServiceWork(String serviceName) {
+        boolean isWork = false;
+        android.app.ActivityManager myAM = (android.app.ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<android.app.ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(40);
+        if (myList.size() <= 0) {
+            return false;
+        }
+        for (int i = 0; i < myList.size(); i++) {
+            String mName = myList.get(i).service.getClassName().toString();
+            if (mName.equals(serviceName)) {
+                isWork = true;
+                break;
+            }
+        }
+        return isWork;
     }
 }

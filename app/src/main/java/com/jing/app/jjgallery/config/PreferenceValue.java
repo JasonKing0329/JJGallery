@@ -51,6 +51,7 @@ public class PreferenceValue {
     public static final String EXPLORE_OPEN_BOOK = "Book";
 
     public static final int HTTP_MAX_DOWNLOAD = 3;
+    public static final int GDB_LATEST_NUM = 30;
     /**
      * 最高同时下载7个
      */
