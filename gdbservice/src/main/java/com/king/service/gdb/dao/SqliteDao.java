@@ -241,6 +241,23 @@ public class SqliteDao {
 		return false;
 	}
 
+	private Star parseStar(ResultSet set) throws SQLException {
+
+		Star star = new Star();
+		star.setId(set.getInt(1));
+		star.setName(set.getString(2));
+		star.setRecordNumber(set.getInt(3));
+		star.setBeTop(set.getInt(4));
+		star.setBeBottom(set.getInt(5));
+		star.setAverage(set.getFloat(6));
+		star.setMax(set.getInt(7));
+		star.setMin(set.getInt(8));
+		star.setcAverage(set.getFloat(9));
+		star.setcMax(set.getInt(10));
+		star.setcMin(set.getInt(11));
+		return star;
+	}
+
 	public Star queryStarByName(Connection connection, String name) {
 		// 带"'"号的要特殊处理
 		if (name.contains("'")) {
@@ -253,10 +270,7 @@ public class SqliteDao {
 			statement = connection.createStatement();
 			ResultSet set = statement.executeQuery(sql);
 			if (set.next()) {
-				star = new Star();
-				star.setId(set.getInt(1));
-				star.setName(set.getString(2));
-				star.setRecordNumber(set.getInt(3));
+				star = parseStar(set);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -302,12 +316,22 @@ public class SqliteDao {
 		if (name.contains("'")) {
 			name = name.replace("'", "''");
 		}
-		String sql = "UPDATE " + TABLE_STAR + " SET name='" + name
-				+ "' ,records=" + star.getRecordList().size() + " WHERE id=" + star.getId();
+		StringBuffer buffer = new StringBuffer("UPDATE ");
+		buffer.append(TABLE_STAR).append(" SET name='").append(name)
+				.append("' ,records=").append(star.getRecordList().size())
+				.append(", betop=").append(star.getBeTop())
+				.append(", bebottom=").append(star.getBeBottom())
+				.append(", average=").append(star.getAverage())
+				.append(", max=").append(star.getMax())
+				.append(", min=").append(star.getMin())
+				.append(", caverage=").append(star.getcAverage())
+				.append(", cmax=").append(star.getcMax())
+				.append(", cmin=").append(star.getcMin())
+				.append(" WHERE id=").append(star.getId());
 		Statement stmt = null;
 		try {
 			stmt = connection.createStatement();
-			stmt.executeUpdate(sql);
+			stmt.executeUpdate(buffer.toString());
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -326,17 +350,14 @@ public class SqliteDao {
 	}
 
 	public Star queryStarById(Connection connection, int id) {
-		String sql = "SELECT id,name,records FROM " + TABLE_STAR + " WHERE id=" + id;
+		String sql = "SELECT * FROM " + TABLE_STAR + " WHERE id=" + id;
 		Statement statement = null;
 		Star star = null;
 		try {
 			statement = connection.createStatement();
 			ResultSet set = statement.executeQuery(sql);
 			if (set.next()) {
-				star = new Star();
-				star.setId(set.getInt(1));
-				star.setName(set.getString(2));
-				star.setRecordNumber(set.getInt(3));
+				star = parseStar(set);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -354,17 +375,14 @@ public class SqliteDao {
 
 	public List<Star> queryAllStars(Connection connection) {
 		List<Star> list = new ArrayList<>();
-		String sql = "SELECT id,name,records FROM " + TABLE_STAR;
+		String sql = "SELECT * FROM " + TABLE_STAR;
 		Statement statement = null;
 		Star star = null;
 		try {
 			statement = connection.createStatement();
 			ResultSet set = statement.executeQuery(sql);
 			while (set.next()) {
-				star = new Star();
-				star.setId(set.getInt(1));
-				star.setName(set.getString(2));
-				star.setRecordNumber(set.getInt(3));
+				star = parseStar(set);
 				list.add(star);
 			}
 		} catch (SQLException e) {

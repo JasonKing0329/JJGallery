@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -15,5 +16,17 @@ public class FormatUtil {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         return dateFormat.format(new Date(data));
+    }
+
+    /**
+     * 保留n位小数
+     * @param score
+     * @param n
+     * @return
+     */
+    public static String formatScore(float score, int n) {
+        BigDecimal bd = new BigDecimal(score);
+        bd = bd.setScale(n, BigDecimal.ROUND_HALF_UP);
+        return bd.toString();
     }
 }

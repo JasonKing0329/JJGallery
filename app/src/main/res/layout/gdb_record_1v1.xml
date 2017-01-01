@@ -571,6 +571,20 @@
                         android:layout_weight="1"
                         android:gravity="right" />
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/gdb_record_table_distance"
+                        android:text="special desc" />
+
+                    <TextView
+                        android:id="@+id/gdb_record_score_specia_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right" />
+
                 </TableRow>
 
             </TableLayout>

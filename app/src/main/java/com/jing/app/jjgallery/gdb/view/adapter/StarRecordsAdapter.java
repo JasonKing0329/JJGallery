@@ -10,6 +10,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.FormatUtil;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
 import com.king.service.gdb.bean.Record;
 
@@ -114,6 +115,9 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         private ViewGroup zoomHeaderContainer;
         private TextView nameView;
         private TextView numberView;
+        private TextView typeView;
+        private TextView scoreView;
+        private TextView cscoreView;
 
         public PullZoomHeaderHolder(ViewGroup parent) {
             this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_header, parent, false));
@@ -125,6 +129,9 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.gdb_star_header_container);
             nameView = (TextView) view.findViewById(R.id.gdb_star_header_name);
             numberView = (TextView) view.findViewById(R.id.gdb_star_header_number);
+            typeView = (TextView) view.findViewById(R.id.gdb_star_header_type);
+            scoreView = (TextView) view.findViewById(R.id.gdb_star_header_score);
+            cscoreView = (TextView) view.findViewById(R.id.gdb_star_header_cscore);
         }
 
         @Override
@@ -134,6 +141,28 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             SImageLoader.getInstance().displayImage(star.getImagePath(), zoomView);
             nameView.setText(star.getStar().getName());
             numberView.setText(String.format(recyclerView.getContext().getString(R.string.gdb_star_file_numbers), listData.size()));
+
+            StringBuffer buffer = new StringBuffer();
+            if (star.getStar().getBeTop() > 0) {
+                buffer.append("top(").append(star.getStar().getBeTop()).append(")");
+                buffer.append("   ");
+            }
+            if (star.getStar().getBeBottom() > 0) {
+                buffer.append("bottom(").append(star.getStar().getBeBottom()).append(")");
+            }
+            typeView.setText(buffer.toString());
+
+            buffer = new StringBuffer();
+            buffer.append("avg(").append(FormatUtil.formatScore(star.getStar().getAverage(), 1)).append(")")
+                    .append("  ").append("max(").append(star.getStar().getMax()).append(")")
+                    .append("  ").append("min(").append(star.getStar().getMin()).append(")");
+            scoreView.setText(buffer.toString());
+
+            buffer = new StringBuffer();
+            buffer.append("cock avg(").append(FormatUtil.formatScore(star.getStar().getcAverage(), 1)).append(")")
+                    .append("  ").append("max(").append(star.getStar().getcMax()).append(")")
+                    .append("  ").append("min(").append(star.getStar().getcMin()).append(")");
+            cscoreView.setText(buffer.toString());
         }
     }
 }

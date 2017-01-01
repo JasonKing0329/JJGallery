@@ -28,7 +28,8 @@ public class RecordActivity extends BaseActivity implements IStarView {
     private ImageView star1ImageView, star2ImageView;
     private TextView star1View, star2View;
     private TextView pathView, sceneView, sceneScoreView, hdView, barebackView, bjobView, cumView, scoreView, scoreFeelView
-            , rhythmView, foreplayView, storyView, specialView, rimView, cshowView, fkView, starView, starCView, scoreBasicView, scoreExtraView
+            , rhythmView, foreplayView, storyView, specialView, rimView, cshowView, fkView, starView
+            , starCView, scoreBasicView, scoreExtraView, specialContentView
             , fktype1View, fktype1RateView, fktype2View, fktype2RateView, fktype3View, fktype3RateView
             , fktype4View, fktype4RateView, fktype5View, fktype5RateView, fktype6View, fktype6RateView;
     @Override
@@ -71,6 +72,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
         rimView = (TextView) findViewById(R.id.gdb_record_score_rim);
         cshowView = (TextView) findViewById(R.id.gdb_record_score_cshow);
         specialView = (TextView) findViewById(R.id.gdb_record_score_special);
+        specialContentView = (TextView) findViewById(R.id.gdb_record_score_specia_desc);
         fkView = (TextView) findViewById(R.id.gdb_record_score_fk);
         starView = (TextView) findViewById(R.id.gdb_record_score_star);
         starCView = (TextView) findViewById(R.id.gdb_record_score_starc);
@@ -143,6 +145,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
         foreplayView.setText("" + record.getScoreForePlay());
         storyView.setText("" + record.getScoreStory());
         specialView.setText("" + record.getScoreSpeicial());
+        specialContentView.setText(record.getSpecialDesc());
         rimView.setText("" + record.getScoreRim());
         cshowView.setText("" + record.getScoreCShow());
         fkView.setText("" + record.getScoreFk());
