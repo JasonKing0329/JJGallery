@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.gdb.view.recommend;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.bean.GDBProperites;
@@ -59,6 +61,10 @@ public class RecommendFragment extends Fragment implements IRecommend, View.OnCl
         starView = (TextView) contentView.findViewById(R.id.gdb_recommend_star);
         scoreView = (TextView) contentView.findViewById(R.id.gdb_recommend_score);
         progressBar = (ProgressBar) contentView.findViewById(R.id.gdb_recommend_progress);
+        if (!DisplayHelper.isTabModel(getActivity())) {
+            nameView.setMaxLines(1);
+            nameView.setEllipsize(TextUtils.TruncateAt.END);
+        }
         contentView.findViewById(R.id.gdb_recommend_previous).setOnClickListener(this);
         contentView.findViewById(R.id.gdb_recommend_next).setOnClickListener(this);
         contentView.findViewById(R.id.gdb_recommend_setting).setOnClickListener(this);

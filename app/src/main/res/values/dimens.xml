@@ -278,6 +278,8 @@
     <dimen name="gdb_guide_star_height">168dp</dimen>
     <dimen name="gdb_guide_game_width">100dp</dimen>
     <dimen name="gdb_guide_game_height">337dp</dimen>
+    <dimen name="gdb_recommend_action_size">30dp</dimen>
+    <dimen name="gdb_recommend_action_padding">5dp</dimen>
 
     <!-- wave side bar -->
     <dimen name="book_touch_start_range">30dp</dimen>

@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.ConfManager;
@@ -20,6 +22,7 @@ import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.main.login.LoginParams;
+import com.jing.app.jjgallery.model.pub.PermissionUtil;
 import com.jing.app.jjgallery.presenter.main.LoginPresenter;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
@@ -66,9 +69,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     public void initController() {
-        // 设置base url
-        BaseUrl.getInstance().setBaseUrl(SettingProperties.getGdbServerBaseUrl(this));
-
         loginPresenter = new LoginPresenter(this, this);
     }
 
@@ -85,9 +85,35 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     public void initBackgroundWork() {
-        showInitProgress();
-        // 执行初始化操作
-        new InitTask().execute();
+
+        // android6.0及以上需要动态分配权限
+        // 先获取读写以及存储权限，不然没法执行init里面的一些初始化操作
+        if (Application.isM()) {
+            if (PermissionUtil.isStoragePermitted(this)) {
+                showInitProgress();
+                // 执行初始化操作
+                new InitTask().execute();
+            }
+            else {
+                PermissionUtil.requestStoragePermission(this, 1);
+                PermissionUtil.requestOtherPermission(this);
+            }
+        }
+        else {
+            showInitProgress();
+            // 执行初始化操作
+            new InitTask().execute();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (PermissionUtil.isStoragePermitted(this)) {
+            showInitProgress();
+            // 执行初始化操作
+            new InitTask().execute();
+        }
     }
 
     private void showInitProgress() {
@@ -173,6 +199,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     private void afterPrefCheck() {
+        // 设置base url
+        BaseUrl.getInstance().setBaseUrl(SettingProperties.getGdbServerBaseUrl(this));
+
         applyExtendColors();
         // Open SettingActivity when application is started for the first time.
         // Application will be considered as initialized only after sign in successfully.

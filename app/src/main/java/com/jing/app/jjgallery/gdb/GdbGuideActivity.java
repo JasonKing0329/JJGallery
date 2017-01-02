@@ -150,7 +150,8 @@ public class GdbGuideActivity extends AppCompatActivity
         autoScrollView = (AutoScrollView) findViewById(R.id.gdb_guide_autoscroll);
         scrollAdapter = new GuideScrollAdapter(mPresenter.getLatestRecord(
                 SettingProperties.getGdbLatestRecordsNumber(this))
-                , getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width));
+                , getResources().getDimensionPixelSize(R.dimen.gdb_guide_scroll_item_width)
+                , DisplayHelper.isTabModel(this));
         scrollAdapter.setPresenter(mPresenter);
         scrollAdapter.setOnScrollItemClickListener(this);
         try {

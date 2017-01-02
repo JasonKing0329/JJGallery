@@ -59,24 +59,15 @@
         android:orientation="horizontal">
         <ImageView
             android:id="@+id/gdb_recommend_previous"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_navigate_before_white_36dp"/>
+            style="@style/GdbRecommendActionIcon"
+            android:src="@drawable/ic_navigate_before_white_36dp" />
         <ImageView
             android:id="@+id/gdb_recommend_next"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            style="@style/GdbRecommendActionIcon"
             android:src="@drawable/ic_navigate_next_white_36dp"/>
         <ImageView
             android:id="@+id/gdb_recommend_setting"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
+            style="@style/GdbRecommendActionIcon"
             android:src="@drawable/ic_settings_white_36dp"/>
     </LinearLayout>
 </RelativeLayout>

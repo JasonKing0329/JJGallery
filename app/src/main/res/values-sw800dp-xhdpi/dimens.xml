@@ -247,6 +247,8 @@
     <dimen name="gdb_guide_game_height">605dp</dimen>
     <dimen name="nav_header_height">320dp</dimen>
     <dimen name="nav_width">600dp</dimen>
+    <dimen name="gdb_recommend_action_size">50dp</dimen>
+    <dimen name="gdb_recommend_action_padding">10dp</dimen>
 
     <!-- download -->
     <dimen name="download_dlg_height">800dp</dimen>

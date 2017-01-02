@@ -34,9 +34,12 @@ public class GuideScrollAdapter extends AutoScrollAdapter<GuideScrollAdapter.Ite
 
     private OnScrollItemClickListener listener;
 
-    public GuideScrollAdapter(List<Record> mList, int itemWidth) {
+    private boolean isTablet;
+
+    public GuideScrollAdapter(List<Record> mList, int itemWidth, boolean isTablet) {
         this.mList = mList;
         this.itemWidth = itemWidth;
+        this.isTablet = isTablet;
     }
 
     public void setOnScrollItemClickListener(OnScrollItemClickListener listener) {
@@ -61,6 +64,12 @@ public class GuideScrollAdapter extends AutoScrollAdapter<GuideScrollAdapter.Ite
     public void onBindView(int position, ItemHolder holder) {
         Record record = mList.get(position);
         holder.name.setText(record.getDirectory() + "/" + record.getName());
+        if (isTablet) {
+            holder.name.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.name.setVisibility(View.GONE);
+        }
         holder.score.setText(String.valueOf(record.getScore()));
         holder.group.setTag(position);
         holder.group.setOnClickListener(this);

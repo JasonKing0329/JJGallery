@@ -129,4 +129,11 @@
         <item name="android:background">@drawable/selector_gdb_guide_sec</item>
     </style>
 
+    <style name="GdbRecommendActionIcon">
+        <item name="android:layout_width">@dimen/gdb_recommend_action_size</item>
+        <item name="android:layout_height">@dimen/gdb_recommend_action_size</item>
+        <item name="android:padding">@dimen/gdb_recommend_action_padding</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>
