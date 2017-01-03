@@ -2,24 +2,21 @@ package com.jing.app.jjgallery.gdb.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.bean.RecordProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GDBHomeActivity;
-import com.jing.app.jjgallery.gdb.view.adapter.RecordSceneAdapter;
+import com.jing.app.jjgallery.gdb.view.adapter.RecordSceneExpandAdapter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.bean.Record;
 
@@ -32,12 +29,12 @@ import java.util.Map;
  * Created by JingYang on 2016/8/5 0005.
  * Description:
  */
-public class RecordSceneListFragment extends Fragment implements IGdbRecordListView, RecordSceneAdapter.OnRecordClickListener
+public class RecordSceneListFragment extends Fragment implements IGdbRecordListView, RecordSceneExpandAdapter.OnRecordClickListener
     , IGdbFragment {
-    private RecyclerView mRecyclerView;
+    private ExpandableListView expandableListView;
     private IHomeShare iHomeShare;
 
-    private RecordSceneAdapter mAdapter;
+    private RecordSceneExpandAdapter mAdapter;
     private int currentSortMode = -1;
     private boolean currentSortDesc = true;
 
@@ -51,19 +48,8 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         initActionbar();
 
         currentSortMode = SettingProperties.getGdbRecordOrderMode(getActivity());
-        View view = inflater.inflate(R.layout.page_gdb_starlist, null);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_star_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        view.findViewById(R.id.gdb_star_side_view).setVisibility(View.GONE);
-
-        final PinnedHeaderDecoration decoration = new PinnedHeaderDecoration();
-        decoration.registerTypePinnedHeader(1, new PinnedHeaderDecoration.PinnedHeaderCreator() {
-            @Override
-            public boolean create(RecyclerView parent, int adapterPosition) {
-                return true;
-            }
-        });
-        mRecyclerView.addItemDecoration(decoration);
+        View view = inflater.inflate(R.layout.page_gdb_recordscenelist, null);
+        expandableListView = (ExpandableListView) view.findViewById(R.id.gdb_record_expand_view);
 
         iHomeShare.getPresenter().loadRecordList(PreferenceValue.GDB_SR_ORDERBY_NONE, currentSortDesc);
         return view;
@@ -115,18 +101,19 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
     }
 
     private void refresh() {
-        iHomeShare.getPresenter().sortSceneRecords(mAdapter.getRecordList(), currentSortMode, currentSortDesc);
+        iHomeShare.getPresenter().sortSceneRecords(mAdapter.getRecordMap(), currentSortMode, currentSortDesc);
         mAdapter.setSortMode(currentSortMode);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoadRecordList(List<Record> list) {
-        List<RecordProxy> resultList = iHomeShare.getPresenter().collectRecordsByScene(list, currentSortMode, currentSortDesc);
-        mAdapter = new RecordSceneAdapter(getActivity(), resultList);
+        Map<String, List<Record>> resultList = iHomeShare.getPresenter().collectRecordsMapByScene(list, currentSortMode, currentSortDesc);
+        iHomeShare.getPresenter().sortSceneRecords(resultList, currentSortMode, currentSortDesc);
+        mAdapter = new RecordSceneExpandAdapter(getActivity(), resultList);
         mAdapter.setOnRecordClickListener(this);
         mAdapter.setSortMode(currentSortMode);
-        mRecyclerView.setAdapter(mAdapter);
+        expandableListView.setAdapter(mAdapter);
     }
 
     public void onTextChanged(String text, int start, int before, int count) {

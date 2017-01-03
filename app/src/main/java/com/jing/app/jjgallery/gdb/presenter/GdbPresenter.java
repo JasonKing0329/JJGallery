@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.gdb.presenter;
 import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
+import com.king.service.gdb.bean.StarCountBean;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
@@ -46,6 +47,7 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2016/7/30 0030.
  */
 public class GdbPresenter {
+
     private IGdbFragment commonView;
     private IGdbStarListView gdbStarListView;
     private IGdbRecordListView gdbRecordListView;
@@ -87,14 +89,14 @@ public class GdbPresenter {
         this.starView = starView;
     }
 
-    public void loadStarList() {
+    public void loadStarList(String starMode) {
         int orderBy = GdbConstants.STAR_SORT_NAME;
-        new LoadStarListTask().execute(orderBy);
+        new LoadStarListTask().execute(orderBy, starMode);
     }
 
-    public void loadStarListOrderByNumber() {
+    public void loadStarListOrderByNumber(String starMode) {
         int orderBy = GdbConstants.STAR_SORT_RECORDS;
-        new LoadStarListTask().execute(orderBy);
+        new LoadStarListTask().execute(orderBy, starMode);
     }
 
     public String getStarImage(String starName) {
@@ -111,6 +113,10 @@ public class GdbPresenter {
      */
     public void loadRecordList(int sortMode, boolean desc) {
         new LoadRecordListTask().execute(sortMode, desc);
+    }
+
+    public void queryIndicatorData() {
+        new QueryIndicatorTask().execute();
     }
 
     public void loadStar(int starId) {
@@ -152,6 +158,14 @@ public class GdbPresenter {
                     list.add(proxy.getRecord());
                 }
                 index ++;
+            }
+        }
+    }
+
+    public void sortSceneRecords(Map<String, List<Record>> map, int sortMode, boolean desc) {
+        if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
+            for (List<Record> list:map.values()) {
+                Collections.sort(list, new RecordComparator(sortMode, desc));
             }
         }
     }
@@ -296,7 +310,7 @@ public class GdbPresenter {
         new FinishDownloadTask().execute(downloadList);
     }
 
-    private class LoadStarListTask extends AsyncTask<Integer, Void, List<Star>> {
+    private class LoadStarListTask extends AsyncTask<Object, Void, List<Star>> {
 
         private int orderBy;
 
@@ -329,8 +343,9 @@ public class GdbPresenter {
         }
 
         @Override
-        protected List<Star> doInBackground(Integer... params) {
-            orderBy = params[0];
+        protected List<Star> doInBackground(Object... params) {
+            orderBy = (int) params[0];
+            String starMode = (String) params[1];
             // load available images for stars
             List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
             for (String path:pathList) {
@@ -338,7 +353,7 @@ public class GdbPresenter {
                 String preName = name.substring(0, name.lastIndexOf("."));
                 starImageMap.put(preName, path);
             }
-            return gdbProvider.getStars();
+            return gdbProvider.getStars(starMode);
         }
     }
 
@@ -431,6 +446,22 @@ public class GdbPresenter {
         }
     }
 
+    private class QueryIndicatorTask extends AsyncTask<Object, Void, StarCountBean> {
+        @Override
+        protected void onPostExecute(StarCountBean bean) {
+
+            gdbStarListView.onStarCountLoaded(bean);
+            super.onPostExecute(bean);
+        }
+
+        @Override
+        protected StarCountBean doInBackground(Object... params) {
+
+            StarCountBean bean = gdbProvider.queryStarCount();
+            return bean;
+        }
+    }
+
     /**
      * order by name
      */
@@ -516,6 +547,29 @@ public class GdbPresenter {
             }
         }
         return resultList;
+    }
+
+    public Map<String, List<Record>> collectRecordsMapByScene(List<Record> list, int sortMode, boolean desc) {
+        Map<String, List<Record>> map = new HashMap<>();
+        List<Record> subList;
+
+        // 按scene归类list
+        for (Record record:list) {
+            if (record instanceof RecordSingleScene) {
+                String scene = ((RecordSingleScene) record).getSceneName();
+                if (scene == null) {
+                    scene = GDBProperites.RECORD_UNKNOWN;
+                }
+                subList = map.get(scene);
+                if (subList == null) {
+                    subList = new ArrayList<>();
+                    map.put(scene, subList);
+                }
+                subList.add(record);
+            }
+        }
+
+        return map;
     }
 
     public class NameComparator implements Comparator<String> {

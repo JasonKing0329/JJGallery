@@ -1,8 +1,10 @@
 package com.king.service.gdb;
 
+import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
+import com.king.service.gdb.bean.StarCountBean;
 import com.king.service.gdb.dao.SqliteDao;
 
 import java.util.ArrayList;
@@ -56,11 +58,22 @@ public class GDBProvider {
     /**
      * 查询所有的star
      * @return
+     * @param starMode
      */
-    public List<Star> getStars() {
+    public List<Star> getStars(String starMode) {
         try {
             SqlConnection.getInstance().connect(databasePath);
-            return sqliteDao.queryAllStars(SqlConnection.getInstance().getConnection());
+            String where = null;
+            if (GDBProperites.STAR_MODE_TOP.equals(starMode)) {
+                where = "betop>0 AND bebottom=0";
+            }
+            else if (GDBProperites.STAR_MODE_BOTTOM.equals(starMode)) {
+                where = "bebottom>0 AND betop=0";
+            }
+            else if (GDBProperites.STAR_MODE_HALF.equals(starMode)) {
+                where = "bebottom>0 AND betop>0";
+            }
+            return sqliteDao.queryAllStars(SqlConnection.getInstance().getConnection(), where);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -143,5 +156,18 @@ public class GDBProvider {
         } finally {
             SqlConnection.getInstance().close();
         }
+    }
+
+    public StarCountBean queryStarCount() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            StarCountBean star = sqliteDao.queryStarCount(SqlConnection.getInstance().getConnection());
+            return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
     }
 }

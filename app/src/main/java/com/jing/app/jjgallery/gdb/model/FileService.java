@@ -88,7 +88,7 @@ public class FileService extends Service {
 
     private synchronized void updateStars() {
         List<String> pathList = fileModel.getStarFileList();
-        List<Star> starList = gdbProvider.getStars();
+        List<Star> starList = gdbProvider.getStars(null);
 
         // 解析原文件名，创建映射集合
         Map<String, String> starImageMap = new HashMap<>();

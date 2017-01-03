@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.jing.app.jjgallery.BaseActivity;
@@ -218,4 +219,11 @@ public class GDBHomeActivity extends BaseActivity implements IHomeShare {
         }).show();
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (currentFragment == starFragment) {
+            starFragment.dispatchTouchEvent(event);
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }

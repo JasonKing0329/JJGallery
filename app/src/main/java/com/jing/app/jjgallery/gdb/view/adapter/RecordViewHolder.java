@@ -79,13 +79,19 @@ public class RecordViewHolder {
         }
     }
 
+    public View getContainer() {
+        return container;
+    }
+
     public void bind(RecordProxy item, int sortMode) {
         bind(item.getRecord(), item.getPositionInHeader(), sortMode);
     }
 
     public void bind(Record item, int position, int sortMode) {
         container.setTag(item);
-        container.setOnClickListener(onClickListener);
+        if (onClickListener != null) {
+            container.setOnClickListener(onClickListener);
+        }
 
         // image
         String path = GdbPresenter.getRecordPath(item.getName());

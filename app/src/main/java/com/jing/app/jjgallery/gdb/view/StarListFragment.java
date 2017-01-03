@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -7,25 +8,39 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.gdb.GDBHomeActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GdbConstants;
+import com.jing.app.jjgallery.gdb.presenter.TouchHelper;
+import com.jing.app.jjgallery.gdb.view.adapter.StarIndicatorAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListNumAdapter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
+import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Star;
+import com.king.service.gdb.bean.StarCountBean;
+import com.shizhefei.view.indicator.FixedIndicatorView;
+import com.shizhefei.view.indicator.Indicator;
+import com.shizhefei.view.indicator.slidebar.ColorBar;
+import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +50,7 @@ import java.util.List;
  * Created by Administrator on 2016/7/30 0030.
  */
 public class StarListFragment extends Fragment implements IGdbStarListView, OnStarClickListener
-    , IGdbFragment {
+    , IGdbFragment, TouchHelper.OnTouchActionListener {
 
     private int mSortMode;
     private RecyclerView mRecyclerView;
@@ -49,16 +64,28 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     private DownloadDialog downloadDialog;
     private RecommendDialog recommendDialog;
 
+    private FixedIndicatorView indicatorView;
+    private StarIndicatorAdapter indicatorAdapter;
+
+    private TouchHelper touchHelper;
+    private boolean isSwiping;
+
+    // see GDBProperties.STAR_MODE_XXX
+    private String curStarMode;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         
         iHomeShare = (IHomeShare) getActivity();
-        
+        touchHelper = new TouchHelper(getActivity());
+        touchHelper.setOnTouchActionListener(this);
+
         initActionbar();
 
         View view = inflater.inflate(R.layout.page_gdb_starlist, null);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_star_recycler_view);
         mSideBarView = (WaveSideBarView) view.findViewById(R.id.gdb_star_side_view);
+        indicatorView = (FixedIndicatorView) view.findViewById(R.id.gdb_star_indicator_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         final PinnedHeaderDecoration decoration = new PinnedHeaderDecoration();
@@ -83,8 +110,53 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
 
         ((ProgressProvider) getActivity()).showProgressCycler();
 
-        iHomeShare.getPresenter().loadStarList();
+        initIndicators();
+        iHomeShare.getPresenter().loadStarList(curStarMode);
         return view;
+    }
+
+    private void initIndicators() {
+        indicatorAdapter = new StarIndicatorAdapter();
+        indicatorView.setAdapter(indicatorAdapter);
+
+        float unSelectSize = 16;
+        float selectSize = unSelectSize * 1.2f;
+
+        int selectColor = getResources().getColor(R.color.tab_top_text_2);
+        int unSelectColor = getResources().getColor(R.color.tab_top_text_1);
+        int underlineColor = getResources().getColor(R.color.actionbar_bk_blue);
+        if (ThemeManager.getInstance().isDarkTheme(getActivity())) {
+            selectColor = getResources().getColor(R.color.tab_top_text_2_dark);
+            unSelectColor = getResources().getColor(R.color.tab_top_text_1_dark);
+            underlineColor = getResources().getColor(R.color.tab_top_text_2_dark);
+        }
+        int height = getResources().getDimensionPixelSize(R.dimen.gdb_indicator_height);
+        indicatorView.setScrollBar(new ColorBar(getActivity(), underlineColor, height));
+        indicatorView.setOnTransitionListener(new OnTransitionTextListener().setColor(selectColor, unSelectColor).setSize(selectSize, unSelectSize));
+        indicatorView.setOnItemSelectListener(new Indicator.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(View selectItemView, int select, int preSelect) {
+                switch (select) {
+                    case 1:
+                        curStarMode = GDBProperites.STAR_MODE_TOP;
+                        break;
+                    case 2:
+                        curStarMode = GDBProperites.STAR_MODE_BOTTOM;
+                        break;
+                    case 3:
+                        curStarMode = GDBProperites.STAR_MODE_HALF;
+                        break;
+                    default:
+                        curStarMode = GDBProperites.STAR_MODE_ALL;
+                        break;
+                }
+                loadStar();
+            }
+        });
+        indicatorView.setCurrentItem(0,true);
+        curStarMode = GDBProperites.STAR_MODE_ALL;
+
+        iHomeShare.getPresenter().queryIndicatorData();
     }
 
     private void initActionbar() {
@@ -99,23 +171,31 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         switch (view.getId()) {
             case R.id.actionbar_sort:
                 if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-                    sortByRecordNumbers();
+                    mSortMode = GdbConstants.STAR_SORT_RECORDS;
                 }
                 else {
-                    sortByName();
+                    mSortMode = GdbConstants.STAR_SORT_NAME;
                 }
+                loadStar();
                 break;
         }
     }
 
+    private void loadStar() {
+        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
+            sortByName();
+        }
+        else {
+            sortByRecordNumbers();
+        }
+    }
+
     private void sortByName() {
-        mSortMode = GdbConstants.STAR_SORT_NAME;
-        iHomeShare.getPresenter().loadStarList();
+        iHomeShare.getPresenter().loadStarList(curStarMode);
     }
 
     private void sortByRecordNumbers() {
-        mSortMode = GdbConstants.STAR_SORT_RECORDS;
-        iHomeShare.getPresenter().loadStarListOrderByNumber();
+        iHomeShare.getPresenter().loadStarListOrderByNumber(curStarMode);
     }
 
     @Override
@@ -135,6 +215,12 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         ((ProgressProvider) getActivity()).dismissProgressCycler();
 
         iHomeShare.getPresenter().checkNewStarFile();
+    }
+
+    @Override
+    public void onStarCountLoaded(StarCountBean bean) {
+        indicatorAdapter.updateStarCountBean(bean);
+        indicatorAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -161,7 +247,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
             public void run() {
                 mSideBarView.invalidate();
             }
-        }, 100);
+        }, 200);
     }
 
     @Override
@@ -262,11 +348,113 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     }
 
     public void reloadStarList() {
-        iHomeShare.getPresenter().loadStarList();
+        iHomeShare.getPresenter().loadStarList(curStarMode);
     }
 
     public void checkServerStatus() {
         // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
         iHomeShare.getPresenter().checkServerStatus();
+    }
+
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (touchHelper != null) {
+            return touchHelper.dispatchTouchEvent(event);
+        }
+        return false;
+    }
+
+    @Override
+    public void onSwipeUp() {
+        // 防止多次重复执行动画，动画执行结束再置为false
+        if (!isSwiping && indicatorView.getVisibility() != View.GONE) {
+            isSwiping = true;
+            hideIndicator();
+        }
+    }
+
+    @Override
+    public void onSwipeBottom() {
+        // 防止多次重复执行动画，动画执行结束再置为false
+        if (!isSwiping && indicatorView.getVisibility() != View.VISIBLE) {
+            isSwiping = true;
+            showIndicator();
+        }
+    }
+
+    /**
+     * hide actionbar
+     */
+    public void hideIndicator() {
+        Animation anim = getDisapplearAnim();
+        indicatorView.startAnimation(anim);
+        anim.setAnimationListener(disappearListener);
+    }
+
+    /**
+     * show action bar, default status is show
+     */
+    public void showIndicator() {
+        Animation anim = getAppearAnim();
+        indicatorView.startAnimation(anim);
+        anim.setAnimationListener(appearListener);
+        indicatorView.setVisibility(View.VISIBLE);
+    }
+
+    private Animation.AnimationListener appearListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            isSwiping = false;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
+    private Animation.AnimationListener disappearListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            indicatorView.setVisibility(View.GONE);
+            isSwiping = false;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
+    /**
+     * actionbar show animation
+     * @return
+     */
+    public Animation getAppearAnim() {
+        Animation anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0
+            , Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0);
+        anim.setDuration(500);
+        return anim;
+    }
+
+    /**
+     * actionbar hide animation
+     * @return
+     */
+    public Animation getDisapplearAnim() {
+        Animation anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0
+                , Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -1.0f);
+        anim.setDuration(500);
+//        Animation disappearAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.disappear);
+        return anim;
     }
 }

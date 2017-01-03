@@ -12,6 +12,7 @@ import java.util.List;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
+import com.king.service.gdb.bean.StarCountBean;
 
 
 public class SqliteDao {
@@ -374,8 +375,15 @@ public class SqliteDao {
 	}
 
 	public List<Star> queryAllStars(Connection connection) {
+		return queryAllStars(connection, null);
+	}
+
+	public List<Star> queryAllStars(Connection connection, String where) {
 		List<Star> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_STAR;
+		if (where != null) {
+			sql = sql + " WHERE " + where;
+		}
 		Statement statement = null;
 		Star star = null;
 		try {
@@ -580,5 +588,49 @@ public class SqliteDao {
 			}
 		}
 		return list;
+	}
+
+
+	public StarCountBean queryStarCount(Connection connection) {
+		StarCountBean bean = new StarCountBean();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = "SELECT COUNT(id) FROM " + TABLE_STAR;
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setAllNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(id) FROM " + TABLE_STAR + " WHERE betop>0 AND bebottom=0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setTopNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(id) FROM " + TABLE_STAR + " WHERE bebottom>0 AND betop=0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setBottomNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(id) FROM " + TABLE_STAR + " WHERE bebottom>0 and betop>0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setHalfNumber(set.getInt(1));
+			}
+			set.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return bean;
 	}
 }

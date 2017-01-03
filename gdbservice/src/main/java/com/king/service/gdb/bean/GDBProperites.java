@@ -12,4 +12,10 @@ public class GDBProperites {
 
     public static final String STAR_UNKNOWN = "Unknown";
     public static final String RECORD_UNKNOWN = "Unknown";
+
+    public static final String STAR_MODE_ALL = "star_all";
+    public static final String STAR_MODE_TOP = "star_top";
+    public static final String STAR_MODE_BOTTOM = "star_bottom";
+    public static final String STAR_MODE_HALF = "star_half";
+
 }

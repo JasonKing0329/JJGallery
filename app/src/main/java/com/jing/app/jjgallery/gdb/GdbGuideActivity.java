@@ -28,6 +28,7 @@ import com.jing.app.jjgallery.gdb.view.recommend.RecommendFragment;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.data.SqlConnection;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.DisplayHelper;
@@ -181,6 +182,12 @@ public class GdbGuideActivity extends AppCompatActivity
             autoScrollView.restart();
         }
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        SqlConnection.getInstance().close();
+        super.onDestroy();
     }
 
     @Override

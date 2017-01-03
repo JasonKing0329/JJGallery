@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.gdb.view;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.king.service.gdb.bean.Star;
+import com.king.service.gdb.bean.StarCountBean;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public interface IGdbStarListView {
     void onLoadStarList(List<Star> list);
+    void onStarCountLoaded(StarCountBean bean);
     void onRequestFail();
     void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
 }

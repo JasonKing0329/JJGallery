@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.jing.app.jjgallery.service.data.SqlConnection;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 
@@ -133,6 +134,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Activity
     protected void onDestroy() {
         super.onDestroy();
         commonActivity.onDestroy();
+        SqlConnection.getInstance().close();
     }
 
     @Override

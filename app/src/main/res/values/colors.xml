@@ -124,6 +124,12 @@
     <color name="circlemenu_color_normal_light">#3f3a71</color>
     <color name="circlemenu_color_normal">#00a5c4</color>
 
+    <color name="tab_top_text_1">#aaa</color>
+    <color name="tab_top_text_2">#666</color>
+
+    <color name="tab_top_text_1_dark">#aaa</color>
+    <color name="tab_top_text_2_dark">#fff807</color>
+
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->
     <color name="lightyellow">#FFFFE0</color><!--亮黄色 -->
