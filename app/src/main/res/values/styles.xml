@@ -136,4 +136,17 @@
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
     </style>
 
+    <style name="GdbSeasonItem">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:padding">@dimen/gdb_season_item_padding</item>
+        <item name="android:background">@drawable/shape_folder_bk</item>
+    </style>
+
+    <style name="GdbSeasonItemBtn">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/gdb_season_item_height" >
+
+    <ImageView
+        android:id="@+id/season_cover_bk"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/season_cover_title"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_width="@dimen/folder_cover_title_width"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
+</RelativeLayout>

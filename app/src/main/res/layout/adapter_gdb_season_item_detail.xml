@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/gdb_season_item_height" >
+
+    <LinearLayout
+        android:id="@+id/layout_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                style="@style/GdbSeasonItemBtn"
+                android:id="@+id/season_item_battle"
+                android:layout_width="@dimen/season_function_btn_height"
+                android:layout_height="@dimen/season_function_btn_height"
+                android:background="#576069"
+                android:text="Battle" />
+            <TextView
+                style="@style/GdbSeasonItemBtn"
+                android:id="@+id/season_item_cross"
+                android:layout_width="@dimen/season_function_btn_height"
+                android:layout_height="@dimen/season_function_btn_height"
+                android:background="#adc3c0"
+                android:text="Cross" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <TextView
+                style="@style/GdbSeasonItemBtn"
+                android:id="@+id/season_item_final"
+                android:layout_width="@dimen/season_function_btn_height"
+                android:layout_height="@dimen/season_function_btn_height"
+                android:background="#aaaaaa"
+                android:text="Final" />
+            <TextView
+                style="@style/GdbSeasonItemBtn"
+                android:id="@+id/season_item_back"
+                android:layout_width="@dimen/season_function_btn_height"
+                android:layout_height="@dimen/season_function_btn_height"
+                android:background="#b9e3d9"
+                android:text="Back" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/season_item_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/layout_right"
+        android:background="#f74461"
+        android:gravity="center"
+        android:orientation="vertical" >
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_supervisor_account_white_48dp" />
+        <TextView
+            style="@style/GdbSeasonItemBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Group" />
+    </LinearLayout>
+</RelativeLayout>
