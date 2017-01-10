@@ -33,6 +33,7 @@ public class ConfManager {
     private static String PREF_NAME="com.jing.app.jjgallery_preferences";
     public static String DB_PATH;
     public static String GDB_DB_PATH = Configuration.APP_DIR_CONF + "/gdata.db";
+    public static String GDB_GAME_DB_PATH = Configuration.APP_DIR_CONF + "/gdata_game.db";
     // 采用自动更新替代gdata.db的方法，因为jornal的存在，会使重新使用这个db出现问题
     public static String GDB_DB_JOURNAL = Configuration.APP_DIR_CONF + "/gdata.db-journal";
 
@@ -127,6 +128,7 @@ public class ConfManager {
     public static void initParams(Context context) {
         FileIO.copyResFromAssets(context, Configuration.ASSETS_RES_COLOR, Configuration.EXTEND_RES_COLOR);
         FileIO.copyResFromAssets(context, Configuration.ASSETS_RES_DIMEN, Configuration.EXTEND_RES_DIMEN);
+        FileIO.copyResFromAssets(context, Configuration.ASSETS_RES_GDB_GAME, DBInfor.GDB_GAME_DB_PATH);
     }
 
     /**

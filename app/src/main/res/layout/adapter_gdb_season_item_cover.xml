@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/gdb_season_item_height" >
+    android:layout_height="@dimen/gdb_season_item_height">
 
     <ImageView
         android:id="@+id/season_cover_bk"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:src="@drawable/default_folder_item_bg"/>
 
     <TextView
         android:id="@+id/season_cover_title"
@@ -16,7 +17,18 @@
         android:textSize="20sp"
         android:gravity="center"
         android:layout_width="@dimen/folder_cover_title_width"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/folder_cover_title_width"
+        android:layout_centerVertical="true"
         android:background="@color/transparent" />
+
+    <ImageView
+        android:id="@+id/season_cover_setting"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_edit_white_36dp"
+        android:layout_width="@dimen/folder_icon_setting_size"
+        android:layout_height="@dimen/folder_icon_setting_size"
+        android:scaleType="fitXY"
+        android:padding="10dp" />
 
 </RelativeLayout>

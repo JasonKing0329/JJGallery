@@ -248,7 +248,12 @@
     <dimen name="gdb_recommend_action_size">50dp</dimen>
     <dimen name="gdb_recommend_action_padding">10dp</dimen>
     <dimen name="gdb_season_item_padding">3dp</dimen>
-    <dimen name="gdb_season_item_height">200dp</dimen>
+    <dimen name="gdb_season_item_height">100dp</dimen>
+    <dimen name="gdb_season_item_expand_height">200dp</dimen>
+    <dimen name="gdb_season_item_top">10dp</dimen>
+    <dimen name="season_edit_coach_height">800dp</dimen>
+    <dimen name="season_edit_coach_size">350dp</dimen>
+    <dimen name="season_edit_cover_height">315dp</dimen>
 
     <dimen name="nav_header_height">320dp</dimen>
     <dimen name="nav_width">600dp</dimen>
@@ -267,5 +272,6 @@
     <dimen name="abc_text_size_body_2_material">22dp</dimen>
     <dimen name="folder_cover_title_width">100dp</dimen>
     <dimen name="season_function_btn_height">100dp</dimen>
+    <dimen name="folder_icon_setting_size">50dp</dimen>
 
 </resources>

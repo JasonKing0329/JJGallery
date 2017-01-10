@@ -118,4 +118,5 @@ dependencies {
     compile project(':cardstack')
     compile project(':shapimageview')
     compile project(':indicator')
+    compile project(':libtool')
 }

@@ -173,7 +173,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
             Configuration.initVersionChange();
             // 初始化参数
             Configuration.initParams(LoginActivity.this);
-            // 创建扩展resource资源
+            // 拷贝assets里的resource xml以及database
             ConfManager.initParams(LoginActivity.this);
             // 加载扩展resource资源
             JResource.initializeColors();

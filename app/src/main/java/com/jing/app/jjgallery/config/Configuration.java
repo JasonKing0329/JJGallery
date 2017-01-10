@@ -42,6 +42,7 @@ public class Configuration {
 	public static final String EXTEND_RES_DIMEN = EXTEND_RES_DIR + "/dimens.xml";
 	public static final String ASSETS_RES_COLOR = "res/color.xml";
 	public static final String ASSETS_RES_DIMEN = "res/dimens.xml";
+	public static final String ASSETS_RES_GDB_GAME = "gdata_game.db";
 
 	public static final String APP_DIR_CONF = APP_ROOT + "/conf";
 	public static final String APP_DIR_CONF_PREF = APP_DIR_CONF + "/shared_prefs";
