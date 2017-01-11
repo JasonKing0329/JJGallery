@@ -17,8 +17,11 @@ public class FileManagerThumbFragment extends ThumbFragment {
 
     @Override
     protected IPage createThumbPage(View contentView) {
-        thumbPage = new FileManagerThumbFolderPage(getActivity(), contentView
-                , getActivity().getIntent().getBooleanExtra(Constants.KEY_THUMBFOLDER_CHOOSER_MODE, false));
+        boolean isChooserMode = !(thumbSelector == null);
+        FileManagerThumbFolderPage page = new FileManagerThumbFolderPage(getActivity(), contentView
+                , getActivity().getIntent().getBooleanExtra(Constants.KEY_THUMBFOLDER_CHOOSER_MODE, isChooserMode));
+        page.setThumbSelector(thumbSelector);
+        thumbPage = page;
         return thumbPage;
     }
 

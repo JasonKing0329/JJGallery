@@ -17,8 +17,11 @@ public class SOrderThumbFragment extends ThumbFragment {
 
     @Override
     protected IPage createThumbPage(View contentView) {
-        thumbPage = new SOrderThumbPage(getContext(), contentView
-                , getActivity().getIntent().getBooleanExtra(Constants.KEY_THUMBFOLDER_CHOOSER_MODE, false));
+        boolean isChooserMode = !(thumbSelector == null);
+        SOrderThumbPage page = new SOrderThumbPage(getContext(), contentView
+                , getActivity().getIntent().getBooleanExtra(Constants.KEY_THUMBFOLDER_CHOOSER_MODE, isChooserMode));
+        page.setThumbSelector(thumbSelector);
+        thumbPage = page;
         return thumbPage;
     }
 

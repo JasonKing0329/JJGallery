@@ -80,6 +80,11 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
 
     protected SOrderProvider sOrderProvider;
 
+    /**
+     * thumb view仅作为选择器时的回调接口
+     */
+    private IThumbSelector thumbSelector;
+
     public ThumbPage(Context context, View contentView, boolean isChooserMode) {
         mContext = context;
         this.isChooserMode = isChooserMode;
@@ -205,6 +210,13 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
             case R.id.actionbar_surf:
                 ActivityManager.startRandomSurfActivity((Activity) mContext);
                 break;
+            case R.id.actionbar_back:
+                if (isChooserMode) {
+                    if (thumbSelector != null) {
+                        thumbSelector.onCancel();
+                    }
+                }
+                break;
         }
     }
 
@@ -316,7 +328,10 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     @Override
     public void initActionbar(ActionBar actionBar) {
         actionBar.clearActionIcon();
-        if (!isChooserMode) {
+        if (isChooserMode) {
+            actionBar.addBackIcon();
+        }
+        else {
             actionBar.addMenuIcon();
             actionBar.addSurfIcon();
             actionBar.addRefreshIcon();
@@ -391,19 +406,21 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
     public void onThumbImageItemClick(View view, int position) {
 
         if (isChooserMode) {
-            Activity activity = (Activity) getContext();
-            activity.getIntent().putExtra(Constants.KEY_THUMBFOLDER_CHOOSE_CONTENT, mImageAdapter.getImagePath(position));
-            activity.setResult(0, activity.getIntent());
-            activity.finish();
+            if (thumbSelector != null) {
+                thumbSelector.onSelectImage(mImageAdapter.getImagePath(position));
+            }
         }
         else {
-            view.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.thumb_item_longclick));
             //showImage(view, position);
-            showImage(mImageAdapter.getImagePath(position));
+            showImage(view, mImageAdapter.getImagePath(position));
         }
     }
 
-    private void showImage(String path) {
+    private void showImage(View animView, String path) {
+        if (animView != null) {
+            animView.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.thumb_item_longclick));
+        }
+
         if (imageDialog == null) {
             imageDialog = new ShowImageDialog(mContext, null, 0);
         }
@@ -414,7 +431,10 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
 
     @Override
     public void onThumbImageItemLongClick(View view, int position) {
-        if (!isChooserMode) {
+        if (isChooserMode) {
+            showImage(view, mImageAdapter.getImagePath(position));
+        }
+        else  {
             if (mImageAdapter.isActionMode()) {
                 mImageAdapter.showActionMode(false);
             }
@@ -505,4 +525,7 @@ public abstract class ThumbPage implements IPage, IColorPage, OnThumbImageItemLi
         refreshCurrent();
     }
 
+    public void setThumbSelector(IThumbSelector thumbSelector) {
+        this.thumbSelector = thumbSelector;
+    }
 }

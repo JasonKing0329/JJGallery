@@ -98,9 +98,10 @@
             android:name=".gdb.GdbGuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/JJThemeLight.NoActionBar" />
-
-        <activity android:name=".gdb.view.game.SeasonActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".gdb.view.game.SeasonActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".gdb.view.game.CoachActivity"></activity>
     </application>
 
 </manifest>

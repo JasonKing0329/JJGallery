@@ -1,6 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.game;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Constants;
+import com.jing.app.jjgallery.service.image.SImageLoader;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbActivity;
 import com.king.lib.tool.ui.RippleFactory;
 import com.king.service.gdb.game.bean.SeasonBean;
@@ -17,7 +20,7 @@ import com.king.service.gdb.game.bean.SeasonBean;
  * Created by 景阳 on 2017/1/10.
  */
 
-public class SeasonEditFragment extends GameFragment implements View.OnClickListener {
+public class SeasonEditFragment extends GameEditFragment implements View.OnClickListener {
 
     public static final String KEY_INIT_WITH_DATA = "init_with_data";
     public static final String KEY_SEASON_ID = "season_id";
@@ -27,8 +30,6 @@ public class SeasonEditFragment extends GameFragment implements View.OnClickList
     private final int REQUEST_COACH3 = 203;
     private final int REQUEST_COACH4 = 204;
     private final int REQUEST_COVER = 205;
-
-    private ISeasonManager seasonManager;
 
     private TextView tvSequence;
     private TextView tvRule;
@@ -79,10 +80,11 @@ public class SeasonEditFragment extends GameFragment implements View.OnClickList
     private void initData(Bundle bundle) {
         if (bundle.getBoolean(KEY_INIT_WITH_DATA)) {
             int id = bundle.getInt(KEY_SEASON_ID);
-            seasonBean = seasonManager.getPresenter().getSeasonById(id);
+            seasonBean = gameManager.getPresenter().getSeasonById(id);
             tvRule.setText(seasonBean.getMatchRule() == 0 ? "default":String.valueOf(seasonBean.getMatchRule()));
             tvSequence.setText(String.valueOf(seasonBean.getSequence()));
             etName.setText(seasonBean.getName());
+            SImageLoader.getInstance().displayImage(seasonBean.getCoverPath(), ivCover);
             //FIXME init coach
         }
         else {
@@ -93,33 +95,28 @@ public class SeasonEditFragment extends GameFragment implements View.OnClickList
     }
 
     @Override
-    protected void onAttachActivity(Context context) {
-        seasonManager = (ISeasonManager) context;
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.season_edit_save:
                 String name = etName.getText().toString();
                 seasonBean.setName(name);
-                seasonManager.onSaveSeasonBean(seasonBean);
+                gameManager.onSaveData(seasonBean);
                 break;
             case R.id.season_edit_sequence:
                 break;
             case R.id.season_edit_rule:
                 break;
             case R.id.season_edit_coach1:
-                selectImage(REQUEST_COACH1);
+                selectCoach(REQUEST_COACH1);
                 break;
             case R.id.season_edit_coach2:
-                selectImage(REQUEST_COACH2);
+                selectCoach(REQUEST_COACH2);
                 break;
             case R.id.season_edit_coach3:
-                selectImage(REQUEST_COACH3);
+                selectCoach(REQUEST_COACH3);
                 break;
             case R.id.season_edit_coach4:
-                selectImage(REQUEST_COACH4);
+                selectCoach(REQUEST_COACH4);
                 break;
             case R.id.season_edit_cover:
                 selectImage(REQUEST_COVER);
@@ -127,8 +124,39 @@ public class SeasonEditFragment extends GameFragment implements View.OnClickList
         }
     }
 
+    private void selectCoach(int requestCode) {
+    }
+
     private void selectImage(int requestCode) {
         Intent intent = new Intent().setClass(getActivity(), ThumbActivity.class);
-        getActivity().startActivityForResult(intent, requestCode);
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_COACH1:
+                break;
+            case REQUEST_COACH2:
+                break;
+            case REQUEST_COACH3:
+                break;
+            case REQUEST_COACH4:
+                break;
+            case REQUEST_COVER:
+                if (resultCode == Activity.RESULT_OK) {
+                    setCover(data.getStringExtra(Constants.KEY_THUMBFOLDER_CHOOSE_CONTENT));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void setCover(String coverPath) {
+        DebugLog.e(coverPath);
+        seasonBean.setCoverPath(coverPath);
+        SImageLoader.getInstance().displayImage(coverPath, ivCover);
     }
 }

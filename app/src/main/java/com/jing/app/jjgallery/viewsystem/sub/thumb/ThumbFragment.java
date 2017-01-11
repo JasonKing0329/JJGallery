@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.sub.thumb;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -27,6 +28,11 @@ public abstract class ThumbFragment extends Fragment implements IFragment {
     private BasePresenter mPresenter;
     private ActionBar mActionbar;
 
+    /**
+     * thumb view仅作为选择器时的回调接口
+     */
+    protected IThumbSelector thumbSelector;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +47,14 @@ public abstract class ThumbFragment extends Fragment implements IFragment {
             mPage.initData();
         }
         return contentView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IThumbSelector) {
+            thumbSelector = (IThumbSelector) context;
+        }
     }
 
     protected abstract IPage createThumbPage(View contentView);

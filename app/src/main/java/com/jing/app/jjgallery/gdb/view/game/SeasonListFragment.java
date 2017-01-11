@@ -19,13 +19,11 @@ import java.util.List;
  * Created by 景阳 on 2017/1/10.
  */
 
-public class SeasonListFragment extends GameFragment implements FolderItemManager.FolderItemListener {
+public class SeasonListFragment extends GameListFragment implements FolderItemManager.FolderItemListener, IGameList<SeasonBean> {
 
     private List<SeasonBean> seasonList;
     private RecyclerView recyclerView;
     private SeasonListAdapter seasonListAdapter;
-
-    private ISeasonManager seasonManager;
 
     @Override
     protected int getContentView() {
@@ -51,13 +49,8 @@ public class SeasonListFragment extends GameFragment implements FolderItemManage
         initValue();
     }
 
-    @Override
-    protected void onAttachActivity(Context context) {
-        seasonManager = (ISeasonManager) context;
-    }
-
     private void initValue() {
-        seasonList = seasonManager.getPresenter().getSeasonList();
+        seasonList = gameManager.getPresenter().getSeasonList();
         seasonListAdapter = new SeasonListAdapter(seasonList);
         seasonListAdapter.setFolderItemListener(this);
         recyclerView.setAdapter(seasonListAdapter);
@@ -85,7 +78,7 @@ public class SeasonListFragment extends GameFragment implements FolderItemManage
 
     @Override
     public void onFolderSetting(SeasonBean seasonBean) {
-        seasonManager.updateSeason(seasonBean);
+        gameManager.updateData(seasonBean);
     }
 
     /**
@@ -116,5 +109,15 @@ public class SeasonListFragment extends GameFragment implements FolderItemManage
         else {
             seasonListAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onDataUpdated(SeasonBean data) {
+
+    }
+
+    @Override
+    public IGameList getIGameList() {
+        return this;
     }
 }

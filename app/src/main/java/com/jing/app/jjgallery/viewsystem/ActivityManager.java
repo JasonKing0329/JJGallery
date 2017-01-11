@@ -13,7 +13,6 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.GdbGuideActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -73,6 +72,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
+//        Intent intent = new Intent().setClass(from, GdbGuideActivity.class);
         Intent intent = new Intent().setClass(from, SeasonActivity.class);
         if (bundle == null) {
             from.startActivity(intent);

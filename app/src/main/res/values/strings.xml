@@ -314,6 +314,9 @@
     <string name="crop_area_error">Please adjust crop area!</string>
     <string name="move_src_to_src">Target path is same with origin path, couldn\'t support to move: </string>
     <string name="thumb_folder_upper">Upper folder</string>
+    <string name="thumb_folder">Folder</string>
+    <string name="thumb_order">Order</string>
+    <string name="thumb_select_title">Select image</string>
     <!--************************** full screen **************************-->
     <string name="fullscreen_setting_random_repeat">Random repeatedly</string>
     <string name="fullscreen_setting_sequence">Sequence</string>

@@ -299,6 +299,9 @@
     <string name="crop_area_error">请调整裁剪区域！</string>
     <string name="move_src_to_src">源目录与目标目录相同，无法移动： </string>
     <string name="thumb_folder_upper">返回上级</string>
+    <string name="thumb_folder">文件目录</string>
+    <string name="thumb_order">我的列表</string>
+    <string name="thumb_select_title">选择图片</string>
     <!--************************** full screen **************************-->
     <string name="fullscreen_setting_random_repeat">随机可重复</string>
     <string name="fullscreen_setting_sequence">顺序</string>

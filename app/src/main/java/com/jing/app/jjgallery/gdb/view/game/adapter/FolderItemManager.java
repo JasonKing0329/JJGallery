@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.king.lib.tool.ui.RippleFactory;
 import com.king.service.gdb.game.bean.SeasonBean;
 
@@ -84,6 +85,7 @@ public class FolderItemManager extends AbstractFolderManager {
     protected void bindViewData(SeasonBean seasonBean) {
         this.seasonBean = seasonBean;
         titleView.setText(seasonBean.getName());
+        SImageLoader.getInstance().displayImage(seasonBean.getCoverPath(), bkView);
     }
 
     @Override
