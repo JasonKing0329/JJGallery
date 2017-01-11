@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/gdb_season_item_expand_height" >
 
+    <ImageView
+        android:id="@+id/season_item_detail_bk"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:id="@+id/layout_right"
         android:layout_width="wrap_content"
@@ -19,14 +25,16 @@
                 android:layout_width="@dimen/season_function_btn_height"
                 android:layout_height="@dimen/season_function_btn_height"
                 android:background="#576069"
-                android:text="Battle" />
+                android:text="Battle"
+                android:textSize="@dimen/season_detail_name"/>
             <TextView
                 style="@style/GdbSeasonItemBtn"
                 android:id="@+id/season_item_cross"
                 android:layout_width="@dimen/season_function_btn_height"
                 android:layout_height="@dimen/season_function_btn_height"
                 android:background="#adc3c0"
-                android:text="Cross" />
+                android:text="Cross"
+                android:textSize="@dimen/season_detail_name"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -38,14 +46,16 @@
                 android:layout_width="@dimen/season_function_btn_height"
                 android:layout_height="@dimen/season_function_btn_height"
                 android:background="#aaaaaa"
-                android:text="Final" />
+                android:text="Final"
+                android:textSize="@dimen/season_detail_name"/>
             <TextView
                 style="@style/GdbSeasonItemBtn"
                 android:id="@+id/season_item_back"
                 android:layout_width="@dimen/season_function_btn_height"
                 android:layout_height="@dimen/season_function_btn_height"
                 android:background="#b9e3d9"
-                android:text="Back" />
+                android:text="Back"
+                android:textSize="@dimen/season_detail_name"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -66,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Group" />
+            android:text="Group"
+            android:textSize="@dimen/season_detail_name" />
     </LinearLayout>
 </RelativeLayout>

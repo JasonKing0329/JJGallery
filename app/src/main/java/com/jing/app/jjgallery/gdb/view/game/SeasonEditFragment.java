@@ -78,7 +78,7 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
     }
 
     private void initData(Bundle bundle) {
-        if (bundle.getBoolean(KEY_INIT_WITH_DATA)) {
+        if (bundle != null && bundle.getBoolean(KEY_INIT_WITH_DATA)) {
             int id = bundle.getInt(KEY_SEASON_ID);
             seasonBean = gameManager.getPresenter().getSeasonById(id);
             tvRule.setText(seasonBean.getMatchRule() == 0 ? "default":String.valueOf(seasonBean.getMatchRule()));

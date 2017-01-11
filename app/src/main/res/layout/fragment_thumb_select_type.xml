@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="?attr/selectableItemBackgroundBorderless">
+            android:background="?attr/selectableItemBackground">
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"

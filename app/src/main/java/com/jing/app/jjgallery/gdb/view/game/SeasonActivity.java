@@ -55,4 +55,9 @@ public class SeasonActivity extends GameActivity implements IGameManager<SeasonB
         addSeason(data);
     }
 
+    @Override
+    public GamePresenter getPresenter() {
+        return gamePresenter;
+    }
+
 }

@@ -53,6 +53,8 @@
     <color name="gdb_guide_sec_normal">#66000000</color>
     <color name="gdb_guide_sec_press">#66ffffff</color>
     <color name="gdb_season_item_bk">#ffffffff</color>
+    <color name="gdb_season_function_btn_bg">#66000000</color>
+    <color name="gdb_season_function_btn_ripple">#99eeeeee</color>
 
     <color name="dialog_background">#eeeeeeee</color>
     <color name="dialog_background_dark_theme">#e51a3c49</color>

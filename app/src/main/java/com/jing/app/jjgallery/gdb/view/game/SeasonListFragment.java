@@ -86,7 +86,8 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
      * directly update bean instead of re-query from database
      * @param bean
      */
-    public void onSeasonUpdated(SeasonBean bean) {
+    @Override
+    public void onDataUpdated(SeasonBean bean) {
         boolean isNewSeason = true;
         if (seasonList != null) {
             for (int i = 0; i < seasonList.size(); i ++) {
@@ -109,11 +110,6 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
         else {
             seasonListAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void onDataUpdated(SeasonBean data) {
-
     }
 
     @Override

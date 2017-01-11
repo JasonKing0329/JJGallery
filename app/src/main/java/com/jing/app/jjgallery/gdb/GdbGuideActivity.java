@@ -257,6 +257,7 @@ public class GdbGuideActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.gdb_guide_game_text:
+                ActivityManager.startGDBGameActivity(this, null);
                 break;
             case R.id.gdb_guide_star_text:
                 ActivityManager.startGDBStarListActivity(this, null);

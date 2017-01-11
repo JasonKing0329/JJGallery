@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.gdb.GdbGuideActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -72,8 +73,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-//        Intent intent = new Intent().setClass(from, GdbGuideActivity.class);
-        Intent intent = new Intent().setClass(from, SeasonActivity.class);
+        Intent intent = new Intent().setClass(from, GdbGuideActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);
@@ -108,6 +108,22 @@ public class ActivityManager {
         }
         Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
         intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.RECORD);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
+        return true;
+    }
+
+    public static boolean startGDBGameActivity(Activity from, Bundle bundle) {
+        if (!new File(ConfManager.GDB_GAME_DB_PATH).exists()) {
+            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
+            return false;
+        }
+        Intent intent = new Intent().setClass(from, SeasonActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

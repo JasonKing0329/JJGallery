@@ -33,6 +33,7 @@ public class FolderItemManager extends AbstractFolderManager {
 
     private LinearLayout groupButton;
     private TextView backButton, battleButton, crossButton, finalButton;
+    private ImageView detailBkView;
 
     private SeasonBean seasonBean;
     private FolderItemListener folderItemListener;
@@ -54,6 +55,7 @@ public class FolderItemManager extends AbstractFolderManager {
         battleButton = (TextView) detailGroup.findViewById(R.id.season_item_battle);
         crossButton = (TextView) detailGroup.findViewById(R.id.season_item_cross);
         finalButton = (TextView) detailGroup.findViewById(R.id.season_item_final);
+        detailBkView = (ImageView) detailGroup.findViewById(R.id.season_item_detail_bk);
         groupButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
         battleButton.setOnClickListener(this);
@@ -66,26 +68,27 @@ public class FolderItemManager extends AbstractFolderManager {
         titleView.setBackground(RippleFactory.getBorderlessRippleBackground(Color.rgb(0xbb, 0xbb, 0xbb)));
         settingView.setBackground(RippleFactory.getBorderlessRippleBackground(Color.rgb(0xbb, 0xbb, 0xbb)));
         groupButton.setBackground(RippleFactory.getRippleBackground(
-                mContext.getResources().getColor(R.color.actionbar_bk_blue),
-                mContext.getResources().getColor(R.color.ripple_material_light)));
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_bg),
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_ripple)));
         battleButton.setBackground(RippleFactory.getRippleBackground(
-                mContext.getResources().getColor(R.color.actionbar_bk_orange),
-                mContext.getResources().getColor(R.color.ripple_material_light)));
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_bg),
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_ripple)));
         crossButton.setBackground(RippleFactory.getRippleBackground(
-                mContext.getResources().getColor(R.color.actionbar_bk_lightgreen),
-                mContext.getResources().getColor(R.color.ripple_material_light)));
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_bg),
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_ripple)));
         finalButton.setBackground(RippleFactory.getRippleBackground(
-                mContext.getResources().getColor(R.color.colorPrimary),
-                mContext.getResources().getColor(R.color.ripple_material_light)));
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_bg),
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_ripple)));
         backButton.setBackground(RippleFactory.getRippleBackground(
-                Color.rgb(0xf7, 0x44, 0x61),
-                mContext.getResources().getColor(R.color.ripple_material_light)));
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_bg),
+                mContext.getResources().getColor(R.color.gdb_season_function_btn_ripple)));
     }
 
     protected void bindViewData(SeasonBean seasonBean) {
         this.seasonBean = seasonBean;
         titleView.setText(seasonBean.getName());
         SImageLoader.getInstance().displayImage(seasonBean.getCoverPath(), bkView);
+        SImageLoader.getInstance().displayImage(seasonBean.getCoverPath(), detailBkView);
     }
 
     @Override
