@@ -33,27 +33,37 @@
                 android:background="@color/white"
                 android:gravity="center_vertical">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:text="Match sequence"
                     android:textSize="18dp"
                     android:textColor="#333333"/>
+                <ImageView
+                    android:id="@+id/season_edit_sequence_minus"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_remove_grey_500_36dp"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
                 <TextView
                     android:id="@+id/season_edit_sequence_tv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="right"
                     android:text="1"
                     android:textSize="18dp"
                     android:textColor="#999999"/>
                 <ImageView
+                    android:id="@+id/season_edit_sequence_add"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_expand_more_grey_500_36dp"
+                    android:src="@drawable/ic_add_grey_500_36dp"
                     android:scaleType="fitCenter"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
             </LinearLayout>
 
             <TextView
@@ -140,6 +150,7 @@
                                 android:id="@+id/season_edit_coach1"
                                 android:layout_width="@dimen/season_edit_coach_size"
                                 android:layout_height="@dimen/season_edit_coach_size"
+                                android:scaleType="fitXY"
                                 android:src="@drawable/default_coach"/>
                         </LinearLayout>
                         <LinearLayout
@@ -151,6 +162,7 @@
                                 android:id="@+id/season_edit_coach2"
                                 android:layout_width="@dimen/season_edit_coach_size"
                                 android:layout_height="@dimen/season_edit_coach_size"
+                                android:scaleType="fitXY"
                                 android:src="@drawable/default_coach"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -168,6 +180,7 @@
                                 android:id="@+id/season_edit_coach3"
                                 android:layout_width="@dimen/season_edit_coach_size"
                                 android:layout_height="@dimen/season_edit_coach_size"
+                                android:scaleType="fitXY"
                                 android:src="@drawable/default_coach"/>
                         </LinearLayout>
                         <LinearLayout
@@ -179,6 +192,7 @@
                                 android:id="@+id/season_edit_coach4"
                                 android:layout_width="@dimen/season_edit_coach_size"
                                 android:layout_height="@dimen/season_edit_coach_size"
+                                android:scaleType="fitXY"
                                 android:src="@drawable/default_coach"/>
                         </LinearLayout>
                     </LinearLayout>

@@ -101,7 +101,8 @@
         <activity
             android:name=".gdb.view.game.SeasonActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".gdb.view.game.CoachActivity"></activity>
+        <activity android:name=".gdb.view.game.CoachActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

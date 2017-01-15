@@ -12,18 +12,17 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbActivity;
 import com.king.lib.tool.ui.RippleFactory;
+import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.SeasonBean;
 
 /**
  * Created by 景阳 on 2017/1/10.
  */
 
-public class SeasonEditFragment extends GameEditFragment implements View.OnClickListener {
-
-    public static final String KEY_INIT_WITH_DATA = "init_with_data";
-    public static final String KEY_SEASON_ID = "season_id";
+public class SeasonEditFragment extends GameEditFragment {
 
     private final int REQUEST_COACH1 = 201;
     private final int REQUEST_COACH2 = 202;
@@ -39,7 +38,6 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
     private ImageView ivCoach3;
     private ImageView ivCoach4;
     private ImageView ivCover;
-    private TextView tvSave;
 
     private SeasonBean seasonBean;
 
@@ -49,9 +47,13 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
     }
 
     @Override
-    protected void initView(View contentView, Bundle bundle) {
+    protected View getActionSaveView(View contentView) {
+        return contentView.findViewById(R.id.season_edit_save);
+    }
 
-        tvSave = (TextView) contentView.findViewById(R.id.season_edit_save);
+    @Override
+    protected void initSubView(View contentView, Bundle bundle) {
+
         tvSequence = (TextView) contentView.findViewById(R.id.season_edit_sequence_tv);
         tvRule = (TextView) contentView.findViewById(R.id.season_edit_rule_tv);
         etName = (EditText) contentView.findViewById(R.id.season_edit_name);
@@ -60,16 +62,16 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
         ivCoach3 = (ImageView) contentView.findViewById(R.id.season_edit_coach3);
         ivCoach4 = (ImageView) contentView.findViewById(R.id.season_edit_coach4);
         ivCover = (ImageView) contentView.findViewById(R.id.season_edit_cover);
-        tvSave.setOnClickListener(this);
         ivCoach1.setOnClickListener(this);
         ivCoach2.setOnClickListener(this);
         ivCoach3.setOnClickListener(this);
         ivCoach4.setOnClickListener(this);
         ivCover.setOnClickListener(this);
-        contentView.findViewById(R.id.season_edit_sequence).setOnClickListener(this);
+        contentView.findViewById(R.id.season_edit_sequence_add).setOnClickListener(this);
+        contentView.findViewById(R.id.season_edit_sequence_minus).setOnClickListener(this);
         contentView.findViewById(R.id.season_edit_rule).setOnClickListener(this);
 
-        tvSave.setBackground(RippleFactory.getRippleBackground(
+        actionSave.setBackground(RippleFactory.getRippleBackground(
                 getResources().getColor(R.color.colorPrimary)
                 , getResources().getColor(R.color.darkgray)
         ));
@@ -79,30 +81,48 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
 
     private void initData(Bundle bundle) {
         if (bundle != null && bundle.getBoolean(KEY_INIT_WITH_DATA)) {
-            int id = bundle.getInt(KEY_SEASON_ID);
+            int id = bundle.getInt(KEY_ID);
             seasonBean = gameManager.getPresenter().getSeasonById(id);
             tvRule.setText(seasonBean.getMatchRule() == 0 ? "default":String.valueOf(seasonBean.getMatchRule()));
             tvSequence.setText(String.valueOf(seasonBean.getSequence()));
             etName.setText(seasonBean.getName());
             SImageLoader.getInstance().displayImage(seasonBean.getCoverPath(), ivCover);
-            //FIXME init coach
+
+            CoachBean coach1 = gameManager.getPresenter().getCoachById(seasonBean.getCoachId1());
+            CoachBean coach2 = gameManager.getPresenter().getCoachById(seasonBean.getCoachId2());
+            CoachBean coach3 = gameManager.getPresenter().getCoachById(seasonBean.getCoachId3());
+            CoachBean coach4 = gameManager.getPresenter().getCoachById(seasonBean.getCoachId4());
+            SImageLoader.getInstance().displayImage(coach1.getImagePath(), ivCoach1);
+            SImageLoader.getInstance().displayImage(coach2.getImagePath(), ivCoach2);
+            SImageLoader.getInstance().displayImage(coach3.getImagePath(), ivCoach3);
+            SImageLoader.getInstance().displayImage(coach4.getImagePath(), ivCoach4);
         }
         else {
             seasonBean = new SeasonBean();
             seasonBean.setSequence(1);
             seasonBean.setMatchRule(0);
+            seasonBean.setCoachId1(-1);
+            seasonBean.setCoachId1(-1);
+            seasonBean.setCoachId1(-1);
+            seasonBean.setCoachId1(-1);
         }
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
-            case R.id.season_edit_save:
-                String name = etName.getText().toString();
-                seasonBean.setName(name);
-                gameManager.onSaveData(seasonBean);
+            case R.id.season_edit_sequence_add:
+                int sequence = Integer.parseInt(tvSequence.getText().toString());
+                sequence ++;
+                tvSequence.setText(String.valueOf(sequence));
                 break;
-            case R.id.season_edit_sequence:
+            case R.id.season_edit_sequence_minus:
+                sequence = Integer.parseInt(tvSequence.getText().toString());
+                if (sequence > 1) {
+                    sequence --;
+                    tvSequence.setText(String.valueOf(sequence));
+                }
                 break;
             case R.id.season_edit_rule:
                 break;
@@ -124,7 +144,17 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
         }
     }
 
+    @Override
+    protected void onActionSave() {
+        String name = etName.getText().toString();
+        seasonBean.setName(name);
+        seasonBean.setSequence(Integer.parseInt(tvSequence.getText().toString()));
+        gameManager.onSaveData(seasonBean);
+    }
+
     private void selectCoach(int requestCode) {
+        Intent intent = new Intent().setClass(getActivity(), CoachActivity.class);
+        startActivityForResult(intent, requestCode);
     }
 
     private void selectImage(int requestCode) {
@@ -137,12 +167,24 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_COACH1:
+                if (resultCode == Activity.RESULT_OK) {
+                    setCoach(ivCoach1, data.getIntExtra(CoachActivity.RESP_COACH_ID, -1));
+                }
                 break;
             case REQUEST_COACH2:
+                if (resultCode == Activity.RESULT_OK) {
+                    setCoach(ivCoach2, data.getIntExtra(CoachActivity.RESP_COACH_ID, -1));
+                }
                 break;
             case REQUEST_COACH3:
+                if (resultCode == Activity.RESULT_OK) {
+                    setCoach(ivCoach3, data.getIntExtra(CoachActivity.RESP_COACH_ID, -1));
+                }
                 break;
             case REQUEST_COACH4:
+                if (resultCode == Activity.RESULT_OK) {
+                    setCoach(ivCoach4, data.getIntExtra(CoachActivity.RESP_COACH_ID, -1));
+                }
                 break;
             case REQUEST_COVER:
                 if (resultCode == Activity.RESULT_OK) {
@@ -152,6 +194,35 @@ public class SeasonEditFragment extends GameEditFragment implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private void setCoach(ImageView imageView, int coachId) {
+        // 已选coach不能重复选择
+        if (coachIsSelected(coachId)) {
+            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_game_repeat_coach), ProgressProvider.TOAST_WARNING);
+            return;
+        }
+        CoachBean coach = gameManager.getPresenter().getCoachById(coachId);
+        if (coach != null) {
+            if (imageView == ivCoach1) {
+                seasonBean.setCoachId1(coachId);
+            }
+            else if (imageView == ivCoach2) {
+                seasonBean.setCoachId2(coachId);
+            }
+            else if (imageView == ivCoach3) {
+                seasonBean.setCoachId3(coachId);
+            }
+            else if (imageView == ivCoach4) {
+                seasonBean.setCoachId4(coachId);
+            }
+            SImageLoader.getInstance().displayImage(coach.getImagePath(), imageView);
+        }
+    }
+
+    private boolean coachIsSelected(int coachId) {
+        return seasonBean.getCoachId1() == coachId || seasonBean.getCoachId2() == coachId
+                || seasonBean.getCoachId3() == coachId || seasonBean.getCoachId4() == coachId;
     }
 
     public void setCover(String coverPath) {

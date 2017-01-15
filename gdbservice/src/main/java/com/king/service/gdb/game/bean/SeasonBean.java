@@ -4,9 +4,8 @@ package com.king.service.gdb.game.bean;
  * Created by 景阳 on 2017/1/10.
  */
 
-public class SeasonBean {
+public class SeasonBean extends GameBean {
 
-    private int id;
     private int sequence;
     private String name;
     private int matchRule;
@@ -15,18 +14,6 @@ public class SeasonBean {
     private int coachId3;
     private int coachId4;
     private String coverPath;
-
-    public SeasonBean() {
-        id = -1;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getSequence() {
         return sequence;

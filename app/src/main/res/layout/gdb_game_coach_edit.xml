@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white_bg"
+    android:scrollbars="none">
+
+    <TextView
+        android:id="@+id/coach_edit_save"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="Save"
+        android:textStyle="bold"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/coach_edit_save">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:text="Name"
+                android:textSize="18dp"
+                android:textColor="#333333"/>
+            <EditText
+                android:id="@+id/coach_edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:hint="Input season name"
+                android:textSize="16dp"
+                android:textColor="#333333"/>
+
+            <LinearLayout
+                android:id="@+id/coach_edit_type_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="Type"
+                    android:textSize="18dp"
+                    android:textColor="#333333"/>
+                <TextView
+                    android:id="@+id/coach_edit_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Half"
+                    android:textSize="18dp"
+                    android:textColor="#999999"/>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_navigate_next_grey_500_36dp"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="15dp"
+                android:text="Image"
+                android:textSize="18dp"
+                android:textColor="#333333"/>
+            <ImageView
+                android:id="@+id/coach_edit_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/season_edit_cover_height"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:src="@drawable/default_cover"
+                android:scaleType="fitXY"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="Season count"
+                    android:textSize="18dp"
+                    android:textColor="#333333"/>
+                <TextView
+                    android:id="@+id/coach_edit_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="0"
+                    android:textSize="18dp"
+                    android:textColor="#999999"/>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_expand_more_grey_500_36dp"
+                    android:scaleType="fitCenter"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <com.jing.app.jjgallery.gdb.view.game.custom.CoachSeasonView
+                android:id="@+id/coach_seasonview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/gdb_coach_item_size"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

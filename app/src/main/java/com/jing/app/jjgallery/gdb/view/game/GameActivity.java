@@ -31,7 +31,7 @@ public abstract class GameActivity extends BaseActivity {
 
     @Override
     public void initController() {
-
+        initSubController();
     }
 
     @Override
@@ -42,6 +42,8 @@ public abstract class GameActivity extends BaseActivity {
         showListPage();
         initSubView();
     }
+
+    protected abstract void initSubController();
 
     protected abstract void initSubView();
 
@@ -69,7 +71,7 @@ public abstract class GameActivity extends BaseActivity {
     public void onIconClick(View view) {
         switch (view.getId()) {
             case R.id.actionbar_add:
-                addSeason(null);
+                addNewData(null);
                 break;
         }
     }
@@ -104,7 +106,7 @@ public abstract class GameActivity extends BaseActivity {
 
     protected abstract GameListFragment createListFragment();
 
-    protected void addSeason(Bundle data) {
+    protected void addNewData(Bundle data) {
         if (editFragment == null) {
             editFragment = createEditFragment();
         }
@@ -112,13 +114,13 @@ public abstract class GameActivity extends BaseActivity {
             editFragment.setArguments(data);
         }
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.season_fragment, editFragment, "SeasonEditFragment").hide(listFragment);
+        ft.add(R.id.season_fragment, editFragment, "GameEditFragment").hide(listFragment);
         ft.commit();
         curFragment = editFragment;
 
         mActionBar.clearActionIcon();
         mActionBar.addBackIcon();
-        mActionBar.setTitle("Edit season");
+        mActionBar.setTitle("Edit");
     }
 
     protected abstract GameEditFragment createEditFragment();

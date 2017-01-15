@@ -426,4 +426,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--************************** game **************************-->
+    <string name="gdb_game_repeat_coach">Repeat coach selected, please re-select</string>
 </resources>

@@ -397,4 +397,7 @@
     <!--************************** upload **************************-->
     <string name="upload_success">上传成功</string>
     <string name="upload_fail">上传失败</string>
+
+    <!--************************** game **************************-->
+    <string name="gdb_game_repeat_coach">Coach已选择，请重新选择</string>
 </resources>

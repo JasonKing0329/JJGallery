@@ -15,8 +15,7 @@ public class SeasonActivity extends GameActivity implements IGameManager<SeasonB
     private GamePresenter gamePresenter;
 
     @Override
-    public void initController() {
-        super.initController();
+    public void initSubController() {
         gamePresenter = new GamePresenter();
     }
 
@@ -50,9 +49,9 @@ public class SeasonActivity extends GameActivity implements IGameManager<SeasonB
         }
         else {
             data.putBoolean(SeasonEditFragment.KEY_INIT_WITH_DATA, true);
-            data.putInt(SeasonEditFragment.KEY_SEASON_ID, seasonBean.getId());
+            data.putInt(SeasonEditFragment.KEY_ID, seasonBean.getId());
         }
-        addSeason(data);
+        addNewData(data);
     }
 
     @Override

@@ -293,6 +293,7 @@
     <dimen name="folder_cover_title_width">100dp</dimen>
     <dimen name="folder_icon_setting_size">50dp</dimen>
     <dimen name="season_detail_name">16dp</dimen>
+    <dimen name="gdb_coach_item_size">120dp</dimen>
 
     <!-- wave side bar -->
     <dimen name="book_touch_start_range">30dp</dimen>

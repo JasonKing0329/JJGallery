@@ -1,9 +1,10 @@
-package com.king.service.gdb.game;
+package com.king.service.gdb.game.dao;
 
+import com.king.service.gdb.game.Constants;
+import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.SeasonBean;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,44 +12,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.list;
-
 /**
  * Created by 景阳 on 2017/1/10.
  */
 
-public class GameDao {
-    private final String TABLE_SEQUENCE = "sqlite_sequence";
-    private final String TABLE_SEASON = "season";
-    private final String TABLE_COACH = "coach";
-    private final String TABLE_PLAYER = "player";
-    private final String TABLE_GROUP = "group";
-    private final String TABLE_BATTLE = "battle";
-    private final String TABLE_BATTLE_RESULT = "battle_result";
-    private final String TABLE_CROSS = "cross";
-    private final String TABLE_CROSS_RESULT = "cross_result";
-
-    public GameDao() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Connection connect(String dbFile) {
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
+public class SeasonDao {
 
     public List<SeasonBean> querySeasonList(Connection connection) {
         List<SeasonBean> list = new ArrayList<>();
-        String sql = "SELECT * FROM " + TABLE_SEASON;
+        String sql = "SELECT * FROM " + Constants.TABLE_SEASON;
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -73,7 +45,7 @@ public class GameDao {
 
     public SeasonBean querySeansonBean(int id, Connection connection) {
         SeasonBean bean = null;
-        String sql = "SELECT * FROM " + TABLE_SEASON + " WHERE _id=" + id;
+        String sql = "SELECT * FROM " + Constants.TABLE_SEASON + " WHERE _id=" + id;
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -111,8 +83,9 @@ public class GameDao {
 
     public boolean updateSeason(SeasonBean seasonBean, Connection connection) {
 
+        boolean result = false;
         StringBuffer buffer = new StringBuffer("UPDATE ");
-        buffer.append(TABLE_SEASON).append(" SET _sequence=").append(seasonBean.getSequence())
+        buffer.append(Constants.TABLE_SEASON).append(" SET _sequence=").append(seasonBean.getSequence())
                 .append(" ,_name='").append(seasonBean.getName())
                 .append("', _matchRule=").append(seasonBean.getMatchRule())
                 .append(", _coachId1=").append(seasonBean.getCoachId1())
@@ -125,7 +98,7 @@ public class GameDao {
         try {
             stmt = connection.createStatement();
             stmt.executeUpdate(buffer.toString());
-            return true;
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
@@ -139,11 +112,11 @@ public class GameDao {
                 e.printStackTrace();
             }
         }
-        return false;
+        return result;
     }
 
     public boolean insertSeason(SeasonBean seasonBean, Connection connection) {
-        String sql = "INSERT INTO " + TABLE_SEASON +
+        String sql = "INSERT INTO " + Constants.TABLE_SEASON +
                 "(_sequence,_name,_matchRule,_coachId1,_coachId2,_coachId3,_coachId4,_coverPath) VALUES(?,?,?,?,?,?,?,?)";
         PreparedStatement stmt = null;
         try {
@@ -175,7 +148,7 @@ public class GameDao {
     }
 
     public int queryLastSeasonSequence(Connection connection) {
-        String sql = "SELECT * FROM " + TABLE_SEQUENCE + " WHERE name='" + TABLE_SEASON + "'";
+        String sql = "SELECT * FROM " + Constants.TABLE_SEQUENCE + " WHERE name='" + Constants.TABLE_SEASON + "'";
         Statement statement = null;
         int id = 0;
         try {
@@ -196,5 +169,41 @@ public class GameDao {
             }
         }
         return id;
+    }
+
+    public String queryCoachSeasonIds(CoachBean coach, Connection connection) {
+        String seasonIds = null;
+        String sql = "SELECT _id FROM " + Constants.TABLE_SEASON
+                + " WHERE _coachId1=" + coach.getId()
+                + " OR _coachId2=" + coach.getId()
+                + " OR _coachId3=" + coach.getId()
+                + " OR _coachId4=" + coach.getId();
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = stmt.executeQuery(sql);
+            int count = 0;
+            while (set.next()) {
+                if (seasonIds == null) {
+                    seasonIds = String.valueOf(set.getInt(1));
+                }
+                else {
+                    seasonIds = seasonIds.concat(",").concat(String.valueOf(set.getInt(1)));
+                }
+                count ++;
+            }
+            coach.setSeasonCount(count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return seasonIds;
     }
 }
