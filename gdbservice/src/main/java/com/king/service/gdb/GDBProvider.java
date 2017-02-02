@@ -102,6 +102,24 @@ public class GDBProvider {
     }
 
     /**
+     * 查询star
+     * @param name
+     * @return
+     */
+    public Star queryStarByName(String name) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            Star star = sqliteDao.queryStarByName(SqlConnection.getInstance().getConnection(), name);
+            return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * 查询所有的record
      * @return
      */

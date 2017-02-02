@@ -12,5 +12,7 @@ public interface IGameManager<T> {
 
     void updateData(T data);
 
+    void deleteData(T data);
+
     GamePresenter getPresenter();
 }

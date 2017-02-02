@@ -25,6 +25,7 @@ public class FolderItemManager extends AbstractFolderManager {
         void onFinal(SeasonBean bean);
         void onGroup(SeasonBean bean);
         void onFolderSetting(SeasonBean seasonBean);
+        void onFolderDelete(SeasonBean seasonBean);
     }
 
     private TextView titleView;
@@ -62,6 +63,7 @@ public class FolderItemManager extends AbstractFolderManager {
         crossButton.setOnClickListener(this);
         finalButton.setOnClickListener(this);
         settingView.setOnClickListener(this);
+        coverGroup.findViewById(R.id.season_cover_delete).setOnClickListener(this);
 
         mFoldableLayout.setupViews(coverGroup, detailGroup, coverGroup.getContext().getResources().getDimensionPixelSize(R.dimen.gdb_season_item_height));
 
@@ -101,6 +103,11 @@ public class FolderItemManager extends AbstractFolderManager {
             case R.id.season_cover_setting:
                 if (folderItemListener != null) {
                     folderItemListener.onFolderSetting(seasonBean);
+                }
+                break;
+            case R.id.season_cover_delete:
+                if (folderItemListener != null) {
+                    folderItemListener.onFolderDelete(seasonBean);
                 }
                 break;
             case R.id.season_item_group:

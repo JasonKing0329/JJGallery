@@ -31,4 +31,15 @@
         android:scaleType="fitXY"
         android:padding="10dp" />
 
+    <ImageView
+        android:id="@+id/season_cover_delete"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/season_cover_setting"
+        android:src="@drawable/ic_delete_white_36dp"
+        android:layout_width="@dimen/folder_icon_setting_size"
+        android:layout_height="@dimen/folder_icon_setting_size"
+        android:scaleType="fitXY"
+        android:padding="10dp"
+        android:layout_marginRight="5dp"/>
+
 </RelativeLayout>

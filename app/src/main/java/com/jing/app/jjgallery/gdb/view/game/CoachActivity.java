@@ -74,6 +74,11 @@ public class CoachActivity extends GameActivity implements ICoachManager {
     }
 
     @Override
+    public void deleteData(CoachBean data) {
+
+    }
+
+    @Override
     public GamePresenter getPresenter() {
         return gamePresenter;
     }

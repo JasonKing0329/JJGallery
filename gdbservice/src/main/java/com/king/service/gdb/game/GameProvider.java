@@ -4,8 +4,12 @@ import android.text.TextUtils;
 
 import com.king.service.gdb.SqlConnection;
 import com.king.service.gdb.game.bean.CoachBean;
+import com.king.service.gdb.game.bean.GroupBean;
+import com.king.service.gdb.game.bean.PlayerBean;
 import com.king.service.gdb.game.bean.SeasonBean;
 import com.king.service.gdb.game.dao.CoachDao;
+import com.king.service.gdb.game.dao.GroupDao;
+import com.king.service.gdb.game.dao.PlayerDao;
 import com.king.service.gdb.game.dao.SeasonDao;
 
 import java.util.ArrayList;
@@ -162,4 +166,127 @@ public class GameProvider {
         return false;
     }
 
+    /**
+     * query group data
+     * @param seasonId
+     * @return
+     */
+    public List<GroupBean> getGroupList(int seasonId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new GroupDao().queryGroupList(seasonId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * query player
+     * @param playerId
+     * @return
+     */
+    public PlayerBean getPlayerById(int playerId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new PlayerDao().queryPlayerBean(playerId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * delete season
+     * @param seasonId
+     */
+    public void deleteSeason(int seasonId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new SeasonDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    /**
+     * insert or update player
+     * @param bean
+     * @param type
+     * @return
+     */
+    public int savePlayer(PlayerBean bean, int type) {
+        int id = -1;
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            PlayerDao playerDao = new PlayerDao();
+            PlayerBean player = playerDao.queryPlayerBean(bean.getName(), SqlConnection.getInstance().getConnection());
+            // insert as new item
+            if (player == null) {
+                playerDao.insertPlayer(bean, SqlConnection.getInstance().getConnection());
+                id = playerDao.queryLastPlayerSequence(SqlConnection.getInstance().getConnection());
+            }
+            // update item data
+            else {
+                id = player.getId();
+                playerDao.updatePlayer(bean, type, SqlConnection.getInstance().getConnection());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return id;
+    }
+
+    /**
+     * insert group data
+     * @param bean
+     */
+    public void insertGroupBean(GroupBean bean) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new GroupDao().inserGroupBean(bean, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    /**
+     * query all group bean data
+     * @return
+     */
+    public List<GroupBean> getGroupBeanList() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new GroupDao().queryGroupBeanList(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    public void deletePlayer(int playerId, int seasonId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            // 在player表中删除
+            new PlayerDao().deletePlayer(playerId, SqlConnection.getInstance().getConnection());
+            // 在_group表中删除对应season的player
+            new GroupDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
 }

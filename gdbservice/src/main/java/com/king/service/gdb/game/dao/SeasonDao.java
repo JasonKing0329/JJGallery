@@ -206,4 +206,14 @@ public class SeasonDao {
         }
         return seasonIds;
     }
+
+    public void deleteSeason(int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_SEASON + " WHERE _id=" + seasonId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -149,4 +149,30 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="GdbGroupList">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:background">@drawable/shape_gdb_game_group_listbg</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="GdbGroupDownIconLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="GdbGroupDownIcon">
+        <item name="android:layout_width">@dimen/gdb_game_group_down_icon_size</item>
+        <item name="android:layout_height">@dimen/gdb_game_group_down_icon_size</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/icon_download</item>
+    </style>
+
 </resources>

@@ -9,7 +9,7 @@ public class Constants {
     public static final String TABLE_SEASON = "season";
     public static final String TABLE_COACH = "coach";
     public static final String TABLE_PLAYER = "player";
-    public static final String TABLE_GROUP = "group";
+    public static final String TABLE_GROUP = "_group";
     public static final String TABLE_BATTLE = "battle";
     public static final String TABLE_BATTLE_RESULT = "battle_result";
     public static final String TABLE_CROSS = "cross";

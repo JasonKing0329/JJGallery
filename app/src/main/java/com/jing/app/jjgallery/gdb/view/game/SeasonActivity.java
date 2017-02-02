@@ -55,6 +55,11 @@ public class SeasonActivity extends GameActivity implements IGameManager<SeasonB
     }
 
     @Override
+    public void deleteData(SeasonBean bean) {
+        gamePresenter.deleteSeason(bean);
+    }
+
+    @Override
     public GamePresenter getPresenter() {
         return gamePresenter;
     }

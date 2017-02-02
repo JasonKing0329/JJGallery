@@ -4,6 +4,7 @@ import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -340,7 +341,11 @@ public class ImageLoader implements ISImageLoader
 			return mTaskQueue.removeFirst();
 		} else if (mType == Type.LIFO)
 		{
-			return mTaskQueue.removeLast();
+			try {
+				return mTaskQueue.removeLast();
+			} catch (NoSuchElementException e) {
+				return null;
+			}
 		}
 		return null;
 	}

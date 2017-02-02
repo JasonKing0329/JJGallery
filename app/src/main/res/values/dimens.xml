@@ -294,6 +294,14 @@
     <dimen name="folder_icon_setting_size">50dp</dimen>
     <dimen name="season_detail_name">16dp</dimen>
     <dimen name="gdb_coach_item_size">120dp</dimen>
+    <dimen name="gdb_game_group_candidate_width">265dp</dimen>
+    <dimen name="gdb_game_group_candidate_height">150dp</dimen>
+    <dimen name="gdb_game_group_item_width">80dp</dimen>
+    <dimen name="gdb_game_group_player_width">40dp</dimen><!-- = gdb_game_group_item_width/2 -->
+    <dimen name="gdb_game_group_down_icon_size">30dp</dimen>
+    <dimen name="gdb_game_group_type_btn_size">30dp</dimen>
+    <dimen name="gdb_game_group_next_btn_size">50dp</dimen>
+    <dimen name="gdb_game_group_next_btn_padding">8dp</dimen>
 
     <!-- wave side bar -->
     <dimen name="book_touch_start_range">30dp</dimen>

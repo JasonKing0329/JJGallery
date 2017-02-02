@@ -1,5 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.game;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +11,7 @@ import android.view.View;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.game.adapter.FolderItemManager;
 import com.jing.app.jjgallery.gdb.view.game.adapter.SeasonListAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.king.service.gdb.game.bean.SeasonBean;
 
 import java.util.ArrayList;
@@ -72,12 +75,40 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
 
     @Override
     public void onGroup(SeasonBean bean) {
-
+        Intent intent = new Intent().setClass(getActivity(), GroupActivity.class);
+        intent.putExtra(GroupActivity.KEY_SEASON_ID, bean.getId());
+        startActivity(intent);
     }
 
     @Override
     public void onFolderSetting(SeasonBean seasonBean) {
         gameManager.updateData(seasonBean);
+    }
+
+    @Override
+    public void onFolderDelete(final SeasonBean seasonBean) {
+        new DefaultDialogManager().showOptionDialog(getActivity(), null, getString(R.string.gdb_game_delete_season)
+                , getResources().getString(R.string.yes)
+                , null
+                , getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            gameManager.deleteData(seasonBean);
+                            seasonList.remove(seasonBean);
+                            seasonListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+                , new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+
+                    }
+                }
+        );
     }
 
     /**
