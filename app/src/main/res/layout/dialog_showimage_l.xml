@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/showimage_bk_layout"
@@ -188,4 +188,15 @@
 	    android:layout_marginBottom="50dp"
 	    android:layout_marginLeft="50dp"
 	    android:layout_marginRight="50dp"/>
-</FrameLayout>
+	<TextView
+		android:id="@+id/showimage_filename"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:textColor="@color/gdb_record_text_bareback_dark"
+		android:gravity="center"
+		android:textSize="12dp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:layout_alignParentBottom="true"/>
+</RelativeLayout>

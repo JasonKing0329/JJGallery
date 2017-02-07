@@ -227,6 +227,22 @@
     <dimen name="dlg_loadfrom_list_height">800dp</dimen>
     <dimen name="actionbar_title_max_width">300dp</dimen>
 
+    <dimen name="nav_header_height">320dp</dimen>
+    <dimen name="nav_width">600dp</dimen>
+    <!-- download -->
+    <dimen name="download_dlg_height">800dp</dimen>
+    <dimen name="download_exist_image_width">200dp</dimen>
+    <dimen name="download_exist_image_height">112dp</dimen><!-- 16:9 -->
+
+    <!-- starmap -->
+    <dimen name="starmap_max_item_size">120dp</dimen>
+    <dimen name="starmap_min_item_size">50dp</dimen>
+    <dimen name="download_size_width">100dp</dimen>
+
+    <dimen name="design_navigation_icon_padding">16dp</dimen>
+    <dimen name="design_navigation_icon_size">32dp</dimen>
+    <dimen name="abc_text_size_body_2_material">22dp</dimen>
+
     <!-- gdb -->
     <dimen name="gdb_star_header_height">500dp</dimen>
     <dimen name="gdb_record_seq_width">30dp</dimen>
@@ -269,21 +285,6 @@
     <dimen name="gdb_game_group_type_btn_size">60dp</dimen>
     <dimen name="gdb_game_group_next_btn_size">80dp</dimen>
     <dimen name="gdb_game_group_next_btn_padding">15dp</dimen>
-
-    <dimen name="nav_header_height">320dp</dimen>
-    <dimen name="nav_width">600dp</dimen>
-    <!-- download -->
-    <dimen name="download_dlg_height">800dp</dimen>
-    <dimen name="download_exist_image_width">200dp</dimen>
-    <dimen name="download_exist_image_height">112dp</dimen><!-- 16:9 -->
-
-    <!-- starmap -->
-    <dimen name="starmap_max_item_size">120dp</dimen>
-    <dimen name="starmap_min_item_size">50dp</dimen>
-    <dimen name="download_size_width">100dp</dimen>
-
-    <dimen name="design_navigation_icon_padding">16dp</dimen>
-    <dimen name="design_navigation_icon_size">32dp</dimen>
-    <dimen name="abc_text_size_body_2_material">22dp</dimen>
+    <dimen name="game_battle_area_size">100dp</dimen>
 
 </resources>

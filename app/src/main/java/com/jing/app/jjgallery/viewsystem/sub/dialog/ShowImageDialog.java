@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -60,6 +61,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 			, detailsButton, setCoverButton, setAsMenuBkButton;
 	private ActionListener actionListener;
 	private ImageView showImageView;
+	private TextView filenameView;
 	private String imagePath, cropImagePath, displayImagePath;
 	private Bitmap bitmap, cropBitmap;
 	private boolean isOrienChanged;
@@ -113,6 +115,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		setAsMenuBkButton = (ImageView) findViewById(R.id.actionbar_setasmenubk);
 		showImageView = (ImageView) findViewById(R.id.showimage_imageview);
 		cropView = (CropView) findViewById(R.id.showimage_cropview);
+		filenameView = (TextView) findViewById(R.id.showimage_filename);
 		cropView.setOnCropAreaChangeListener(this);
 		cropInforView = (CropInforView) findViewById(R.id.showimage_cropvinfor);
 		actionbar = (LinearLayout) findViewById(R.id.showimage_actionbar);
@@ -138,11 +141,33 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		cancelButton.setOnClickListener(this);
 		showImageView.setOnTouchListener(new ZoomListener(true));
 		gifSeekBar.setOnSeekBarChangeListener(this);
+		filenameView.setOnTouchListener(filenameListener);
 
 		initWindowParams();
 		encrypter = EncrypterFactory.create();
 //		controller = new SpictureController(context);
 	}
+
+	View.OnTouchListener filenameListener = new View.OnTouchListener() {
+
+		private String originPath;
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					originPath = filenameView.getText().toString();
+					filenameView.setText(imagePath);
+					break;
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_OUTSIDE:
+				case MotionEvent.ACTION_CANCEL:
+					filenameView.setText(originPath);
+					break;
+			}
+			return true;
+		}
+	};
 
 	public void setOrientationChanged() {
 		isOrienChanged = true;
@@ -290,12 +315,18 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		showImageView.setVisibility(View.VISIBLE);
 		enableSeizeAction();
 
+		String filename = "";
 		File file = new File(imagePath);
 		if (file != null && file.exists()) {
 			bitmap = PictureManagerUpdate.getInstance().createHDBitmap(file.getPath());
+			if (encrypter.isEncrypted(file)) {
+				filename = encrypter.decipherOriginName(file);
+			}
 		}
 		setImage(bitmap);
 		displayImagePath = imagePath;
+
+		filenameView.setText(filename);
 	}
 
 	private void enableSeizeAction() {

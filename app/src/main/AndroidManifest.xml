@@ -104,7 +104,11 @@
         <activity
             android:name=".gdb.view.game.CoachActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".gdb.view.game.GroupActivity"
+        <activity
+            android:name=".gdb.view.game.GroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gdb.view.game.BattleActivity"
             android:screenOrientation="portrait" />
     </application>
 

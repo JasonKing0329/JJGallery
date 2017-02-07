@@ -258,6 +258,25 @@
     <dimen name="textSize_sidebar">10sp</dimen>
     <dimen name="textSize_sidebar_choose">12sp</dimen>
     <dimen name="textSize_sidebar_padding">20sp</dimen>
+    <dimen name="book_touch_start_range">30dp</dimen>
+    <dimen name="book_touch_distance">100dp</dimen>
+
+    <!-- download -->
+    <dimen name="download_dlg_height">400dp</dimen>
+    <dimen name="download_exist_image_width">135dp</dimen>
+    <dimen name="download_exist_image_height">76dp</dimen><!-- 16:9 -->
+
+    <!-- starmap -->
+    <dimen name="starmap_max_item_size">60dp</dimen>
+    <dimen name="starmap_min_item_size">40dp</dimen>
+    <dimen name="download_size_width">60dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="nav_width">280dp</dimen>
+
+    <!-- gdb -->
     <dimen name="gdb_star_header_height">320dp</dimen>
     <dimen name="gdb_record_seq_width">20dp</dimen>
     <dimen name="gdb_record_name_left">5dp</dimen>
@@ -302,23 +321,5 @@
     <dimen name="gdb_game_group_type_btn_size">30dp</dimen>
     <dimen name="gdb_game_group_next_btn_size">50dp</dimen>
     <dimen name="gdb_game_group_next_btn_padding">8dp</dimen>
-
-    <!-- wave side bar -->
-    <dimen name="book_touch_start_range">30dp</dimen>
-    <dimen name="book_touch_distance">100dp</dimen>
-
-    <!-- download -->
-    <dimen name="download_dlg_height">400dp</dimen>
-    <dimen name="download_exist_image_width">135dp</dimen>
-    <dimen name="download_exist_image_height">76dp</dimen><!-- 16:9 -->
-
-    <!-- starmap -->
-    <dimen name="starmap_max_item_size">60dp</dimen>
-    <dimen name="starmap_min_item_size">40dp</dimen>
-    <dimen name="download_size_width">60dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="nav_width">280dp</dimen>
+    <dimen name="game_battle_area_size">45dp</dimen>
 </resources>
