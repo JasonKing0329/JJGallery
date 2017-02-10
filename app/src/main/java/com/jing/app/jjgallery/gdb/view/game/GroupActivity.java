@@ -12,7 +12,8 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.GamePlayerBean;
-import com.jing.app.jjgallery.gdb.presenter.game.GamePresenter;
+import com.jing.app.jjgallery.gdb.model.game.GroupData;
+import com.jing.app.jjgallery.gdb.presenter.game.GroupPresenter;
 import com.jing.app.jjgallery.gdb.view.game.adapter.GroupPlayerAdapter;
 import com.jing.app.jjgallery.gdb.view.game.adapter.IPlayerImageProvider;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -69,7 +70,7 @@ public class GroupActivity extends BaseActivity implements View.OnClickListener
     private ImageView ivNext;
     private ImageView ivNextStop;
 
-    private GamePresenter gamePresenter;
+    private GroupPresenter gamePresenter;
     private GroupData groupData;
     private GamePlayerBean curPlayerBean;
 
@@ -89,8 +90,7 @@ public class GroupActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void initController() {
-        gamePresenter = new GamePresenter();
-        gamePresenter.setGroupView(this);
+        gamePresenter = new GroupPresenter(this);
         playerFromMode = GDBProperites.STAR_MODE_ALL;
     }
 

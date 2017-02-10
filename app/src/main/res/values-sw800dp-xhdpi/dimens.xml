@@ -286,5 +286,13 @@
     <dimen name="gdb_game_group_next_btn_size">80dp</dimen>
     <dimen name="gdb_game_group_next_btn_padding">15dp</dimen>
     <dimen name="game_battle_area_size">100dp</dimen>
+    <dimen name="game_battle_coach_size">200dp</dimen>
+    <dimen name="game_battle_coach_text">20dp</dimen>
+    <dimen name="game_battle_coach_card_radius">10dp</dimen>
+    <dimen name="game_battle_item_player_width">192dp</dimen><!-- width:height = 16:9 -->
+    <dimen name="game_battle_item_player_height">108dp</dimen>
+    <dimen name="game_battle_item_score_width">120dp</dimen>
+    <dimen name="game_battle_item_remove_size">50dp</dimen>
+    <dimen name="game_battle_card_icon_size">30dp</dimen>
 
 </resources>

@@ -11,6 +11,7 @@ import android.view.View;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.game.adapter.FolderItemManager;
 import com.jing.app.jjgallery.gdb.view.game.adapter.SeasonListAdapter;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.king.service.gdb.game.bean.SeasonBean;
 
@@ -60,7 +61,7 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
 
     @Override
     public void onBattle(SeasonBean bean) {
-
+        ActivityManager.startGdbGameBattleActivity(getActivity(), bean.getId());
     }
 
     @Override
@@ -75,9 +76,7 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
 
     @Override
     public void onGroup(SeasonBean bean) {
-        Intent intent = new Intent().setClass(getActivity(), GroupActivity.class);
-        intent.putExtra(GroupActivity.KEY_SEASON_ID, bean.getId());
-        startActivity(intent);
+        ActivityManager.startGdbGameGroupActivity(getActivity(), bean.getId());
     }
 
     @Override

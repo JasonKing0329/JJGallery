@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.gdb.view.game;
+package com.jing.app.jjgallery.gdb.model.game;
 
 import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.PlayerBean;
@@ -7,9 +7,10 @@ import com.king.service.gdb.game.bean.SeasonBean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/1/28 0028.
+ * 描述: Group页面的初始化参数
+ * <p/>作者：景阳
+ * <p/>创建时间: 2017/1/28 0028.
  */
-
 public class GroupData {
     private SeasonBean season;
     private CoachBean coach1;

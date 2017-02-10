@@ -46,16 +46,6 @@
     <color name="actionbar_text_light">#3f37a1</color>
     <color name="actionbar_text_normal">#ffffff</color>
 
-    <color name="gdb_record_text_bareback_dark">#fff807</color>
-    <color name="gdb_record_text_bareback_light">#00a5c4</color>
-    <color name="gdb_record_text_normal_dark">#ffffff</color>
-    <color name="gdb_record_text_normal_light">#3c3c3c</color>
-    <color name="gdb_guide_sec_normal">#66000000</color>
-    <color name="gdb_guide_sec_press">#66ffffff</color>
-    <color name="gdb_season_item_bk">#ffffffff</color>
-    <color name="gdb_season_function_btn_bg">#66000000</color>
-    <color name="gdb_season_function_btn_ripple">#99eeeeee</color>
-
     <color name="dialog_background">#eeeeeeee</color>
     <color name="dialog_background_dark_theme">#e51a3c49</color>
     <color name="dialog_background_dark">#cc00a5c4</color>
@@ -281,4 +271,16 @@
     <color name="navy">#000080</color><!--海军色 -->
     <color name="black">#000000</color><!--黑色 -->
     <color name="clay">#cc6600</color>
+
+    <color name="gdb_record_text_bareback_dark">#fff807</color>
+    <color name="gdb_record_text_bareback_light">#00a5c4</color>
+    <color name="gdb_record_text_normal_dark">#ffffff</color>
+    <color name="gdb_record_text_normal_light">#3c3c3c</color>
+    <color name="gdb_guide_sec_normal">#66000000</color>
+    <color name="gdb_guide_sec_press">#66ffffff</color>
+    <color name="gdb_season_item_bk">#ffffffff</color>
+    <color name="gdb_season_function_btn_bg">#66000000</color>
+    <color name="gdb_season_function_btn_ripple">#99eeeeee</color>
+    <color name="gdb_battle_coach_text">#666666</color>
+
 </resources>

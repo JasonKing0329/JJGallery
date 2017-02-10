@@ -1,18 +1,17 @@
 package com.king.service.gdb.game;
 
-import android.text.TextUtils;
-
 import com.king.service.gdb.SqlConnection;
+import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.GroupBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 import com.king.service.gdb.game.bean.SeasonBean;
+import com.king.service.gdb.game.dao.BattleDao;
 import com.king.service.gdb.game.dao.CoachDao;
 import com.king.service.gdb.game.dao.GroupDao;
 import com.king.service.gdb.game.dao.PlayerDao;
 import com.king.service.gdb.game.dao.SeasonDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -184,6 +183,23 @@ public class GameProvider {
     }
 
     /**
+     * query group data
+     * @param seasonId
+     * @return
+     */
+    public List<GroupBean> getGroupList(int seasonId, int coachId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new GroupDao().queryGroupList(seasonId, coachId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * query player
      * @param playerId
      * @return
@@ -289,4 +305,36 @@ public class GameProvider {
             SqlConnection.getInstance().close();
         }
     }
+
+    /**
+     * insert battle data
+     * @param bean
+     */
+    public void insertBattleBean(BattleBean bean) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new BattleDao().inserBattleBean(bean, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    /**
+     * query all battle bean data
+     * @return
+     */
+    public List<BattleBean> getBattleList(int seasonId, int coachId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new BattleDao().queryBattleList(seasonId, coachId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
 }

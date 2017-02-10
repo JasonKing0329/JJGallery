@@ -41,6 +41,32 @@ public class GroupDao {
         return list;
     }
 
+    public List<GroupBean> queryGroupList(int seasonId, int coachId, Connection connection) {
+        List<GroupBean> list = new ArrayList<>();
+        String sql = "SELECT * FROM " + Constants.TABLE_GROUP + " WHERE _seasonId=" + seasonId
+                + " AND _coachId=" + coachId;
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = stmt.executeQuery(sql);
+            while (set.next()) {
+                GroupBean bean = parseGroupBean(set);
+                list.add(bean);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return list;
+    }
+
     private GroupBean parseGroupBean(ResultSet set) throws SQLException {
         GroupBean bean = new GroupBean();
         bean.setId(set.getInt(1));
@@ -113,4 +139,5 @@ public class GroupDao {
             e.printStackTrace();
         }
     }
+
 }

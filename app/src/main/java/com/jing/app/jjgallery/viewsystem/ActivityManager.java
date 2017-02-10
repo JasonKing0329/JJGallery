@@ -14,6 +14,8 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GdbGuideActivity;
+import com.jing.app.jjgallery.gdb.view.game.BattleActivity;
+import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -108,22 +110,6 @@ public class ActivityManager {
         }
         Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
         intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.RECORD);
-        if (bundle == null) {
-            from.startActivity(intent);
-            applyAnimation(from);
-        }
-        else {
-            ActivityCompat.startActivity(from, intent, bundle);
-        }
-        return true;
-    }
-
-    public static boolean startGDBGameActivity(Activity from, Bundle bundle) {
-        if (!new File(ConfManager.GDB_GAME_DB_PATH).exists()) {
-            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
-            return false;
-        }
-        Intent intent = new Intent().setClass(from, SeasonActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);
@@ -439,6 +425,36 @@ public class ActivityManager {
         if (from instanceof Activity) {
             applyAnimation((Activity) from);
         }
+    }
+
+    public static boolean startGDBGameActivity(Activity from, Bundle bundle) {
+        if (!new File(ConfManager.GDB_GAME_DB_PATH).exists()) {
+            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
+            return false;
+        }
+        Intent intent = new Intent().setClass(from, SeasonActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
+        return true;
+    }
+
+    public static void startGdbGameGroupActivity(Activity from, int seasonId) {
+        Intent intent = new Intent().setClass(from, GroupActivity.class);
+        intent.putExtra(GroupActivity.KEY_SEASON_ID, seasonId);
+        from.startActivity(intent);
+        applyAnimation(from);
+    }
+
+    public static void startGdbGameBattleActivity(Activity from, int seasonId) {
+        Intent intent = new Intent().setClass(from, BattleActivity.class);
+        intent.putExtra(BattleActivity.KEY_SEASON_ID, seasonId);
+        from.startActivity(intent);
+        applyAnimation(from);
     }
 
 }

@@ -487,6 +487,16 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	/**
+	 * group add icon
+	 */
+	public void addGroupAddIcon(OnClickListener listener) {
+		addGroupAddIcon();
+		if (listener != null) {
+			groupAddButton.setOnClickListener(listener);
+		}
+	}
+
+	/**
 	 * hide search layout
 	 */
 	private void closeSearch() {
