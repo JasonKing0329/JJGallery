@@ -48,6 +48,31 @@ public class DefaultDialogManager {
 		dialog.show();
 	}
 
+	public void openInputDialog(Context context, final OnDialogActionListener listener) {
+		LinearLayout layout = new LinearLayout(context);
+		layout.setPadding(40, 10, 40, 10);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		EditText edit = new EditText(context);
+		edit.setLayoutParams(params);
+		layout.addView(edit);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+		dialog.setMessage("input content");
+		dialog.setView(layout);
+
+		final EditText folderEdit = edit;
+		dialog.setPositiveButton(R.string.ok, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String folderName = folderEdit.getText().toString();
+				listener.onOk(folderName);
+			}
+		});
+		dialog.setNegativeButton(R.string.cancel, null);
+		dialog.show();
+	}
+
 	public void openSaveFileDialog(Context context, final OnDialogActionListener listener, String initText) {
 		LinearLayout layout = new LinearLayout(context);
 		layout.setPadding(40, 10, 40, 10);

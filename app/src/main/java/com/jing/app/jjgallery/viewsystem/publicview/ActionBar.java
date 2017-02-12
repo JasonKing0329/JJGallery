@@ -463,6 +463,15 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	/**
+	 * sorder cover icon
+	 */
+	public void addCoverIcon(OnClickListener listener) {
+		currentButtons.add(coverButton);
+		coverButton.setVisibility(View.VISIBLE);
+		coverButton.setOnClickListener(listener);
+	}
+
+	/**
 	 * show icon
 	 */
 	public void addShowIcon() {

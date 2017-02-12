@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:id="@+id/battle_item_group"
+    android:paddingBottom="5dp">
 
     <LinearLayout
         android:id="@+id/battle_item_top"
@@ -58,12 +61,14 @@
             android:layout_width="@dimen/game_battle_item_remove_size"
             android:layout_height="@dimen/game_battle_item_remove_size"
             android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_remove_grey_500_36dp"/>
         <ImageView
             android:id="@+id/battle_item_done"
             android:layout_width="@dimen/game_battle_item_remove_size"
             android:layout_height="@dimen/game_battle_item_remove_size"
             android:padding="10dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_done_grey_500_36dp"/>
     </RelativeLayout>
     <EditText
@@ -71,6 +76,10 @@
         android:layout_width="@dimen/game_battle_item_score_width"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/battle_item_action"
+        android:inputType="number"
+        android:background="@drawable/selector_edit_in_white_bg"
+        android:textColor="@drawable/selector_edit_text_in_white_bg"
+        android:padding="5dp"
         android:layout_centerVertical="true"/>
     <TextView
         android:id="@+id/battle_item_scene"

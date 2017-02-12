@@ -11,13 +11,17 @@ import android.widget.LinearLayout;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
 import com.jing.app.jjgallery.gdb.view.IBattleView;
-import com.jing.app.jjgallery.gdb.view.game.adapter.BattleItemAdapter;
 import com.jing.app.jjgallery.gdb.view.game.adapter.BattlePlayerAdapter;
 import com.jing.app.jjgallery.gdb.view.game.adapter.IPlayerImageProvider;
+import com.jing.app.jjgallery.gdb.view.game.view.BattleResultDialog;
+import com.jing.app.jjgallery.gdb.view.game.view.BattleRoundManager;
+import com.jing.app.jjgallery.gdb.view.game.view.OnBattleItemListener;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,7 +30,7 @@ import java.util.List;
  * <p/>创建时间: 2017/2/8 11:39
  */
 public class BattleDetailFragment extends GameFragment implements IBattleDetailView, IPlayerImageProvider
-    , BattlePlayerAdapter.OnPlayerItemListener, BattleItemAdapter.OnBattleItemListener{
+    , BattlePlayerAdapter.OnPlayerItemListener, OnBattleItemListener {
 
     private IBattleView battleView;
     private RecyclerView rvTops;
@@ -34,7 +38,7 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
     private LinearLayout llCardsContainer;
     private BattlePlayerAdapter adapterTop;
     private BattlePlayerAdapter adapterBottom;
-    private BattleItemAdapter battleItemAdapter;
+    private BattleRoundManager battleRoundManager;
 
     private BattleDetailData detailData;
 
@@ -53,6 +57,13 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
             }
         });
         battleView.getActionbar().addMenuIcon();
+        battleView.getActionbar().addCoverIcon(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showResultDialog();
+            }
+        });
+        battleView.getActionbar().addBackIcon();
         rvTops = (RecyclerView) contentView.findViewById(R.id.battle_rv_top);
         rvBottoms = (RecyclerView) contentView.findViewById(R.id.battle_rv_bottom);
         llCardsContainer = (LinearLayout) contentView.findViewById(R.id.battle_round_container);
@@ -76,21 +87,44 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
             case 1:
                 detailData.setCoach(battleView.getBattleData().getCoach2());
                 break;
-            case 3:
+            case 2:
                 detailData.setCoach(battleView.getBattleData().getCoach3());
                 break;
-            case 4:
+            case 3:
                 detailData.setCoach(battleView.getBattleData().getCoach4());
                 break;
         }
+        battleView.getActionbar().setTitle("Team " + detailData.getCoach().getName());
         battleView.getPresenter().setDetailView(this);
 
         ((ProgressProvider) getActivity()).showProgressCycler();
         battleView.getPresenter().loadDeatails(detailData);
     }
 
+    private void showResultDialog() {
+        BattleResultDialog dialog = new BattleResultDialog(getActivity(), new CustomDialog.OnCustomDialogActionListener() {
+            @Override
+            public boolean onSave(Object object) {
+                return false;
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+                data.put("battles", detailData.getBattleList());
+                data.put("battleDetailBean", detailData);
+            }
+        });
+        dialog.setTitle("Battle result");
+        dialog.show();
+    }
+
     private void addNewRound() {
-        battleItemAdapter.addNewRound();
+        battleRoundManager.addNewRound();
     }
 
     @Override
@@ -109,8 +143,9 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
         rvBottoms.setAdapter(adapterBottom);
 
         // show battles
-        battleItemAdapter = new BattleItemAdapter(detailData, llCardsContainer, detailData.getBattleList());
-        battleItemAdapter.setOnBattleItemListener(this);
+        battleRoundManager = new BattleRoundManager(detailData, llCardsContainer, detailData.getBattleList(), this);
+
+        ((ProgressProvider) getActivity()).dismissProgressCycler();
     }
 
     @Override
@@ -125,17 +160,17 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
 
     @Override
     public void onAddBattleBean(BattleBean bean) {
-
+        battleView.getPresenter().saveBattleBean(bean);
     }
 
     @Override
     public void onRemoveBattleBean(BattleBean bean) {
-
+        battleView.getPresenter().deleteBattleBean(bean);
     }
 
     @Override
     public void onPlayerItemClick(PlayerBean bean) {
-        battleItemAdapter.addPlayerToFocusItem(bean);
+        battleRoundManager.addPlayerToFocusItem(bean);
     }
 
     @Override

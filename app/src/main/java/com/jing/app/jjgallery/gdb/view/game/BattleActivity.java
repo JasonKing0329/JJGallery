@@ -106,4 +106,19 @@ public class BattleActivity extends BaseActivity implements IBattleView {
     public void showCoachBattle(int index) {
         showDetailFragment(index);
     }
+
+    @Override
+    public void onBack() {
+        if (ftCurrent instanceof BattleDetailFragment) {
+            showCoachFragment();
+        }
+        else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onBack();
+    }
 }

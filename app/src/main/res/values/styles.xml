@@ -181,4 +181,10 @@
         <item name="android:padding">10dp</item>
     </style>
 
+    <style name="GameBattleRoundIcon">
+        <item name="android:layout_width">@dimen/game_battle_card_icon_size</item>
+        <item name="android:layout_height">@dimen/game_battle_card_icon_size</item>
+        <item name="android:padding">@dimen/game_battle_card_icon_padding</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
 </resources>

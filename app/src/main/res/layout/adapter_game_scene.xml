@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/scene_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/game_dlg_scene_item_height"
+        android:textColor="@color/gdb_record_text_normal_light"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/scene_delete"
+        android:layout_width="@dimen/game_battle_scene_delete_size"
+        android:layout_height="@dimen/game_battle_scene_delete_size"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_remove_purple_900_36dp"/>
+</RelativeLayout>

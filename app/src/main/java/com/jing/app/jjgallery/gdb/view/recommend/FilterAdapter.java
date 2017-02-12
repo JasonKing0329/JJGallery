@@ -97,14 +97,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.Holder> {
             }
             etMin.addTextChangedListener(minWatcher);
 
-            etMax.removeTextChangedListener(minWatcher);
+            etMax.removeTextChangedListener(maxWatcher);
             if (filterBean.getMax() > 0) {
                 etMax.setText(String.valueOf(filterBean.getMax()));
             }
             else {
                 etMax.setText("");
             }
-            etMax.addTextChangedListener(minWatcher);
+            etMax.addTextChangedListener(maxWatcher);
         }
         TextWatcher minWatcher = new TextWatcher() {
             @Override

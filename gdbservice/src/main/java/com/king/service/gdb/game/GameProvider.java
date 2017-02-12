@@ -310,10 +310,19 @@ public class GameProvider {
      * insert battle data
      * @param bean
      */
-    public void insertBattleBean(BattleBean bean) {
+    public void updateBattleBean(BattleBean bean) {
         try {
             SqlConnection.getInstance().connect(databasePath);
-            new BattleDao().inserBattleBean(bean, SqlConnection.getInstance().getConnection());
+            BattleDao dao = new BattleDao();
+            //insert
+            if (bean.getId() == -1) {
+                dao.inserBattleBean(bean, SqlConnection.getInstance().getConnection());
+                bean.setId(dao.queryLastBattleSequence(SqlConnection.getInstance().getConnection()));
+            }
+            //update
+            else {
+                dao.updateBattleBean(bean, SqlConnection.getInstance().getConnection());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -335,6 +344,17 @@ public class GameProvider {
             SqlConnection.getInstance().close();
         }
         return null;
+    }
+
+    public void deleteBattleBean(int battleId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new BattleDao().deleteBattle(battleId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
     }
 
 }

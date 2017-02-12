@@ -154,4 +154,12 @@ public class BattlePresenter extends GamePresenter {
         }
         return null;
     }
+
+    public void saveBattleBean(BattleBean bean) {
+        gameProvider.updateBattleBean(bean);
+    }
+
+    public void deleteBattleBean(BattleBean bean) {
+        gameProvider.deleteBattleBean(bean.getId());
+    }
 }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 描述:
+ * 描述: 查询season:coach对应的battle list，需要按照round进行升序排序
  * <p/>作者：景阳
  * <p/>创建时间: 2017/2/8 11:25
  */
@@ -20,7 +20,7 @@ public class BattleDao {
     public List<BattleBean> queryBattleList(int seasonId, int coachId, Connection connection) {
         List<BattleBean> list = new ArrayList<>();
         String sql = "SELECT * FROM " + Constants.TABLE_BATTLE + " WHERE _seasonId=" + seasonId
-                + " AND _coachId=" + coachId;
+                + " AND _coachId=" + coachId + " ORDER BY _round ASC";
         Statement stmt = null;
         try {
             stmt = connection.createStatement();
@@ -84,4 +84,68 @@ public class BattleDao {
             }
         }
     }
+
+    public void updateBattleBean(BattleBean bean, Connection connection) {
+        StringBuffer buffer = new StringBuffer("UPDATE ");
+        buffer.append(Constants.TABLE_BATTLE).append(" SET _seasonId=").append(bean.getSeasonId())
+                .append(",_coachId=").append(bean.getCoachId())
+                .append(", _tPlayerId=").append(bean.getTopPlayerId())
+                .append(", _bPlayerId=").append(bean.getBottomPlayerId())
+                .append(", _round=").append(bean.getRound())
+                .append(",_scene='").append(bean.getScene())
+                .append("',_score='").append(bean.getScore())
+                .append("' WHERE _id=").append(bean.getId());
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            stmt.executeUpdate(buffer.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void deleteBattle(int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE + " WHERE _id=" + seasonId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int queryLastBattleSequence(Connection connection) {
+        String sql = "SELECT * FROM " + Constants.TABLE_SEQUENCE + " WHERE name='" + Constants.TABLE_BATTLE + "'";
+        Statement statement = null;
+        int id = 0;
+        try {
+            statement = connection.createStatement();
+            ResultSet set = statement.executeQuery(sql);
+            if (set.next()) {
+                id = set.getInt(2);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return id;
+    }
+
 }

@@ -411,6 +411,25 @@ public class SettingProperties {
     }
 
     /**
+     * gdb game scenes
+     */
+    public static String getGdbGameScenes(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String scene = preferences.getString(PreferenceKey.PREF_GDB_GAME_SCENES, "");
+        return scene;
+    }
+
+    /**
+     * gdb filter model
+     */
+    public static void saveGdbGameScenes(Context context, String scenes) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceKey.PREF_GDB_GAME_SCENES, scenes);
+        editor.apply();
+    }
+
+    /**
      * latest records number
      */
     public static int getGdbLatestRecordsNumber(Context context) {

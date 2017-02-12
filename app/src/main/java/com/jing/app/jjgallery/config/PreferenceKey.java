@@ -120,6 +120,8 @@ public class PreferenceKey {
     public static final String PREF_GDB_RECORD_BG = "pref_gdb_guide_record_bg";
     // guide nav header
     public static final String PREF_GDB_NAV_HEADER_BG = "pref_gdb_nav_header_bg";
+    // gdb game scene
+    public static final String PREF_GDB_GAME_SCENES = "pref_gdb_game_scenes";
 
     /**
      * http

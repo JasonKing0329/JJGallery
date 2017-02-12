@@ -4,7 +4,7 @@
     android:id="@+id/group_player_group">
     <ImageView
         android:id="@+id/group_player_image"
-        android:layout_width="@dimen/gdb_game_group_player_width"
-        android:layout_height="@dimen/gdb_game_group_player_width"
+        android:layout_width="@dimen/game_battle_area_size"
+        android:layout_height="@dimen/game_battle_area_size"
         android:scaleType="centerCrop"/>
 </RelativeLayout>
