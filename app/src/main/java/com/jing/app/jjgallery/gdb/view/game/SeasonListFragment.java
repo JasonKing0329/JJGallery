@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.game.adapter.FolderItemManager;
 import com.jing.app.jjgallery.gdb.view.game.adapter.SeasonListAdapter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.king.service.gdb.game.bean.SeasonBean;
 
@@ -95,7 +96,9 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
+                            ((ProgressProvider) getActivity()).showProgressCycler();
                             gameManager.deleteData(seasonBean);
+                            ((ProgressProvider) getActivity()).dismissProgressCycler();
                             seasonList.remove(seasonBean);
                             seasonListAdapter.notifyDataSetChanged();
                         }

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/2/1 0001.
@@ -123,7 +124,7 @@ public class PlayerDao {
         try {
             stmt = connection.createStatement();
             StringBuffer buffer = new StringBuffer("UPDATE ");
-            buffer.append(Constants.TABLE_COACH).append(" SET _name='").append(bean.getName()).append("'");
+            buffer.append(Constants.TABLE_PLAYER).append(" SET _name='").append(bean.getName()).append("'");
             if (type == 1 || type == -1) {
                 buffer.append(", _tSeasonId=").append(bean.getTopSeasonId())
                         .append(", _tRound='").append(bean.getTopRound())
@@ -184,5 +185,39 @@ public class PlayerDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteSeason(int seasonId, Connection connection) {
+        String sql1 = "UPDATE " + Constants.TABLE_PLAYER + " SET _tSeasonId=-1, _tRound=0, _tCoachId=-1 WHERE _tSeasonId=" + seasonId;
+        String sql2 = "UPDATE " + Constants.TABLE_PLAYER + " SET _bSeasonId=-1, _bRound=0, _bCoachId=-1 WHERE _bSeasonId=" + seasonId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql1);
+            stmt.executeUpdate(sql2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean updatePlayersResult(List<PlayerBean> playerList, int round, Connection connection) {
+        for (PlayerBean bean:playerList) {
+            String sql = "UPDATE " + Constants.TABLE_PLAYER;
+            String set;
+            if (bean.getTopCoachId() > 0) {
+                set = " SET _tRound=" + round;
+            }
+            else {
+                set = " SET _bRound=" + round;
+            }
+            sql = sql + set + " WHERE _id=" + bean.getId();
+
+            try {
+                Statement stmt = connection.createStatement();
+                stmt.executeUpdate(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }

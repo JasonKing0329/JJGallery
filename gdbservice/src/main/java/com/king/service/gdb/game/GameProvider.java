@@ -2,6 +2,7 @@ package com.king.service.gdb.game;
 
 import com.king.service.gdb.SqlConnection;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.GroupBean;
 import com.king.service.gdb.game.bean.PlayerBean;
@@ -12,6 +13,7 @@ import com.king.service.gdb.game.dao.GroupDao;
 import com.king.service.gdb.game.dao.PlayerDao;
 import com.king.service.gdb.game.dao.SeasonDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -223,7 +225,16 @@ public class GameProvider {
     public void deleteSeason(int seasonId) {
         try {
             SqlConnection.getInstance().connect(databasePath);
+            // 在season表中删除
             new SeasonDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在coach表中删除对应的season
+            new CoachDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在player表中删除对应的season
+            new PlayerDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在_group表中删除对应的season
+            new GroupDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在battle表中删除对应的season
+            new BattleDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -299,6 +310,8 @@ public class GameProvider {
             new PlayerDao().deletePlayer(playerId, SqlConnection.getInstance().getConnection());
             // 在_group表中删除对应season的player
             new GroupDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
+            // 在battle表中删除对应的player记录
+            new BattleDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -357,4 +370,65 @@ public class GameProvider {
         }
     }
 
+    /**
+     * 生成battle result数据，并更新eliminated player的id
+     * @param datas
+     * @param promoteNum
+     * @return
+     */
+    public boolean saveBattleResultBeans(List<BattleResultBean> datas, int promoteNum) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+
+            // save battle_result record
+            boolean isResultSaved = new BattleDao().saveBattleResultBeans(datas, SqlConnection.getInstance().getConnection());
+
+            // update eliminated players result(rank value > promoteNum)
+            List<PlayerBean> eliminatedIdList = new ArrayList<>();
+            for (BattleResultBean bean:datas) {
+                if (bean.getRank() > promoteNum) {
+                    PlayerBean pb = new PlayerBean();
+                    pb.setId(bean.getId());
+                    if (bean.getType() == 1) {
+                        pb.setTopCoachId(bean.getCoachId());
+                    }
+                    else {
+                        pb.setBottomCoachId(bean.getCoachId());
+                    }
+                    eliminatedIdList.add(pb);
+                }
+            }
+            boolean isPlayerUpdated = new PlayerDao().updatePlayersResult(eliminatedIdList, Constants.ROUND_BATTLE, SqlConnection.getInstance().getConnection());
+
+            return isResultSaved && isPlayerUpdated;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
+    }
+
+    public boolean isBattleResultExist(int seasonId, int coachId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new BattleDao().isBattleResultExist(seasonId, coachId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
+    }
+
+    public void deleteBattleResults(int seasonId, int coachId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new BattleDao().deleteBattleResults(seasonId, coachId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
 }

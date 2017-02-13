@@ -2,6 +2,7 @@ package com.king.service.gdb.game.dao;
 
 import com.king.service.gdb.game.Constants;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.BattleResultBean;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -148,4 +149,99 @@ public class BattleDao {
         return id;
     }
 
+    public void deletePlayer(int playerId, int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE + " WHERE _seasonId=" + seasonId + " AND (_tPlayerId=" + playerId + " OR _bPlayerId=" + playerId + ")";
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deleteSeason(int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE + " WHERE _seasonId=" + seasonId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean saveBattleResultBeans(List<BattleResultBean> datas, Connection connection) {
+        boolean result = true;
+        PreparedStatement stmt = null;
+        String sql = "INSERT INTO " + Constants.TABLE_BATTLE_RESULT +
+                "(_seasonId,_coachId,_rank,_score,_playerId,_type) VALUES(?,?,?,?,?,?)";
+        try {
+            for (BattleResultBean bean:datas) {
+                stmt = connection.prepareStatement(sql);
+                stmt.setInt(1, bean.getSeasonId());
+                stmt.setInt(2, bean.getCoachId());
+                stmt.setInt(3, bean.getRank());
+                stmt.setInt(4, bean.getScore());
+                stmt.setInt(5, bean.getPlayerId());
+                stmt.setInt(6, bean.getType());
+                stmt.executeUpdate();
+                stmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 检查battle result记录是否已生成过
+     * @param seasonId
+     * @param coachId
+     * @param connection
+     * @return
+     */
+    public boolean isBattleResultExist(int seasonId, int coachId, Connection connection) {
+        List<BattleResultBean> list = new ArrayList<>();
+        String sql = "SELECT _id FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId
+                + " AND _coachId=" + coachId;
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = stmt.executeQuery(sql);
+            while (set.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    public void deleteBattleResults(int seasonId, int coachId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId + " AND _coachId=" + coachId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.game;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
+import com.jing.app.jjgallery.gdb.model.game.GameConstants;
 import com.jing.app.jjgallery.gdb.view.IBattleView;
 import com.jing.app.jjgallery.gdb.view.game.adapter.BattlePlayerAdapter;
 import com.jing.app.jjgallery.gdb.view.game.adapter.IPlayerImageProvider;
@@ -18,7 +20,9 @@ import com.jing.app.jjgallery.gdb.view.game.view.BattleRoundManager;
 import com.jing.app.jjgallery.gdb.view.game.view.OnBattleItemListener;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 
 import java.util.HashMap;
@@ -120,7 +124,49 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
             }
         });
         dialog.setTitle("Battle result");
+        dialog.setOnBattleResultListener(new BattleResultDialog.OnBattleResultListener() {
+            @Override
+            public void onCreateBattleResultDatas(final List<BattleResultBean> datas) {
+                // 数据库中已有记录提醒是否覆盖
+                if (battleView.getPresenter().isBattleResultExist(detailData.getSeason().getId(), detailData.getCoach().getId())) {
+                    new DefaultDialogManager().showWarningActionDialog(getActivity()
+                            , getResources().getString(R.string.login_extend_pref_exist)
+                            , getResources().getString(R.string.yes)
+                            , null
+                            , getResources().getString(R.string.no)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                                        ((ProgressProvider) getActivity()).showProgressCycler();
+                                        // 先删除再添加
+                                        battleView.getPresenter().deleteBattleResults(detailData.getSeason().getId(), detailData.getCoach().getId());
+                                        saveBattleResult(datas);
+                                        ((ProgressProvider) getActivity()).dismissProgressCycler();
+                                    }
+                                    else {
+
+                                    }
+                                }
+                            });
+                }
+                else {
+                    ((ProgressProvider) getActivity()).showProgressCycler();
+                    saveBattleResult(datas);
+                    ((ProgressProvider) getActivity()).dismissProgressCycler();
+                }
+            }
+        });
         dialog.show();
+    }
+
+    private void saveBattleResult(List<BattleResultBean> datas) {
+        if (battleView.getPresenter().saveBattleResultBeans(datas, GameConstants.BATTLE_PROMOTE_ITEM)) {
+            ((ProgressProvider) getActivity()).showToastLong("Successful", ProgressProvider.TOAST_SUCCESS);
+        }
+        else {
+            ((ProgressProvider) getActivity()).showToastLong("Failed", ProgressProvider.TOAST_ERROR);
+        }
     }
 
     private void addNewRound() {

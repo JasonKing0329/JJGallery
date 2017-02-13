@@ -5,6 +5,7 @@ import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
 import com.jing.app.jjgallery.gdb.view.IBattleView;
 import com.jing.app.jjgallery.gdb.view.game.IBattleDetailView;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.CoachBean;
 import com.king.service.gdb.game.bean.GroupBean;
 import com.king.service.gdb.game.bean.PlayerBean;
@@ -161,5 +162,17 @@ public class BattlePresenter extends GamePresenter {
 
     public void deleteBattleBean(BattleBean bean) {
         gameProvider.deleteBattleBean(bean.getId());
+    }
+
+    public boolean saveBattleResultBeans(List<BattleResultBean> datas, int promoteNum) {
+        return gameProvider.saveBattleResultBeans(datas, promoteNum);
+    }
+
+    public boolean isBattleResultExist(int seasonId, int coachId) {
+        return gameProvider.isBattleResultExist(seasonId, coachId);
+    }
+
+    public void deleteBattleResults(int seasonId, int coachId) {
+        gameProvider.deleteBattleResults(seasonId, coachId);
     }
 }

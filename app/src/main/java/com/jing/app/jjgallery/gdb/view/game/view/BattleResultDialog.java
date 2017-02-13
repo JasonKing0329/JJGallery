@@ -12,6 +12,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 
 import java.util.ArrayList;
@@ -37,9 +38,18 @@ public class BattleResultDialog extends CustomDialog {
     private BattleResultAdapter topAdapter;
     private BattleResultAdapter bottomAdapter;
 
+    private OnBattleResultListener onBattleResultListener;
+
     public BattleResultDialog(Context context, OnCustomDialogActionListener actionListener) {
         super(context, actionListener);
         requestCancelAction(true);
+        requestSaveAction(true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createResultDatas();
+            }
+        });
+
         topResultList = new ArrayList<>();
         bottomResultList = new ArrayList<>();
         HashMap<String, Object> map = new HashMap<>();
@@ -54,16 +64,35 @@ public class BattleResultDialog extends CustomDialog {
         lvBottom.setAdapter(bottomAdapter);
     }
 
+    public void setOnBattleResultListener(OnBattleResultListener onBattleResultListener) {
+        this.onBattleResultListener = onBattleResultListener;
+    }
+
+    /**
+     * 组装battle_result表数据
+     */
     private void createResultBeanList() {
         if (battleList != null) {
             for (PlayerBean bean:battleDetailData.getPlayerListTop()) {
                 RoundResultBean rb = getPlayerResult(bean.getId(), 1);
                 rb.name = bean.getName();
+                rb.bean = new BattleResultBean();
+                rb.bean.setSeasonId(battleDetailData.getSeason().getId());
+                rb.bean.setCoachId(battleDetailData.getCoach().getId());
+                rb.bean.setPlayerId(bean.getId());
+                rb.bean.setScore(Integer.parseInt(rb.scoreTotal));
+                rb.bean.setType(1);
                 topResultList.add(rb);
             }
             for (PlayerBean bean:battleDetailData.getPlayerListBottom()) {
                 RoundResultBean rb = getPlayerResult(bean.getId(), 0);
                 rb.name = bean.getName();
+                rb.bean = new BattleResultBean();
+                rb.bean.setSeasonId(battleDetailData.getSeason().getId());
+                rb.bean.setCoachId(battleDetailData.getCoach().getId());
+                rb.bean.setPlayerId(bean.getId());
+                rb.bean.setScore(Integer.parseInt(rb.scoreTotal));
+                rb.bean.setType(0);
                 bottomResultList.add(rb);
             }
 
@@ -81,6 +110,14 @@ public class BattleResultDialog extends CustomDialog {
                     return Integer.parseInt(rhs.scoreTotal) - Integer.parseInt(lhs.scoreTotal);
                 }
             });
+
+            // set rank
+            for (int i = 0; i < topResultList.size(); i ++) {
+                topResultList.get(i).bean.setRank(i + 1);
+            }
+            for (int i = 0; i < bottomResultList.size(); i ++) {
+                bottomResultList.get(i).bean.setRank(i + 1);
+            }
         }
     }
 
@@ -123,6 +160,17 @@ public class BattleResultDialog extends CustomDialog {
         rb.scoreRound = buffer.toString();
         rb.scoreTotal = String.valueOf(sum);
         return rb;
+    }
+
+    private void createResultDatas() {
+        List<BattleResultBean> list = new ArrayList<>();
+        for (RoundResultBean bean:topResultList) {
+            list.add(bean.bean);
+        }
+        for (RoundResultBean bean:bottomResultList) {
+            list.add(bean.bean);
+        }
+        onBattleResultListener.onCreateBattleResultDatas(list);
     }
 
     @Override
@@ -192,6 +240,10 @@ public class BattleResultDialog extends CustomDialog {
         String name;
         String scoreTotal;
         String scoreRound;
+        BattleResultBean bean;
     }
 
+    public interface OnBattleResultListener{
+        void onCreateBattleResultDatas(List<BattleResultBean> datas);
+    }
 }

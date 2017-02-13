@@ -196,6 +196,18 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		}
 	}
 
+	/**
+	 *
+	 * @param need
+	 * @param listener
+     */
+	public void requestSaveAction(boolean need, View.OnClickListener listener) {
+		requestSaveAction(need);
+		if (listener != null) {
+			saveIcon.setOnClickListener(listener);
+		}
+	}
+
 	public void requestOkAction(boolean need) {
 		saveIcon = okButton;
 		saveIcon.setVisibility(need ? View.VISIBLE:View.GONE);

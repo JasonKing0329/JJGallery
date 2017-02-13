@@ -15,4 +15,6 @@ public class Constants {
     public static final String TABLE_CROSS = "cross";
     public static final String TABLE_CROSS_RESULT = "cross_result";
 
+    public static final int ROUND_BATTLE = 1;
+    public static final int ROUND_CROSS = 2;
 }

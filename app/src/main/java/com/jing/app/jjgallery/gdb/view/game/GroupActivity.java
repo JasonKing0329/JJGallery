@@ -513,7 +513,9 @@ public class GroupActivity extends BaseActivity implements View.OnClickListener
                                 ActivityManager.startStarActivity(GroupActivity.this, star);
                                 break;
                             case 1:
+                                showProgressCycler();
                                 gamePresenter.deletePlayer(list.get(position).getId(), groupData.getSeason().getId());
+                                dismissProgressCycler();
                                 list.remove(position);
                                 adapter.notifyDataSetChanged();
                                 break;

@@ -199,4 +199,59 @@ public class CoachDao {
         return id;
     }
 
+    /**
+     * 删除coach关联的seasonId记录
+     * seasonIds字段在数据库中的设计是以“,”分隔每个seasonId的，最好的办法是先查询出全部bean,在bean中进行修改
+     * coach中内容条数比较少，也不会耗时
+     * @param seasonId
+     * @param connection
+     */
+    public void deleteSeason(int seasonId, Connection connection) {
+        // load all coach bean
+        List<CoachBean> list = queryCoachList(connection);
+
+        // update _seasonIds, _bestSeasonId, _seasonCount
+        for (CoachBean bean:list) {
+            try {
+                String[] seasonIds = bean.getSeasonIds().split(",");
+                List<String> idList = new ArrayList<>();
+                for (String id:seasonIds) {
+                    idList.add(id);
+                }
+                // remove seasonId
+                boolean isRemoved = false;
+                for (int i = 0; i < idList.size(); i ++) {
+                    if (seasonId == Integer.parseInt(idList.get(i))) {
+                        idList.remove(i);
+                        isRemoved = true;
+                        break;
+                    }
+                }
+
+                // 不包含seasonId，直接略过
+                if (!isRemoved) {
+                    continue;
+                }
+
+                // 包含seasonId，更新字段
+                // format new seasonIds
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < idList.size(); i ++) {
+                    if (i == 0) {
+                        buffer.append(idList.get(i));
+                    }
+                    else {
+                        buffer.append(".").append(idList.get(i));
+                    }
+                }
+                bean.setSeasonIds(buffer.toString());
+                bean.setSeasonCount(bean.getSeasonCount() - 1);
+
+                updateCoach(bean, connection);
+                //FIXME _bestSeasonId暂时无法更新
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
