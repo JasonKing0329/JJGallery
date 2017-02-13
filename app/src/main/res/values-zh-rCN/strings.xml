@@ -400,4 +400,5 @@
 
     <!--************************** game **************************-->
     <string name="gdb_game_repeat_coach">Coach已选择，请重新选择</string>
+    <string name="gdb_game_battle_result_exist">Team %s battle results已存在，确定覆盖？</string>
 </resources>

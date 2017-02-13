@@ -159,9 +159,28 @@ public class BattleDao {
         }
     }
 
+    public void deletePlayerResult(int playerId, int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId + " AND _playerId=" + playerId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void deleteSeason(int seasonId, Connection connection) {
         String sql = "DELETE FROM " + Constants.TABLE_BATTLE + " WHERE _seasonId=" + seasonId;
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteSeasonResult(int seasonId, Connection connection) {
+        String sql = "DELETE FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId;
         try {
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(sql);

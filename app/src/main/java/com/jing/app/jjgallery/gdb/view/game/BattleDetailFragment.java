@@ -18,9 +18,11 @@ import com.jing.app.jjgallery.gdb.view.game.adapter.IPlayerImageProvider;
 import com.jing.app.jjgallery.gdb.view.game.view.BattleResultDialog;
 import com.jing.app.jjgallery.gdb.view.game.view.BattleRoundManager;
 import com.jing.app.jjgallery.gdb.view.game.view.OnBattleItemListener;
+import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.PlayerBean;
@@ -129,8 +131,10 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
             public void onCreateBattleResultDatas(final List<BattleResultBean> datas) {
                 // 数据库中已有记录提醒是否覆盖
                 if (battleView.getPresenter().isBattleResultExist(detailData.getSeason().getId(), detailData.getCoach().getId())) {
+                    String msg = getResources().getString(R.string.gdb_game_battle_result_exist);
+                    msg = msg.replace("%s", detailData.getCoach().getName());
                     new DefaultDialogManager().showWarningActionDialog(getActivity()
-                            , getResources().getString(R.string.login_extend_pref_exist)
+                            , msg
                             , getResources().getString(R.string.yes)
                             , null
                             , getResources().getString(R.string.no)
@@ -221,6 +225,7 @@ public class BattleDetailFragment extends GameFragment implements IBattleDetailV
 
     @Override
     public void onPlayerItemLongClick(BattlePlayerAdapter adapter, List<PlayerBean> list, int position) {
-
+        Star star = battleView.getPresenter().queryStarByName(list.get(position).getName());
+        ActivityManager.startStarActivity(getActivity(), star);
     }
 }

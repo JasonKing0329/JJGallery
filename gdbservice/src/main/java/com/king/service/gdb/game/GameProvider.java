@@ -234,7 +234,10 @@ public class GameProvider {
             // 在_group表中删除对应的season
             new GroupDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
             // 在battle表中删除对应的season
-            new BattleDao().deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            BattleDao dao = new BattleDao();
+            dao.deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在battle_result表中删除对应的season
+            dao.deleteSeasonResult(seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -311,7 +314,9 @@ public class GameProvider {
             // 在_group表中删除对应season的player
             new GroupDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
             // 在battle表中删除对应的player记录
-            new BattleDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
+            BattleDao dao = new BattleDao();
+            dao.deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
+            dao.deletePlayerResult(playerId, seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
