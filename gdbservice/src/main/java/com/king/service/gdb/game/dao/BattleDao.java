@@ -230,7 +230,6 @@ public class BattleDao {
      * @return
      */
     public boolean isBattleResultExist(int seasonId, int coachId, Connection connection) {
-        List<BattleResultBean> list = new ArrayList<>();
         String sql = "SELECT _id FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId
                 + " AND _coachId=" + coachId;
         Statement stmt = null;
@@ -263,4 +262,51 @@ public class BattleDao {
             e.printStackTrace();
         }
     }
+
+    /**
+     * query battle result with rank <= rankMax
+     * @param seasonId
+     * @param coachId
+     * @param rankMax
+     * @param connection
+     * @return
+     */
+    public List<BattleResultBean> queryBattleResultList(int seasonId, int coachId, int rankMax, int type, Connection connection) {
+        List<BattleResultBean> list = new ArrayList<>();
+        String sql = "SELECT * FROM " + Constants.TABLE_BATTLE_RESULT + " WHERE _seasonId=" + seasonId
+                + " AND _coachId=" + coachId + " AND _rank<=" + rankMax + " AND _type=" + type;
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet set = stmt.executeQuery(sql);
+            while (set.next()) {
+                BattleResultBean bean = parseBattleResultBean(set);
+                list.add(bean);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return list;
+    }
+
+    private BattleResultBean parseBattleResultBean(ResultSet set) throws SQLException {
+        BattleResultBean bean = new BattleResultBean();
+        bean.setId(set.getInt(1));
+        bean.setSeasonId(set.getInt(2));
+        bean.setCoachId(set.getInt(3));
+        bean.setRank(set.getInt(4));
+        bean.setScore(set.getInt(5));
+        bean.setPlayerId(set.getInt(6));
+        bean.setType(set.getInt(7));
+        return bean;
+    }
+
 }

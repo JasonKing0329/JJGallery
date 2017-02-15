@@ -2,7 +2,7 @@ package com.jing.app.jjgallery.gdb.presenter.game;
 
 import com.jing.app.jjgallery.gdb.model.game.BattleData;
 import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
-import com.jing.app.jjgallery.gdb.view.IBattleView;
+import com.jing.app.jjgallery.gdb.view.game.battlecross.IBattleView;
 import com.jing.app.jjgallery.gdb.view.game.IBattleDetailView;
 import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.BattleResultBean;

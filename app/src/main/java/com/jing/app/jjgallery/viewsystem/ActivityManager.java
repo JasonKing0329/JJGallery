@@ -14,9 +14,10 @@ import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GdbGuideActivity;
-import com.jing.app.jjgallery.gdb.view.game.BattleActivity;
+import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
+import com.jing.app.jjgallery.gdb.view.game.battlecross.CrossActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
@@ -453,6 +454,13 @@ public class ActivityManager {
     public static void startGdbGameBattleActivity(Activity from, int seasonId) {
         Intent intent = new Intent().setClass(from, BattleActivity.class);
         intent.putExtra(BattleActivity.KEY_SEASON_ID, seasonId);
+        from.startActivity(intent);
+        applyAnimation(from);
+    }
+
+    public static void startGdbGameCrossActivity(Activity from, int seasonId) {
+        Intent intent = new Intent().setClass(from, CrossActivity.class);
+        intent.putExtra(CrossActivity.KEY_SEASON_ID, seasonId);
         from.startActivity(intent);
         applyAnimation(from);
     }

@@ -4,11 +4,14 @@ import com.king.service.gdb.SqlConnection;
 import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.BattleResultBean;
 import com.king.service.gdb.game.bean.CoachBean;
+import com.king.service.gdb.game.bean.CrossBean;
+import com.king.service.gdb.game.bean.CrossResultBean;
 import com.king.service.gdb.game.bean.GroupBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 import com.king.service.gdb.game.bean.SeasonBean;
 import com.king.service.gdb.game.dao.BattleDao;
 import com.king.service.gdb.game.dao.CoachDao;
+import com.king.service.gdb.game.dao.CrossDao;
 import com.king.service.gdb.game.dao.GroupDao;
 import com.king.service.gdb.game.dao.PlayerDao;
 import com.king.service.gdb.game.dao.SeasonDao;
@@ -238,6 +241,11 @@ public class GameProvider {
             dao.deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
             // 在battle_result表中删除对应的season
             dao.deleteSeasonResult(seasonId, SqlConnection.getInstance().getConnection());
+            // 在cross表中删除对应的season
+            CrossDao cdao = new CrossDao();
+            cdao.deleteSeason(seasonId, SqlConnection.getInstance().getConnection());
+            // 在cross_result表中删除对应的season
+            cdao.deleteSeasonResult(seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -313,10 +321,14 @@ public class GameProvider {
             new PlayerDao().deletePlayer(playerId, SqlConnection.getInstance().getConnection());
             // 在_group表中删除对应season的player
             new GroupDao().deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
-            // 在battle表中删除对应的player记录
+            // 在battle，battle_result表中删除对应的player记录
             BattleDao dao = new BattleDao();
             dao.deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
             dao.deletePlayerResult(playerId, seasonId, SqlConnection.getInstance().getConnection());
+            // 在cross，cross_result表中删除对应的player记录
+            CrossDao cdao = new CrossDao();
+            cdao.deletePlayer(playerId, seasonId, SqlConnection.getInstance().getConnection());
+            cdao.deletePlayerResult(playerId, seasonId, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -348,6 +360,17 @@ public class GameProvider {
         }
     }
 
+    public void deleteBattleBean(int battleId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new BattleDao().deleteBattle(battleId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
     /**
      * query all battle bean data
      * @return
@@ -362,17 +385,6 @@ public class GameProvider {
             SqlConnection.getInstance().close();
         }
         return null;
-    }
-
-    public void deleteBattleBean(int battleId) {
-        try {
-            SqlConnection.getInstance().connect(databasePath);
-            new BattleDao().deleteBattle(battleId, SqlConnection.getInstance().getConnection());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            SqlConnection.getInstance().close();
-        }
     }
 
     /**
@@ -435,5 +447,134 @@ public class GameProvider {
         } finally {
             SqlConnection.getInstance().close();
         }
+    }
+
+    /**
+     * query BattleResultBean
+     * @return
+     */
+    public List<BattleResultBean> getBattleResultList(int seasonId, int coachId, int rankMax, int type) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new BattleDao().queryBattleResultList(seasonId, coachId, rankMax, type, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * query BattleResultBean
+     * @return
+     */
+    public List<CrossBean> getCrossList(int seasonId, int coach1Id, int coach2Id) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new CrossDao().queryCrossList(seasonId, coach1Id, coach2Id, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * insert cross data
+     * @param bean
+     */
+    public void updateCrossBean(CrossBean bean) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            CrossDao dao = new CrossDao();
+            //insert
+            if (bean.getId() == -1) {
+                dao.inserCrossBean(bean, SqlConnection.getInstance().getConnection());
+                bean.setId(dao.queryLastCrossSequence(SqlConnection.getInstance().getConnection()));
+            }
+            //update
+            else {
+                dao.updateCrossBean(bean, SqlConnection.getInstance().getConnection());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    public void deleteCrossBean(int crossId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new CrossDao().deleteCross(crossId, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    public boolean isCrossResultExist(int seasonId, int coachId1, int coachId2) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return new CrossDao().isCrossResultExist(seasonId, coachId1, coachId2, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
+    }
+
+    public void deleteCrossResults(int seasonId, int coachId1, int coachId2) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            new CrossDao().deleteCrossResults(seasonId, coachId1, coachId2, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    /**
+     * 生成cross result数据，并更新eliminated player的id
+     * @param datas
+     * @param promoteNum
+     * @return
+     */
+    public boolean saveCrossResultBeans(List<CrossResultBean> datas, int promoteNum) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+
+            // save battle_result record
+            boolean isResultSaved = new CrossDao().saveCrossResultBeans(datas, SqlConnection.getInstance().getConnection());
+
+            // update eliminated players result(rank value > promoteNum)
+            List<PlayerBean> eliminatedIdList = new ArrayList<>();
+            for (BattleResultBean bean:datas) {
+                if (bean.getRank() > promoteNum) {
+                    PlayerBean pb = new PlayerBean();
+                    pb.setId(bean.getId());
+                    if (bean.getType() == 1) {
+                        pb.setTopCoachId(bean.getCoachId());
+                    }
+                    else {
+                        pb.setBottomCoachId(bean.getCoachId());
+                    }
+                    eliminatedIdList.add(pb);
+                }
+            }
+            boolean isPlayerUpdated = new PlayerDao().updatePlayersResult(eliminatedIdList, Constants.ROUND_CROSS, SqlConnection.getInstance().getConnection());
+
+            return isResultSaved && isPlayerUpdated;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
     }
 }

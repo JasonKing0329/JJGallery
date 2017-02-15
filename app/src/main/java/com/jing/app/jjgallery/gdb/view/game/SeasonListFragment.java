@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.game;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,7 +66,7 @@ public class SeasonListFragment extends GameListFragment implements FolderItemMa
 
     @Override
     public void onCross(SeasonBean bean) {
-
+        ActivityManager.startGdbGameCrossActivity(getActivity(), bean.getId());
     }
 
     @Override

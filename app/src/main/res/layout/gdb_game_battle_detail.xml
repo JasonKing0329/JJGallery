@@ -4,40 +4,89 @@
     android:layout_height="match_parent"
     android:background="@color/white_bg">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/battle_candidate_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tops"
-            android:textSize="18dp"
-            android:textColor="#333333"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/battle_rv_top"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/battle_candidate_separate"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/game_battle_area_size"
-            android:layout_marginTop="10dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bottoms"
-            android:textSize="18dp"
-            android:textColor="#333333"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/battle_rv_bottom"
+            android:layout_height="@dimen/game_battle_candidate_height"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#cccccc"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="#dddddd"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/battle_candidate_list"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/game_battle_area_size"
-            android:layout_marginTop="10dp"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/battle_candidate_title_group"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/game_battle_area_size"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/battle_candidate_coach1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/battle_candidate_coach2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/game_battle_area_size"
+                android:gravity="center_vertical"
+                android:text="Tops"
+                android:textSize="18dp"
+                android:textColor="#333333"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/battle_rv_top"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/game_battle_area_size"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/game_battle_area_size"
+                android:gravity="center_vertical"
+                android:text="Bottoms"
+                android:textSize="18dp"
+                android:textColor="#333333"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/battle_rv_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/game_battle_area_size"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"

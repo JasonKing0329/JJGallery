@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.gdb.view.game;
+package com.jing.app.jjgallery.gdb.view.game.battlecross;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.view.IBattleView;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 
@@ -16,7 +15,7 @@ import com.jing.app.jjgallery.viewsystem.ProgressProvider;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/2/8 11:38
  */
-public class BattleCoachFragment extends GameFragment implements View.OnClickListener {
+public class BattleCoachFragment extends BaseCoachFragment implements View.OnClickListener {
 
     private IBattleView battleView;
 
@@ -89,4 +88,12 @@ public class BattleCoachFragment extends GameFragment implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            battleView.getActionbar().clearActionIcon();
+            battleView.getActionbar().addBackIcon();
+        }
+    }
 }

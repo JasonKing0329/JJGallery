@@ -108,7 +108,10 @@
             android:name=".gdb.view.game.GroupActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".gdb.view.game.BattleActivity"
+            android:name=".gdb.view.game.battlecross.BattleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gdb.view.game.battlecross.CrossActivity"
             android:screenOrientation="portrait" />
     </application>
 
