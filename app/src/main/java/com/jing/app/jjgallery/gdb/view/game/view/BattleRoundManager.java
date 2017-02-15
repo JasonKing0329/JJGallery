@@ -4,6 +4,7 @@ import android.widget.LinearLayout;
 
 import com.jing.app.jjgallery.gdb.model.game.BattleDetailData;
 import com.king.service.gdb.game.bean.BattleBean;
+import com.king.service.gdb.game.bean.PlayerBean;
 
 import java.util.List;
 
@@ -19,5 +20,10 @@ public class BattleRoundManager extends BaseRoundManager<BattleBean>{
     @Override
     protected BaseRoundCard<BattleBean> createRoundCard(LinearLayout llCardsContainer, int round, List<BattleBean> battleList) {
         return new BattleRoundCard(llCardsContainer, round, battleList, this);
+    }
+
+    @Override
+    protected boolean isTopPlayer(PlayerBean bean) {
+        return bean.getTopCoachId() == detailData.getCoach().getId();
     }
 }

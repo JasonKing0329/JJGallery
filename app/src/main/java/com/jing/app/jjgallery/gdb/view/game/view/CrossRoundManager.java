@@ -3,7 +3,9 @@ package com.jing.app.jjgallery.gdb.view.game.view;
 import android.widget.LinearLayout;
 
 import com.jing.app.jjgallery.gdb.model.game.BaseBattleDetailData;
+import com.jing.app.jjgallery.gdb.model.game.CrossDetailData;
 import com.king.service.gdb.game.bean.CrossBean;
+import com.king.service.gdb.game.bean.PlayerBean;
 
 import java.util.List;
 
@@ -22,5 +24,10 @@ public class CrossRoundManager extends BaseRoundManager<CrossBean> {
     @Override
     protected BaseRoundCard<CrossBean> createRoundCard(LinearLayout llCardsContainer, int round, List<CrossBean> battleList) {
         return new CrossRoundCard(llCardsContainer, round, battleList, this);
+    }
+
+    @Override
+    protected boolean isTopPlayer(PlayerBean bean) {
+        return bean.getTopCoachId() == detailData.getCoach().getId() || bean.getTopCoachId() == ((CrossDetailData) detailData).getCoach2().getId();
     }
 }

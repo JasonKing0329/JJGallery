@@ -158,9 +158,9 @@ public abstract class BaseRoundCard<T extends BattleBean> implements View.OnClic
 
     private void addNewItem() {
         T bean = createNewItem();
-        bean.setSeasonId(roundProvider.getBattleDetailData().getSeason().getId());
+        bean.setSeasonId(roundProvider.getDetailData().getSeason().getId());
         bean.setRound(round);
-        bean.setCoachId(roundProvider.getBattleDetailData().getCoach().getId());
+        bean.setCoachId(roundProvider.getDetailData().getCoach().getId());
         bean.setScore("");
         bean.setBottomPlayerId(-1);
         bean.setTopPlayerId(-1);
@@ -353,14 +353,14 @@ public abstract class BaseRoundCard<T extends BattleBean> implements View.OnClic
                 case R.id.battle_item_done:
                     bean.setScene(holder.scene.getText().toString());
                     onBattleItemListener.onAddBattleBean(bean);
-                    roundProvider.getBattleDetailData().getBattleList().add(bean);
+                    roundProvider.getDetailData().getBattleList().add(bean);
                     selection = -1;
                     cancelEditCard();
                     break;
                 case R.id.battle_item_remove:
                     battleList.remove(holder.position);
                     onBattleItemListener.onRemoveBattleBean(bean);
-                    roundProvider.getBattleDetailData().getBattleList().remove(bean);
+                    roundProvider.getDetailData().getBattleList().remove(bean);
                     cancelEditCard();
                     notifyDataSetChanged();
                     break;

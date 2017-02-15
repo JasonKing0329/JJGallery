@@ -76,7 +76,7 @@ public class CrossDetailFragment extends BaseDetailFragment implements OnBattleI
 
     @Override
     protected BaseRoundManager createRoundManager(LinearLayout llCardsContainer) {
-        return new CrossRoundManager(detailData, llCardsContainer, detailData.getCrossList(), this);
+        return new CrossRoundManager(detailData, llCardsContainer, detailData.getBattleList(), this);
     }
 
     @Override

@@ -26,6 +26,6 @@ public class CrossRoundCard extends BaseRoundCard<CrossBean> {
     @Override
     protected void initNewItem(CrossBean bean) {
 //        bean.setRematchFlag();
-        bean.setCoach2Id(((CrossDetailData)roundProvider.getBattleDetailData()).getCoach2().getId());
+        bean.setCoach2Id(((CrossDetailData)roundProvider.getDetailData()).getCoach2().getId());
     }
 }

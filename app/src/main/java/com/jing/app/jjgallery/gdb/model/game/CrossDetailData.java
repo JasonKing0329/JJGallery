@@ -10,17 +10,8 @@ import java.util.List;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/2/8 15:02
  */
-public class CrossDetailData extends BaseBattleDetailData {
-    private List<CrossBean> crossList;
+public class CrossDetailData extends BaseBattleDetailData<CrossBean> {
     private CoachBean coach2;
-
-    public List<CrossBean> getCrossList() {
-        return crossList;
-    }
-
-    public void setCrossList(List<CrossBean> crossList) {
-        this.crossList = crossList;
-    }
 
     public CoachBean getCoach2() {
         return coach2;

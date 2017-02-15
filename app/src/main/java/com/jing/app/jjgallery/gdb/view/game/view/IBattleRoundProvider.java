@@ -7,7 +7,7 @@ import com.jing.app.jjgallery.gdb.model.game.BaseBattleDetailData;
  */
 
 public interface IBattleRoundProvider {
-    BaseBattleDetailData getBattleDetailData();
+    BaseBattleDetailData getDetailData();
 
     void onCardRequestEdit(int round);
     void onCardEditCancel(int round);

@@ -22,7 +22,7 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
     private List<BaseRoundCard<T>> roundCardList;
     private LinearLayout llCardsContainer;
 
-    private BaseBattleDetailData<T> battleDetailData;
+    protected BaseBattleDetailData<T> detailData;
     private Map<Integer, List<T>> roundMap;
 
     private OnBattleItemListener onBattleItemListener;
@@ -32,7 +32,7 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
     public BaseRoundManager(BaseBattleDetailData<T> data, LinearLayout llCardsContainer
             , List<T> battleList, OnBattleItemListener<T> onBattleItemListener) {
         this.llCardsContainer = llCardsContainer;
-        this.battleDetailData = data;
+        this.detailData = data;
         this.onBattleItemListener = onBattleItemListener;
         roundMap = new HashMap<>();
         roundCardList = new ArrayList<>();
@@ -88,7 +88,7 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
     public void addPlayerToFocusItem(PlayerBean bean) {
         if (editRound > 0) {
             BaseRoundCard roundCard = findBattleRoundCard(editRound);
-            if (bean.getTopCoachId() == battleDetailData.getCoach().getId()) {
+            if (isTopPlayer(bean)) {
                 roundCard.setTopPlayer(bean);
             }
             else {
@@ -96,6 +96,8 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
             }
         }
     }
+
+    protected abstract boolean isTopPlayer(PlayerBean bean);
 
     private BaseRoundCard findBattleRoundCard(int editRound) {
         for (BaseRoundCard card:roundCardList) {
@@ -106,9 +108,8 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
         return null;
     }
 
-    @Override
-    public BaseBattleDetailData<T> getBattleDetailData() {
-        return battleDetailData;
+    public BaseBattleDetailData<T> getDetailData() {
+        return detailData;
     }
 
     @Override
