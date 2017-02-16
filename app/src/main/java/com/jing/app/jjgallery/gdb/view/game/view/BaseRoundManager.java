@@ -8,6 +8,8 @@ import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.PlayerBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,19 @@ public abstract class BaseRoundManager<T extends BattleBean> implements IBattleR
                 list.add(battleList.get(i));
             }
 
+            // 按照round进行升序排序
+            List<Integer> roundList = new ArrayList<>();
             for (Integer round:roundMap.keySet()) {
+                roundList.add(round);
+            }
+            Collections.sort(roundList, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer lhs, Integer rhs) {
+                    return lhs - rhs;
+                }
+            });
+
+            for (Integer round:roundList) {
                 addBattleCard(llCardsContainer, round, roundMap.get(round));
             }
         }
