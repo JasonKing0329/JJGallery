@@ -22,7 +22,6 @@ public class SqlConnection {
 
     private SqlConnection() {
         try {
-            Class.forName("org.sqlite.JDBC");
             Class.forName("org.sqldroid.SqldroidDriver").newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
