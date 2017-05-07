@@ -12,8 +12,7 @@ import com.jing.app.jjgallery.model.main.file.OnOrderItemMoveTrigger;
 import com.jing.app.jjgallery.service.data.SqlConnection;
 import com.jing.app.jjgallery.service.data.dao.SOrderDao;
 import com.jing.app.jjgallery.service.data.impl.SOrderDaoImpl;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.DebugLog;
 
 import java.io.File;
@@ -519,7 +518,6 @@ public class SOrderManager {
         }
 
         if (order.getImgPathList() != null) {
-            Encrypter encrypter = EncrypterFactory.create();
             String target = Configuration.APP_DIR_IMG_SAVEAS + "/" + order.getName();
             File file = new File(target);
             if (!file.exists()) {
@@ -527,7 +525,7 @@ public class SOrderManager {
             }
             for (String path:order.getImgPathList()) {
                 file = new File(path);
-                encrypter.restore(file, target);
+                EncryptUtil.decipherFile(file, target);
             }
         }
 

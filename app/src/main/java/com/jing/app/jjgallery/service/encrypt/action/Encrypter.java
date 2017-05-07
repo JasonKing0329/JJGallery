@@ -11,13 +11,28 @@ public interface Encrypter {
 	 * @param targetNameNoExtra  target file name without file extra
 	 */
 	public String encrypt(File src, String targetNameNoExtra);
-	
+
+	/**
+	 * encrypt specific file and delete the origin file after encrypted successfully
+	 * target file will be the original name of src
+	 * @param src  original file
+	 */
+	String encrypt(File src);
+
 	/**
 	 * restore the encrypted file to the original file
 	 * @param target null if just decipher, otherwise, the target path to save as
 	 */
 	public boolean restore(File src, String target);
-	
+
+	/**
+	 * restore the encrypted file to the original file
+	 * @param src encrypted file
+	 * @param target null if just decipher, otherwise, the target path to save as
+	 * @param fileIsOriginName whether the encrypted file is encrypted with its original name
+	 */
+	boolean restore(File src, String target, boolean fileIsOriginName);
+
 	/**
 	 * encrypt file name
 	 * @param origin  original file name

@@ -213,6 +213,18 @@ public class SimpleEncrypter implements Encrypter {
 
 	@Override
 	public String encrypt(File src, String targetNameNoExtra) {
+		return encrypt(src, false, targetNameNoExtra);
+	}
+
+	@Override
+	public String encrypt(File src) {
+		String name = src.getName();
+		name = name.replaceAll("[.][^.]+$", "");
+		return encrypt(src, true, name);
+	}
+
+	private String encrypt(File src, boolean useOrginName, String targetNameNoExtra) {
+
 		if (src == null || !src.exists() || src.isDirectory()) {
 			Log.i(TAG, "encrypt(File, String) -> src not availabe");
 			return null;
@@ -223,23 +235,26 @@ public class SimpleEncrypter implements Encrypter {
 		result = encrypt(src, new File(filePath));
 		if (result) {
 			src.delete();
-			try {
-				String nameFilePath = src.getParent() + "/" + targetFileName + NAME_EXTRA;
-				FileOutputStream stream = new FileOutputStream(nameFilePath);
-				DataOutputStream dout = new DataOutputStream(stream);
-				dout.writeUTF(encryptFileName(src.getName()));
-				dout.close();
-				stream.close();
-				result = true;
-				if (Constants.DEBUG) {
-					Log.i(TAG, "encrypt(File, String) jne file -> success [filePath: " + nameFilePath + "]");
+			// 加密文件名
+			if (!useOrginName) {
+				try {
+					String nameFilePath = src.getParent() + "/" + targetFileName + NAME_EXTRA;
+					FileOutputStream stream = new FileOutputStream(nameFilePath);
+					DataOutputStream dout = new DataOutputStream(stream);
+					dout.writeUTF(encryptFileName(src.getName()));
+					dout.close();
+					stream.close();
+					result = true;
+					if (Constants.DEBUG) {
+						Log.i(TAG, "encrypt(File, String) jne file -> success [filePath: " + nameFilePath + "]");
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					Log.i(TAG, "encrypt(File, String) -> " + e.getMessage());
+				} catch (IOException e) {
+					e.printStackTrace();
+					Log.i(TAG, "encrypt(File, String) -> " + e.getMessage());
 				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				Log.i(TAG, "encrypt(File, String) -> " + e.getMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-				Log.i(TAG, "encrypt(File, String) -> " + e.getMessage());
 			}
 		}
 		return filePath;
@@ -247,6 +262,11 @@ public class SimpleEncrypter implements Encrypter {
 
 	@Override
 	public boolean restore(File src, String target) {
+		return restore(src, target, false);
+	}
+
+	@Override
+	public boolean restore(File src, String target, boolean fileIsOriginName) {
 		if (src == null || !src.exists() || src.isDirectory()) {
 			Log.i(TAG, "restore -> src not availabe");
 			return false;
@@ -258,34 +278,44 @@ public class SimpleEncrypter implements Encrypter {
 			if (target == null) {// 只是decipher
 				src.delete();
 			}
-			String targetFileName = null;;
-			fileName = src.getParent() + "/" + filenames[0] + NAME_EXTRA;
-			File file = new File(fileName);
-			if (file.exists()) {
-				try {
-					FileInputStream stream = new FileInputStream(file);
-					DataInputStream din = new DataInputStream(stream);
+			String targetFileName = null;
+
+			if (fileIsOriginName) {
+				// 目前只支持png
+				targetFileName = filenames[0] + ".png";
+			}
+			// 文件名加密过
+			else {
+				fileName = src.getParent() + "/" + filenames[0] + NAME_EXTRA;
+				File file = new File(fileName);
+				if (file.exists()) {
 					try {
-						targetFileName = decipherFileName(din.readUTF());
+						FileInputStream stream = new FileInputStream(file);
+						DataInputStream din = new DataInputStream(stream);
+						try {
+							targetFileName = decipherFileName(din.readUTF());
+						} catch (IOException e) {
+							targetFileName = System.currentTimeMillis() + ".data";
+							e.printStackTrace();
+						}
+						din.close();
+						stream.close();
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
 					} catch (IOException e) {
-						targetFileName = System.currentTimeMillis() + ".data";
 						e.printStackTrace();
 					}
-					din.close();
-					stream.close();
+				}
+				else {
+					targetFileName = System.currentTimeMillis() + ".data";
+				}
 
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (target == null) {
+					file.delete();
 				}
 			}
-			else {
-				targetFileName = System.currentTimeMillis() + ".data";
-			}
-
 			if (target == null) {// 只是decipher
-				file.delete();
 				fileName = src.getParent() + "/" + targetFileName;
 			}
 			else {// decipher后保存到其他目录
@@ -299,6 +329,7 @@ public class SimpleEncrypter implements Encrypter {
 		}
 		return true;
 	}
+
 	@Override
 	public String encryptFileName(String origin) {
 		String result = origin;
@@ -350,7 +381,7 @@ public class SimpleEncrypter implements Encrypter {
 	@Override
 	public boolean isEncrypted(File file) {
 
-		return file.getName().endsWith(FILE_EXTRA);
+		return file.getName().endsWith(FILE_EXTRA) || file.getName().endsWith(NAME_EXTRA);
 	}
 
 	@Override
@@ -406,12 +437,15 @@ public class SimpleEncrypter implements Encrypter {
 	@Override
 	public void deleteFile(File file) {
 		if (file.exists()) {
+			file.delete();
+
 			String name = file.getName();
 			String filenames[] = name.split("\\.");
 			String jneName = file.getParent() + "/" + filenames[0] + NAME_EXTRA;
-			file.delete();
 			File jneFile = new File(jneName);
-			jneFile.delete();
+			if (jneFile.exists()) {
+				jneFile.delete();
+			}
 		}
 	}
 

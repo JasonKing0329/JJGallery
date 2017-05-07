@@ -10,8 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.service.image.ImageValueController;
 
@@ -101,11 +100,10 @@ public class DefaultDialogManager {
 
 	public void openDetailDialog(Context context, File file) {
 
-		Encrypter encrypter = EncrypterFactory.create();
 		String fileName = file.getName();
 		String originName = null;
-		if (encrypter.isEncrypted(file)) {
-			originName = encrypter.decipherOriginName(file);
+		if (EncryptUtil.isEncrypted(file)) {
+			originName = EncryptUtil.getOriginName(file);
 		}
 
 		String msg;

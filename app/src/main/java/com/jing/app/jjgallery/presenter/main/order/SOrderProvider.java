@@ -20,8 +20,7 @@ import com.jing.app.jjgallery.model.main.order.SOrderManager;
 import com.jing.app.jjgallery.service.data.SqlConnection;
 import com.jing.app.jjgallery.service.data.dao.SOrderDao;
 import com.jing.app.jjgallery.service.data.impl.SOrderDaoImpl;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderChooserUpdate;
@@ -385,16 +384,15 @@ public class SOrderProvider implements Handler.Callback {
                 SqlConnection.getInstance().connect(DBInfor.DB_PATH);
                 SOrderDao dao = new SOrderDaoImpl();
 
-                Encrypter encrypter = EncrypterFactory.create();
                 for (int i = 0; i < pathList.size(); i ++) {
                     String path = pathList.get(i);
                     File file = new File(path);
-                    if (encrypter.isEncrypted(file)) {
+                    if (EncryptUtil.isEncrypted(file)) {
                         file.delete();
                         dao.deleteItemFromAllOrders(path, SqlConnection.getInstance().getConnection());
                         Log.i("FileEncryption", "delete file " + file.getPath());
 
-                        path = path.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
+                        path = path.replace(EncryptUtil.getFileExtra(), EncryptUtil.getNameExtra());
                         file = new File(path);
                         file.delete();
                         Log.i("FileEncryption", "delete file " + file.getPath());

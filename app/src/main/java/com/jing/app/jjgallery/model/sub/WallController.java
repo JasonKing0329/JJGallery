@@ -8,8 +8,7 @@ import android.util.Log;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.encrypt.impl.SimpleEncrypter;
 
 import java.io.File;
@@ -56,10 +55,9 @@ public class WallController {
 
 	public void deleteFile(String path) {
 		File file = new File(path);
-		Encrypter encrypter = EncrypterFactory.create();
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			file.delete();
-			path = path.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
+			path = path.replace(EncryptUtil.getFileExtra(), EncryptUtil.getNameExtra());
 			file = new File(path);
 			file.delete();
 			Log.i("FileEncryption", "delete file " + path);

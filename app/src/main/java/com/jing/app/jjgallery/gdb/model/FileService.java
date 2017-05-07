@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.jing.app.jjgallery.config.DBInfor;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Record;
@@ -33,12 +32,10 @@ public class FileService extends Service {
 
     private FileModel fileModel;
     private GDBProvider gdbProvider;
-    private Encrypter encrypter;
 
     public FileService() {
         fileModel = new FileModel();
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
-        encrypter = EncrypterFactory.create();
     }
 
     @Override
@@ -93,7 +90,7 @@ public class FileService extends Service {
         // 解析原文件名，创建映射集合
         Map<String, String> starImageMap = new HashMap<>();
         for (String path:pathList) {
-            String name = encrypter.decipherOriginName(new File(path));
+            String name = new File(path).getName();
             String preName = name.substring(0, name.lastIndexOf("."));
             starImageMap.put(preName, path);
         }
@@ -120,7 +117,7 @@ public class FileService extends Service {
         // 解析原文件名，创建映射集合
         Map<String, String> starImageMap = new HashMap<>();
         for (String path:pathList) {
-            String name = encrypter.decipherOriginName(new File(path));
+            String name = new File(path).getName();
             String preName = name.substring(0, name.lastIndexOf("."));
             starImageMap.put(preName, path);
         }
@@ -143,9 +140,9 @@ public class FileService extends Service {
     private void deleteUnavailable(File file) {
 
         DebugLog.e(file.getPath()
-                + ", originName:" + encrypter.decipherOriginName(file));
+                + ", originName:" + file.getName());
         // 操作不可逆，测试时先注销掉仅打印待删除的文件
-        encrypter.deleteFile(file);
+        EncryptUtil.deleteFile(file);
 
     }
 

@@ -6,9 +6,7 @@ import android.os.Handler.Callback;
 import android.os.Message;
 
 import com.jing.app.jjgallery.model.main.file.FolderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.encrypt.action.Generater;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.encrypt.impl.SimpleEncrypter;
 
 import java.io.File;
@@ -21,9 +19,7 @@ public class EncryptCheckService implements FileFilter {
 	public static final int SERVICE_CHECK = 0;
 	public static final int SERVICE_ENCRYPT = 1;
 	public static final int SERVICE_INSERT_FILE = 2;
-	
-	private Encrypter encrypter;
-	private Generater generater;
+
 	private List<File> unEncryptedList;
 	private Handler handler;
 	
@@ -38,10 +34,6 @@ public class EncryptCheckService implements FileFilter {
 	}
 
 	public void encrypt() {
-		if (generater == null) {
-			encrypter = EncrypterFactory.create();
-			generater = EncrypterFactory.generater();
-		}
 		new EncryptThread().start();
 	}
 	
@@ -83,7 +75,7 @@ public class EncryptCheckService implements FileFilter {
 		public void run() {
 			for (File file:unEncryptedList) {
 				if (file.exists()) {
-					String target = encrypter.encrypt(file, generater.generateName());
+					String target = EncryptUtil.encryptFile(file);
 					targetList.add(target);
 				}
 			}

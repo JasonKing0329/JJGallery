@@ -9,9 +9,7 @@ import android.util.Log;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.encrypt.action.Generater;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.ImageValue;
 import com.jing.app.jjgallery.service.image.ImageValueController;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -30,8 +28,6 @@ public class FileListController {
 	private final String TAG = "FileListController";
 
 	private Context mContext;
-	private Encrypter encrypter;
-	private Generater generater;
 	private Handler handler;
 	private String currentPath;
 	private FileChangeListener fileChangeListener;
@@ -74,8 +70,6 @@ public class FileListController {
 		this.handler = handler;
 		mContext = context;
 		fileChangeListener = listener;
-		encrypter = EncrypterFactory.create();
-		generater = EncrypterFactory.generater();
 		imageValueController = new ImageValueController();
 		currentPath = Configuration.APP_DIR_IMG;
 		isFindAll = true;
@@ -128,12 +122,16 @@ public class FileListController {
 	}
 
 	public boolean isEncryptedFile(File file) {
-		return encrypter.isEncrypted(file);
+		if (file.exists()) {
+			return EncryptUtil.isEncrypted(file);
+		}
+		return false;
 	}
 
-	public boolean isEncrypted(String name) {
-		if (name.endsWith(encrypter.getFileExtra())) {
-			return true;
+	public boolean isEncrypted(String path) {
+		File file = new File(path);
+		if (file.exists()) {
+			return EncryptUtil.isEncrypted(file);
 		}
 		return false;
 	}
@@ -153,10 +151,8 @@ public class FileListController {
 			public void run() {
 				File files[] = new File(currentPath).listFiles();
 				for (File file:files) {
-					if (!file.isDirectory()
-							&& !file.getName().endsWith(encrypter.getFileExtra())
-							&& !file.getName().endsWith(encrypter.getNameExtra())) {
-						encrypter.encrypt(file, generater.generateName());
+					if (!file.isDirectory()) {
+						EncryptUtil.encryptFile(file);
 					}
 				}
 				Message message = new Message();
@@ -175,7 +171,7 @@ public class FileListController {
 			new Thread() {
 
 				public void run() {
-					boolean result = encrypter.encrypt(file, generater.generateName())
+					boolean result = EncryptUtil.encryptFile(file)
 							== null ? false:true;
 					Log.i(TAG, " encryptFile " + result + " " + file.getPath());
 					Message message = new Message();
@@ -196,9 +192,8 @@ public class FileListController {
 			public void run() {
 				File files[] = new File(currentPath).listFiles();
 				for (File file:files) {
-					if (!file.isDirectory()
-							&& file.getName().endsWith(encrypter.getFileExtra())) {
-						encrypter.restore(file, null);
+					if (!file.isDirectory()) {
+						EncryptUtil.decipherFile(file, null);
 					}
 				}
 				Message message = new Message();
@@ -217,7 +212,7 @@ public class FileListController {
 			new Thread() {
 
 				public void run() {
-					boolean result = encrypter.restore(file, null);
+					boolean result = EncryptUtil.decipherFile(file, null);
 					Log.i(TAG, " decipherFile " + result + " " + file.getPath());
 					Message message = new Message();
 					message.what = FILE_TYPE_UNENCRYPTED;
@@ -237,7 +232,7 @@ public class FileListController {
 
 			@Override
 			public boolean accept(File file) {
-				return encrypter.isEncrypted(file) || file.isDirectory();
+				return EncryptUtil.isEncrypted(file) || file.isDirectory();
 			}
 
 		});
@@ -257,8 +252,8 @@ public class FileListController {
 
 				if (!f.isDirectory()) {
 					// 解析原文件名
-					if (encrypter.isEncrypted(f)) {
-						item.setOriginName(encrypter.decipherOriginName(f));
+					if (EncryptUtil.isEncrypted(f)) {
+						item.setOriginName(EncryptUtil.getOriginName(f));
 					}
 					if (showOriginName && item.getOriginName() != null) {
 						item.setDisplayName(item.getOriginName());
@@ -312,9 +307,9 @@ public class FileListController {
 		File[] files = new File(currentPath).listFiles(new FilenameFilter() {
 
 			@Override
-			public boolean accept(File arg0, String name) {
+			public boolean accept(File file, String name) {
 
-				return !name.endsWith(encrypter.getFileExtra()) && !name.endsWith(encrypter.getNameExtra());
+				return !EncryptUtil.isEncrypted(file);
 			}
 		});
 		createPageItems(files);
@@ -328,7 +323,7 @@ public class FileListController {
 			@Override
 			public boolean accept(File arg0, String name) {
 
-				return !name.endsWith(encrypter.getNameExtra());
+				return !name.endsWith(EncryptUtil.getNameExtra());
 			}
 		});
 		createPageItems(files);

@@ -7,20 +7,15 @@ import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterBean;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.view.recommend.IRecommend;
-import com.jing.app.jjgallery.model.main.file.FolderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 
-import java.io.File;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -32,7 +27,6 @@ public class GdbGuidePresenter {
 
     private IRecommend recommendView;
     private GDBProvider gdbProvider;
-    private static Encrypter encrypter;
     private List<Record> recordList;
 
     /**
@@ -40,18 +34,12 @@ public class GdbGuidePresenter {
      */
     private Record previousRecord, currentRecord, nextRecord;
     /**
-     * 在loadAllRecords的时候遍历gdb/record目录，解析出所有name对应的path
-     */
-    private static Map<String, String> recordImageMap;
-    /**
      * 过滤器
      */
     private FilterModel filterModel;
 
     public GdbGuidePresenter() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
-        encrypter = EncrypterFactory.create();
-        recordImageMap = new HashMap<>();
     }
 
     public GdbGuidePresenter(IRecommend recommendView) {
@@ -272,15 +260,6 @@ public class GdbGuidePresenter {
         @Override
         protected List<Record> doInBackground(Object... params) {
             recordList = gdbProvider.getAllRecords();
-
-            // load available images for records
-            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
-            for (String path:pathList) {
-                String name = encrypter.decipherOriginName(new File(path));
-                String preName = name.substring(0, name.lastIndexOf("."));
-                recordImageMap.put(preName, path);
-            }
-
             return recordList;
         }
     }
@@ -291,19 +270,7 @@ public class GdbGuidePresenter {
      * @return
      */
     public String getRecordPath(String recordName) {
-        String result = recordImageMap.get(recordName);
-        if (result == null) {
-            // load image path of star
-            List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
-            for (String path:list) {
-                String name = encrypter.decipherOriginName(new File(path));
-                int dot = name.lastIndexOf(".");
-                String preName = name.substring(0, dot);
-                if (preName.equals(recordName)) {
-                    return path;
-                }
-            }
-        }
+        String result = Configuration.GDB_IMG_RECORD + "/" + recordName + EncryptUtil.getFileExtra();
         return result;
     }
 

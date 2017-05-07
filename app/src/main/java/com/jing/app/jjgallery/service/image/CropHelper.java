@@ -4,9 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.Log;
 
-import com.jing.app.jjgallery.config.Configuration;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
-import com.jing.app.jjgallery.service.encrypt.impl.SimpleNameGenerater;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -89,8 +87,7 @@ public class CropHelper {
 		Log.d("CropView", buffer.toString());
 	}
 
-	public static String saveBitmap(Bitmap cropBitmap, String filePath,
-			Encrypter encrypter) {
+	public static String saveBitmap(Bitmap cropBitmap, String filePath) {
 		Log.d("CropView", filePath);
 		try {
 			FileOutputStream out = new FileOutputStream(filePath);
@@ -102,11 +99,9 @@ public class CropHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		String encryptedName = new SimpleNameGenerater().generateName();
-		encrypter.encrypt(new File(filePath), encryptedName);
-		encryptedName = Configuration.APP_DIR_CROP_IMG + "/" + encryptedName + encrypter.getFileExtra();
-		Log.d("CropView", encryptedName);
-		return encryptedName;
+
+		String path = EncryptUtil.encryptFile(new File(filePath));
+		Log.d("CropView", path);
+		return path;
 	}
 }

@@ -29,12 +29,11 @@ import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.Constants;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.model.main.file.MoveController;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProvider;
 import com.jing.app.jjgallery.presenter.main.order.SOrderProviderCallback;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.CropHelper;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CropInforView;
@@ -65,7 +64,6 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 	private String imagePath, cropImagePath, displayImagePath;
 	private Bitmap bitmap, cropBitmap;
 	private boolean isOrienChanged;
-	private Encrypter encrypter;
 //	private SpictureController controller;
 	private int actionbarHeight;
 	private ListPopupWindow setAsMenuBkPopup, cropAreaSizePopup, zoomPopup;
@@ -144,7 +142,6 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		filenameView.setOnTouchListener(filenameListener);
 
 		initWindowParams();
-		encrypter = EncrypterFactory.create();
 //		controller = new SpictureController(context);
 	}
 
@@ -319,8 +316,8 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 		File file = new File(imagePath);
 		if (file != null && file.exists()) {
 			bitmap = PictureManagerUpdate.getInstance().createHDBitmap(file.getPath());
-			if (encrypter.isEncrypted(file)) {
-				filename = encrypter.decipherOriginName(file);
+			if (EncryptUtil.isEncrypted(file)) {
+				filename = EncryptUtil.getOriginName(file);
 			}
 		}
 		setImage(bitmap);
@@ -542,7 +539,7 @@ public class ShowImageDialog extends Dialog implements View.OnClickListener
 				else {
 					path = folderPath + name;
 				}
-				cropImagePath = CropHelper.saveBitmap(cropBitmap, path, encrypter);
+				cropImagePath = CropHelper.saveBitmap(cropBitmap, path);
 				displayImagePath = cropImagePath;
 				if (progressProvider != null) {
 					progressProvider.showToastLong(getContext().getString(R.string.save_success), ProgressProvider.TOAST_SUCCESS);

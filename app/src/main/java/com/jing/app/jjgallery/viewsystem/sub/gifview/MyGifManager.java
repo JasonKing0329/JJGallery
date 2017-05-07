@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +19,6 @@ public class MyGifManager {
 	private Context mContext;
 	private LinearLayout container;
 	private GifView gifView;
-	private Encrypter encrypter;
 
 	/**
 	 * v6.3.10 add support for match_parent
@@ -33,7 +31,6 @@ public class MyGifManager {
 	public MyGifManager(Context context, LinearLayout container) {
 		this.container = container;
 		mContext = context;
-		encrypter = EncrypterFactory.create();
 	}
 
 	/**
@@ -87,11 +84,11 @@ public class MyGifManager {
 			return true;
 		}
 
-		if (encrypter.isEncrypted(new File(filePath))) {
-			String originName = encrypter.decipherOriginName(new File(filePath));
+		if (EncryptUtil.isEncrypted(new File(filePath))) {
+			String originName = EncryptUtil.getOriginName(new File(filePath));
 			Log.i(TAG, "chooseImage -> originName = " + originName);
 			if (originName != null && originName.toLowerCase().endsWith(".gif")) {
-				playGifImage(encrypter.decipherToByteArray(new File(filePath)));
+				playGifImage(EncryptUtil.getEncrypter().decipherToByteArray(new File(filePath)));
 				return true;
 			}
 		}

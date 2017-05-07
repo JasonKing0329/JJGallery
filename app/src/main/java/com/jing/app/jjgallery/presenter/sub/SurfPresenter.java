@@ -2,8 +2,7 @@ package com.jing.app.jjgallery.presenter.sub;
 
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -17,11 +16,9 @@ import java.util.List;
 public class SurfPresenter {
 
     private SOrderManager sOrderManager;
-    private Encrypter encrypter;
 
     public SurfPresenter() {
         sOrderManager = new SOrderManager(null);
-        encrypter = EncrypterFactory.create();
     }
 
     public SOrder queryOrder(int orderId) {
@@ -41,7 +38,7 @@ public class SurfPresenter {
                 @Override
                 public boolean accept(File file, String name) {
 
-                    return name.endsWith(encrypter.getFileExtra());
+                    return name.endsWith(EncryptUtil.getFileExtra());
                 }
             });
             for (File f:files) {
@@ -52,6 +49,6 @@ public class SurfPresenter {
     }
 
     public boolean isGifImage(String path) {
-        return encrypter.isGifFile(path);
+        return EncryptUtil.getEncrypter().isGifFile(path);
     }
 }

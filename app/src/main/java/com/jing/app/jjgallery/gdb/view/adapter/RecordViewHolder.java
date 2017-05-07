@@ -5,9 +5,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.king.service.gdb.bean.GDBProperites;
@@ -94,7 +95,7 @@ public class RecordViewHolder {
         }
 
         // image
-        String path = GdbPresenter.getRecordPath(item.getName());
+        String path = Configuration.GDB_IMG_RECORD + "/" + item.getName() + EncryptUtil.getFileExtra();
         if (path == null) {
             imageView.setVisibility(View.GONE);
         }

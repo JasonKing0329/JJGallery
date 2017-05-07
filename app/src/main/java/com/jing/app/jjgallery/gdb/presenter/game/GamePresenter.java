@@ -3,8 +3,6 @@ package com.jing.app.jjgallery.gdb.presenter.game;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.game.GameProvider;
@@ -62,9 +60,8 @@ public class GamePresenter {
     protected void loadPlayerImageMap() {
         starImageMap = new HashMap<>();
         List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
-        Encrypter encrypter = EncrypterFactory.create();
         for (String path:pathList) {
-            String name = encrypter.decipherOriginName(new File(path));
+            String name = new File(path).getName();
             String preName = name.substring(0, name.lastIndexOf("."));
             starImageMap.put(preName, path);
         }

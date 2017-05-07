@@ -12,8 +12,7 @@ import android.util.Log;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.model.main.order.SOrderManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.file.FileIO;
 
 import java.io.File;
@@ -103,11 +102,10 @@ public class MoveController {
 				@Override
 				public void onTrigger(String src, String target, boolean isAllFinish) {
 					FileIO fileIO = new FileIO();
-					Encrypter encrypter = EncrypterFactory.create();
 					fileIO.moveFile(src, target);
 
-					src = src.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
-					target = target.replace(encrypter.getFileExtra(), encrypter.getNameExtra());
+					src = src.replace(EncryptUtil.getFileExtra(), EncryptUtil.getNameExtra());
+					target = target.replace(EncryptUtil.getFileExtra(), EncryptUtil.getNameExtra());
 					fileIO.moveFile(src, target);
 
 					Message msg = new Message();

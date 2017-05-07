@@ -6,10 +6,12 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
 import com.jing.app.jjgallery.gdb.view.star.IStarView;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.king.service.gdb.bean.GDBProperites;
@@ -117,7 +119,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
 
     private void initValue() {
 
-        String path = GdbPresenter.getRecordPath(record.getName());
+        String path = Configuration.GDB_IMG_RECORD + "/" + record.getName() + EncryptUtil.getFileExtra();
         SImageLoader.getInstance().displayImage(path, recordImageView);
 
         Star star1 = record.getStar1();

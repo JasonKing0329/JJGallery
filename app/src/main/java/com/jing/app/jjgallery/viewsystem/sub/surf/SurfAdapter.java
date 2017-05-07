@@ -10,9 +10,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,14 +31,12 @@ public class SurfAdapter extends PagerAdapter {
 	private final String TAG = "SurfAdapter";
 	private Context mContext;
 	private List<String> mList;
-	private Encrypter encrypter;
 
 	private OnClickListener onClickListener;
 
 	public SurfAdapter(Context context, List<String> list) {
 		mContext = context;
 		mList = list;
-		encrypter = EncrypterFactory.create();
 	}
 
 	public void setOnClickListener(OnClickListener listener) {
@@ -57,11 +54,11 @@ public class SurfAdapter extends PagerAdapter {
 		if (DEBUG) {
 			Log.d(TAG, "instantiateItem " + position);
 		}
-		if (encrypter.isGifFile(mList.get(position))) {
+		if (EncryptUtil.getEncrypter().isGifFile(mList.get(position))) {
 			View view = LayoutInflater.from(mContext).inflate(R.layout.activity_surf_item_gif, null);
 			GifImageView gifView = (GifImageView) view.findViewById(R.id.surf_item_gifview);
 			gifView.setOnClickListener(onClickListener);
-			byte[] bytes = encrypter.decipherToByteArray(new File(mList.get(position)));
+			byte[] bytes = EncryptUtil.getEncrypter().decipherToByteArray(new File(mList.get(position)));
 			try {
 				GifDrawable drawable = new GifDrawable(bytes);
 				gifView.setImageDrawable(drawable);

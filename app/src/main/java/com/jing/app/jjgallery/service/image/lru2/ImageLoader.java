@@ -8,8 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.ISImageLoader;
 import com.jing.app.jjgallery.service.image.lru.ImageSizeUtil;
 
@@ -24,14 +23,11 @@ import java.lang.ref.WeakReference;
  */
 public class ImageLoader implements ISImageLoader {
 
-    private Encrypter encrypter;
-
     private ImageShowManager imageManager;
 
     private int defaultResId = -1;
 
     public ImageLoader(Context context) {
-        encrypter = EncrypterFactory.create();
         imageManager = ImageShowManager.from(context);
     }
 
@@ -143,7 +139,7 @@ public class ImageLoader implements ISImageLoader {
                                                      int height)
         {
             Bitmap bitmap = null;
-            byte[] datas = EncrypterFactory.create().decipherToByteArray(new File(path));
+            byte[] datas = EncryptUtil.getEncrypter().decipherToByteArray(new File(path));
             if (datas != null) {
                 // 获得图片的宽和高，并不把图片加载到内存中
                 BitmapFactory.Options options = new BitmapFactory.Options();

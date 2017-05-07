@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Constants;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.image.ImageFactory;
 import com.jing.app.jjgallery.service.image.PictureManagerUpdate;
 import com.jing.app.jjgallery.util.ScreenUtils;
@@ -24,7 +22,6 @@ public class IndicatorController {
 	private final String TAG = "IndicatorController";
 
 	private Context mContext;
-	private Encrypter encrypter;
 
 	private HashMap<String, Indicator> indicatorMap;
 	private Queue<Indicator> indicatorQueue;
@@ -36,7 +33,6 @@ public class IndicatorController {
 
 	public IndicatorController(Context context) {
 		mContext = context;
-		encrypter = EncrypterFactory.create();
 		indicatorMap = new HashMap<String, Indicator>();
 		indicatorQueue = new LinkedList<Indicator>();
 		bkWidth = context.getResources().getDimensionPixelOffset(R.dimen.timeline_indicator_height);
@@ -131,7 +127,7 @@ public class IndicatorController {
 			indicator.headBitmap = PictureManagerUpdate.getInstance().createCircleBitmap(
 					params[0], mContext);
 			if (Constants.FEATURE_TIMELINE_ENABLE_BK) {
-				indicator.bkBitmap = ImageFactory.getInstance(encrypter).createEncryptedThumbnail(params[1]
+				indicator.bkBitmap = ImageFactory.getInstance().createEncryptedThumbnail(params[1]
 						, bkWidth * bkHeight);
 			}
 			return null;

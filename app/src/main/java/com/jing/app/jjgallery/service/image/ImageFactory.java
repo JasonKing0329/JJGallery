@@ -16,7 +16,7 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.ScreenInfor;
 
 import java.io.File;
@@ -29,27 +29,19 @@ import java.util.List;
 public class ImageFactory {
 
 	private final String TAG = "ImageFactory";
-	private Encrypter encrypter;
 
 	private static ImageFactory factoryWithEncrypter = null;
 
-	private ImageFactory(Encrypter en) {
-		encrypter = en;
+	private ImageFactory() {
+
 	}
 
 
-	public static ImageFactory getInstance(Encrypter en) {
-		if (en == null) {
-			return null;
-		}
+	public static ImageFactory getInstance() {
 		if (factoryWithEncrypter == null) {
-			factoryWithEncrypter = new ImageFactory(en);
+			factoryWithEncrypter = new ImageFactory();
 		}
 		return factoryWithEncrypter;
-	}
-
-	public void setEncrypter(Encrypter en) {
-		encrypter = en;
 	}
 
 	public boolean isImage(String name) {
@@ -76,7 +68,7 @@ public class ImageFactory {
 
 	public Bitmap createEncryptedImage(File file) {
 		Bitmap bitmap = null;
-		byte datas[] = encrypter.decipherToByteArray(file);
+		byte datas[] = EncryptUtil.getEncrypter().decipherToByteArray(file);
 		if (datas != null) {
 			try {
 				bitmap = BitmapFactory.decodeByteArray(datas, 0, datas.length);
@@ -102,7 +94,7 @@ public class ImageFactory {
 			maxWidth = screenWidth - chooserSize;
 		}
 
-		byte datas[] = encrypter.decipherToByteArray(new File(file));
+		byte datas[] = EncryptUtil.getEncrypter().decipherToByteArray(new File(file));
 		if (datas != null) {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;// 对bitmap不分配空间，只是用于计算文件options的各种属性(本程序需要计算width,height)
@@ -242,7 +234,7 @@ public class ImageFactory {
 	 */
 	public Bitmap createEncryptedThumbnail(String file, int maxPixel) {
 		Bitmap bitmap = null;
-		byte datas[] = encrypter.decipherToByteArray(new File(file));
+		byte datas[] = EncryptUtil.getEncrypter().decipherToByteArray(new File(file));
 		if (datas != null) {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;// 对bitmap不分配空间，只是用于计算文件options的各种属性(本程序需要计算width,height)

@@ -4,8 +4,7 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.bean.filesystem.FileBean;
 import com.jing.app.jjgallery.config.Configuration;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -39,13 +38,9 @@ public class FolderManager {
 		List<String> list = new ArrayList<>();
 		File[] files = new File(path).listFiles(new FileFilter() {
 
-			private Encrypter encrypter;
 			@Override
 			public boolean accept(File file) {
-				if (encrypter == null) {
-					encrypter = EncrypterFactory.create();
-				}
-				return encrypter.isEncrypted(file) || file.isDirectory();
+				return EncryptUtil.isEncrypted(file) || file.isDirectory();
 			}
 
 		});
@@ -59,13 +54,9 @@ public class FolderManager {
 		List<FileBean> list = new ArrayList<>();
 		File[] files = new File(path).listFiles(new FileFilter() {
 
-			private Encrypter encrypter;
 			@Override
 			public boolean accept(File file) {
-				if (encrypter == null) {
-					encrypter = EncrypterFactory.create();
-				}
-				return encrypter.isEncrypted(file) || file.isDirectory();
+				return EncryptUtil.isEncrypted(file) || file.isDirectory();
 			}
 
 		});

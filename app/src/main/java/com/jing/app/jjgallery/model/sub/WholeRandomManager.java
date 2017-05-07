@@ -3,8 +3,7 @@ package com.jing.app.jjgallery.model.sub;
 import android.util.Log;
 
 import com.jing.app.jjgallery.config.Configuration;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -25,13 +24,10 @@ public class WholeRandomManager {
 	 * the last index of available file in each folder
 	 */
 	private List<Integer> folderStep;
-	
-	private Encrypter encrypter;
-	
+
 	private int total;
 
 	public WholeRandomManager() {
-		encrypter = EncrypterFactory.create();
 		countAvailableRandom();
 	}
 	
@@ -85,7 +81,7 @@ public class WholeRandomManager {
 		
 		@Override
 		public boolean accept(File dir, String filename) {
-			return filename.endsWith(encrypter.getFileExtra());
+			return filename.endsWith(EncryptUtil.getFileExtra());
 		}
 	};
 	

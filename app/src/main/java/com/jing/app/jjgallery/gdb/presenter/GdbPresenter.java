@@ -14,8 +14,6 @@ import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.model.RecordComparator;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
@@ -53,7 +51,6 @@ public class GdbPresenter {
     private IGdbRecordListView gdbRecordListView;
     private IStarView starView;
     private GDBProvider gdbProvider;
-    private static Encrypter encrypter;
 
     /**
      * 在loadAllStars的时候遍历gdb/star目录，解析出所有name对应的path
@@ -70,7 +67,6 @@ public class GdbPresenter {
 
     private void init() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
-        encrypter = EncrypterFactory.create();
         starImageMap = new HashMap<>();
         recordImageMap = new HashMap<>();
     }
@@ -168,23 +164,6 @@ public class GdbPresenter {
                 Collections.sort(list, new RecordComparator(sortMode, desc));
             }
         }
-    }
-
-    public static String getRecordPath(String recordName) {
-        String result = recordImageMap.get(recordName);
-        if (result == null) {
-            // load image path of star
-            List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
-            for (String path:list) {
-                String name = encrypter.decipherOriginName(new File(path));
-                int dot = name.lastIndexOf(".");
-                String preName = name.substring(0, dot);
-                if (preName.equals(recordName)) {
-                    return path;
-                }
-            }
-        }
-        return result;
     }
 
     public void checkServerStatus() {
@@ -349,7 +328,7 @@ public class GdbPresenter {
             // load available images for stars
             List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
             for (String path:pathList) {
-                String name = encrypter.decipherOriginName(new File(path));
+                String name = new File(path).getName();
                 String preName = name.substring(0, name.lastIndexOf("."));
                 starImageMap.put(preName, path);
             }
@@ -374,7 +353,7 @@ public class GdbPresenter {
             // load available images for records
             List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
             for (String path:pathList) {
-                String name = encrypter.decipherOriginName(new File(path));
+                String name = new File(path).getName();
                 String preName = name.substring(0, name.lastIndexOf("."));
                 recordImageMap.put(preName, path);
             }
@@ -407,7 +386,7 @@ public class GdbPresenter {
             else {
                 List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
                 for (String path:list) {
-                    String name = encrypter.decipherOriginName(new File(path));
+                    String name = new File(path).getName();
                     String preName = name.substring(0, name.lastIndexOf("."));
                     if (preName.equals(star.getName())) {
                         proxy.setImagePath(path);

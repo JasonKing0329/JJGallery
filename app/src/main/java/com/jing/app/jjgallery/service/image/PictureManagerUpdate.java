@@ -9,8 +9,7 @@ import android.util.Log;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.controller.ThemeManager;
-import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
-import com.jing.app.jjgallery.service.encrypt.action.Encrypter;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -400,10 +399,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadBitmap(String path, int size) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createEncryptedThumbnail(path, size);
 		}
 		else {
@@ -415,10 +413,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadCoverBitmap(String path) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel());
 		}
 		else {
@@ -430,10 +427,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadSpictureItem(String path) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createEncryptedThumbnail(path, Configuration.getChooserItemWidth() * Configuration.getChooserItemWidth());
 		}
 		else {
@@ -445,10 +441,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadSpictureItem(String path, Context context, int orientation) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createThumbForEncrypted(path, context, orientation);
 		}
 		else {
@@ -460,10 +455,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadWallItemBitmap(String path) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverMaxPixel());
 		}
 		else {
@@ -475,10 +469,9 @@ public class PictureManagerUpdate {
 	private Bitmap loadCoverPreview(String path) {
 
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		File file = new File(path);
-		if (encrypter.isEncrypted(file)) {
+		if (EncryptUtil.isEncrypted(file)) {
 			bitmap = factory.createEncryptedThumbnail(path, Configuration.getSorderCoverPreviewSize());
 		}
 		else {
@@ -495,8 +488,7 @@ public class PictureManagerUpdate {
 	 */
 	public Bitmap createHDBitmap(String path) {
 		Bitmap bitmap = null;
-		Encrypter encrypter = EncrypterFactory.create();
-		ImageFactory factory = ImageFactory.getInstance(encrypter);
+		ImageFactory factory = ImageFactory.getInstance();
 		bitmap = factory.createEncryptedThumbnail(path, Configuration.getScreenWidth() * Configuration.getScreenHeight());
 		return bitmap;
 	}
