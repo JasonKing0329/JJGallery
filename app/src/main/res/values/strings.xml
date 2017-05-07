@@ -305,6 +305,7 @@
     <string name="setting_start_view_gdb" translatable="false">GDB</string>
 
     <string name="setting_gdb_latest_num">Latest records number</string>
+    <string name="setting_gdb_no_image">No image mode</string>
 
     <string name="login_finger_not_support">Fingerprint is not supported on current device!</string>
     <!--************************** thumb folder **************************-->

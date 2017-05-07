@@ -438,4 +438,12 @@ public class SettingProperties {
         return Integer.parseInt(num);
     }
 
+    /**
+     * latest records number
+     */
+    public static boolean isGdbNoImageMode(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_NO_IMAGE, true);
+    }
+
 }

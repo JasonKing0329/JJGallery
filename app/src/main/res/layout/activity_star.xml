@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jing.app.jjgallery.gdb.view.StarActivity">
+    tools:context="com.jing.app.jjgallery.gdb.view.star.StarActivity">
 
     <com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView
         android:id="@+id/star_recycler_view"

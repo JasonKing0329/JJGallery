@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
-import com.jing.app.jjgallery.gdb.view.AutoScrollAdapter;
-import com.jing.app.jjgallery.gdb.view.AutoScrollView;
+import com.jing.app.jjgallery.gdb.view.pub.AutoScrollAdapter;
+import com.jing.app.jjgallery.gdb.view.pub.AutoScrollView;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.FormatUtil;
 import com.king.service.gdb.bean.Record;

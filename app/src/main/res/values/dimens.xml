@@ -336,4 +336,5 @@
     <dimen name="game_dlg_scene_item_height">50dp</dimen>
     <dimen name="game_battle_scene_delete_size">30dp</dimen>
     <dimen name="game_cross_coach_text">16dp</dimen>
+    <dimen name="boom_menu_btn_radius">30dp</dimen>
 </resources>

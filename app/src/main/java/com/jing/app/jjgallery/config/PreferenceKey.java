@@ -142,4 +142,6 @@ public class PreferenceKey {
      */
     // latest records number
     public static final String PREF_GDB_LATEST_NUM = "pref_gdb_latest_num";
+    // no image mode
+    public static final String PREF_GDB_NO_IMAGE = "pref_gdb_no_image";
 }

@@ -12,11 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GdbGuideActivity;
+import com.jing.app.jjgallery.gdb.view.home.GdbGuideActivity;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
-import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;

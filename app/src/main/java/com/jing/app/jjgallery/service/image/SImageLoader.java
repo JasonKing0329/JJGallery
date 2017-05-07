@@ -30,6 +30,7 @@ public class SImageLoader {
      * @param context
      * @return
      */
+    @Deprecated
     public static ISImageLoader getInstance(Context context) {
         if (instance2 == null) {
             instance2 = new com.jing.app.jjgallery.service.image.lru2.ImageLoader(context);

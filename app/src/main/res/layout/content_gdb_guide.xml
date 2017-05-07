@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.jing.app.jjgallery.gdb.GdbGuideActivity"
+    tools:context="com.jing.app.jjgallery.gdb.view.home.GdbGuideActivity"
     tools:showIn="@layout/app_bar_gdb_guide">
 
     <RelativeLayout
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/gdb_guide_autoscroll_group"
         android:layout_alignParentBottom="true">
-        <com.jing.app.jjgallery.gdb.view.AutoScrollView
+        <com.jing.app.jjgallery.gdb.view.pub.AutoScrollView
             android:id="@+id/gdb_guide_autoscroll"
             android:layout_width="match_parent"
             android:layout_height="@dimen/gdb_guide_scroll_item_height"/>

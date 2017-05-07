@@ -15,6 +15,7 @@ public abstract class Record {
 	private int scoreStory;
 	private int HDLevel;
 	private long lastModifyTime;
+	private int deprecated;
 	
 	public int getId() {
 		return id;
@@ -96,4 +97,12 @@ public abstract class Record {
 	public void setLastModifyTime(long lastModifyTime) {
 		this.lastModifyTime = lastModifyTime;
 	}
+	
+	public int getDeprecated() {
+		return deprecated;
+	}
+	public void setDeprecated(int deprecated) {
+		this.deprecated = deprecated;
+	}
+
 }

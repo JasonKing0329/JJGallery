@@ -20,8 +20,10 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.service.encrypt.EncrypterFactory;
 import com.jing.app.jjgallery.service.image.ISImageLoader;
+import com.jing.app.jjgallery.service.image.SImageConstants;
 
 /**
  * 图片加载类
@@ -190,8 +192,19 @@ public class ImageLoader implements ISImageLoader
 		defaultResId = resId;
 	}
 
+	public boolean isNotShow(ImageView imageView) {
+		if (SImageConstants.isHideImageMode()) {
+			imageView.setImageResource(R.drawable.default_cover);
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void displayImage(final String path, final ImageView imageView) {
+		if (isNotShow(imageView)) {
+			return;
+		}
 		displayImage(path, imageView, false);
 	}
 	/**
@@ -203,6 +216,10 @@ public class ImageLoader implements ISImageLoader
 	public void displayImage(final String path, final ImageView imageView,
 			final boolean isFromNet)
 	{
+		if (isNotShow(imageView)) {
+			return;
+		}
+
 		if (path == null) {
 			Log.e(TAG, "loadImage: path is null!");
 			if (defaultResId != -1) {

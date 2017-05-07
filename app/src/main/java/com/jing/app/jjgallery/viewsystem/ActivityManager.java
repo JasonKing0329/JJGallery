@@ -13,17 +13,18 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.GdbGuideActivity;
+import com.jing.app.jjgallery.gdb.view.home.GdbGuideActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.CrossActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.image.SImageConstants;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
-import com.jing.app.jjgallery.gdb.GDBHomeActivity;
-import com.jing.app.jjgallery.gdb.view.RecordActivity;
-import com.jing.app.jjgallery.gdb.view.StarActivity;
+import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;
+import com.jing.app.jjgallery.gdb.view.record.RecordActivity;
+import com.jing.app.jjgallery.gdb.view.star.StarActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
@@ -76,6 +77,8 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
+
+        SImageConstants.setHideImageMode(SettingProperties.isGdbNoImageMode(from));
         Intent intent = new Intent().setClass(from, GdbGuideActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
@@ -92,8 +95,8 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
-        intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.STAR);
+        Intent intent = new Intent().setClass(from, GDBListActivity.class);
+        intent.putExtra(GDBListActivity.START_MODE, GDBListActivity.STAR);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);
@@ -109,8 +112,8 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, GDBHomeActivity.class);
-        intent.putExtra(GDBHomeActivity.START_MODE, GDBHomeActivity.RECORD);
+        Intent intent = new Intent().setClass(from, GDBListActivity.class);
+        intent.putExtra(GDBListActivity.START_MODE, GDBListActivity.RECORD);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

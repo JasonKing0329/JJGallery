@@ -154,6 +154,7 @@ public class SqliteDao {
 			record.setRateFkType6(Integer.parseInt(set.getString(41)));
 			record.setLastModifyTime(set.getLong(44));
 			record.setSpecialDesc(set.getString(45));
+			record.setDeprecated(Integer.parseInt(set.getString(46)));
 			int star1Id = set.getInt(42);
 			int star2Id = set.getInt(43);
 			record.setStar1(queryStarById(connection, star1Id));
@@ -170,9 +171,9 @@ public class SqliteDao {
 				.append(",scoreForePlay,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
 				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreFk,scoreCum,scoreScene,scoreStory")
 				.append(",scoreNoCond,scoreCShow,scoreRim,scoreSpecial,rateFkType1,rateFkType2")
-				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate,specialDesc)")
+				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate,specialDesc,deprecated)")
 				.append(" VALUES(?");
-		for (int i = 0; i < 43; i ++) {
+		for (int i = 0; i < 44; i ++) {
 			buffer.append(",?");
 		}
 		buffer.append(")");
@@ -224,6 +225,7 @@ public class SqliteDao {
 			stmt.setInt(42, record.getStar2().getId());
 			stmt.setLong(43, record.getLastModifyTime());
 			stmt.setString(44, record.getSpecialDesc());
+			stmt.setInt(45, record.getDeprecated());
 			stmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -533,6 +535,11 @@ public class SqliteDao {
 			}
 		}
 	}
+	/**
+	 * 作为保留项目，star每次只更新
+	 * @param connection
+	 */
+	@Deprecated
 	public void clearTableStar(Connection connection) {
 		Statement statement = null;
 		try {

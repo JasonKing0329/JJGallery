@@ -8,7 +8,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.gdb.GDBHomeActivity;
+import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.HomeWaterfallActivity;
 import com.jing.app.jjgallery.viewsystem.main.timeline.TimeLineActivity;
@@ -90,7 +90,7 @@ public class HomeSelecter implements  HomeProvider {
                 ActivityManager.startSOrderActivity(from, bundle);
                 break;
             case PreferenceValue.START_GDB:
-                if (from instanceof GDBHomeActivity) {//禁止重复打开当前页面
+                if (from instanceof GDBListActivity) {//禁止重复打开当前页面
                     result = false;
                     break;
                 }

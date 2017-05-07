@@ -300,5 +300,6 @@
     <dimen name="game_battle_scene_delete_size">40dp</dimen>
     <dimen name="game_battle_round_card_minheight">100dp</dimen>
     <dimen name="game_cross_coach_text">16dp</dimen>
+    <dimen name="boom_menu_btn_radius">30dp</dimen>
 
 </resources>

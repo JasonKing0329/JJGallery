@@ -10,7 +10,7 @@ import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
-import com.jing.app.jjgallery.gdb.view.OnStarClickListener;
+import com.jing.app.jjgallery.gdb.view.star.OnStarClickListener;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.king.service.gdb.bean.Star;
 
