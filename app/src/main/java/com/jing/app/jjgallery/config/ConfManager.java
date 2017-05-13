@@ -34,6 +34,7 @@ public class ConfManager {
     public static String DB_PATH;
     public static String GDB_DB_PATH = Configuration.APP_DIR_CONF + "/gdata.db";
     public static String GDB_GAME_DB_PATH = Configuration.APP_DIR_CONF + "/gdata_game.db";
+    public static String GDB_FAVOR_DB_PATH = Configuration.APP_DIR_CONF + "/gdata_favor.db";
     // 采用自动更新替代gdata.db的方法，因为jornal的存在，会使重新使用这个db出现问题
     public static String GDB_DB_JOURNAL = Configuration.APP_DIR_CONF + "/gdata.db-journal";
 

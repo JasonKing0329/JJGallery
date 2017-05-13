@@ -21,6 +21,8 @@
     <attr name="actionbar_ic_add" format="reference"/>
     <attr name="actionbar_ic_color" format="reference"/>
     <attr name="actionbar_ic_sort" format="reference"/>
+    <attr name="actionbar_ic_favor" format="reference"/>
+    <attr name="actionbar_ic_index" format="reference"/>
     <attr name="actionbar_ic_cover" format="reference"/>
     <attr name="actionbar_ic_refresh" format="reference"/>
     <attr name="actionbar_ic_search" format="reference"/>

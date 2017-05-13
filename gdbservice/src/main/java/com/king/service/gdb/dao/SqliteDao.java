@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
@@ -21,6 +22,7 @@ public class SqliteDao {
 	private final String TABLE_CONF = "conf";
 	private final String TABLE_STAR = "star";
 	private final String TABLE_RECORD_1V1 = "record_1v1";
+	private final String TABLE_FAVOR = "favor";
 
 	public SqliteDao() {
 		try {
@@ -639,5 +641,79 @@ public class SqliteDao {
 			}
 		}
 		return bean;
+	}
+
+    public List<FavorBean> queryFavors(Connection connection) {
+		List<FavorBean> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_FAVOR + " ORDER BY favor DESC";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseFavorBean(set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	private void parseFavorBean(ResultSet set, List<FavorBean> list) throws SQLException {
+		while (set.next()) {
+			FavorBean bean = new FavorBean();
+			bean.setId(set.getInt(1));
+			bean.setStarId(set.getInt(2));
+			bean.setStarName(set.getString(3));
+			bean.setFavor(set.getInt(4));
+			list.add(bean);
+		}
+	}
+
+	public void saveFavor(Connection connection, FavorBean bean) {
+		String sql = "SELECT * FROM " + TABLE_FAVOR + " WHERE star_id=" + bean.getStarId();
+		boolean isExist = false;
+		Statement stmt;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			if (set.next()) {
+				isExist = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (isExist) {
+			sql = "UPDATE " + TABLE_FAVOR + " SET star_id=?, star_name=?, favor=? WHERE star_id=?";
+		}
+		else {
+			sql = "INSERT INTO " + TABLE_FAVOR + "(star_id, star_name, favor) VALUES(?, ?, ?)";
+		}
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, bean.getStarId());
+			pstmt.setString(2, bean.getStarName());
+			pstmt.setInt(3, bean.getFavor());
+			if (isExist) {
+				pstmt.setInt(4, bean.getStarId());
+			}
+			pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

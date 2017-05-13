@@ -20,4 +20,26 @@
         android:paddingLeft="10dp"
         android:gravity="center_vertical"
         android:background="?android:selectableItemBackground"/>
+    <TextView
+        android:id="@+id/gdb_star_favor_score"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:text="95"
+        android:textSize="20dp"
+        android:textColor="@color/darkgrey"/>
+    <ImageView
+        android:id="@+id/gdb_star_favor"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:padding="8dp"
+        android:src="@drawable/selector_favor_red"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:layout_toLeftOf="@id/gdb_star_favor_score"
+        android:layout_marginRight="0dp"/>
 </RelativeLayout>

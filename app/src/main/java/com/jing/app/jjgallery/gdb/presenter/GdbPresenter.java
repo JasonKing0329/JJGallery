@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.gdb.presenter;
 import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.StarCountBean;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
@@ -51,6 +52,7 @@ public class GdbPresenter {
     private IGdbRecordListView gdbRecordListView;
     private IStarView starView;
     private GDBProvider gdbProvider;
+    private GDBProvider favorProvider;
 
     /**
      * 在loadAllStars的时候遍历gdb/star目录，解析出所有name对应的path
@@ -67,6 +69,7 @@ public class GdbPresenter {
 
     private void init() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        favorProvider = new GDBProvider(DBInfor.GDB_FAVOR_DB_PATH);
         starImageMap = new HashMap<>();
         recordImageMap = new HashMap<>();
     }
@@ -280,6 +283,10 @@ public class GdbPresenter {
         return list;
     }
 
+    public void saveFavor(FavorBean bean) {
+        favorProvider.saveFavor(bean);
+    }
+
     /**
      * 将下载文件进行全部加密，回调在onDownloadItemEncrypted
      * @param downloadList
@@ -289,14 +296,14 @@ public class GdbPresenter {
         new FinishDownloadTask().execute(downloadList);
     }
 
-    private class LoadStarListTask extends AsyncTask<Object, Void, List<Star>> {
+    private class LoadStarListTask extends AsyncTask<Object, Void, List<StarProxy>> {
 
         private int orderBy;
 
         @Override
-        protected void onPostExecute(List<Star> list) {
+        protected void onPostExecute(List<StarProxy> list) {
 
-            List<Star> resultList = new ArrayList<>();
+            List<StarProxy> resultList = new ArrayList<>();
             if (orderBy == GdbConstants.STAR_SORT_RECORDS) {// order by records number
                 resultList.addAll(list);
                 Collections.sort(resultList, new StarRecordsNumberComparator());
@@ -304,12 +311,14 @@ public class GdbPresenter {
             else {// order by name
                 // add headers
                 // about header rules, see viewsystem/main/gdb/StarListAdapter.java
-                Star star = null;
+                StarProxy star = null;
                 char index = 'A';
                 for (int i = 0; i < 26; i ++) {
-                    star = new Star();
-                    star.setId(-1);
-                    star.setName("" + index ++);
+                    star = new StarProxy();
+                    Star s = new Star();
+                    star.setStar(s);
+                    s.setId(-1);
+                    s.setName("" + index ++);
                     resultList.add(star);
                 }
                 resultList.addAll(list);
@@ -322,7 +331,7 @@ public class GdbPresenter {
         }
 
         @Override
-        protected List<Star> doInBackground(Object... params) {
+        protected List<StarProxy> doInBackground(Object... params) {
             orderBy = (int) params[0];
             String starMode = (String) params[1];
             // load available images for stars
@@ -332,7 +341,24 @@ public class GdbPresenter {
                 String preName = name.substring(0, name.lastIndexOf("."));
                 starImageMap.put(preName, path);
             }
-            return gdbProvider.getStars(starMode);
+
+            List<FavorBean> favorList = favorProvider.getFavors();
+            Map<Integer, FavorBean> favorMap = new HashMap<>();
+            for (FavorBean bean:favorList) {
+                favorMap.put(bean.getStarId(), bean);
+            }
+
+            List<Star> list = gdbProvider.getStars(starMode);
+            List<StarProxy> proxyList = new ArrayList<>();
+            for (Star star:list) {
+                StarProxy proxy = new StarProxy();
+                proxy.setStar(star);
+                proxy.setImagePath(starImageMap.get(star.getName()));
+                FavorBean favor = favorMap.get(star.getId());
+                proxy.setFavor(favor == null ? 0:favor.getFavor());
+                proxyList.add(proxy);
+            }
+            return proxyList;
         }
     }
 
@@ -444,34 +470,34 @@ public class GdbPresenter {
     /**
      * order by name
      */
-    public class StarNameComparator implements Comparator<Star> {
+    public class StarNameComparator implements Comparator<StarProxy> {
 
         @Override
-        public int compare(Star l, Star r) {
+        public int compare(StarProxy l, StarProxy r) {
             if (l == null || r == null) {
                 return 0;
             }
 
-            return l.getName().toLowerCase().compareTo(r.getName().toLowerCase());
+            return l.getStar().getName().toLowerCase().compareTo(r.getStar().getName().toLowerCase());
         }
     }
 
     /**
      * order by records number
      */
-    public class StarRecordsNumberComparator implements Comparator<Star> {
+    public class StarRecordsNumberComparator implements Comparator<StarProxy> {
 
         @Override
-        public int compare(Star l, Star r) {
+        public int compare(StarProxy l, StarProxy r) {
             if (l == null || r == null) {
                 return 0;
             }
 
             // order by record number desc
-            int result = r.getRecordNumber() - l.getRecordNumber();
+            int result = r.getStar().getRecordNumber() - l.getStar().getRecordNumber();
             // if same, then compare name and order by name asc
             if (result == 0) {
-                result = l.getName().toLowerCase().compareTo(r.getName().toLowerCase());
+                result = l.getStar().getName().toLowerCase().compareTo(r.getStar().getName().toLowerCase());
             }
             return result;
         }

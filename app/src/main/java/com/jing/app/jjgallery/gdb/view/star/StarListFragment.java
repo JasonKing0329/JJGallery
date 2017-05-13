@@ -164,6 +164,8 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         iListPageParent.getActionbar().addSearchIcon();
         iListPageParent.getActionbar().addHomeIcon();
         iListPageParent.getActionbar().addSortIcon();
+        iListPageParent.getActionbar().addFavorIcon();
+        iListPageParent.getActionbar().addIndexIcon();
     }
 
     public void onIconClick(View view) {
@@ -176,6 +178,11 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                     mSortMode = GdbConstants.STAR_SORT_NAME;
                 }
                 loadStar();
+                break;
+            case R.id.actionbar_index:
+                mSideBarView.setVisibility(mSideBarView.getVisibility() == View.GONE ? View.VISIBLE:View.GONE);
+                break;
+            case R.id.actionbar_favor:
                 break;
         }
     }
@@ -198,7 +205,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     }
 
     @Override
-    public void onLoadStarList(List<Star> list) {
+    public void onLoadStarList(List<StarProxy> list) {
         if (mSortMode == GdbConstants.STAR_SORT_RECORDS) {
             mNumberAdapter = new StarListNumAdapter(list);
             mNumberAdapter.setPresenter(iListPageParent.getPresenter());

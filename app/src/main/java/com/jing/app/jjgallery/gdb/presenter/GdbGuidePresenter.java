@@ -175,6 +175,9 @@ public class GdbGuidePresenter {
             else if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_STAR2)) {
                 return oRecord.getScoreStar2();
             }
+            else if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_STAR)) {
+                return oRecord.getScoreStar();
+            }
             else if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_STARCC1)) {
                 return oRecord.getScoreStar1();
             }

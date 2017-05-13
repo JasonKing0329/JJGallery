@@ -9,6 +9,7 @@ import com.king.service.gdb.bean.Star;
 public class StarProxy {
     private Star star;
     private String imagePath;
+    private int favor;
 
     public Star getStar() {
         return star;
@@ -24,5 +25,13 @@ public class StarProxy {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public int getFavor() {
+        return favor;
+    }
+
+    public void setFavor(int favor) {
+        this.favor = favor;
     }
 }

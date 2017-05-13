@@ -72,7 +72,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private ImageView backButton, menuLeftButton, addButton, homeButton
 		, surfButton, sortButton, searchButton, closeButton, refreshButton
 		, changeButton, colorButton, randomSurfButton, coverButton
-		, showButton, hideButton, groupAddButton;
+		, showButton, hideButton, groupAddButton, favorButton, indexButton;
 
 	/**
 	 * 最右侧菜单图标，固定位置
@@ -177,6 +177,8 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
 		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
 		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
+		favorButton = (ImageView) view.findViewById(R.id.actionbar_favor);
+		indexButton = (ImageView) view.findViewById(R.id.actionbar_index);
 		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
 		randomSurfButton = (ImageView) view.findViewById(R.id.actionbar_fullscreen);
 		closeButton = (ImageView) view.findViewById(R.id.actionbar_search_close);
@@ -208,6 +210,8 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		addButton.setOnClickListener(this);
 		refreshButton.setOnClickListener(this);
 		sortButton.setOnClickListener(this);
+		favorButton.setOnClickListener(this);
+		indexButton.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
 		randomSurfButton.setOnClickListener(this);
 		closeButton.setOnClickListener(this);
@@ -452,6 +456,22 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	public void addSortIcon() {
 		currentButtons.add(sortButton);
 		sortButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * index icon
+	 */
+	public void addIndexIcon() {
+		currentButtons.add(indexButton);
+		indexButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * favor icon
+	 */
+	public void addFavorIcon() {
+		currentButtons.add(favorButton);
+		favorButton.setVisibility(View.VISIBLE);
 	}
 
 	/**

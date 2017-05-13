@@ -1,5 +1,6 @@
 package com.king.service.gdb;
 
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
@@ -188,4 +189,36 @@ public class GDBProvider {
         }
         return null;
     }
+
+    /**
+     * 查询所有的favor数据
+     * @return
+     */
+    public List<FavorBean> getFavors() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.queryFavors(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * 查询所有的favor数据
+     * @return
+     */
+    public void saveFavor(FavorBean bean) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            sqliteDao.saveFavor(SqlConnection.getInstance().getConnection(), bean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
 }

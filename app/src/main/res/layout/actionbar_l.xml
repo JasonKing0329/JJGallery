@@ -128,7 +128,20 @@
 							android:layout_height="match_parent"
 							android:src="?attr/actionbar_ic_sort"
 							android:visibility="gone"/>
-
+						<ImageView
+							style="@style/ActionbarIcon_L"
+							android:id="@+id/actionbar_favor"
+							android:layout_width="@dimen/actionbar_icon_width"
+							android:layout_height="match_parent"
+							android:src="?attr/actionbar_ic_favor"
+							android:visibility="gone"/>
+						<ImageView
+							style="@style/ActionbarIcon_L"
+							android:id="@+id/actionbar_index"
+							android:layout_width="@dimen/actionbar_icon_width"
+							android:layout_height="match_parent"
+							android:src="?attr/actionbar_ic_index"
+							android:visibility="gone"/>
 						<ImageView
 							style="@style/ActionbarIcon_L"
 							android:id="@+id/actionbar_change"
