@@ -98,6 +98,11 @@ public class GdbPresenter {
         new LoadStarListTask().execute(orderBy, starMode);
     }
 
+    public void loadStarListOrderByFavor(String starMode) {
+        int orderBy = GdbConstants.STAR_SORT_FAVOR;
+        new LoadStarListTask().execute(orderBy, starMode);
+    }
+
     public String getStarImage(String starName) {
         return starImageMap.get(starName);
     }
@@ -308,6 +313,14 @@ public class GdbPresenter {
                 resultList.addAll(list);
                 Collections.sort(resultList, new StarRecordsNumberComparator());
             }
+            else if (orderBy == GdbConstants.STAR_SORT_FAVOR) {
+                for (StarProxy proxy:list) {
+                    if (proxy.getFavor() > 0) {
+                        resultList.add(proxy);
+                    }
+                }
+                Collections.sort(resultList, new StarFavorComparator());
+            }
             else {// order by name
                 // add headers
                 // about header rules, see viewsystem/main/gdb/StarListAdapter.java
@@ -500,6 +513,18 @@ public class GdbPresenter {
                 result = l.getStar().getName().toLowerCase().compareTo(r.getStar().getName().toLowerCase());
             }
             return result;
+        }
+    }
+
+    /**
+     * order by favor score
+     */
+    public class StarFavorComparator implements Comparator<StarProxy> {
+
+        @Override
+        public int compare(StarProxy l, StarProxy r) {
+
+            return r.getFavor() - l.getFavor();
         }
     }
 

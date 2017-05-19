@@ -7,6 +7,7 @@ package com.jing.app.jjgallery.gdb;
 public class GdbConstants {
     public static final int STAR_SORT_NAME = 0;
     public static final int STAR_SORT_RECORDS = 1;
+    public static final int STAR_SORT_FAVOR = 2;
 
     public static final String FILTER_KEY_SCORE = "score";
     public static final String FILTER_KEY_SCORE_FEEL = "feel";

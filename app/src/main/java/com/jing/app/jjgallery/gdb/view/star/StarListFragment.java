@@ -183,6 +183,13 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                 mSideBarView.setVisibility(mSideBarView.getVisibility() == View.GONE ? View.VISIBLE:View.GONE);
                 break;
             case R.id.actionbar_favor:
+                if (mSortMode == GdbConstants.STAR_SORT_NAME) {
+                    mSortMode = GdbConstants.STAR_SORT_FAVOR;
+                }
+                else {
+                    mSortMode = GdbConstants.STAR_SORT_NAME;
+                }
+                loadStar();
                 break;
         }
     }
@@ -190,6 +197,9 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     private void loadStar() {
         if (mSortMode == GdbConstants.STAR_SORT_NAME) {
             sortByName();
+        }
+        else if (mSortMode == GdbConstants.STAR_SORT_FAVOR) {
+            sortByFavor();
         }
         else {
             sortByRecordNumbers();
@@ -202,6 +212,10 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
 
     private void sortByRecordNumbers() {
         iListPageParent.getPresenter().loadStarListOrderByNumber(curStarMode);
+    }
+
+    private void sortByFavor() {
+        iListPageParent.getPresenter().loadStarListOrderByFavor(curStarMode);
     }
 
     @Override
