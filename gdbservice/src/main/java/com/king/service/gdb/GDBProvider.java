@@ -121,6 +121,24 @@ public class GDBProvider {
     }
 
     /**
+     * 查询star
+     * @param id
+     * @return
+     */
+    public Star queryStarById(int id) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            Star star = sqliteDao.queryStarById(SqlConnection.getInstance().getConnection(), id);
+            return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * 查询所有的record
      * @return
      */
@@ -191,6 +209,27 @@ public class GDBProvider {
     }
 
     /**
+     * 随机查询record
+     * @return
+     */
+    public List<Record> getRandomRecords(int number) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            List<Record> list = new ArrayList<>();
+            List<RecordOneVOne> oList = sqliteDao.getRandomRecords(number, SqlConnection.getInstance().getConnection());
+            for (RecordOneVOne record:oList) {
+                list.add(record);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
      * 查询所有的favor数据
      * @return
      */
@@ -198,6 +237,22 @@ public class GDBProvider {
         try {
             SqlConnection.getInstance().connect(databasePath);
             return sqliteDao.queryFavors(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * 查询所有的favor数据
+     * @return
+     */
+    public List<FavorBean> getTopFavors(int number) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.queryTopFavors(number, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

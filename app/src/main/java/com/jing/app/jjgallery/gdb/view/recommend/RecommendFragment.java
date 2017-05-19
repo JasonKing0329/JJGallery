@@ -1,21 +1,18 @@
 package com.jing.app.jjgallery.gdb.view.recommend;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.view.home.GdbGuideActivity;
+import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
+import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
@@ -31,7 +28,7 @@ import java.util.List;
  * Created by Administrator on 2016/12/26 0026.
  */
 
-public class RecommendFragment extends Fragment implements IRecommend, View.OnClickListener {
+public class RecommendFragment extends GBaseFragment implements IRecommend, View.OnClickListener {
 
     private ImageView imageView;
     private TextView nameView;
@@ -40,6 +37,7 @@ public class RecommendFragment extends Fragment implements IRecommend, View.OnCl
     private ProgressBar progressBar;
 
     private GdbGuidePresenter gdbGuidePresenter;
+    private IRecommendHolder recommendHolder;
     private FilterPresenter filterPresenter;
 
     /**
@@ -47,29 +45,33 @@ public class RecommendFragment extends Fragment implements IRecommend, View.OnCl
      */
     private RecordFilterDialog filterDialog;
 
-    protected View contentView;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        if (contentView == null) {
-            contentView = inflater.inflate(R.layout.dialog_gdb_recommand, null);
-        }
+    protected void bindFragmentHolder(IFragmentHolder holder) {
+        recommendHolder = (IRecommendHolder) holder;
+    }
 
-        imageView = (ImageView) contentView.findViewById(R.id.gdb_recommend_image);
-        nameView = (TextView) contentView.findViewById(R.id.gdb_recommend_name);
-        starView = (TextView) contentView.findViewById(R.id.gdb_recommend_star);
-        scoreView = (TextView) contentView.findViewById(R.id.gdb_recommend_score);
-        progressBar = (ProgressBar) contentView.findViewById(R.id.gdb_recommend_progress);
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.dialog_gdb_recommand;
+    }
+
+    @Override
+    protected void initView(View view) {
+        imageView = (ImageView) view.findViewById(R.id.gdb_recommend_image);
+        nameView = (TextView) view.findViewById(R.id.gdb_recommend_name);
+        starView = (TextView) view.findViewById(R.id.gdb_recommend_star);
+        scoreView = (TextView) view.findViewById(R.id.gdb_recommend_score);
+        progressBar = (ProgressBar) view.findViewById(R.id.gdb_recommend_progress);
         if (!DisplayHelper.isTabModel(getActivity())) {
             nameView.setMaxLines(1);
             nameView.setEllipsize(TextUtils.TruncateAt.END);
         }
-        contentView.findViewById(R.id.gdb_recommend_previous).setOnClickListener(this);
-        contentView.findViewById(R.id.gdb_recommend_next).setOnClickListener(this);
-        contentView.findViewById(R.id.gdb_recommend_setting).setOnClickListener(this);
-        contentView.findViewById(R.id.gdb_recommend_click_group).setOnClickListener(this);
+        view.findViewById(R.id.gdb_recommend_previous).setOnClickListener(this);
+        view.findViewById(R.id.gdb_recommend_next).setOnClickListener(this);
+        view.findViewById(R.id.gdb_recommend_setting).setOnClickListener(this);
+        view.findViewById(R.id.gdb_recommend_click_group).setOnClickListener(this);
 
-        gdbGuidePresenter = ((GdbGuideActivity) getActivity()).getPresenter();
+        gdbGuidePresenter = recommendHolder.getPresenter();
         gdbGuidePresenter.setRecommendView(this);
 
         filterPresenter = new FilterPresenter();
@@ -77,12 +79,11 @@ public class RecommendFragment extends Fragment implements IRecommend, View.OnCl
         gdbGuidePresenter.setFilterModel(filterPresenter.getFilters(getContext()));
         // 加载所有记录，通过onRecordRecommand回调
         gdbGuidePresenter.initialize();
-        return contentView;
     }
 
     @Override
     public void onRecordsLoaded(List<Record> list) {
-        ((GdbGuideActivity) getActivity()).onRecordsLoaded();
+        recommendHolder.onRecommendRecordsLoaded();
         gdbGuidePresenter.recommendNext();
     }
 

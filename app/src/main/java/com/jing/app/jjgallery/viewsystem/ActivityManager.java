@@ -13,7 +13,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.view.home.GdbGuideActivity;
+import com.jing.app.jjgallery.gdb.view.home.GHomeActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
@@ -79,7 +79,7 @@ public class ActivityManager {
         }
 
         SImageConstants.setHideImageMode(SettingProperties.isGdbNoImageMode(from));
-        Intent intent = new Intent().setClass(from, GdbGuideActivity.class);
+        Intent intent = new Intent().setClass(from, GHomeActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

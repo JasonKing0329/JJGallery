@@ -665,6 +665,28 @@ public class SqliteDao {
 		return list;
 	}
 
+	public List<FavorBean> queryTopFavors(int number, Connection connection) {
+		List<FavorBean> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_FAVOR + " ORDER BY favor DESC LIMIT " + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseFavorBean(set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
 	private void parseFavorBean(ResultSet set, List<FavorBean> list) throws SQLException {
 		while (set.next()) {
 			FavorBean bean = new FavorBean();
@@ -716,4 +738,26 @@ public class SqliteDao {
 			}
 		}
 	}
+
+    public List<RecordOneVOne> getRandomRecords(int number, Connection connection) {
+		List<RecordOneVOne> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " ORDER BY RANDOM() limit " + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+    }
 }

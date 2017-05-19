@@ -41,7 +41,7 @@ public class GDBListActivity extends BaseActivity implements IListPageParent {
 
     @Override
     public int getContentView() {
-        return R.layout.activity_gdb_home;
+        return R.layout.activity_gdb_list;
     }
 
     @Override

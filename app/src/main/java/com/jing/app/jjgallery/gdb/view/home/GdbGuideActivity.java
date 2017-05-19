@@ -24,6 +24,7 @@ import com.jing.app.jjgallery.gdb.model.FileService;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.pub.AutoScrollView;
 import com.jing.app.jjgallery.gdb.view.adapter.GuideScrollAdapter;
+import com.jing.app.jjgallery.gdb.view.recommend.IRecommendHolder;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendFragment;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
@@ -46,7 +47,7 @@ import java.util.List;
 @Deprecated
 public class GdbGuideActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressProvider
-        , GuideScrollAdapter.OnScrollItemClickListener{
+        , GuideScrollAdapter.OnScrollItemClickListener, IRecommendHolder {
 
     private ImageView navHeaderView;
     private DrawerLayout drawerLayout;
@@ -94,7 +95,8 @@ public class GdbGuideActivity extends AppCompatActivity
      * 加载records的操作由recommend fragment发起，由于想共享数据，
      * auto scroll的初始化就放在record加载完成之后
      */
-    public void onRecordsLoaded() {
+    @Override
+    public void onRecommendRecordsLoaded() {
         // latest records
         initAutoScroll();
     }
@@ -128,7 +130,8 @@ public class GdbGuideActivity extends AppCompatActivity
 
     private void initRecommentd() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.gdb_guide_recommend, new RecommendFragment(), "RecommendFragment");
+        RecommendFragment fragment = new RecommendFragment();
+        ft.add(R.id.gdb_guide_recommend, fragment, "RecommendFragment");
         ft.commit();
     }
 
@@ -165,6 +168,7 @@ public class GdbGuideActivity extends AppCompatActivity
         }
     }
 
+    @Override
     public GdbGuidePresenter getPresenter() {
         return mPresenter;
     }

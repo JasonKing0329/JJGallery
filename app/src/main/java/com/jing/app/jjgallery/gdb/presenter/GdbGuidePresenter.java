@@ -4,15 +4,20 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterBean;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
+import com.jing.app.jjgallery.gdb.view.home.GHomeBean;
+import com.jing.app.jjgallery.gdb.view.home.IHomeView;
 import com.jing.app.jjgallery.gdb.view.recommend.IRecommend;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.king.service.gdb.GDBProvider;
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.Star;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +34,7 @@ public class GdbGuidePresenter {
     private GDBProvider gdbProvider;
     private List<Record> recordList;
 
+    private GDBProvider favorProvider;
     /**
      * 一共缓存3个推荐，previous, next and current
      */
@@ -40,6 +46,7 @@ public class GdbGuidePresenter {
 
     public GdbGuidePresenter() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
+        favorProvider = new GDBProvider(DBInfor.GDB_FAVOR_DB_PATH);
     }
 
     public GdbGuidePresenter(IRecommend recommendView) {
@@ -280,4 +287,45 @@ public class GdbGuidePresenter {
     public List<Record> getLatestRecord(int number) {
         return gdbProvider.getLatestRecords(number);
     }
+
+    /**
+     * 获取home主页数据
+     */
+    public void loadHomeData(IHomeView homeView) {
+    }
+
+    /**
+     * 加载全部记录
+     */
+    private class LoadHomeDataTask extends AsyncTask<Object, Void, GHomeBean> {
+        @Override
+        protected void onPostExecute(GHomeBean data) {
+
+//            if (recommendView != null) {
+//                recommendView.onRecordsLoaded(list);
+//            }
+
+            super.onPostExecute(data);
+        }
+
+        @Override
+        protected GHomeBean doInBackground(Object... params) {
+            GHomeBean homeBean = new GHomeBean();
+            homeBean.setRecordList(getLatestRecord(20));
+
+            List<Record> randomList = gdbProvider.getRandomRecords(1);
+            homeBean.setCoverRecord(randomList.get(0));
+
+
+            List<FavorBean> favorList = favorProvider.getTopFavors(3);
+            for (int i = 0; i < favorList.size(); i ++) {
+                StarProxy proxy = new StarProxy();
+                Star star = gdbProvider.queryStarById(favorList.get(i).getStarId());
+                proxy.setStar(star);
+                proxy.setFavor(favorList.get(i).getFavor());
+            }
+            return homeBean;
+        }
+    }
+
 }
