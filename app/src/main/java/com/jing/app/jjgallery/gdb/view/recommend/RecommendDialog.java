@@ -34,9 +34,7 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
 
     private WindowManager.LayoutParams windowParams;
     private ImageView imageView;
-    private TextView nameView;
     private TextView starView;
-    private TextView scoreView;
     private ProgressBar progressBar;
 
     private GdbGuidePresenter gdbGuidePresenter;
@@ -67,9 +65,7 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
         startPoint = new Point();
 
         imageView = (ImageView) findViewById(R.id.gdb_recommend_image);
-        nameView = (TextView) findViewById(R.id.gdb_recommend_name);
         starView = (TextView) findViewById(R.id.gdb_recommend_star);
-        scoreView = (TextView) findViewById(R.id.gdb_recommend_score);
         progressBar = (ProgressBar) findViewById(R.id.gdb_recommend_progress);
         findViewById(R.id.gdb_recommend_previous).setOnClickListener(this);
         findViewById(R.id.gdb_recommend_next).setOnClickListener(this);
@@ -114,7 +110,6 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
             Toast.makeText(getContext(), R.string.gdb_rec_no_match, Toast.LENGTH_LONG).show();
             return;
         }
-        nameView.setText(record.getDirectory() + "/" + record.getName());
         StringBuffer buffer = new StringBuffer();
         if (record instanceof RecordOneVOne) {
             RecordOneVOne oRecord = (RecordOneVOne) record;
@@ -133,7 +128,6 @@ public class RecommendDialog extends Dialog implements IRecommend, View.OnClickL
             }
         }
         starView.setText(buffer.toString());
-        scoreView.setText("" + record.getScore());
         SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(record.getName()), imageView);
     }
 

@@ -19,6 +19,7 @@ import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +30,8 @@ import java.util.Random;
  */
 
 public class GdbGuidePresenter {
+
+    private final int NUM_LOAD_MORE = 10;
 
     private IRecommend recommendView;
     private GDBProvider gdbProvider;
@@ -279,31 +282,52 @@ public class GdbGuidePresenter {
      * @param recordName
      * @return
      */
-    public String getRecordPath(String recordName) {
+    public static String getRecordPath(String recordName) {
         String result = Configuration.GDB_IMG_RECORD + "/" + recordName + EncryptUtil.getFileExtra();
         return result;
     }
 
     public List<Record> getLatestRecord(int number) {
-        return gdbProvider.getLatestRecords(number);
+        return gdbProvider.getLatestRecords(0, number);
     }
 
     /**
      * 获取home主页数据
      */
     public void loadHomeData(IHomeView homeView) {
+        new LoadHomeDataTask(homeView).execute();
+    }
+
+    /**
+     * home 主页列表加载更多数据
+     * @param currentSize 数据库结果集limit from, number
+     * @param homeView
+     */
+    public void loadMore(int currentSize, IHomeView homeView) {
+        int from = currentSize;
+        if (currentSize > 0) {
+            from = currentSize - 1;
+        }
+        new LoadMoreTask(homeView).execute(from);
     }
 
     /**
      * 加载全部记录
      */
     private class LoadHomeDataTask extends AsyncTask<Object, Void, GHomeBean> {
+
+        private final IHomeView homeView;
+
+        public LoadHomeDataTask(IHomeView homeView) {
+            this.homeView = homeView;
+        }
+
         @Override
         protected void onPostExecute(GHomeBean data) {
 
-//            if (recommendView != null) {
-//                recommendView.onRecordsLoaded(list);
-//            }
+            if (homeView != null) {
+                homeView.onHomeDataLoaded(data);
+            }
 
             super.onPostExecute(data);
         }
@@ -311,20 +335,55 @@ public class GdbGuidePresenter {
         @Override
         protected GHomeBean doInBackground(Object... params) {
             GHomeBean homeBean = new GHomeBean();
-            homeBean.setRecordList(getLatestRecord(20));
+            homeBean.setRecordList(getLatestRecord(NUM_LOAD_MORE));
 
-            List<Record> randomList = gdbProvider.getRandomRecords(1);
-            homeBean.setCoverRecord(randomList.get(0));
+//            List<Record> randomList = gdbProvider.getRandomRecords(1);
+//            homeBean.setCoverRecord(randomList.get(0));
 
+            List<StarProxy> starList = new ArrayList<>();
 
-            List<FavorBean> favorList = favorProvider.getTopFavors(3);
+            // 获取全部favor，打乱顺序后由主页挑出前N个使用
+//            List<FavorBean> favorList = favorProvider.getTopFavors(3);
+            List<FavorBean> favorList = favorProvider.getFavors();
+            Collections.shuffle(favorList);
             for (int i = 0; i < favorList.size(); i ++) {
                 StarProxy proxy = new StarProxy();
                 Star star = gdbProvider.queryStarById(favorList.get(i).getStarId());
                 proxy.setStar(star);
+                proxy.setImagePath(Configuration.GDB_IMG_STAR + "/" + star.getName() + EncryptUtil.getFileExtra());
                 proxy.setFavor(favorList.get(i).getFavor());
+                starList.add(proxy);
             }
+            homeBean.setStarList(starList);
             return homeBean;
+        }
+    }
+
+    /**
+     * 加载全部记录
+     */
+    private class LoadMoreTask extends AsyncTask<Integer, Void, List<Record>> {
+
+        private final IHomeView homeView;
+
+        public LoadMoreTask(IHomeView homeView) {
+            this.homeView = homeView;
+        }
+
+        @Override
+        protected void onPostExecute(List<Record> list) {
+
+            if (homeView != null) {
+                homeView.onMoreRecordsLoaded(list);
+            }
+
+            super.onPostExecute(list);
+        }
+
+        @Override
+        protected List<Record> doInBackground(Integer... params) {
+            List<Record> list = gdbProvider.getLatestRecords(params[0], NUM_LOAD_MORE);
+            return list;
         }
     }
 

@@ -12,6 +12,15 @@
 
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="TransparentDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
         <!-- 设置自定义布局的背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -186,5 +195,21 @@
         <item name="android:layout_height">@dimen/game_battle_card_icon_size</item>
         <item name="android:padding">@dimen/game_battle_card_icon_padding</item>
         <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="GdbHomeStarText">
+        <item name="android:layout_width">@dimen/gdb_home_star_size</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="GdbHomeStarImage">
+        <item name="android:layout_width">@dimen/gdb_home_star_size</item>
+        <item name="android:layout_height">@dimen/gdb_home_star_size</item>
+        <item name="android:scaleType">centerCrop</item>
     </style>
 </resources>

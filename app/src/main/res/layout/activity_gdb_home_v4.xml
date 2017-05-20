@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <RelativeLayout
-        android:id="@+id/group_ft_container"
+    <include
+        layout="@layout/gdb_layout_home_appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

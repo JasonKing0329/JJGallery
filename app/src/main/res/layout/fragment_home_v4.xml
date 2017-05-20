@@ -6,133 +6,29 @@
     android:layout_height="match_parent"
     tools:context="com.jing.app.jjgallery.gdb.view.home.GHomeActivity">
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sr_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_records"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/group_record"
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
-                <com.github.siyamed.shapeimageview.RoundedImageView
-                    android:id="@+id/iv_record_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:siRadius="10dp"
-                    android:scaleType="fitXY"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"/>
-            </RelativeLayout>
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-            <LinearLayout
-                android:id="@+id/group_star"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-                <com.github.siyamed.shapeimageview.RoundedImageView
-                    android:id="@+id/iv_star1"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:siRadius="10dp"
-                    android:scaleType="centerCrop"/>
-                <com.github.siyamed.shapeimageview.RoundedImageView
-                    android:id="@+id/iv_star2"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:siRadius="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:scaleType="centerCrop"/>
-                <com.github.siyamed.shapeimageview.RoundedImageView
-                    android:id="@+id/iv_star3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:siRadius="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:scaleType="centerCrop"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tv_star_name1"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12dp"/>
-                <TextView
-                    android:id="@+id/tv_star_name2"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="12dp"/>
-                <TextView
-                    android:id="@+id/tv_star_name3"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginLeft="10dp"
-                    android:textSize="12dp"/>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/group_recommend"
-                android:layout_width="match_parent"
-                android:layout_marginTop="25dp"
-                android:layout_height="@dimen/gdb_guide_rec_height"/>
-
-            <LinearLayout
-                android:id="@+id/group_game"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/ic_glory"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="14dp"
-                    android:text="Game"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_records"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_top"
+        android:layout_width="@dimen/gdb_home_icon_size"
+        android:layout_height="@dimen/gdb_home_icon_size"
+        android:src="@drawable/ic_arrow_upward_white_36dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:tint="@color/white"
+        android:backgroundTint="@color/colorPrimary"
+        app:rippleColor="@color/actionbar_bk_blue"
+        app:borderWidth="0dp"
+        app:useCompatPadding="true"/>
     <!--<com.nightonke.boommenu.BoomMenuButton-->
         <!--android:id="@+id/bmb_menu"-->
         <!--android:layout_width="wrap_content"-->

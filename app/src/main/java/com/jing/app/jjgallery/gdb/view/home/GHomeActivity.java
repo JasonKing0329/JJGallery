@@ -5,12 +5,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.PreferenceKey;
+import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.recommend.IRecommendHolder;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
@@ -27,24 +29,21 @@ import butterknife.ButterKnife;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/5/19 13:33
  */
-public class GHomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener
+public class GHomeActivity extends GBaseActivity implements NavigationView.OnNavigationItemSelectedListener
     , IHomeHolder, IRecommendHolder{
 
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ImageView navHeaderView;
 
     private GdbGuidePresenter mPresenter;
 
     private GHomeFragment homeFragment;
-
-    @Override
-    public boolean isActionBarNeed() {
-        return true;
-    }
 
     @Override
     public int getContentView() {
@@ -54,16 +53,30 @@ public class GHomeActivity extends BaseActivity implements NavigationView.OnNavi
     @Override
     public void initController() {
         mPresenter = new GdbGuidePresenter();
+        SImageLoader.getInstance().setDefaultImgRes(R.drawable.default_cover);
     }
 
     @Override
     public void initView() {
         ButterKnife.bind(this);
 
-        mActionBar.useMenuLeftIcon();
-        mActionBar.setTitle("GDB");
+        initActionBar();
         initDrawer();
         initContent();
+    }
+
+    private void initActionBar() {
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.actionbar_bk_light));
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        // xml里设置不管用，在上面设置也不管用，必须在drawerLayout.setDrawerListener设置完之后才管用
+        toolbar.setNavigationIcon(R.drawable.ic_menu_purple_200_24dp);
     }
 
     @Override

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.jing.app.jjgallery.gdb.view.home.GHomeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/group_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/gdb_guide_rec_height"/>
+
+        <RelativeLayout
+            android:id="@+id/group_starlist"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?android:attr/selectableItemBackground">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Star list"
+                android:layout_centerVertical="true"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24dp"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/arrow_expand_right"
+                android:scaleType="fitCenter"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/iv_star1"
+                style="@style/GdbHomeStarImage"
+                app:siRadius="10dp"/>
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/iv_star2"
+                style="@style/GdbHomeStarImage"
+                app:siRadius="10dp"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"/>
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/iv_star3"
+                app:siRadius="10dp"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"
+                style="@style/GdbHomeStarImage" />
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/iv_star4"
+                style="@style/GdbHomeStarImage"
+                android:visibility="gone"
+                app:siRadius="10dp"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_star_name1"
+                style="@style/GdbHomeStarText" />
+            <TextView
+                android:id="@+id/tv_star_name2"
+                style="@style/GdbHomeStarText"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"/>
+            <TextView
+                android:id="@+id/tv_star_name3"
+                style="@style/GdbHomeStarText"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"/>
+            <TextView
+                android:id="@+id/tv_star_name4"
+                style="@style/GdbHomeStarText"
+                android:layout_marginLeft="@dimen/gdb_home_star_padding"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/group_game"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/gdb_home_game_height"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_glory"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="14dp"
+                android:text="Game"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

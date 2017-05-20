@@ -31,9 +31,7 @@ import java.util.List;
 public class RecommendFragment extends GBaseFragment implements IRecommend, View.OnClickListener {
 
     private ImageView imageView;
-    private TextView nameView;
     private TextView starView;
-    private TextView scoreView;
     private ProgressBar progressBar;
 
     private GdbGuidePresenter gdbGuidePresenter;
@@ -58,14 +56,8 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
     @Override
     protected void initView(View view) {
         imageView = (ImageView) view.findViewById(R.id.gdb_recommend_image);
-        nameView = (TextView) view.findViewById(R.id.gdb_recommend_name);
         starView = (TextView) view.findViewById(R.id.gdb_recommend_star);
-        scoreView = (TextView) view.findViewById(R.id.gdb_recommend_score);
         progressBar = (ProgressBar) view.findViewById(R.id.gdb_recommend_progress);
-        if (!DisplayHelper.isTabModel(getActivity())) {
-            nameView.setMaxLines(1);
-            nameView.setEllipsize(TextUtils.TruncateAt.END);
-        }
         view.findViewById(R.id.gdb_recommend_previous).setOnClickListener(this);
         view.findViewById(R.id.gdb_recommend_next).setOnClickListener(this);
         view.findViewById(R.id.gdb_recommend_setting).setOnClickListener(this);
@@ -95,7 +87,6 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
             Toast.makeText(getContext(), R.string.gdb_rec_no_match, Toast.LENGTH_LONG).show();
             return;
         }
-        nameView.setText(record.getDirectory() + "/" + record.getName());
         StringBuffer buffer = new StringBuffer();
         if (record instanceof RecordOneVOne) {
             RecordOneVOne oRecord = (RecordOneVOne) record;
@@ -114,7 +105,6 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
             }
         }
         starView.setText(buffer.toString());
-        scoreView.setText("" + record.getScore());
         SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(record.getName()), imageView);
     }
 

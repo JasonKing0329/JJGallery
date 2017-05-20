@@ -163,11 +163,11 @@ public class GDBProvider {
      * 查询所有的record
      * @return
      */
-    public List<Record> getLatestRecords(int number) {
+    public List<Record> getLatestRecords(int from, int number) {
         try {
             SqlConnection.getInstance().connect(databasePath);
             List<Record> list = new ArrayList<>();
-            List<RecordOneVOne> oList = sqliteDao.queryLatestRecords(number, SqlConnection.getInstance().getConnection());
+            List<RecordOneVOne> oList = sqliteDao.queryLatestRecords(from, number, SqlConnection.getInstance().getConnection());
             for (RecordOneVOne record:oList) {
                 list.add(record);
             }

@@ -16,58 +16,49 @@
         android:layout_centerInParent="true"/>
 
     <RelativeLayout
+        android:id="@+id/gdb_recommend_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/gdb_recommend_image"
         android:background="@color/gdb_float_infor_bg"
         android:padding="10dp">
-        <TextView
-            android:id="@+id/gdb_recommend_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/gdb_record_text_bareback_dark"
+        <ImageView
+            android:id="@+id/gdb_recommend_setting"
+            style="@style/GdbRecommendActionIcon"
             android:layout_alignParentRight="true"
-            android:textSize="18dp"/>
+            android:src="@drawable/ic_settings_white_36dp"/>
         <LinearLayout
             android:id="@+id/gdb_recommend_click_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/gdb_recommend_score">
-            <TextView
-                android:id="@+id/gdb_recommend_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"/>
+            android:layout_toLeftOf="@id/gdb_recommend_setting">
             <TextView
                 android:id="@+id/gdb_recommend_star"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_below="@id/gdb_recommend_name"
-                android:layout_marginTop="5dp"/>
+                android:textColor="@color/white"/>
         </LinearLayout>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/gdb_recommend_image"
-        android:background="#99000000"
-        android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/gdb_recommend_bottom">
         <ImageView
             android:id="@+id/gdb_recommend_previous"
             style="@style/GdbRecommendActionIcon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
             android:src="@drawable/ic_navigate_before_white_36dp" />
         <ImageView
             android:id="@+id/gdb_recommend_next"
             style="@style/GdbRecommendActionIcon"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
             android:src="@drawable/ic_navigate_next_white_36dp"/>
-        <ImageView
-            android:id="@+id/gdb_recommend_setting"
-            style="@style/GdbRecommendActionIcon"
-            android:src="@drawable/ic_settings_white_36dp"/>
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
