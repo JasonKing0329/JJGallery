@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "3.6"
-ext.appVersionCode = 119
+ext.appVersionName = "3.6.1"
+ext.appVersionCode = 120
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
@@ -111,6 +111,8 @@ dependencies {
     /*butterknife*/
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    /*LMBanners 轮播视图*/
+    compile 'com.allure0:LMBanners:1.0.8'
     compile project(':slidingmenu')
     compile project(':swipebacklayout')
     compile project(':prjcolorpicker')

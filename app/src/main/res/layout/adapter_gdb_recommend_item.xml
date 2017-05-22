@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/gdb_recommend_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/gdb_recommend_image"
+        android:background="@color/gdb_float_infor_bg"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/iv_setting"
+            style="@style/GdbRecommendActionIcon"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:src="@drawable/ic_settings_white_36dp"/>
+        <LinearLayout
+            android:id="@+id/gdb_recommend_click_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_setting">
+            <TextView
+                android:id="@+id/gdb_recommend_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

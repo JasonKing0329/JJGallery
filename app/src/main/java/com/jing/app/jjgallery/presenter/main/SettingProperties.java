@@ -446,4 +446,60 @@ public class SettingProperties {
         return preferences.getBoolean(PreferenceKey.PREF_GDB_NO_IMAGE, true);
     }
 
+    /**
+     * animation random mode
+     */
+    public static void setGdbRecmmendAnimRandom(Context context, boolean isRandom) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_REC_ANIM_RANDOM, isRandom);
+        editor.commit();
+    }
+
+    /**
+     * animation random mode
+     */
+    public static boolean isGdbRecmmendAnimRandom(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_REC_ANIM_RANDOM, true);
+    }
+
+    /**
+     * animation type
+     */
+    public static void setGdbRecommendAnimType(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_REC_ANIM_TYPE, mode);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbRecommendAnimType(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_REC_ANIM_TYPE, 0);
+        return mode;
+    }
+
+    /**
+     * animation time
+     */
+    public static void setGdbRecommendAnimTime(Context context, int time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_REC_ANIM_TIME, time);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbRecommendAnimTime(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_REC_ANIM_TIME, 5000);
+        return mode;
+    }
+
 }

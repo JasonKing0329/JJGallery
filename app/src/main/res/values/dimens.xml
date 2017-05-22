@@ -289,7 +289,7 @@
     <dimen name="gdb_sort_grid_height">400dp</dimen>
     <dimen name="gdb_filter_margin_check">15dp</dimen>
     <dimen name="gdb_filter_margin_edit">10dp</dimen>
-    <dimen name="gdb_recommend_height">400dp</dimen>
+    <dimen name="gdb_recommend_height">300dp</dimen>
     <dimen name="gdb_guide_rec_height">202dp</dimen>
     <dimen name="gdb_guide_scroll_item_width">180dp</dimen>
     <dimen name="gdb_guide_scroll_item_height">101dp</dimen>

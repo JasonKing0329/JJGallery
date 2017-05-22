@@ -4,8 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter keywords"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recommend_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/gdb_recommend_height"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="View pager animation"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/rb_random"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Random"/>
+        <RadioButton
+            android:id="@+id/rb_fixed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fixed"/>
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration time"/>
+        <EditText
+            android:id="@+id/et_time"
+            android:layout_width="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </LinearLayout>

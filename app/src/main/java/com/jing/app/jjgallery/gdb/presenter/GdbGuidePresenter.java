@@ -99,7 +99,7 @@ public class GdbGuidePresenter {
      * 获得新记录
      * @return
      */
-    private Record newRecord() {
+    public Record newRecord() {
         if (recordList == null || recordList.size() == 0) {
             return null;
         }
