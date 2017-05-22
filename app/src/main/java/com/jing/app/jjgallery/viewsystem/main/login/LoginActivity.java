@@ -207,8 +207,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         // Application will be considered as initialized only after sign in successfully.
         if (TextUtils.isEmpty(SettingProperties.getGdbServerBaseUrl(this))) {
             showToastLong(getString(R.string.server_not_conf), ProgressProvider.TOAST_WARNING);
-            Intent intent = new Intent().setClass(this, SettingsActivity.class);
-            startActivity(intent);
+            startSetting();
         }
         else {
             if (SettingProperties.isAppInited(this)) {
@@ -219,6 +218,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                 startActivity(intent);
             }
         }
+    }
+
+    private void startSetting() {
+        Intent intent = new Intent().setClass(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void showPage() {
@@ -311,7 +315,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                 , getResources().getString(R.string.login_start_service_insert)
                 , getResources().getString(R.string.yes)
                 , getResources().getString(R.string.allno)
-                , getResources().getString(R.string.no)
+                , getResources().getString(R.string.time_line_setting)
                 , new DialogInterface.OnClickListener() {
 
                     @Override
@@ -324,13 +328,15 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
                                         , connection, BIND_AUTO_CREATE);
                             }
                         }
+                        // v3.6.2 change to setting
                         else if (which == DialogInterface.BUTTON_NEGATIVE) {
 
-                            showLoading();
-                            if (!isServiceRunning()) {
-                                isServiceBound = bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
-                                        , connection, BIND_AUTO_CREATE);
-                            }
+                            startSetting();
+//                            showLoading();
+//                            if (!isServiceRunning()) {
+//                                isServiceBound = bindService(new Intent().setClass(LoginActivity.this, FileDBService.class)
+//                                        , connection, BIND_AUTO_CREATE);
+//                            }
                         }
                         else {//netrual, all no
                             onServiceDone();

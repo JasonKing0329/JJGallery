@@ -21,7 +21,9 @@ import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -308,8 +310,28 @@ public class GdbGuidePresenter {
         if (currentSize > 0) {
             from = currentSize - 1;
         }
-        new LoadMoreTask(homeView).execute(from);
+
+        LoadMoreTask task = new LoadMoreTask(homeView);
+        // 采用任务队列保证单位时间内只执行一次loadMore
+        addToTask(task, from);
     }
+
+    /**
+     * 丢弃快速到达的相同task，保证一次只load限定的数量
+     * @param task
+     * @param from
+     */
+    private synchronized void addToTask(LoadMoreTask task, int from) {
+        // 队列为空方可执行
+        if (executeQueue.size() == 0) {
+            // 入队
+            executeQueue.offer(task);
+            // 执行结束后出队
+            task.execute(from);
+        }
+    }
+
+    private Queue<LoadMoreTask> executeQueue = new LinkedList<>();
 
     /**
      * 加载全部记录
@@ -377,6 +399,8 @@ public class GdbGuidePresenter {
                 homeView.onMoreRecordsLoaded(list);
             }
 
+            // 任务执行完成后清空任务队列
+            executeQueue.poll();
             super.onPostExecute(list);
         }
 

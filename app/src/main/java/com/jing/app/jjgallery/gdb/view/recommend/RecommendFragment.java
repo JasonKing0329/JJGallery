@@ -2,7 +2,6 @@ package com.jing.app.jjgallery.gdb.view.recommend;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +90,8 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
     public void onRecordRecommand(Record record) {
         progressBar.setVisibility(View.GONE);
 
+        // 采用getView时生成随机推荐，这里初始化3个item就够了（LMBanner内部也是根据view pager设置下标
+        // 来循环的）
         List<Record> list = new ArrayList<>();
         list.add(record);
         list.add(record);
@@ -131,10 +132,11 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.gdb_recommend_next:
-                // LMBanner没有提供手动翻滚的方法
+                // LMBanner没有提供设置翻滚的方法
 //                gdbGuidePresenter.recommendNext();
                 break;
             case R.id.gdb_recommend_previous:
+                // LMBanner没有提供设置翻滚的方法
 //                gdbGuidePresenter.recommendPrevious();
                 break;
             case R.id.gdb_recommend_setting:
@@ -159,19 +161,25 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
                             data.put("model", filterPresenter.getFilters(getContext()));
                         }
                     });
+
+                    filterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            // filterDialog中animation是即时保存的，需要在对话框消失的时候重新执行banner的相关设定
+                            initBanner();
+                        }
+                    });
                 }
-                filterDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Log.e("RecommendFragment", "onDismiss");
-                        initBanner();
-                    }
-                });
+
                 filterDialog.show();
                 break;
         }
     }
 
+    /**
+     * LMBanner并没有完全像BaseAdapter那样设计结构
+     * 也无法采用ViewHolder缓存机制，本处只用了3个item，直接这样也就行了
+     */
     private class ItemAdapter implements LBaseAdapter<Record>, View.OnClickListener {
 
         private ImageView imageView;
@@ -185,29 +193,35 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
             imageView = (ImageView) view.findViewById(R.id.gdb_recommend_image);
             starView = (TextView) view.findViewById(R.id.gdb_recommend_star);
             group = (ViewGroup) view.findViewById(R.id.gdb_recommend_click_group);
-            group.setTag(data);
-            group.setOnClickListener(this);
+
+            // 采用随机生成模式
+            data = gdbGuidePresenter.newRecord();
+            SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(data.getName()), imageView);
+            starView.setText(getRecordStarText(data));
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // start record list
                     ActivityManager.startGDBRecordListActivity(getActivity(), null);
                 }
             });
 
-            data = gdbGuidePresenter.newRecord();
-            SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(data.getName()), imageView);
-            starView.setText(getRecordStarText(data));
+            group.setTag(data);
+            group.setOnClickListener(this);
             return view;
         }
 
         @Override
         public void onClick(View v) {
             Record record = (Record) v.getTag();
+            // start record activity
             ActivityManager.startGdbRecordActivity(getContext(), record);
         }
     }
 
     private void initBanner() {
+        // 禁用btnStart(只在onPageScroll触发后有效)
         lmBanners.isGuide(false);
         // 不显示引导圆点
         lmBanners.hideIndicatorLayout();
@@ -235,6 +249,10 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
         }
     }
 
+    /**
+     * 切换时的动画模式
+     * @param position
+     */
     private void setScrollAnim(int position){
         switch (position) {
             case 0:

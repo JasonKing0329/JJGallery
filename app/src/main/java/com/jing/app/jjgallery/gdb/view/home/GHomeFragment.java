@@ -4,6 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
@@ -70,6 +71,21 @@ public class GHomeFragment extends GBaseFragment implements IHomeView, GHomeReco
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rvRecords.setLayoutManager(manager);
         rvRecords.setItemAnimator(new DefaultItemAnimator());
+        rvRecords.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                // 滑到底部了
+                if (!rvRecords.canScrollVertically(1)) {
+                    homeHolder.getPresenter().loadMore(homeBean.getRecordList().size(), GHomeFragment.this);
+                }
+            }
+        });
 
         loadHomeData();
     }
