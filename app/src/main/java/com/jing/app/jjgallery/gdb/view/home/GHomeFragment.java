@@ -133,8 +133,11 @@ public class GHomeFragment extends GBaseFragment implements IHomeView, GHomeReco
 
     @Override
     public void onMoreRecordsLoaded(List<Record> list) {
+        int originSize = listAdapter.getItemCount();
         homeBean.getRecordList().addAll(list);
-        listAdapter.notifyDataSetChanged();
+        // notifyDataSetChanged会有闪屏现象，用notifyItemRangeInserted结合默认动画就比较理想了
+//        listAdapter.notifyDataSetChanged();
+        listAdapter.notifyItemRangeInserted(originSize - 1, list.size());
     }
 
     @Override

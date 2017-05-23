@@ -302,15 +302,10 @@ public class GdbGuidePresenter {
 
     /**
      * home 主页列表加载更多数据
-     * @param currentSize 数据库结果集limit from, number
+     * @param from 数据库结果集limit from, number
      * @param homeView
      */
-    public void loadMore(int currentSize, IHomeView homeView) {
-        int from = currentSize;
-        if (currentSize > 0) {
-            from = currentSize - 1;
-        }
-
+    public void loadMore(int from, IHomeView homeView) {
         LoadMoreTask task = new LoadMoreTask(homeView);
         // 采用任务队列保证单位时间内只执行一次loadMore
         addToTask(task, from);
