@@ -3,14 +3,13 @@ package com.jing.app.jjgallery.gdb.view.home;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
+import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.king.service.gdb.bean.Record;
 
@@ -48,7 +47,7 @@ public class GHomeFragment extends GBaseFragment implements IHomeView, GHomeReco
     @BindView(R.id.sr_refresh)
     SwipeRefreshLayout srRefresh;
     @BindView(R.id.rv_records)
-    RecyclerView rvRecords;
+    AutoLoadMoreRecyclerView rvRecords;
 
     private IHomeHolder homeHolder;
 
@@ -71,19 +70,11 @@ public class GHomeFragment extends GBaseFragment implements IHomeView, GHomeReco
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rvRecords.setLayoutManager(manager);
         rvRecords.setItemAnimator(new DefaultItemAnimator());
-        rvRecords.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvRecords.setEnableLoadMore(true);
+        rvRecords.setOnLoadMoreListener(new AutoLoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                // 滑到底部了
-                if (!rvRecords.canScrollVertically(1)) {
-                    homeHolder.getPresenter().loadMore(homeBean.getRecordList().size(), GHomeFragment.this);
-                }
+            public void onLoadMore() {
+                homeHolder.getPresenter().loadMore(homeBean.getRecordList().size(), GHomeFragment.this);
             }
         });
 
