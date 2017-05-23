@@ -23,6 +23,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import static android.R.attr.path;
+
 public class FileListController {
 
 	private final String TAG = "FileListController";
@@ -262,9 +264,13 @@ public class FileListController {
 						item.setDisplayName(f.getName());
 					}
 
-					// 解析图片大小
-					ImageValue value = imageValueController.queryImagePixel(f.getPath());
-					item.setImageValue(value);
+					// gdb目录下的文件太多，解析ImageValue会耗时太长，在tab s上时长很长
+					// gdb文件不关注image大小，不解析这个参数
+					if (!f.getPath().startsWith(Configuration.GDB_IMG)) {
+						// 解析图片大小
+						ImageValue value = imageValueController.queryImagePixel(f.getPath());
+						item.setImageValue(value);
+					}
 
 				}
 				else {

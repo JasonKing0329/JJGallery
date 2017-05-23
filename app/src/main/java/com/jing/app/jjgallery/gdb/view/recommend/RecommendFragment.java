@@ -13,6 +13,7 @@ import com.allure.lbanners.LMBanners;
 import com.allure.lbanners.adapter.LBaseAdapter;
 import com.allure.lbanners.transformer.TransitionEffect;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
@@ -196,6 +197,12 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
 
             // 采用随机生成模式
             data = gdbGuidePresenter.newRecord();
+            // 没有匹配的记录
+            if (data == null) {
+                ((GBaseActivity) getActivity()).showToastLong(getString(R.string.gdb_rec_no_match));
+                return view;
+            }
+
             SImageLoader.getInstance().displayImage(gdbGuidePresenter.getRecordPath(data.getName()), imageView);
             starView.setText(getRecordStarText(data));
 

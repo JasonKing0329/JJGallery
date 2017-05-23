@@ -15,6 +15,7 @@ import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.FavorBean;
+import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
@@ -116,9 +117,16 @@ public class GdbGuidePresenter {
             boolean pass;
             for (Record record:recordList) {
                 pass = true;
-                for (int i = 0; i < filterModel.getList().size(); i ++) {
-                    boolean result = checkPassFilterItem(record, filterModel.getList().get(i));
-                    pass = pass && result;
+                // 记录是NR并且过滤器勾选了支持NR才判定为通过
+                if (record.getHDLevel() == GDBProperites.RECORD_HD_NR && filterModel.isSupportNR()) {
+                    pass = true;
+                }
+                // 普通记录，以及是NR但是过滤器没有勾选NR，需要检测其他过滤项
+                else {
+                    for (int i = 0; i < filterModel.getList().size(); i ++) {
+                        boolean result = checkPassFilterItem(record, filterModel.getList().get(i));
+                        pass = pass && result;
+                    }
                 }
                 if (pass) {
                     return record;

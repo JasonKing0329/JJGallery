@@ -13,11 +13,21 @@ public class FilterModel {
     @SerializedName("list")
     private List<FilterBean> list;
 
+    private boolean isSupportNR;
+
     public List<FilterBean> getList() {
         return list;
     }
 
     public void setList(List<FilterBean> list) {
         this.list = list;
+    }
+
+    public boolean isSupportNR() {
+        return isSupportNR;
+    }
+
+    public void setSupportNR(boolean supportNR) {
+        isSupportNR = supportNR;
     }
 }

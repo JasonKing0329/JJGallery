@@ -59,6 +59,7 @@ public class FilterPresenter {
         };
         List<FilterBean> list = new ArrayList<>();
         FilterModel modle = new FilterModel();
+        modle.setSupportNR(false);
         modle.setList(list);
         for (int i = 0; i < keys.length; i ++) {
             FilterBean bean = new FilterBean();

@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -31,6 +32,7 @@ public class RecordFilterDialog extends CustomDialog {
     private RadioButton rbRandom;
     private RadioButton rbFix;
     private EditText etTime;
+    private CheckBox cbNr;
 
     public static final String[] ANIM_TYPES = new String[]{
             "defaultEffect", "alpha", "rotate", "cube", "flip", "accordion", "zoomFade",
@@ -47,6 +49,8 @@ public class RecordFilterDialog extends CustomDialog {
         HashMap<String, Object> map = new HashMap<>();
         actionListener.onLoadData(map);
         mFilterModel = (FilterModel) map.get("model");
+        cbNr.setChecked(mFilterModel.isSupportNR());
+
         mAdapter = new FilterAdapter(mFilterModel.getList());
         recyclerView.setAdapter(mAdapter);
     }
@@ -58,6 +62,13 @@ public class RecordFilterDialog extends CustomDialog {
         rbRandom = (RadioButton) contentView.findViewById(R.id.rb_random);
         rbFix = (RadioButton) contentView.findViewById(R.id.rb_fixed);
         etTime = (EditText) contentView.findViewById(R.id.et_time);
+        cbNr = (CheckBox) contentView.findViewById(R.id.cb_nr);
+        cbNr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mFilterModel.setSupportNR(isChecked);
+            }
+        });
         rbFix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

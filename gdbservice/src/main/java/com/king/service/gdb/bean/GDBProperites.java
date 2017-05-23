@@ -18,4 +18,6 @@ public class GDBProperites {
     public static final String STAR_MODE_BOTTOM = "star_bottom";
     public static final String STAR_MODE_HALF = "star_half";
 
+    public static final String RECORD_NR = "NR";
+    public static final int RECORD_HD_NR = 0;
 }
