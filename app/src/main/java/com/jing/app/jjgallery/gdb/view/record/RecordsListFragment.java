@@ -1,22 +1,20 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.gdb.GBaseFragment;
+import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
+import com.jing.app.jjgallery.gdb.view.adapter.RecordsListAdapter;
 import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;
-import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
 import com.jing.app.jjgallery.gdb.view.list.IGdbFragment;
 import com.jing.app.jjgallery.gdb.view.list.IListPageParent;
-import com.jing.app.jjgallery.gdb.view.adapter.RecordListAdapter;
+import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
+import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
@@ -28,46 +26,65 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
- * Created by JingYang on 2016/8/2 0002.
- * Description:
+ * 描述:
+ * <p/>作者：景阳
+ * <p/>创建时间: 2017/5/24 9:59
  */
-public class RecordListFragment extends Fragment implements IGdbRecordListView, RecordListAdapter.OnRecordItemClickListener
-    , IGdbFragment {
+public class RecordsListFragment extends GBaseFragment implements IGdbRecordListView, RecordsListAdapter.OnRecordItemClickListener
+        , IGdbFragment {
 
-    private IListPageParent iListPageParent;
-    private RecyclerView mRecyclerView;
+    private final int DEFAULT_LOAD_MORE = 20;
 
-    private RecordListAdapter mAdapter;
-    private int currentSortMode = -1;
-    private boolean currentSortDesc = true;
+    @BindView(R.id.rv_records)
+    AutoLoadMoreRecyclerView rvRecords;
 
     private DownloadDialog downloadDialog;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    private IListPageParent iListPageParent;
+    private RecordsListAdapter mAdapter;
 
-        iListPageParent = (IListPageParent) getActivity();
+    private int currentSortMode = -1;
+    private boolean currentSortDesc = true;
+
+    private List<Record> recordList;
+    private String keywords;
+
+    @Override
+    protected void bindFragmentHolder(IFragmentHolder holder) {
+        iListPageParent = (IListPageParent) holder;
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.page_gdb_recordlist;
+    }
+
+    @Override
+    protected void initView(View view) {
+        ButterKnife.bind(this, view);
+        rvRecords.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvRecords.setEnableLoadMore(true);
+        rvRecords.setOnLoadMoreListener(loadMoreListener);
+
         currentSortMode = SettingProperties.getGdbRecordOrderMode(getActivity());
         initActionbar();
+        // 加载records
+        loadNewRecords();
 
-        View view = inflater.inflate(R.layout.page_gdb_recordlist, null);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_srecord_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        iListPageParent.getPresenter().loadRecordList(currentSortMode, currentSortDesc);
-        return view;
-    }
-
-    @Override
-    public void onLoadRecordList(List<Record> list) {
-        mAdapter = new RecordListAdapter(getActivity(), list);
-        mAdapter.setItemClickListener(this);
-        mAdapter.setSortMode(currentSortMode);
-        mRecyclerView.setAdapter(mAdapter);
-
+        // 检查服务端新增图片
         iListPageParent.getPresenter().checkServerStatus();
     }
+
+    private AutoLoadMoreRecyclerView.OnLoadMoreListener loadMoreListener = new AutoLoadMoreRecyclerView.OnLoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            loadMoreRecords();
+        }
+    };
 
     private void initActionbar() {
         iListPageParent.getActionbar().clearActionIcon();
@@ -78,6 +95,73 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
         iListPageParent.getActionbar().addHomeIcon();
     }
 
+    /**
+     * actionbar 输入字符
+     * @param text
+     * @param start
+     * @param before
+     * @param count
+     */
+    public void onTextChanged(String text, int start, int before, int count) {
+        if (mAdapter != null) {
+            this.keywords = text;
+            loadNewRecords();
+        }
+    }
+
+    /**
+     * 修改排序类型、关键词变化，重新加载list
+     */
+    private void loadNewRecords() {
+        // 重新加载records
+        iListPageParent.getPresenter().loadRecordList(currentSortMode, currentSortDesc, 0, DEFAULT_LOAD_MORE, keywords);
+    }
+
+    /**
+     * loadNewRecords 回调
+     * @param list
+     */
+    @Override
+    public void onLoadRecordList(List<Record> list) {
+        this.recordList = list;
+        if (mAdapter == null) {
+            mAdapter = new RecordsListAdapter(getActivity(), list);
+            mAdapter.setSortMode(currentSortMode);
+            mAdapter.setItemClickListener(this);
+            rvRecords.setAdapter(mAdapter);
+        }
+        else {
+            mAdapter.setRecordList(list);
+            mAdapter.setSortMode(currentSortMode);
+            mAdapter.notifyDataSetChanged();
+        }
+        // 回到顶端
+        rvRecords.scrollToPosition(0);
+    }
+
+    /**
+     * 不改变排序模式、不改变关键词，紧在滑动到底部后自动加载更多
+     */
+    private void loadMoreRecords() {
+        // 加到当前size后
+        iListPageParent.getPresenter().loadMoreRecords(currentSortMode, currentSortDesc, recordList.size(), DEFAULT_LOAD_MORE, keywords);
+    }
+
+    /**
+     * loadMoreRecords 回调
+     * @param list
+     */
+    @Override
+    public void onMoreRecordsLoaded(List<Record> list) {
+        int originSize = mAdapter.getItemCount();
+        recordList.addAll(list);
+        mAdapter.notifyItemRangeInserted(originSize - 1, list.size());
+    }
+
+    /**
+     * actionbar 点击icon
+     * @param view
+     */
     public void onIconClick(View view) {
         switch (view.getId()) {
             case R.id.actionbar_sort:
@@ -91,7 +175,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
                             currentSortMode = sortMode;
                             currentSortDesc = desc;
                             SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
-                            refresh();
+                            loadNewRecords();
                         }
                         return false;
                     }
@@ -114,26 +198,23 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
         }
     }
 
-    private void refresh() {
-        iListPageParent.getPresenter().sortRecords(mAdapter.getRecordList(), currentSortMode, currentSortDesc);
-        mAdapter.setSortMode(currentSortMode);
-        mAdapter.notifyDataSetChanged();
-    }
-
     @Override
-    public void onClickRecordItem(Record record) {
-        ActivityManager.startGdbRecordActivity(getActivity(), record);
-    }
-
-    public void onTextChanged(String text, int start, int before, int count) {
-        if (mAdapter != null) {
-            mAdapter.onStarFilter(text);
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_gdb_check_server:
+                iListPageParent.getPresenter().checkNewRecordFile();
+                break;
+            case R.id.menu_gdb_download:
+                if (downloadDialog != null) {
+                    downloadDialog.show();
+                }
+                break;
         }
+        return false;
     }
 
     @Override
     public void onServerConnected() {
-//        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
         if (isVisible()) {
             iListPageParent.getPresenter().checkNewRecordFile();
         }
@@ -207,17 +288,7 @@ public class RecordListFragment extends Fragment implements IGdbRecordListView, 
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_gdb_check_server:
-                iListPageParent.getPresenter().checkNewRecordFile();
-                break;
-            case R.id.menu_gdb_download:
-                if (downloadDialog != null) {
-                    downloadDialog.show();
-                }
-                break;
-        }
-        return false;
+    public void onClickRecordItem(Record record) {
+        ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
 }

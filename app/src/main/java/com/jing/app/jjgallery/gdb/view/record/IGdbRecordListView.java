@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface IGdbRecordListView {
     void onLoadRecordList(List<Record> list);
+    void onMoreRecordsLoaded(List<Record> list);
     void onRequestFail();
     void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
 }

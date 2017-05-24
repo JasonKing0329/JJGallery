@@ -1,5 +1,8 @@
 package com.king.service.gdb.dao;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -112,7 +115,7 @@ public class SqliteDao {
 		return list;
 	}
 
-	private void parseOneVOneRecords(Connection connection, ResultSet set, List<RecordOneVOne> list) throws SQLException {
+	private void parseOneVOneRecords(Connection connection, ResultSet set, List list) throws SQLException {
 		while (set.next()) {
 			RecordOneVOne record = new RecordOneVOne();
 			record.setId(set.getInt(1));
@@ -742,6 +745,49 @@ public class SqliteDao {
     public List<RecordOneVOne> getRandomRecords(int number, Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " ORDER BY RANDOM() limit " + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+    }
+
+	/**
+	 * name符合关键词nameLike，按sortColumn desc/asc 排序，从第from条记录开始取number条记录
+	 * @param sortColumn
+	 * @param desc
+	 * @param from
+	 * @param number
+	 * @param connection
+	 * @param nameLike
+	 * @return
+	 */
+    public List<Record> getRecords(String sortColumn, boolean desc, int from, int number, String nameLike, Connection connection) {
+		List<Record> list = new ArrayList<>();
+		StringBuffer buffer = new StringBuffer("SELECT * FROM ");
+		buffer.append(TABLE_RECORD_1V1);
+		if (!TextUtils.isEmpty(nameLike)) {
+			buffer.append(" WHERE name LIKE '%").append(nameLike).append("%'");
+		}
+		if (!TextUtils.isEmpty(sortColumn)) {
+			buffer.append(" ORDER BY ").append(sortColumn);
+		}
+		buffer.append(" ").append(desc ? "DESC":"ASC")
+				.append(" limit ").append(from).append(",").append(number);
+		String sql = buffer.toString();
+		Log.e("SqliteDao", "getRecords " + sql);
 		Statement stmt = null;
 		try {
 			stmt = connection.createStatement();

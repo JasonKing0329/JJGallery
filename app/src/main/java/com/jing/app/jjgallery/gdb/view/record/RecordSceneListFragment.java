@@ -119,6 +119,11 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         expandableListView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onMoreRecordsLoaded(List<Record> list) {
+
+    }
+
     public void onTextChanged(String text, int start, int before, int count) {
         if (mAdapter != null) {
             mAdapter.onRecordFilter(text);

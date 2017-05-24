@@ -9,11 +9,9 @@ import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
 import com.jing.app.jjgallery.bean.http.GdbRespBean;
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.model.RecordComparator;
-import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
@@ -54,15 +52,6 @@ public class GdbPresenter {
     private GDBProvider gdbProvider;
     private GDBProvider favorProvider;
 
-    /**
-     * 在loadAllStars的时候遍历gdb/star目录，解析出所有name对应的path
-     */
-    private Map<String, String> starImageMap;
-    /**
-     * 在loadAllRecords的时候遍历gdb/record目录，解析出所有name对应的path
-     */
-    private static Map<String, String> recordImageMap;
-
     public GdbPresenter() {
         init();
     }
@@ -70,8 +59,6 @@ public class GdbPresenter {
     private void init() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
         favorProvider = new GDBProvider(DBInfor.GDB_FAVOR_DB_PATH);
-        starImageMap = new HashMap<>();
-        recordImageMap = new HashMap<>();
     }
 
     public void setViewCallback(IGdbStarListView gdbStarListView) {
@@ -103,13 +90,6 @@ public class GdbPresenter {
         new LoadStarListTask().execute(orderBy, starMode);
     }
 
-    public String getStarImage(String starName) {
-        return starImageMap.get(starName);
-    }
-
-    public String getRecordImage(String starName) {
-        return recordImageMap.get(starName);
-    }
     /**
      *
      * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
@@ -117,6 +97,28 @@ public class GdbPresenter {
      */
     public void loadRecordList(int sortMode, boolean desc) {
         new LoadRecordListTask().execute(sortMode, desc);
+    }
+    /**
+     *
+     * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
+     * @param desc
+     * @param limitFrom (Limit from, num)
+     * @param limitNum
+     * @param like name like %like%
+     */
+    public void loadRecordList(int sortMode, boolean desc, int limitFrom, int limitNum, String like) {
+        new LoadRecordListTask().execute(sortMode, desc, limitFrom, limitNum, like);
+    }
+    /**
+     *
+     * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
+     * @param desc
+     * @param limitFrom (Limit from, num)
+     * @param limitNum
+     * @param like name like %like%
+     */
+    public void loadMoreRecords(int sortMode, boolean desc, int limitFrom, int limitNum, String like) {
+        new LoadMoreRecordsTask().execute(sortMode, desc, limitFrom, limitNum, like);
     }
 
     public void queryIndicatorData() {
@@ -257,11 +259,12 @@ public class GdbPresenter {
         List<DownloadItem> list = new ArrayList<>();
         for (DownloadItem item:downloadList) {
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
-            if (starImageMap.get(name) == null) {
+            String path = EncryptUtil.getEncryptStarPath(name);
+            if (path == null) {
                 list.add(item);
             }
             else {
-                item.setPath(starImageMap.get(name));
+                item.setPath(path);
                 existedList.add(item);
             }
         }
@@ -278,7 +281,8 @@ public class GdbPresenter {
         List<DownloadItem> list = new ArrayList<>();
         for (DownloadItem item:downloadList) {
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
-            if (recordImageMap.get(name) == null) {
+            String path = EncryptUtil.getEncryptRecordPath(name);
+            if (path == null) {
                 list.add(item);
             }
             else {
@@ -347,13 +351,6 @@ public class GdbPresenter {
         protected List<StarProxy> doInBackground(Object... params) {
             orderBy = (int) params[0];
             String starMode = (String) params[1];
-            // load available images for stars
-            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
-            for (String path:pathList) {
-                String name = new File(path).getName();
-                String preName = name.substring(0, name.lastIndexOf("."));
-                starImageMap.put(preName, path);
-            }
 
             List<FavorBean> favorList = favorProvider.getFavors();
             Map<Integer, FavorBean> favorMap = new HashMap<>();
@@ -366,7 +363,7 @@ public class GdbPresenter {
             for (Star star:list) {
                 StarProxy proxy = new StarProxy();
                 proxy.setStar(star);
-                proxy.setImagePath(starImageMap.get(star.getName()));
+                proxy.setImagePath(EncryptUtil.getEncryptStarPath(star.getName()));
                 FavorBean favor = favorMap.get(star.getId());
                 proxy.setFavor(favor == null ? 0:favor.getFavor());
                 proxyList.add(proxy);
@@ -375,6 +372,9 @@ public class GdbPresenter {
         }
     }
 
+    /**
+     * 重新加载records
+     */
     private class LoadRecordListTask extends AsyncTask<Object, Void, List<Record>> {
         @Override
         protected void onPostExecute(List<Record> list) {
@@ -386,17 +386,45 @@ public class GdbPresenter {
 
         @Override
         protected List<Record> doInBackground(Object... params) {
-            List<Record> list = gdbProvider.getAllRecords();
-            sortRecords(list, (Integer) params[0], (Boolean) params[1]);
-
-            // load available images for records
-            List<String> pathList = new FolderManager().loadPathList(Configuration.GDB_IMG_RECORD);
-            for (String path:pathList) {
-                String name = new File(path).getName();
-                String preName = name.substring(0, name.lastIndexOf("."));
-                recordImageMap.put(preName, path);
+            // load limited records
+            if (params.length > 2) {
+                int sortMode = (Integer) params[0];
+                boolean desc = (Boolean) params[1];
+                int from = (Integer) params[2];
+                int number = (Integer) params[3];
+                String like = (String) params[4];
+                List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, from, number, like);
+                return list;
             }
+            // load all records
+            else {
+                List<Record> list = gdbProvider.getAllRecords();
+                sortRecords(list, (Integer) params[0], (Boolean) params[1]);
+                return list;
+            }
+        }
+    }
 
+    /**
+     * 加载更多records
+     */
+    private class LoadMoreRecordsTask extends AsyncTask<Object, Void, List<Record>> {
+        @Override
+        protected void onPostExecute(List<Record> list) {
+
+            gdbRecordListView.onMoreRecordsLoaded(list);
+
+            super.onPostExecute(list);
+        }
+
+        @Override
+        protected List<Record> doInBackground(Object... params) {
+            int sortMode = (Integer) params[0];
+            boolean desc = (Boolean) params[1];
+            int from = (Integer) params[2];
+            int number = (Integer) params[3];
+            String like = (String) params[4];
+            List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, from, number, like);
             return list;
         }
     }
@@ -418,21 +446,8 @@ public class GdbPresenter {
             proxy.setStar(star);
 
             // load image path of star
-            String headPath = starImageMap.get(star.getName());
-            if (headPath != null) {
-                proxy.setImagePath(headPath);
-            }
-            else {
-                List<String> list = new FolderManager().loadPathList(Configuration.GDB_IMG_STAR);
-                for (String path:list) {
-                    String name = new File(path).getName();
-                    String preName = name.substring(0, name.lastIndexOf("."));
-                    if (preName.equals(star.getName())) {
-                        proxy.setImagePath(path);
-                        break;
-                    }
-                }
-            }
+            String headPath = EncryptUtil.getEncryptStarPath(star.getName());
+            proxy.setImagePath(headPath);
             return proxy;
         }
     }
@@ -449,16 +464,8 @@ public class GdbPresenter {
         protected Void doInBackground(List<DownloadItem>... params) {
             for (DownloadItem item:params[0]) {
                 File file = new File(item.getPath());
-                String cacheKey = file.getName().substring(0, file.getName().lastIndexOf("."));
                 // 加密文件
-                String valuePath = EncryptUtil.encryptFile(file);
-                // 更新key-value池
-                if (item.getFlag().equals(Command.TYPE_STAR)) {
-                    starImageMap.put(cacheKey, valuePath);
-                }
-                else if (item.getFlag().equals(Command.TYPE_RECORD)) {
-                    recordImageMap.put(cacheKey, valuePath);
-                }
+                EncryptUtil.encryptFile(file);
             }
             return null;
         }

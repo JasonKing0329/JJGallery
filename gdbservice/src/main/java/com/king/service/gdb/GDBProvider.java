@@ -276,4 +276,24 @@ public class GDBProvider {
         }
     }
 
+    /**
+     * name符合关键词nameLike，按sortColumn desc/asc 排序，从第from条记录开始取number条记录
+     * @param sortColumn
+     * @param desc
+     * @param from
+     * @param number
+     * @param nameLike
+     * @return
+     */
+    public List<Record> getRecords(String sortColumn, boolean desc, int from, int number, String nameLike) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.getRecords(sortColumn, desc, from, number, nameLike, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
 }

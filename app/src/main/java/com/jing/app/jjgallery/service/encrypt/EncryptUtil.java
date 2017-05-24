@@ -80,4 +80,20 @@ public class EncryptUtil {
     public static Encrypter getEncrypter() {
         return encrypter;
     }
+
+    public static String getEncryptStarPath(String name) {
+        File file = new File(Configuration.GDB_IMG_STAR + "/" + name + encrypter.getFileExtra());
+        if (file.exists()) {
+            return file.getPath();
+        }
+        return null;
+    }
+
+    public static String getEncryptRecordPath(String name) {
+        File file = new File(Configuration.GDB_IMG_RECORD + "/" + name + encrypter.getFileExtra());
+        if (file.exists()) {
+            return file.getPath();
+        }
+        return null;
+    }
 }

@@ -11,8 +11,8 @@ import android.view.View;
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.gdb.view.record.RecordsListFragment;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.gdb.view.record.RecordListFragment;
 import com.jing.app.jjgallery.gdb.view.record.RecordSceneListFragment;
 import com.jing.app.jjgallery.gdb.view.star.StarListFragment;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
@@ -29,7 +29,7 @@ public class GDBListActivity extends BaseActivity implements IListPageParent {
 
     private Fragment currentFragment;
     private StarListFragment starFragment;
-    private RecordListFragment recordFragment;
+    private RecordsListFragment recordFragment;
     private RecordSceneListFragment sceneListFragment;
 
     private GdbPresenter gdbPresenter;
@@ -78,12 +78,12 @@ public class GDBListActivity extends BaseActivity implements IListPageParent {
     public void onRecordListPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (recordFragment == null) {
-            recordFragment = new RecordListFragment();
+            recordFragment = new RecordsListFragment();
         }
         gdbPresenter.setViewCallback(recordFragment);
         currentFragment = recordFragment;
 
-        ft.replace(R.id.gdb_fragment_container, currentFragment, "RecordListFragment");
+        ft.replace(R.id.gdb_fragment_container, currentFragment, "RecordsListFragment");
         ft.commit();
     }
 
@@ -166,7 +166,7 @@ public class GDBListActivity extends BaseActivity implements IListPageParent {
         if (currentFragment instanceof StarListFragment) {
             menu.findItem(R.id.menu_gdb_star).setVisible(false);
         }
-        else if (currentFragment instanceof RecordListFragment) {
+        else if (currentFragment instanceof RecordsListFragment) {
             menu.findItem(R.id.menu_gdb_record).setVisible(false);
         }
         else if (currentFragment instanceof RecordSceneListFragment) {

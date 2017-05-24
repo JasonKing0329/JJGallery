@@ -286,4 +286,101 @@ public class RecordComparator implements Comparator<Record> {
         }
         return result;
     }
+
+    public static String getSortColumn(int sortMode) {
+        String column = null;
+        switch (sortMode) {
+            case PreferenceValue.GDB_SR_ORDERBY_NAME:// asc
+                column = "name";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_DATE:// asc
+                column = "lastModifyDate";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCORE:
+                column = "score";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK:
+                column = "scoreFk";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_CUM:
+                column = "scoreCum";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_BJOB:
+                column = "scoreBJob";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STAR1:
+                column = "scoreStar1";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STAR2:
+                column = "scoreStar2";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STARCC1:
+                column = "scoreStarC1";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STARCC2:
+                column = "scoreStarC2";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_BAREBACK:
+                column = "scoreNoCond";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCOREFEEL:
+                column = "scoreFeel";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STORY:
+                column = "scoreStory";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FOREPLAY:
+                column = "scoreForePlay";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_RIM:
+                column = "scoreRim";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_RHYTHM:
+                column = "scoreRhythm";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCENE:
+                column = "scoreScene";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_CSHOW:
+                column = "scoreCShow";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SPECIAL:
+                column = "scoreSpecial";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_HD:
+                column = "HDLevel";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK1:
+                column = "scoreFkType1";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK2:
+                column = "scoreFkType2";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK3:
+                column = "scoreFkType3";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK4:
+                column = "scoreFkType4";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK5:
+                column = "scoreFkType5";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_FK6:
+                column = "scoreFkType6";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCORE_BASIC:
+                column = "scoreBasic";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_SCORE_EXTRA:
+                column = "scoreExtra";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STAR:
+                column = "scoreStar";
+                break;
+            case PreferenceValue.GDB_SR_ORDERBY_STARC:
+                column = "scoreStarC";
+                break;
+        }
+        return column;
+    }
 }

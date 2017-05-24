@@ -8,38 +8,32 @@ import android.view.ViewGroup;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.king.service.gdb.bean.Record;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by JingYang on 2016/8/2 0002.
  * Description:
  */
-public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implements View.OnClickListener {
+public class RecordsListAdapter extends RecyclerView.Adapter<RecordHolder> implements View.OnClickListener {
 
     public interface OnRecordItemClickListener {
         void onClickRecordItem(Record record);
     }
 
-    private List<Record> originList;
     private List<Record> recordList;
     private int nameColorNormal, nameColorBareback;
     private OnRecordItemClickListener itemClickListener;
 
     private int sortMode;
 
-    public RecordListAdapter(Context context, List<Record> list) {
-        this.originList = list;
-        recordList = new ArrayList<>();
-        for (Record record:originList) {
-            recordList.add(record);
-        }
+    public RecordsListAdapter(Context context, List<Record> list) {
+        this.recordList = list;
         nameColorNormal = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, false));
         nameColorBareback = context.getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(context, true));
     }
 
-    public List<Record> getRecordList() {
-        return recordList;
+    public void setRecordList(List<Record> recordList) {
+        this.recordList = recordList;
     }
 
     public void setItemClickListener(OnRecordItemClickListener itemClickListener) {
@@ -53,7 +47,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implem
     @Override
     public RecordHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecordHolder holder = new RecordHolder(parent);
-        holder.setParameters(nameColorNormal, nameColorBareback, RecordListAdapter.this);
+        holder.setParameters(nameColorNormal, nameColorBareback, RecordsListAdapter.this);
         return holder;
     }
 
@@ -76,25 +70,4 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordHolder> implem
         }
     }
 
-    public void onStarFilter(String name) {
-        recordList.clear();
-        if (name.trim().length() == 0) {
-            for (Record record:originList) {
-                recordList.add(record);
-            }
-        }
-        else {
-            for (int i = 0; i < originList.size(); i ++) {
-                if (originList.get(i).getId() == -1) {
-                    recordList.add(originList.get(i));
-                }
-                else {
-                    if (originList.get(i).getName().toLowerCase().contains(name.toLowerCase())) {
-                        recordList.add(originList.get(i));
-                    }
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 }
