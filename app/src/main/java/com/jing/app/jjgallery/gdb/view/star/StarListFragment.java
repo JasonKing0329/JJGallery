@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -27,11 +28,13 @@ import com.jing.app.jjgallery.gdb.view.pub.PinnedHeaderDecoration;
 import com.jing.app.jjgallery.gdb.view.adapter.StarIndicatorAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListNumAdapter;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Star;
@@ -326,6 +329,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                     public void onDownloadFinish(List<DownloadItem> downloadList) {
                         // 所有内容下载完成后，统一进行异步encypt，然后更新starImageMap和recordImageMap，完成后通知adapter更新
                         iListPageParent.getPresenter().finishDownload(downloadList);
+                        optionServerAction(downloadList);
                     }
                 });
             }
@@ -339,6 +343,33 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         else {
             ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
+    }
+
+    /**
+     * request server move original image files
+     * @param downloadList
+     */
+    private void optionServerAction(final List<DownloadItem> downloadList) {
+        new DefaultDialogManager().showOptionDialog(getActivity(), null, getString(R.string.gdb_download_done)
+                , getResources().getString(R.string.yes), null, getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            iListPageParent.getPresenter().requestServeMoveImages(Command.TYPE_STAR, downloadList);
+                        }
+                    }
+                }, null);
+    }
+
+    @Override
+    public void onMoveImagesSuccess() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.success), ProgressProvider.TOAST_INFOR);
+    }
+
+    @Override
+    public void onMoveImagesFail() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.failed), ProgressProvider.TOAST_INFOR);
     }
 
     @Override

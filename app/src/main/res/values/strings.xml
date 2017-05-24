@@ -397,6 +397,7 @@
     <string name="gdb_server_offline">Can\'t connect to server!</string>
     <string name="gdb_request_fail">Rquest failed!</string>
     <string name="gdb_option_download">Find %d images, click ok to download all.</string>
+    <string name="gdb_download_done">Images received, request server to move them?</string>
     <string name="gdb_no_new_images">No new images found.</string>
     <string name="gdb_rec_filter_min">min</string>
     <string name="gdb_rec_filter_max">max</string>

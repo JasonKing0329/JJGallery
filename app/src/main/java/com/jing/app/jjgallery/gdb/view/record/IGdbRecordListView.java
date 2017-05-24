@@ -13,4 +13,6 @@ public interface IGdbRecordListView {
     void onMoreRecordsLoaded(List<Record> list);
     void onRequestFail();
     void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
+    void onMoveImagesSuccess();
+    void onMoveImagesFail();
 }

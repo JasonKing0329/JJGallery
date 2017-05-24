@@ -378,6 +378,7 @@
     <string name="gdb_server_offline">无法连接到服务器</string>
     <string name="gdb_request_fail">请求失败</string>
     <string name="gdb_option_download">发现%d张图片，点击确定下载</string>
+    <string name="gdb_download_done">文件已下载，是否请求服务端移动源文件？</string>
     <string name="gdb_no_new_images">没有检测到新图片</string>
     <string name="gdb_update_found">发现GDB数据库新版本%s，点击确定以下载</string>
     <string name="gdb_rec_filter_min">最低</string>

@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,9 +19,11 @@ import com.jing.app.jjgallery.gdb.view.list.IGdbFragment;
 import com.jing.app.jjgallery.gdb.view.list.IListPageParent;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordSceneExpandAdapter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.king.service.gdb.bean.Record;
 
 import java.util.ArrayList;
@@ -184,6 +187,7 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
                     @Override
                     public void onDownloadFinish(List<DownloadItem> downloadList) {
                         iListPageParent.getPresenter().finishDownload(downloadList);
+                        optionServerAction(downloadList);
                     }
                 });
             }
@@ -197,6 +201,32 @@ public class RecordSceneListFragment extends Fragment implements IGdbRecordListV
         else {
             ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
+    }
+
+    /**
+     * request server move original image files
+     * @param downloadList
+     */
+    private void optionServerAction(final List<DownloadItem> downloadList) {
+        new DefaultDialogManager().showOptionDialog(getActivity(), null, getString(R.string.gdb_download_done)
+                , getResources().getString(R.string.yes), null, getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            iListPageParent.getPresenter().requestServeMoveImages(Command.TYPE_RECORD, downloadList);
+                        }
+                    }
+                }, null);
+    }
+    @Override
+    public void onMoveImagesSuccess() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.success), ProgressProvider.TOAST_INFOR);
+    }
+
+    @Override
+    public void onMoveImagesFail() {
+        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.failed), ProgressProvider.TOAST_INFOR);
     }
 
     @Override

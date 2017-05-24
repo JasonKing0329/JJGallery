@@ -15,4 +15,6 @@ public interface IGdbStarListView {
     void onStarCountLoaded(StarCountBean bean);
     void onRequestFail();
     void onCheckPass(boolean hasNew, List<DownloadItem> fileNames);
+    void onMoveImagesSuccess();
+    void onMoveImagesFail();
 }

@@ -2,6 +2,8 @@ package com.jing.app.jjgallery.gdb.presenter;
 
 import android.os.AsyncTask;
 
+import com.jing.app.jjgallery.bean.http.GdbMoveResponse;
+import com.jing.app.jjgallery.bean.http.GdbRequestMoveBean;
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.StarCountBean;
@@ -619,6 +621,58 @@ public class GdbPresenter {
 
             return l.toLowerCase().compareTo(r.toLowerCase());
         }
+    }
+
+    /**
+     * 通知服务器移动下载源文件
+     * @param type
+     * @param downloadItems
+     */
+    public void requestServeMoveImages(final String type, List<DownloadItem> downloadItems) {
+        GdbRequestMoveBean bean = new GdbRequestMoveBean();
+        bean.setType(type);
+        bean.setDownloadList(downloadItems);
+
+        GdbHttpClient.getInstance().getGdbService().requestMoveImages(bean)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<GdbMoveResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (type.equals(Command.TYPE_RECORD)) {
+                            gdbRecordListView.onMoveImagesFail();
+                        }
+                        else if (type.equals(Command.TYPE_STAR)) {
+                            gdbStarListView.onMoveImagesFail();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(GdbMoveResponse bean) {
+                        if (bean.isSuccess()) {
+                            if (type.equals(Command.TYPE_RECORD)) {
+                                gdbRecordListView.onMoveImagesSuccess();
+                            }
+                            else if (type.equals(Command.TYPE_STAR)) {
+                                gdbStarListView.onMoveImagesSuccess();
+                            }
+                        }
+                        else {
+                            if (type.equals(Command.TYPE_RECORD)) {
+                                gdbRecordListView.onMoveImagesFail();
+                            }
+                            else if (type.equals(Command.TYPE_STAR)) {
+                                gdbStarListView.onMoveImagesFail();
+                            }
+                        }
+                    }
+                });
     }
 
 }
