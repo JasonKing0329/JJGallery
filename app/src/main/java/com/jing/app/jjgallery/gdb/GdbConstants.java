@@ -36,4 +36,5 @@ public class GdbConstants {
     public static final String FILTER_KEY_SCORE_FK_STAND_BACK = "fk_stand_back";
     public static final String FILTER_KEY_SCORE_FK_SIDE = "fk_side";
     public static final String FILTER_KEY_SCORE_FK_SPECIAL = "fk_special";
+    public static final String FILTER_KEY_SCORE_DEPRECATED = "deprecated";
 }

@@ -52,6 +52,7 @@ public class RecordsListFragment extends GBaseFragment implements IGdbRecordList
 
     private int currentSortMode = -1;
     private boolean currentSortDesc = true;
+    private boolean showDeprecated = true;
 
     private List<Record> recordList;
     private String keywords;
@@ -117,7 +118,7 @@ public class RecordsListFragment extends GBaseFragment implements IGdbRecordList
      */
     private void loadNewRecords() {
         // 重新加载records
-        iListPageParent.getPresenter().loadRecordList(currentSortMode, currentSortDesc, 0, DEFAULT_LOAD_MORE, keywords);
+        iListPageParent.getPresenter().loadRecordList(currentSortMode, currentSortDesc, showDeprecated, 0, DEFAULT_LOAD_MORE, keywords);
     }
 
     /**
@@ -174,9 +175,11 @@ public class RecordsListFragment extends GBaseFragment implements IGdbRecordList
                         Map<String, Object> map = (Map<String, Object>) object;
                         int sortMode = (int) map.get("sortMode");
                         boolean desc = (Boolean) map.get("desc");
-                        if (currentSortMode != sortMode || currentSortDesc != desc) {
+                        boolean isIncludeDeprecated = (Boolean) map.get("include_deprecated");
+                        if (currentSortMode != sortMode || currentSortDesc != desc || showDeprecated != isIncludeDeprecated) {
                             currentSortMode = sortMode;
                             currentSortDesc = desc;
+                            showDeprecated = isIncludeDeprecated;
                             SettingProperties.setGdbRecordOrderMode(getActivity(), currentSortMode);
                             loadNewRecords();
                         }

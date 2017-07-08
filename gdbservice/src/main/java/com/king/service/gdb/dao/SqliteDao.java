@@ -774,12 +774,15 @@ public class SqliteDao {
 	 * @param nameLike
 	 * @return
 	 */
-    public List<Record> getRecords(String sortColumn, boolean desc, int from, int number, String nameLike, Connection connection) {
+    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike, Connection connection) {
 		List<Record> list = new ArrayList<>();
 		StringBuffer buffer = new StringBuffer("SELECT * FROM ");
-		buffer.append(TABLE_RECORD_1V1);
+		buffer.append(TABLE_RECORD_1V1).append(" WHERE 1=1");
 		if (!TextUtils.isEmpty(nameLike)) {
-			buffer.append(" WHERE name LIKE '%").append(nameLike).append("%'");
+			buffer.append(" AND name LIKE '%").append(nameLike).append("%'");
+		}
+		if (!includeDeprecated) {
+			buffer.append(" AND deprecated=0");
 		}
 		if (!TextUtils.isEmpty(sortColumn)) {
 			buffer.append(" ORDER BY ").append(sortColumn);

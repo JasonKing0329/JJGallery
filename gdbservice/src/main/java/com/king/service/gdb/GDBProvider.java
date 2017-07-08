@@ -285,10 +285,10 @@ public class GDBProvider {
      * @param nameLike
      * @return
      */
-    public List<Record> getRecords(String sortColumn, boolean desc, int from, int number, String nameLike) {
+    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike) {
         try {
             SqlConnection.getInstance().connect(databasePath);
-            return sqliteDao.getRecords(sortColumn, desc, from, number, nameLike, SqlConnection.getInstance().getConnection());
+            return sqliteDao.getRecords(sortColumn, desc, includeDeprecated, from, number, nameLike, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

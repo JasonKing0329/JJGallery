@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterBean;
 import com.jing.app.jjgallery.util.DebugLog;
 
@@ -93,7 +94,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.Holder> {
                 etMin.setText(String.valueOf(filterBean.getMin()));
             }
             else {
-                etMin.setText("");
+                if (filterBean.getKeyword().equals(GdbConstants.FILTER_KEY_SCORE_DEPRECATED)) {
+                    etMin.setText("0");
+                }
+                else {
+                    etMin.setText("");
+                }
             }
             etMin.addTextChangedListener(minWatcher);
 
@@ -102,7 +108,12 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.Holder> {
                 etMax.setText(String.valueOf(filterBean.getMax()));
             }
             else {
-                etMax.setText("");
+                if (filterBean.getKeyword().equals(GdbConstants.FILTER_KEY_SCORE_DEPRECATED)) {
+                    etMax.setText("0");
+                }
+                else {
+                    etMax.setText("");
+                }
             }
             etMax.addTextChangedListener(maxWatcher);
         }

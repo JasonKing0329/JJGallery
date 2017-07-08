@@ -55,7 +55,7 @@ public class FilterPresenter {
                 GdbConstants.FILTER_KEY_SCORE_FOREPLAY, GdbConstants.FILTER_KEY_SCORE_FK_SIT_FACE,
                 GdbConstants.FILTER_KEY_SCORE_FK_SIT_BACK, GdbConstants.FILTER_KEY_SCORE_FK_STAND_FACE,
                 GdbConstants.FILTER_KEY_SCORE_FK_STAND_BACK, GdbConstants.FILTER_KEY_SCORE_FK_SIDE,
-                GdbConstants.FILTER_KEY_SCORE_FK_SPECIAL
+                GdbConstants.FILTER_KEY_SCORE_FK_SPECIAL, GdbConstants.FILTER_KEY_SCORE_DEPRECATED
         };
         List<FilterBean> list = new ArrayList<>();
         FilterModel modle = new FilterModel();

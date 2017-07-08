@@ -7,11 +7,18 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/gdb_sort_grid_height"
         android:numColumns="3"/>
+    <CheckBox
+        android:id="@+id/cb_deprecated"
+        android:layout_below="@id/gdb_sort_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Include deprecated"/>
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/gdb_sort_grid"
+        android:layout_below="@id/cb_deprecated"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="20dp">

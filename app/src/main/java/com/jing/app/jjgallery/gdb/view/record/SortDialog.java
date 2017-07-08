@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
 
     private GridView gridView;
     private RadioButton ascButton, descButton;
+    private CheckBox cbDeprecated;
     private int textPadding;
     private int focusColor;
 
@@ -107,6 +109,7 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
         gridView = (GridView) view.findViewById(R.id.gdb_sort_grid);
         ascButton = (RadioButton) view.findViewById(R.id.gdb_sort_asc);
         descButton = (RadioButton) view.findViewById(R.id.gdb_sort_desc);
+        cbDeprecated = (CheckBox) view.findViewById(R.id.cb_deprecated);
         gridView.setOnItemClickListener(this);
         return view;
     }
@@ -128,6 +131,7 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
             Map<String, Object> map = new HashMap<>();
             map.put("desc", descButton.isChecked());
             map.put("sortMode", items[itemAdapter.getSelectedIndex()].value);
+            map.put("include_deprecated", cbDeprecated.isChecked());
             actionListener.onSave(map);
         }
         super.onClick(view);

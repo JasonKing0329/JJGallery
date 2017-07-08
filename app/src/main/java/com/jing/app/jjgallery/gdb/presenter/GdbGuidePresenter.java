@@ -181,6 +181,9 @@ public class GdbGuidePresenter {
         else if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_STORY)) {
             return record.getScoreStory();
         }
+        else if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_DEPRECATED)) {
+            return record.getDeprecated();
+        }
         else if (record instanceof RecordOneVOne) {
             RecordOneVOne oRecord = (RecordOneVOne) record;
             if (keyword.equals(GdbConstants.FILTER_KEY_SCORE_CUM)) {

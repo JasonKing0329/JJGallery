@@ -108,8 +108,8 @@ public class GdbPresenter {
      * @param limitNum
      * @param like name like %like%
      */
-    public void loadRecordList(int sortMode, boolean desc, int limitFrom, int limitNum, String like) {
-        new LoadRecordListTask().execute(sortMode, desc, limitFrom, limitNum, like);
+    public void loadRecordList(int sortMode, boolean desc, boolean showDeprecated, int limitFrom, int limitNum, String like) {
+        new LoadRecordListTask().execute(sortMode, desc, showDeprecated, limitFrom, limitNum, like);
     }
     /**
      *
@@ -392,10 +392,11 @@ public class GdbPresenter {
             if (params.length > 2) {
                 int sortMode = (Integer) params[0];
                 boolean desc = (Boolean) params[1];
-                int from = (Integer) params[2];
-                int number = (Integer) params[3];
-                String like = (String) params[4];
-                List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, from, number, like);
+                boolean includeDeprecated = (Boolean) params[2];
+                int from = (Integer) params[3];
+                int number = (Integer) params[4];
+                String like = (String) params[5];
+                List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, includeDeprecated, from, number, like);
                 return list;
             }
             // load all records
@@ -426,7 +427,7 @@ public class GdbPresenter {
             int from = (Integer) params[2];
             int number = (Integer) params[3];
             String like = (String) params[4];
-            List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, from, number, like);
+            List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, true, from, number, like);
             return list;
         }
     }
