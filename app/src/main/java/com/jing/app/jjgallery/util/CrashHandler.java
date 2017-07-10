@@ -74,20 +74,17 @@ public class CrashHandler implements UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        if (!handleException(ex) && mDefaultHandler != null) {
+        if (ex != null) {
+            ex.printStackTrace();
+        }
+        if (handleException(ex)) {
+            JJApplication.closeAll();
+            android.os.Process.killProcess(android.os.Process.myPid());
+            // 直接在这里是启动不了自定义对话框activity的，需要通过service调起activity，handleException中处理了
+        }
+        else {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
-        } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "error : ", e);
-            }
-
-            JJApplication.closeAll();
-            //退出程序
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//            System.exit(1);
         }
     }
 
@@ -106,7 +103,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_LONG).show();
+                // 程序崩溃后，页面会frozen，在此启动的对话框不会显示不出来，toast能显示出来但是效果不好。
+                // 采用一步线程通知service调起dialog样式的activity，可以在程序关闭后调起自定义对话框activity
+                CrashService.getInstance().sendError("Fatal error occurred, please restart Application!");
                 Looper.loop();
             }
         }.start();

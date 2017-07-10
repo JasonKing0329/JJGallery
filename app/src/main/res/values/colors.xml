@@ -124,6 +124,7 @@
     <color name="tab_top_text_2_dark">#fff807</color>
 
     <color name="white_bg">#efefef</color>
+    <color name="record_deprecated_bg">#c3c3c3</color>
 
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->

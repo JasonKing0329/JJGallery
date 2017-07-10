@@ -20,6 +20,8 @@ import com.king.service.gdb.bean.Star;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.R.attr.path;
+
 /**
  * Created by 景阳 on 2016/8/6 0006.
  * 为了实现RecordList/StarRecords/RecordScene里面holderUI和数据的共享，把view的初始化和赋值抽出来作为共用体
@@ -92,6 +94,13 @@ public class RecordViewHolder {
         container.setTag(item);
         if (onClickListener != null) {
             container.setOnClickListener(onClickListener);
+        }
+        // deprecated item
+        if (item.getDeprecated() == 1) {
+            container.setBackgroundColor(container.getContext().getResources().getColor(R.color.record_deprecated_bg));
+        }
+        else {
+            container.setBackground(container.getContext().getResources().getDrawable(R.drawable.ripple_rect_grey));
         }
 
         // image

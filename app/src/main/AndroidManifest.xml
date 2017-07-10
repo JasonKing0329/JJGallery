@@ -117,6 +117,15 @@
         <activity
             android:name=".gdb.view.game.battlecross.CrossActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".viewsystem.publicview.CrashDialogActivity"
+            android:theme="@style/CrashDialogActivity"></activity>
+
+        <service
+            android:name=".util.CrashService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

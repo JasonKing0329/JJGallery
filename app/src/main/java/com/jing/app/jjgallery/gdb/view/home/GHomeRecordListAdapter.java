@@ -91,6 +91,14 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         else {
             itemHolder.tvDate.setVisibility(View.GONE);
         }
+
+        // deprecated item
+        if (list.get(position).getDeprecated() == 1) {
+            itemHolder.tvDeprecated.setVisibility(View.VISIBLE);
+        }
+        else {
+            itemHolder.tvDeprecated.setVisibility(View.GONE);
+        }
     }
 
     private boolean isNotSameDay(Record curRecord, Record lastRecord) {
@@ -146,6 +154,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         RoundedImageView ivRecord;
         TextView tvDate;
         TextView tvStar;
+        TextView tvDeprecated;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -153,6 +162,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
             groupItem = (ViewGroup) itemView.findViewById(R.id.group_item);
             tvDate = (TextView) itemView.findViewById(R.id.tv_record_date);
             tvStar = (TextView) itemView.findViewById(R.id.tv_record_star);
+            tvDeprecated = (TextView) itemView.findViewById(R.id.tv_deprecated);
         }
     }
 

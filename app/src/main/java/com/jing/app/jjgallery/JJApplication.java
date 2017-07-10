@@ -1,8 +1,10 @@
 package com.jing.app.jjgallery;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.jing.app.jjgallery.util.CrashHandler;
+import com.jing.app.jjgallery.util.CrashService;
 import com.jing.app.jjgallery.util.DebugLog;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class JJApplication extends android.app.Application {
         super.onCreate();
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
+
+        startService(new Intent().setClass(this, CrashService.class));
     }
 
     public void addActivity(Activity activity) {
