@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.ThemeManager;
+import com.jing.app.jjgallery.util.ColorUtils;
 import com.king.service.gdb.bean.Record;
 
 import java.util.ArrayList;
@@ -34,14 +35,9 @@ public class RecordSceneExpandAdapter extends BaseExpandableListAdapter implemen
     private Map<String, List<Record>> mRecordMap;
     private int nameColorNormal, nameColorBareback;
     private int sortMode;
+    private List<Integer> colorList;
 
     private OnRecordClickListener onRecordClickListener;
-
-    private int colors[] = new int[] {
-            R.color.actionbar_bk_blue, R.color.actionbar_bk_green
-            , R.color.actionbar_bk_orange, R.color.actionbar_bk_purple
-            , R.color.actionbar_bk_deepblue, R.color.actionbar_bk_lightgreen
-    };
 
     public RecordSceneExpandAdapter(Context context, Map<String, List<Record>> recordMap) {
         this.mOriginRecordMap = recordMap;
@@ -52,11 +48,13 @@ public class RecordSceneExpandAdapter extends BaseExpandableListAdapter implemen
 
     private void createHeaders() {
         mHeaderList = new ArrayList<>();
+        colorList = new ArrayList<>();
         if (mOriginRecordMap != null) {
             // 将scene按名称升序排序
             Iterator<String> it = mOriginRecordMap.keySet().iterator();
             while (it.hasNext()) {
                 mHeaderList.add(it.next());
+                colorList.add(0);
             }
             Collections.sort(mHeaderList, new NameComparator());
         }
@@ -122,8 +120,12 @@ public class RecordSceneExpandAdapter extends BaseExpandableListAdapter implemen
             holder = (IndexHeaderHolder) convertView.getTag();
         }
         holder.header.setText(mHeaderList.get(groupPosition) + "(" + mRecordMap.get(mHeaderList.get(groupPosition)).size() + ")");
-        int index = groupPosition % colors.length;
-        holder.container.setBackgroundColor(parent.getResources().getColor(colors[index]));
+
+        // 避免每次产生新颜色
+        if (colorList.get(groupPosition) == 0) {
+            colorList.set(groupPosition, ColorUtils.randomWhiteTextBgColor());
+        }
+        holder.container.setBackgroundColor(colorList.get(groupPosition));
         return convertView;
     }
 

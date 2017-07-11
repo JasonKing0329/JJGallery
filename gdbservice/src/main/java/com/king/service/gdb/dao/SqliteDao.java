@@ -809,4 +809,49 @@ public class SqliteDao {
 		}
 		return list;
     }
+
+	public List<String> getScenes(Connection connection) {
+		List<String> list = new ArrayList<>();
+		String sql = "SELECT scene, count(scene) AS count FROM " + TABLE_RECORD_1V1 + " GROUP BY scene ORDER BY scene";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	public List<Record> getRecordsByScene(String scene, Connection connection) {
+		List<Record> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " WHERE scene='" + scene + "' ORDER BY name";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
 }

@@ -296,4 +296,37 @@ public class GDBProvider {
         }
         return null;
     }
+
+    /**
+     * scene list
+     * @return
+     */
+    public List<String> getSceneList() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.getScenes(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * get records by scene name
+     * @param scene
+     * @return
+     */
+    public List<Record> getRecordsByScene(String scene) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.getRecordsByScene(scene, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
 }

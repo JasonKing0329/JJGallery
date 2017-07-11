@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.jing.app.jjgallery.bean.http.GdbMoveResponse;
 import com.jing.app.jjgallery.bean.http.GdbRequestMoveBean;
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
+import com.jing.app.jjgallery.gdb.view.record.IGdbSceneView;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.StarCountBean;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
@@ -38,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -100,6 +103,71 @@ public class GdbPresenter {
     public void loadRecordList(int sortMode, boolean desc) {
         new LoadRecordListTask().execute(sortMode, desc);
     }
+
+    /**
+     * load scenes
+     */
+    public void loadRecordScenes(final IGdbSceneView sceneView) {
+        Observable.create(new Observable.OnSubscribe<List<String>>() {
+            @Override
+            public void call(Subscriber<? super List<String>> subscriber) {
+
+                List<String> scenes = gdbProvider.getSceneList();
+                subscriber.onNext(scenes);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<String>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<String> data) {
+                        sceneView.onScenesLoaded(data);
+                    }
+                });
+    }
+
+    /**
+     * load scenes
+     */
+    public void loadRecordsByScene(final String scene, final IGdbSceneView sceneView) {
+        Observable.create(new Observable.OnSubscribe<List<Record>>() {
+            @Override
+            public void call(Subscriber<? super List<Record>> subscriber) {
+
+                List<Record> scenes = gdbProvider.getRecordsByScene(scene);
+                subscriber.onNext(scenes);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Record>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Record> data) {
+                        sceneView.onRecordsLoaded(data);
+                    }
+                });
+    }
+
     /**
      *
      * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX

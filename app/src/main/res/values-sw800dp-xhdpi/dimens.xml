@@ -244,12 +244,12 @@
     <dimen name="abc_text_size_body_2_material">22dp</dimen>
 
     <!-- gdb -->
-    <dimen name="gdb_star_header_height">500dp</dimen>
+    <dimen name="gdb_star_header_height">450dp</dimen>
     <dimen name="gdb_record_seq_width">30dp</dimen>
     <dimen name="gdb_record_name_left">10dp</dimen>
     <dimen name="gdb_record_sub_text_size">14dp</dimen>
     <dimen name="gdb_record_main_text_size">16dp</dimen>
-    <dimen name="gdb_record_page_star1_img_height">260dp</dimen>
+    <dimen name="gdb_record_page_star1_img_height">340dp</dimen>
     <dimen name="gdb_record_listitem_img_width">300dp</dimen>
     <dimen name="gdb_record_listitem_img_height">200dp</dimen>
     <dimen name="gdb_sort_grid_height">800dp</dimen>
@@ -309,5 +309,6 @@
     <dimen name="gdb_home_date_top">20dp</dimen>
     <dimen name="gdb_home_icon_size">80dp</dimen>
     <dimen name="gdb_home_game_height">150dp</dimen>
+    <dimen name="gdb_record_line_height">48dp</dimen>
 
 </resources>

@@ -144,7 +144,7 @@ public class RecordsListFragment extends GBaseFragment implements IGdbRecordList
     }
 
     /**
-     * 不改变排序模式、不改变关键词，紧在滑动到底部后自动加载更多
+     * 不改变排序模式、不改变关键词，仅在滑动到底部后自动加载更多
      */
     private void loadMoreRecords() {
         // 加到当前size后
