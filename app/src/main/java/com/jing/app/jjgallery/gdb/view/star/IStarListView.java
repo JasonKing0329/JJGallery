@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.king.service.gdb.bean.StarCountBean;
 
 import java.util.List;
 
@@ -12,5 +11,4 @@ import java.util.List;
  */
 public interface IStarListView {
     void onLoadStarList(List<StarProxy> list);
-    void onStarCountLoaded(StarCountBean bean);
 }

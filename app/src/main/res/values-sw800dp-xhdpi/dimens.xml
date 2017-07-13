@@ -311,5 +311,6 @@
     <dimen name="gdb_home_game_height">150dp</dimen>
     <dimen name="gdb_record_line_height">48dp</dimen>
     <dimen name="dlg_hsv_image_size">300dp</dimen>
+    <dimen name="home_scrim_visible_height">100dp</dimen>
 
 </resources>

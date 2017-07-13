@@ -9,6 +9,7 @@ import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
 import com.jing.app.jjgallery.gdb.view.list.IManageListView;
+import com.jing.app.jjgallery.gdb.view.star.IStarListHeaderView;
 import com.jing.app.jjgallery.gdb.view.star.IStarListView;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
@@ -39,7 +40,7 @@ public class StarListPresenter extends ManageListPresenter {
     private GDBProvider gdbProvider;
     private GDBProvider favorProvider;
 
-    private IStarListView starListView;
+    private IStarListHeaderView starListHeaderView;
 
     public StarListPresenter(IManageListView view) {
         super(view);
@@ -47,8 +48,8 @@ public class StarListPresenter extends ManageListPresenter {
         favorProvider = new GDBProvider(DBInfor.GDB_FAVOR_DB_PATH);
     }
 
-    public void setStarListView(IStarListView starListView) {
-        this.starListView = starListView;
+    public void setStarListHeaderView(IStarListHeaderView starListHeaderView) {
+        this.starListHeaderView = starListHeaderView;
     }
 
     public void checkNewStarFile() {
@@ -96,19 +97,19 @@ public class StarListPresenter extends ManageListPresenter {
         return list;
     }
 
-    public void loadStarList(String starMode) {
+    public void loadStarList(String starMode, IStarListView starListView) {
         int orderBy = GdbConstants.STAR_SORT_NAME;
-        new LoadStarListTask().execute(orderBy, starMode);
+        new LoadStarListTask(starListView).execute(orderBy, starMode);
     }
 
     public void loadStarListOrderByNumber(String starMode) {
         int orderBy = GdbConstants.STAR_SORT_RECORDS;
-        new LoadStarListTask().execute(orderBy, starMode);
+//        new LoadStarListTask(starListView).execute(orderBy, starMode);
     }
 
     public void loadStarListOrderByFavor(String starMode) {
         int orderBy = GdbConstants.STAR_SORT_FAVOR;
-        new LoadStarListTask().execute(orderBy, starMode);
+//        new LoadStarListTask(starListView).execute(orderBy, starMode);
     }
 
     public void queryIndicatorData() {
@@ -122,6 +123,11 @@ public class StarListPresenter extends ManageListPresenter {
     private class LoadStarListTask extends AsyncTask<Object, Void, List<StarProxy>> {
 
         private int orderBy;
+        private IStarListView starListView;
+
+        private LoadStarListTask(IStarListView starListView) {
+            this.starListView = starListView;
+        }
 
         @Override
         protected void onPostExecute(List<StarProxy> list) {
@@ -190,7 +196,7 @@ public class StarListPresenter extends ManageListPresenter {
         @Override
         protected void onPostExecute(StarCountBean bean) {
 
-            starListView.onStarCountLoaded(bean);
+            starListHeaderView.onStarCountLoaded(bean);
             super.onPostExecute(bean);
         }
 
