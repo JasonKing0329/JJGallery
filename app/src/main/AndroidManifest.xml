@@ -79,7 +79,13 @@
             android:name=".viewsystem.sub.book.BookActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".gdb.view.list.GDBListActivity"
+            android:name=".gdb.view.star.StarListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gdb.view.record.RecordListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gdb.view.record.RecordSceneActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".gdb.view.star.StarActivity"
@@ -87,6 +93,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".gdb.view.record.RecordActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <service

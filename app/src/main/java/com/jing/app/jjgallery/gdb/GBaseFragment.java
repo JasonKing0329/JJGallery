@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 
 /**
@@ -16,6 +18,8 @@ import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
  * <p/>创建时间: 2017/5/19 14:24
  */
 public abstract class GBaseFragment extends Fragment {
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -39,5 +43,21 @@ public abstract class GBaseFragment extends Fragment {
     protected abstract int getLayoutRes();
 
     protected abstract void initView(View view);
+
+    public void showProgressCycler() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(getString(R.string.loading));
+        }
+        progressDialog.show();
+    }
+
+    public boolean dismissProgressCycler() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+            return true;
+        }
+        return false;
+    }
 
 }

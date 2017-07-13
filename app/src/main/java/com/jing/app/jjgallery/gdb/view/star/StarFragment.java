@@ -11,7 +11,7 @@ import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.gdb.presenter.star.StarPresenter;
 import com.jing.app.jjgallery.gdb.view.record.SortDialog;
 import com.jing.app.jjgallery.gdb.view.adapter.StarRecordsAdapter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -32,7 +32,7 @@ import java.util.Map;
 public class StarFragment extends Fragment implements IStarView, StarRecordsAdapter.OnRecordItemClickListener {
 
     private int starId;
-    private GdbPresenter mPresenter;
+    private StarPresenter mPresenter;
     protected PullZoomRecyclerView mRecyclerView;
     private StarRecordsAdapter mAdapter;
 
@@ -47,8 +47,7 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mPresenter = new GdbPresenter();
-        mPresenter.setViewCallback(this);
+        mPresenter = new StarPresenter(this);
         currentSortMode = SettingProperties.getGdbStarRecordOrderMode(getActivity());
         return inflater.inflate(R.layout.fragment_pull_zoom_header, container, false);
     }
@@ -69,21 +68,21 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
         if (getActivity() instanceof ProgressProvider) {
             ((ProgressProvider) getActivity()).showProgressCycler();
         }
-        mPresenter.loadStar(starId);onResume();
+        mPresenter.loadStar(starId);
+        onResume();
     }
 
     /**
      * 由于StarActivity被设置为了singleTask，重新启动一个StarActivity的时候不会执行onCreate，这时候就需要在
-     * StarActivity的onNewIntent设置完成后在onResume里重新获取starId进行重新加载了
+     * StarActivity的onNewIntent设置完成后重新获取starId进行重新加载了
      */
+    public void onNewIntent() {
+        initValue();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        int id = getActivity().getIntent().getIntExtra(StarActivity.KEY_STAR_ID, -1);
-        if (starId != id) {
-            starId = id;
-            initValue();
-        }
     }
 
     public void setActionbar(ActionBar actionbar) {
@@ -157,5 +156,4 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     public void onClickRecordItem(Record record) {
         ActivityManager.startGdbRecordActivity(getActivity(), record);
     }
-
 }

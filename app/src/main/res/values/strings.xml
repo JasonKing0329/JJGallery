@@ -403,6 +403,9 @@
     <string name="gdb_rec_filter_max">max</string>
     <string name="gdb_rec_filter_title">Recommend filter</string>
     <string name="gdb_rec_no_match">No matched record found</string>
+    <string name="gdb_title_star" translatable="false">Stars</string>
+    <string name="gdb_title_record" translatable="false">Records</string>
+    <string name="gdb_title_scene" translatable="false">Scenes</string>
 
     <!--************************** transition **************************-->
     <string name="trans_surf_center" translatable="false">trans_surf_center</string>

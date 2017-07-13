@@ -55,8 +55,8 @@ public class StarActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // 通过调试发现必须先super.onNewIntent(intent)然后setIntent(intent)，否则直接从这个intent里读还是读取到了之前的starId
-        setIntent(intent);
+        starFragment.setStarId(intent.getIntExtra(KEY_STAR_ID, -1));
+        starFragment.onNewIntent();
     }
 
     @Override

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.gdb.presenter.star.StarListPresenter;
 import com.jing.app.jjgallery.gdb.view.star.OnStarClickListener;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -25,7 +25,7 @@ import java.util.List;
 public class StarListNumAdapter extends RecyclerView.Adapter<StarListNumAdapter.ViewHolder> implements View.OnClickListener {
 
     private OnStarClickListener onStarClickListener;
-    private GdbPresenter mPresenter;
+    private StarListPresenter mPresenter;
 
     private List<StarProxy> originList;
 
@@ -37,7 +37,7 @@ public class StarListNumAdapter extends RecyclerView.Adapter<StarListNumAdapter.
         onStarClickListener = listener;
     }
 
-    public void setPresenter(GdbPresenter mPresenter) {
+    public void setPresenter(StarListPresenter mPresenter) {
         this.mPresenter = mPresenter;
     }
 

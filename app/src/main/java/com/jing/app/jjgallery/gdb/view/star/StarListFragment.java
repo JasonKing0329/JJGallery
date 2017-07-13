@@ -1,72 +1,59 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.controller.ThemeManager;
-import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
-import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.GdbConstants;
+import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.TouchHelper;
-import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
-import com.jing.app.jjgallery.gdb.view.list.IGdbFragment;
-import com.jing.app.jjgallery.gdb.view.list.IListPageParent;
-import com.jing.app.jjgallery.gdb.view.pub.PinnedHeaderDecoration;
+import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.gdb.view.adapter.StarIndicatorAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListNumAdapter;
-import com.jing.app.jjgallery.service.http.Command;
+import com.jing.app.jjgallery.gdb.view.pub.PinnedHeaderDecoration;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.GDBProperites;
-import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 import com.shizhefei.view.indicator.FixedIndicatorView;
 import com.shizhefei.view.indicator.Indicator;
 import com.shizhefei.view.indicator.slidebar.ColorBar;
 import com.shizhefei.view.indicator.transition.OnTransitionTextListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarListFragment extends Fragment implements IGdbStarListView, OnStarClickListener
-    , IGdbFragment, TouchHelper.OnTouchActionListener {
+public class StarListFragment extends GBaseFragment implements OnStarClickListener, IStarListView
+        , TouchHelper.OnTouchActionListener {
+
+    @BindView(R.id.indicator_view)
+    FixedIndicatorView indicatorView;
+    @BindView(R.id.rv_star)
+    RecyclerView rvStar;
+    @BindView(R.id.side_bar)
+    WaveSideBarView sideBar;
 
     private int mSortMode;
-    private RecyclerView mRecyclerView;
-    private WaveSideBarView mSideBarView;
 
     private StarListAdapter mNameAdapter;
 
     private StarListNumAdapter mNumberAdapter;
-    private IListPageParent iListPageParent;
+    private IStarListHolder holder;
 
-    private DownloadDialog downloadDialog;
-    private RecommendDialog recommendDialog;
-
-    private FixedIndicatorView indicatorView;
     private StarIndicatorAdapter indicatorAdapter;
 
     private TouchHelper touchHelper;
@@ -76,19 +63,24 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
     private String curStarMode;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        
-        iListPageParent = (IListPageParent) getActivity();
+    protected void bindFragmentHolder(IFragmentHolder holder) {
+        this.holder = (IStarListHolder) holder;
+        this.holder.getPresenter().setStarListView(this);
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.page_gdb_starlist;
+    }
+
+    @Override
+    protected void initView(View view) {
+        ButterKnife.bind(this, view);
+
         touchHelper = new TouchHelper(getActivity());
         touchHelper.setOnTouchActionListener(this);
 
-        initActionbar();
-
-        View view = inflater.inflate(R.layout.page_gdb_starlist, null);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.gdb_star_recycler_view);
-        mSideBarView = (WaveSideBarView) view.findViewById(R.id.gdb_star_side_view);
-        indicatorView = (FixedIndicatorView) view.findViewById(R.id.gdb_star_indicator_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvStar.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         final PinnedHeaderDecoration decoration = new PinnedHeaderDecoration();
         decoration.registerTypePinnedHeader(1, new PinnedHeaderDecoration.PinnedHeaderCreator() {
@@ -97,24 +89,22 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                 return true;
             }
         });
-        mRecyclerView.addItemDecoration(decoration);
+        rvStar.addItemDecoration(decoration);
 
-        mSideBarView.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
+        sideBar.setOnTouchLetterChangeListener(new WaveSideBarView.OnTouchLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
                 int pos = mNameAdapter.getLetterPosition(letter);
 
                 if (pos != -1) {
-                    mRecyclerView.scrollToPosition(pos);
+                    rvStar.scrollToPosition(pos);
                 }
             }
         });
 
-        ((ProgressProvider) getActivity()).showProgressCycler();
-
+        showProgressCycler();
         initIndicators();
-        iListPageParent.getPresenter().loadStarList(curStarMode);
-        return view;
+        holder.getPresenter().loadStarList(curStarMode);
     }
 
     private void initIndicators() {
@@ -155,89 +145,48 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
                 loadStar();
             }
         });
-        indicatorView.setCurrentItem(0,true);
+        indicatorView.setCurrentItem(0, true);
         curStarMode = GDBProperites.STAR_MODE_ALL;
 
-        iListPageParent.getPresenter().queryIndicatorData();
-    }
-
-    private void initActionbar() {
-        iListPageParent.getActionbar().clearActionIcon();
-        iListPageParent.getActionbar().addMenuIcon();
-        iListPageParent.getActionbar().addSearchIcon();
-        iListPageParent.getActionbar().addHomeIcon();
-        iListPageParent.getActionbar().addSortIcon();
-        iListPageParent.getActionbar().addFavorIcon();
-        iListPageParent.getActionbar().addIndexIcon();
-    }
-
-    public void onIconClick(View view) {
-        switch (view.getId()) {
-            case R.id.actionbar_sort:
-                if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-                    mSortMode = GdbConstants.STAR_SORT_RECORDS;
-                }
-                else {
-                    mSortMode = GdbConstants.STAR_SORT_NAME;
-                }
-                loadStar();
-                break;
-            case R.id.actionbar_index:
-                mSideBarView.setVisibility(mSideBarView.getVisibility() == View.GONE ? View.VISIBLE:View.GONE);
-                break;
-            case R.id.actionbar_favor:
-                if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-                    mSortMode = GdbConstants.STAR_SORT_FAVOR;
-                }
-                else {
-                    mSortMode = GdbConstants.STAR_SORT_NAME;
-                }
-                loadStar();
-                break;
-        }
+        holder.getPresenter().queryIndicatorData();
     }
 
     private void loadStar() {
         if (mSortMode == GdbConstants.STAR_SORT_NAME) {
             sortByName();
-        }
-        else if (mSortMode == GdbConstants.STAR_SORT_FAVOR) {
+        } else if (mSortMode == GdbConstants.STAR_SORT_FAVOR) {
             sortByFavor();
-        }
-        else {
+        } else {
             sortByRecordNumbers();
         }
     }
 
     private void sortByName() {
-        iListPageParent.getPresenter().loadStarList(curStarMode);
+        holder.getPresenter().loadStarList(curStarMode);
     }
 
     private void sortByRecordNumbers() {
-        iListPageParent.getPresenter().loadStarListOrderByNumber(curStarMode);
+        holder.getPresenter().loadStarListOrderByNumber(curStarMode);
     }
 
     private void sortByFavor() {
-        iListPageParent.getPresenter().loadStarListOrderByFavor(curStarMode);
+        holder.getPresenter().loadStarListOrderByFavor(curStarMode);
     }
 
     @Override
     public void onLoadStarList(List<StarProxy> list) {
         if (mSortMode == GdbConstants.STAR_SORT_RECORDS) {
             mNumberAdapter = new StarListNumAdapter(list);
-            mNumberAdapter.setPresenter(iListPageParent.getPresenter());
+            mNumberAdapter.setPresenter(holder.getPresenter());
             mNumberAdapter.setOnStarClickListener(this);
-            mRecyclerView.setAdapter(mNumberAdapter);
-        }
-        else {
+            rvStar.setAdapter(mNumberAdapter);
+        } else {
             mNameAdapter = new StarListAdapter(getActivity(), list);
-            mNameAdapter.setPresenter(iListPageParent.getPresenter());
+            mNameAdapter.setPresenter(holder.getPresenter());
             mNameAdapter.setOnStarClickListener(this);
-            mRecyclerView.setAdapter(mNameAdapter);
+            rvStar.setAdapter(mNameAdapter);
         }
-        ((ProgressProvider) getActivity()).dismissProgressCycler();
-
-        iListPageParent.getPresenter().checkNewStarFile();
+        dismissProgressCycler();
     }
 
     @Override
@@ -255,7 +204,7 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         ActivityManager.startStarActivity(getActivity(), star.getStar());
     }
 
-    public void onTextChanged(String text, int start, int before, int count) {
+    public void filterStar(String text) {
         if (mNameAdapter != null) {
             mNameAdapter.onStarFilter(text);
         }
@@ -268,143 +217,13 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mSideBarView.invalidate();
+                sideBar.invalidate();
             }
         }, 200);
     }
 
-    @Override
-    public void onServerConnected() {
-//        ((ProgressProvider) getActivity()).showToastShort(getString(R.string.gdb_server_online), ProgressProvider.TOAST_SUCCESS);
-        if (isVisible()) {
-            iListPageParent.getPresenter().checkNewStarFile();
-        }
-    }
-
-    @Override
-    public void onServerUnavailable() {
-        if (isVisible()) {
-            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
-        }
-    }
-
-    @Override
-    public void onRequestFail() {
-        if (isVisible()) {
-            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
-        }
-    }
-
-    @Override
-    public void onCheckPass(boolean hasNew, final List<DownloadItem> downloadList) {
-        if (hasNew) {
-            if (downloadDialog == null) {
-                downloadDialog = new DownloadDialog(getActivity(), new CustomDialog.OnCustomDialogActionListener() {
-                    @Override
-                    public boolean onSave(Object object) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onCancel() {
-                        return false;
-                    }
-
-                    @Override
-                    public void onLoadData(HashMap<String, Object> data) {
-                        List<DownloadItem> repeatList = new ArrayList<>();
-                        data.put("items", iListPageParent.getPresenter().pickStarToDownload(downloadList, repeatList));
-                        data.put("existedItems", repeatList);
-                        data.put("savePath", Configuration.GDB_IMG_STAR);
-                        data.put("optionMsg", String.format(getContext().getString(R.string.gdb_option_download), downloadList.size()));
-                    }
-                });
-                downloadDialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
-                    @Override
-                    public void onDownloadFinish(DownloadItem item) {
-
-                    }
-
-                    @Override
-                    public void onDownloadFinish(List<DownloadItem> downloadList) {
-                        // 所有内容下载完成后，统一进行异步encypt，然后更新starImageMap和recordImageMap，完成后通知adapter更新
-                        iListPageParent.getPresenter().finishDownload(downloadList);
-                        optionServerAction(downloadList);
-                    }
-                });
-            }
-            else {
-                List<DownloadItem> repeatList = new ArrayList<>();
-                List<DownloadItem> newList = iListPageParent.getPresenter().pickStarToDownload(downloadList, repeatList);
-                downloadDialog.newUpdate(newList, repeatList);
-            }
-            downloadDialog.show();
-        }
-        else {
-            ((ProgressProvider) getActivity()).showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
-        }
-    }
-
-    /**
-     * request server move original image files
-     * @param downloadList
-     */
-    private void optionServerAction(final List<DownloadItem> downloadList) {
-        new DefaultDialogManager().showOptionDialog(getActivity(), null, getString(R.string.gdb_download_done)
-                , getResources().getString(R.string.yes), null, getResources().getString(R.string.no)
-                , new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == DialogInterface.BUTTON_POSITIVE) {
-                            iListPageParent.getPresenter().requestServeMoveImages(Command.TYPE_STAR, downloadList);
-                        }
-                    }
-                }, null);
-    }
-
-    @Override
-    public void onMoveImagesSuccess() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.success), ProgressProvider.TOAST_INFOR);
-    }
-
-    @Override
-    public void onMoveImagesFail() {
-        ((ProgressProvider) getActivity()).showToastLong(getString(R.string.failed), ProgressProvider.TOAST_INFOR);
-    }
-
-    @Override
-    public void onDownloadItemEncrypted() {
-        mNameAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_gdb_check_server:
-                iListPageParent.getPresenter().checkNewStarFile();
-                break;
-            case R.id.menu_gdb_recommend:
-                if (recommendDialog == null) {
-                    recommendDialog = new RecommendDialog(getActivity());
-                }
-                recommendDialog.show();
-                break;
-            case R.id.menu_gdb_download:
-                if (downloadDialog != null) {
-                    downloadDialog.show();
-                }
-                break;
-        }
-        return false;
-    }
-
     public void reloadStarList() {
-        iListPageParent.getPresenter().loadStarList(curStarMode);
-    }
-
-    public void checkServerStatus() {
-        // 只要检测完更新，无论成功或失败都要接着开始检测图片更新
-        iListPageParent.getPresenter().checkServerStatus();
+        holder.getPresenter().loadStarList(curStarMode);
     }
 
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -488,17 +307,19 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
 
     /**
      * actionbar show animation
+     *
      * @return
      */
     public Animation getAppearAnim() {
         Animation anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0
-            , Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0);
+                , Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0);
         anim.setDuration(500);
         return anim;
     }
 
     /**
      * actionbar hide animation
+     *
      * @return
      */
     public Animation getDisapplearAnim() {
@@ -507,5 +328,35 @@ public class StarListFragment extends Fragment implements IGdbStarListView, OnSt
         anim.setDuration(500);
 //        Animation disappearAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.disappear);
         return anim;
+    }
+
+    /**
+     * change sort style
+     * switch between STAR_SORT_NAME and STAR_SORT_RECORDS
+     */
+    public void changeSortType() {
+        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
+            mSortMode = GdbConstants.STAR_SORT_RECORDS;
+        } else {
+            mSortMode = GdbConstants.STAR_SORT_NAME;
+        }
+        loadStar();
+    }
+
+    public void changeSideBarVisible() {
+        sideBar.setVisibility(sideBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    }
+
+    public void changeFavorList() {
+        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
+            mSortMode = GdbConstants.STAR_SORT_FAVOR;
+        } else {
+            mSortMode = GdbConstants.STAR_SORT_NAME;
+        }
+        loadStar();
+    }
+
+    public void refreshList() {
+        mNameAdapter.notifyDataSetChanged();
     }
 }

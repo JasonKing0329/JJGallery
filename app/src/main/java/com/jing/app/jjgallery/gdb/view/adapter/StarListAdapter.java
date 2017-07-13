@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
+import com.jing.app.jjgallery.gdb.presenter.star.StarListPresenter;
 import com.jing.app.jjgallery.gdb.view.star.OnStarClickListener;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -30,7 +30,7 @@ import cc.solart.turbo.BaseViewHolder;
 public class StarListAdapter extends BaseTurboAdapter<StarProxy, BaseViewHolder> implements View.OnClickListener {
 
     private List<StarProxy> originList;
-    private GdbPresenter mPresenter;
+    private StarListPresenter mPresenter;
 
     private int colors[] = new int[] {
             R.color.actionbar_bk_blue, R.color.actionbar_bk_green
@@ -49,7 +49,7 @@ public class StarListAdapter extends BaseTurboAdapter<StarProxy, BaseViewHolder>
         originList = data;
     }
 
-    public void setPresenter(GdbPresenter mPresenter) {
+    public void setPresenter(StarListPresenter mPresenter) {
         this.mPresenter = mPresenter;
     }
 

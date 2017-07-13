@@ -8,10 +8,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jing.app.jjgallery.JJApplication;
+import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundManager;
-import com.jing.app.jjgallery.viewsystem.publicview.ProgressManager;
 import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 
 /**
@@ -21,7 +20,6 @@ import com.jing.app.jjgallery.viewsystem.publicview.toast.TastyToast;
 public abstract class GBaseActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
-    private ProgressManager progressManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,19 +59,11 @@ public abstract class GBaseActivity extends AppCompatActivity {
     }
 
     public void showProgressCycler() {
-        if (progressManager == null) {
-            progressManager = new ProgressManager(this);
-            BackgroundManager.getInstance().addProgressSubscriber(progressManager);
-        }
-        progressManager.showProgressCycler();
+        showProgress(getString(R.string.loading));
     }
 
     public boolean dismissProgressCycler() {
-        if (progressManager.isShowing()) {
-            progressManager.dismissProgressCycler();
-            return true;
-        }
-        return false;
+        return dismissProgress();
     }
 
     public void showToastLong(String text) {
@@ -116,7 +106,6 @@ public abstract class GBaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ((JJApplication) getApplication()).removeActivity(this);
-        BackgroundManager.getInstance().removeProgressSubscriber(progressManager);
     }
 
 }

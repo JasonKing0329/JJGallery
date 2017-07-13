@@ -15,6 +15,7 @@ import java.util.List;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.SceneBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 
@@ -774,7 +775,7 @@ public class SqliteDao {
 	 * @param nameLike
 	 * @return
 	 */
-    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike, Connection connection) {
+    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike, String scene, Connection connection) {
 		List<Record> list = new ArrayList<>();
 		StringBuffer buffer = new StringBuffer("SELECT * FROM ");
 		buffer.append(TABLE_RECORD_1V1).append(" WHERE 1=1");
@@ -783,6 +784,9 @@ public class SqliteDao {
 		}
 		if (!includeDeprecated) {
 			buffer.append(" AND deprecated=0");
+		}
+		if (!TextUtils.isEmpty(scene)) {
+			buffer.append(" AND scene='").append(scene).append("'");
 		}
 		if (!TextUtils.isEmpty(sortColumn)) {
 			buffer.append(" ORDER BY ").append(sortColumn);
@@ -810,14 +814,14 @@ public class SqliteDao {
 		return list;
     }
 
-	public List<String> getScenes(Connection connection) {
-		List<String> list = new ArrayList<>();
-		String sql = "SELECT scene, count(scene) AS count FROM " + TABLE_RECORD_1V1 + " GROUP BY scene ORDER BY scene";
+	public List<SceneBean> getScenes(Connection connection) {
+		List<SceneBean> list = new ArrayList<>();
+		String sql = "SELECT scene, COUNT(scene) AS count, AVG(score) AS average, MAX(score) AS max FROM " + TABLE_RECORD_1V1 + " GROUP BY scene ORDER BY scene";
 		Statement stmt = null;
 		try {
 			stmt = connection.createStatement();
 			ResultSet set = stmt.executeQuery(sql);
-			parseOneVOneRecords(connection, set, list);
+			parseSceneBean(set, list);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -830,6 +834,17 @@ public class SqliteDao {
 			}
 		}
 		return list;
+	}
+
+	private void parseSceneBean(ResultSet set, List<SceneBean> list) throws SQLException {
+		while (set.next()) {
+			SceneBean bean = new SceneBean();
+			bean.setScene(set.getString(1));
+			bean.setNumber(set.getInt(2));
+			bean.setAverage(set.getFloat(3));
+			bean.setMax(set.getInt(4));
+			list.add(bean);
+		}
 	}
 
 	public List<Record> getRecordsByScene(String scene, Connection connection) {

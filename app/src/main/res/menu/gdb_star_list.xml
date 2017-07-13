@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_gdb_recommend"
+        android:title="@string/menu_gdb_recommend"/>
+    <item android:id="@+id/menu_gdb_download"
+        android:title="@string/menu_gdb_download"/>
+    <item android:id="@+id/menu_gdb_check_server"
+        android:title="@string/menu_gdb_check_server"/>
+</menu>

@@ -4,6 +4,7 @@ import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.SceneBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 import com.king.service.gdb.dao.SqliteDao;
@@ -285,10 +286,10 @@ public class GDBProvider {
      * @param nameLike
      * @return
      */
-    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike) {
+    public List<Record> getRecords(String sortColumn, boolean desc, boolean includeDeprecated, int from, int number, String nameLike, String scene) {
         try {
             SqlConnection.getInstance().connect(databasePath);
-            return sqliteDao.getRecords(sortColumn, desc, includeDeprecated, from, number, nameLike, SqlConnection.getInstance().getConnection());
+            return sqliteDao.getRecords(sortColumn, desc, includeDeprecated, from, number, nameLike, scene, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -301,7 +302,7 @@ public class GDBProvider {
      * scene list
      * @return
      */
-    public List<String> getSceneList() {
+    public List<SceneBean> getSceneList() {
         try {
             SqlConnection.getInstance().connect(databasePath);
             return sqliteDao.getScenes(SqlConnection.getInstance().getConnection());

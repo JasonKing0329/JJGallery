@@ -5,25 +5,25 @@
     android:orientation="vertical">
 
     <com.shizhefei.view.indicator.FixedIndicatorView
-        android:id="@+id/gdb_star_indicator_view"
+        android:id="@+id/indicator_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="?attr/actionbar_bk_color"/>
+        android:background="?attr/actionbar_bk_color" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/gdb_star_recycler_view"
+            android:id="@+id/rv_star"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView
-            android:id="@+id/gdb_star_side_view"
+            android:id="@+id/side_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

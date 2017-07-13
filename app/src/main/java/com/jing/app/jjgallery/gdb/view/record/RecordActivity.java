@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,8 +13,7 @@ import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
-import com.jing.app.jjgallery.gdb.view.star.IStarView;
+import com.jing.app.jjgallery.gdb.presenter.record.RecordPresenter;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * Created by JingYang on 2016/8/17 0017.
  * Description:
  */
-public class RecordActivity extends BaseActivity implements IStarView {
+public class RecordActivity extends BaseActivity implements IRecordView {
 
     @BindView(R.id.iv_record)
     ImageView ivRecord;
@@ -102,7 +102,7 @@ public class RecordActivity extends BaseActivity implements IStarView {
     PointDescLayout groupFk;
 
     private RecordOneVOne record;
-    private GdbPresenter mPresenter;
+    private RecordPresenter mPresenter;
 
     @Override
     public boolean isActionBarNeed() {
@@ -116,26 +116,32 @@ public class RecordActivity extends BaseActivity implements IStarView {
 
     @Override
     public void initController() {
-        record = (RecordOneVOne) ObjectCache.getData();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.gdb_record_default);
-        mPresenter = new GdbPresenter();
-        mPresenter.setViewCallback(this);
+        mPresenter = new RecordPresenter(this);
     }
 
     @Override
     public void initView() {
 
         ButterKnife.bind(this);
+        initValue();
     }
 
     @Override
     public void initBackgroundWork() {
-        initValue();
         mPresenter.loadStar(record.getStar1().getId());
         mPresenter.loadStar(record.getStar2().getId());
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initValue();
+        initBackgroundWork();
+    }
+
     private void initValue() {
+        record = (RecordOneVOne) ObjectCache.getData();
 
         String path = Configuration.GDB_IMG_RECORD + "/" + record.getName() + EncryptUtil.getFileExtra();
         SImageLoader.getInstance().displayImage(path, ivRecord);
@@ -240,11 +246,9 @@ public class RecordActivity extends BaseActivity implements IStarView {
         switch (view.getId()) {
             case R.id.group_star1:
                 ActivityManager.startStarActivity(RecordActivity.this, record.getStar1());
-                finish();
                 break;
             case R.id.group_star2:
                 ActivityManager.startStarActivity(RecordActivity.this, record.getStar2());
-                finish();
                 break;
             case R.id.group_scene:
                 break;

@@ -525,10 +525,14 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		}
 	}
 
+	public boolean isSearchVisible() {
+		return searchLayout.getVisibility() == View.VISIBLE;
+	}
+
 	/**
 	 * hide search layout
 	 */
-	private void closeSearch() {
+	public void closeSearch() {
 
 		Animation animation = AnimationUtils.loadAnimation(context, R.anim.disappear);
 		searchLayout.startAnimation(animation);

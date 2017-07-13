@@ -18,6 +18,8 @@ import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
 import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.CrossActivity;
+import com.jing.app.jjgallery.gdb.view.record.RecordListActivity;
+import com.jing.app.jjgallery.gdb.view.star.StarListActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageConstants;
@@ -95,8 +97,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, GDBListActivity.class);
-        intent.putExtra(GDBListActivity.START_MODE, GDBListActivity.STAR);
+        Intent intent = new Intent().setClass(from, StarListActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);
@@ -112,8 +113,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, GDBListActivity.class);
-        intent.putExtra(GDBListActivity.START_MODE, GDBListActivity.RECORD);
+        Intent intent = new Intent().setClass(from, RecordListActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

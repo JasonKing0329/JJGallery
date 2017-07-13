@@ -29,4 +29,21 @@ public class FormatUtil {
         bd = bd.setScale(n, BigDecimal.ROUND_HALF_UP);
         return bd.toString();
     }
+
+    /**
+     * 将浮点数转换为小数点后两位，如果末尾0无意义则去掉
+     *
+     * @param num
+     * @return
+     */
+    public static String formatFloatEnd(float num) {
+
+        String pr = formatScore(num, 2);
+        if(pr.indexOf(".") > 0){
+            pr = pr.replaceAll("0+?$", "");//去掉多余的0
+            pr = pr.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return pr;
+    }
+
 }

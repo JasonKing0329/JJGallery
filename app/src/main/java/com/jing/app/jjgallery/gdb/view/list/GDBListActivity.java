@@ -1,227 +1,155 @@
 package com.jing.app.jjgallery.gdb.view.list;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.presenter.GdbPresenter;
-import com.jing.app.jjgallery.gdb.view.record.RecordsListFragment;
-import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.gdb.view.record.RecordSceneListFragment;
-import com.jing.app.jjgallery.gdb.view.star.StarListFragment;
-import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.ChangeThemeDialog;
+import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.gdb.GBaseActivity;
+import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
+import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
+import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
+import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class GDBListActivity extends BaseActivity implements IListPageParent {
+public abstract class GDBListActivity extends GBaseActivity implements IManageListView {
 
-    public static final int STAR = 0;
-    public static final int RECORD = 1;
-    public static final String START_MODE = "start_mode";
+    private DownloadDialog downloadDialog;
+    private RecommendDialog recommendDialog;
 
-    private Fragment currentFragment;
-    private StarListFragment starFragment;
-    private RecordsListFragment recordFragment;
-    private RecordSceneListFragment sceneListFragment;
-
-    private GdbPresenter gdbPresenter;
+    protected ManageListPresenter presenter;
 
     @Override
-    public boolean isActionBarNeed() {
-        return true;
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
     }
 
     @Override
-    public int getContentView() {
-        return R.layout.activity_gdb_list;
+    public void onServerConnected() {
+        onServerConnectSuccess();
+    }
+
+    protected abstract void onServerConnectSuccess();
+
+    @Override
+    public void onServerUnavailable() {
+        showToastLong(getString(R.string.gdb_server_offline), ProgressProvider.TOAST_ERROR);
     }
 
     @Override
-    public void initController() {
-        gdbPresenter = new GdbPresenter();
+    public void onDownloadItemEncrypted() {
+        onDownloadFinished();
+    }
+
+    protected abstract void onDownloadFinished();
+
+    @Override
+    public void onRequestFail() {
+        showToastLong(getString(R.string.gdb_request_fail), ProgressProvider.TOAST_ERROR);
     }
 
     @Override
-    public void initView() {
-        int startMode = getIntent().getIntExtra(START_MODE, STAR);
-        if (startMode == RECORD) {
-            onRecordListPage();
+    public void onMoveImagesSuccess() {
+        showToastLong(getString(R.string.success), ProgressProvider.TOAST_INFOR);
+    }
+
+    @Override
+    public void onMoveImagesFail() {
+        showToastLong(getString(R.string.failed), ProgressProvider.TOAST_INFOR);
+    }
+
+    protected void showDownloadDialog() {
+        if (downloadDialog != null) {
+            downloadDialog.show();
+        }
+    }
+
+    protected void showRecommendDialog() {
+        if (recommendDialog == null) {
+            recommendDialog = new RecommendDialog(this);
+        }
+        recommendDialog.show();
+    }
+
+    @Override
+    public void onCheckPass(boolean hasNew, final List<DownloadItem> downloadList) {
+        if (hasNew) {
+            if (downloadDialog == null) {
+                downloadDialog = new DownloadDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+                    @Override
+                    public boolean onSave(Object object) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCancel() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onLoadData(HashMap<String, Object> data) {
+                        List<DownloadItem> repeatList = new ArrayList<>();
+                        data.put("items", getListToDownload(downloadList, repeatList));
+                        data.put("existedItems", repeatList);
+                        data.put("savePath", getSavePath());
+                        data.put("optionMsg", String.format(getString(R.string.gdb_option_download), downloadList.size()));
+                    }
+                });
+                downloadDialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
+                    @Override
+                    public void onDownloadFinish(DownloadItem item) {
+
+                    }
+
+                    @Override
+                    public void onDownloadFinish(List<DownloadItem> downloadList) {
+                        // 所有内容下载完成后，统一进行异步encypt，然后更新starImageMap和recordImageMap，完成后通知adapter更新
+                        presenter.finishDownload(downloadList);
+                        optionServerAction(downloadList);
+                    }
+                });
+            }
+            else {
+                List<DownloadItem> repeatList = new ArrayList<>();
+                List<DownloadItem> newList = getListToDownload(downloadList, repeatList);
+                downloadDialog.newUpdate(newList, repeatList);
+            }
+            downloadDialog.show();
         }
         else {
-            onStarListPage();
+            showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
     }
 
-    public void onStarListPage() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (starFragment == null) {
-            starFragment = new StarListFragment();
-        }
-        else {
-            starFragment.reInit();
-        }
-        gdbPresenter.setViewCallback(starFragment);
-        currentFragment = starFragment;
+    protected abstract String getListType();
 
-        ft.replace(R.id.gdb_fragment_container, currentFragment, "StarListFragment");
-        ft.commit();
+    protected abstract String getSavePath();
+
+    protected abstract List<DownloadItem> getListToDownload(List<DownloadItem> downloadList, List<DownloadItem> repeatList);
+
+    /**
+     * request server move original image files
+     * @param downloadList
+     */
+    private void optionServerAction(final List<DownloadItem> downloadList) {
+        new DefaultDialogManager().showOptionDialog(this, null, getString(R.string.gdb_download_done)
+                , getResources().getString(R.string.yes), null, getResources().getString(R.string.no)
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            presenter.requestServeMoveImages(getListType(), downloadList);
+                        }
+                    }
+                }, null);
     }
 
-    public void onRecordListPage() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (recordFragment == null) {
-            recordFragment = new RecordsListFragment();
-        }
-        gdbPresenter.setViewCallback(recordFragment);
-        currentFragment = recordFragment;
 
-        ft.replace(R.id.gdb_fragment_container, currentFragment, "RecordsListFragment");
-        ft.commit();
-    }
-
-    public void onRecordSceneListPage() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (sceneListFragment == null) {
-            sceneListFragment = new RecordSceneListFragment();
-        }
-        gdbPresenter.setViewCallback(sceneListFragment);
-        currentFragment = sceneListFragment;
-
-        ft.replace(R.id.gdb_fragment_container, sceneListFragment, "RecordSceneListFragment");
-        ft.commit();
-    }
-
-    @Override
-    public GdbPresenter getPresenter() {
-        return gdbPresenter;
-    }
-
-    @Override
-    public ActionBar getActionbar() {
-        return mActionBar;
-    }
-
-    @Override
-    public void initBackgroundWork() {
-
-    }
-
-    @Override
-    public void onIconClick(View view) {
-        super.onIconClick(view);
-        if (view.getId() == R.id.actionbar_home) {
-            ActivityManager.startFileManagerActivity(this, null);
-            finish();
-        }
-        else {
-            if (currentFragment == recordFragment) {
-                recordFragment.onIconClick(view);
-            }
-            else if (currentFragment == sceneListFragment) {
-                sceneListFragment.onIconClick(view);
-            }
-            else if (currentFragment == starFragment) {
-                starFragment.onIconClick(view);
-            }
-        }
-    }
-
-    @Override
-    public void onTextChanged(String text, int start, int before, int count) {
-        super.onTextChanged(text, start, before, count);
-        if (currentFragment == starFragment) {
-             starFragment.onTextChanged(text, start, before, count);
-        }
-        else if (currentFragment == recordFragment) {
-            recordFragment.onTextChanged(text, start, before, count);
-        }
-        else if (currentFragment == sceneListFragment) {
-            sceneListFragment.onTextChanged(text, start, before, count);
-        }
-    }
-
-    @Override
-    public void createMenu(MenuInflater menuInflater, Menu menu) {
-        super.createMenu(menuInflater, menu);
-        loadMenu(menuInflater, menu);
-    }
-
-    @Override
-    public void onPrepareMenu(MenuInflater menuInflater, Menu menu) {
-        super.onPrepareMenu(menuInflater, menu);
-        loadMenu(menuInflater, menu);
-    }
-
-    private void loadMenu(MenuInflater menuInflater, Menu menu) {
-        menu.clear();
-        menuInflater.inflate(R.menu.gdb_main, menu);
-        if (currentFragment instanceof StarListFragment) {
-            menu.findItem(R.id.menu_gdb_star).setVisible(false);
-        }
-        else if (currentFragment instanceof RecordsListFragment) {
-            menu.findItem(R.id.menu_gdb_record).setVisible(false);
-        }
-        else if (currentFragment instanceof RecordSceneListFragment) {
-            menu.findItem(R.id.menu_gdb_record).setVisible(false);
-        }
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_gdb_record:
-                onRecordListPage();
-                break;
-            case R.id.menu_gdb_star:
-                onStarListPage();
-                break;
-            case R.id.menu_change_theme:
-                openChangeThemeDialog();
-                break;
-            case R.id.menu_gdb_setting:
-                ActivityManager.startSettingActivity(this);
-                break;
-            default:
-                ((IGdbFragment) currentFragment).onMenuItemClick(item);
-                break;
-        }
-        return super.onMenuItemClick(item);
-    }
-
-    private void openChangeThemeDialog() {
-        new ChangeThemeDialog(this, new CustomDialog.OnCustomDialogActionListener() {
-
-            @Override
-            public boolean onSave(Object object) {
-                ActivityManager.reload(GDBListActivity.this);
-                return false;
-            }
-
-            @Override
-            public void onLoadData(HashMap<String, Object> data) {
-
-            }
-
-            @Override
-            public boolean onCancel() {
-                return false;
-            }
-        }).show();
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (currentFragment == starFragment) {
-            starFragment.dispatchTouchEvent(event);
-        }
-        return super.dispatchTouchEvent(event);
-    }
 }
