@@ -19,9 +19,17 @@ public class JJApplication extends android.app.Application {
 
     private static List<Activity> activities = new ArrayList<>();
 
+    private static JJApplication instance;
+
+    public static JJApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
 

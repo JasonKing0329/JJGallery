@@ -68,4 +68,32 @@ public class ColorUtils {
 //        Log.d(TAG, "hsv[" + hsv[0] + "," + hsv[1] + "," + hsv[2] + "]");
         return Color.HSVToColor(hsv);
     }
+
+    /**
+     *
+     * 随机暗色，作为背景色，配合白色文字
+     * 利用hsv模型，s大于0.7, v大于0.5
+     * hStart>0, hStart+hArg < 360
+     * @param hStart hsv模型中h的开始值
+     * @param hArg hsv模型中从hStart扫过的角度
+     * @return
+     */
+    public static int randomBgColor(int hStart, int hArg) {
+        if (random == null) {
+            random = new Random();
+        }
+        float[] hsv = new float[3];
+        hsv[0] = hStart + random.nextFloat() * hArg;
+        hsv[1] = random.nextFloat();
+        if (hsv[1] < 0.7f) {
+            hsv[1] = 0.7f + hsv[1] / 0.7f * 0.3f;
+        }
+        hsv[2] = random.nextFloat();
+        if (hsv[2] < 0.5f) {
+            hsv[2] += 0.5f;
+        }
+
+//        Log.d(TAG, "hsv[" + hsv[0] + "," + hsv[1] + "," + hsv[2] + "]");
+        return Color.HSVToColor(hsv);
+    }
 }

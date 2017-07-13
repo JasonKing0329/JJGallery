@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -210,18 +209,6 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         }
     }
 
-    public void reInit() {
-        // post刷新mSideBarView，根据调试发现重写初始化后WaveSideBarView会重新执行onMeasure(width,height=0)->onDraw->onMeasure(width,height=正确值)
-        // 缺少重新onDraw的过程，因此通过delay执行mSideBarView.invalidate()可以激活onDraw事件，根据正确的值重新绘制
-        // 用mSideBarView.post/postDelayed总是不准确
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sideBar.invalidate();
-            }
-        }, 200);
-    }
-
     public void reloadStarList() {
         holder.getPresenter().loadStarList(curStarMode);
     }
@@ -279,6 +266,7 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         @Override
         public void onAnimationEnd(Animation animation) {
             isSwiping = false;
+            invalidateSideBar();
         }
 
         @Override
@@ -297,6 +285,7 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         public void onAnimationEnd(Animation animation) {
             indicatorView.setVisibility(View.GONE);
             isSwiping = false;
+            invalidateSideBar();
         }
 
         @Override
@@ -345,6 +334,22 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
 
     public void changeSideBarVisible() {
         sideBar.setVisibility(sideBar.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        invalidateSideBar();
+    }
+
+    private void invalidateSideBar() {
+        if (sideBar.getVisibility() == View.VISIBLE) {
+            // post刷新mSideBarView，根据调试发现重写初始化后WaveSideBarView会重新执行onMeasure(width,height=0)->onDraw->onMeasure(width,height=正确值)
+            // 缺少重新onDraw的过程，因此通过delay执行mSideBarView.invalidate()可以激活onDraw事件，根据正确的值重新绘制
+            // 用mSideBarView.post/postDelayed总是不准确
+            sideBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    sideBar.requestLayout();
+                    sideBar.invalidate();
+                }
+            });
+        }
     }
 
     public void changeFavorList() {

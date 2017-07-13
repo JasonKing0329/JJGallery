@@ -72,6 +72,7 @@ public class RecordSceneActivity extends GBaseActivity implements IRecordSceneHo
         actionBar.clearActionIcon();
         actionBar.addSortIcon();
         actionBar.addBackIcon();
+        actionBar.addColorIcon();
     }
 
     private void onListPage(String scene) {
@@ -136,6 +137,11 @@ public class RecordSceneActivity extends GBaseActivity implements IRecordSceneHo
                     }
                     else if (ftCurrent == ftList) {
                         ftList.changeSortType();
+                    }
+                    break;
+                case R.id.actionbar_color:
+                    if (ftCurrent == ftScene) {
+                        ftScene.editColor();
                     }
                     break;
             }

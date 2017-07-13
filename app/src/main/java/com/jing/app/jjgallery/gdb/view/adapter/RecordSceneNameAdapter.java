@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.util.ColorUtils;
 import com.jing.app.jjgallery.util.FormatUtil;
 import com.king.lib.saveas.ScreenUtils;
@@ -18,6 +19,7 @@ import com.king.service.gdb.bean.SceneBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * 描述:
@@ -31,6 +33,9 @@ public class RecordSceneNameAdapter extends RecyclerView.Adapter<RecordSceneName
     private List<Integer> colorList;
     private OnSceneItemClickListener onSceneItemClickListener;
 
+    private int hsvStart;
+    private int hsvAngle;
+
     public RecordSceneNameAdapter(List<SceneBean> list) {
         this.list = list;
         if (list != null) {
@@ -39,6 +44,19 @@ public class RecordSceneNameAdapter extends RecyclerView.Adapter<RecordSceneName
                 colorList.add(0);
             }
         }
+
+        hsvStart = SettingProperties.getGdbSceneHsvStart();
+        hsvAngle = SettingProperties.getGdbSceneHsvAngle();
+    }
+
+    public void updateBgColors(int start, int angle) {
+        hsvStart = start;
+        hsvAngle = angle;
+        colorList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i ++) {
+            colorList.add(0);
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -52,7 +70,7 @@ public class RecordSceneNameAdapter extends RecyclerView.Adapter<RecordSceneName
         holder.tvName.setText(bean.getScene());
         // 避免每次产生新颜色
         if (colorList.get(position) == 0) {
-            colorList.set(position, ColorUtils.randomWhiteTextBgColor());
+            colorList.set(position, ColorUtils.randomBgColor(hsvStart, hsvAngle));
         }
         holder.groupContainer.setBackground(getBackground(holder.groupContainer, colorList.get(position)));
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.jing.app.jjgallery.JJApplication;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceKey;
@@ -499,6 +500,44 @@ public class SettingProperties {
     public static int getGdbRecommendAnimTime(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int mode = preferences.getInt(PreferenceKey.PREF_GDB_REC_ANIM_TIME, 5000);
+        return mode;
+    }
+
+    /**
+     * scene hsv start
+     */
+    public static void setGdbSceneHsvStart(int time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_SCENE_HSV_START, time);
+        editor.commit();
+    }
+
+    /**
+     * scene hsv start
+     */
+    public static int getGdbSceneHsvStart() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_SCENE_HSV_START, 0);
+        return mode;
+    }
+
+    /**
+     * scene hsv start
+     */
+    public static void setGdbSceneHsvAngle(int time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_SCENE_HSV_ANGLE, time);
+        editor.commit();
+    }
+
+    /**
+     * scene hsv start
+     */
+    public static int getGdbSceneHsvAngle() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_SCENE_HSV_ANGLE, 360);
         return mode;
     }
 

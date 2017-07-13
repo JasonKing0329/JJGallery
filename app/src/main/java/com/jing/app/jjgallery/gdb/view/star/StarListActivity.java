@@ -76,13 +76,7 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
 
     public void onStarListPage() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (starFragment == null) {
-            starFragment = new StarListFragment();
-        }
-        else {
-            starFragment.reInit();
-        }
-
+        starFragment = new StarListFragment();
         ft.replace(R.id.group_ft_container, starFragment, "StarListFragment");
         ft.commit();
     }
