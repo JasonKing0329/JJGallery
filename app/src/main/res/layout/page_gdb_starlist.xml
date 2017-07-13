@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.shizhefei.view.indicator.FixedIndicatorView
-        android:id="@+id/indicator_view"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="?attr/actionbar_bk_color" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

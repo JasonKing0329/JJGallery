@@ -42,13 +42,13 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/actionbar_height"
             android:background="?attr/actionbar_bk_color"
             app:tabGravity="fill"
-            app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/tab_actionbar_text_focus"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorColor="@color/tab_actionbar_text_focus"/>
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextColor="@color/colorPrimary"
+            app:tabIndicatorColor="@color/colorAccent"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -70,6 +70,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:visibility="gone"
+        android:layout_marginBottom="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

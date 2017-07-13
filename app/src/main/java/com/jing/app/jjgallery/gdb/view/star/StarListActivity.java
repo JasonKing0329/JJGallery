@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
