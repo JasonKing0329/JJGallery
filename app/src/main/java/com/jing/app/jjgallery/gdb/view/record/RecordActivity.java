@@ -201,27 +201,27 @@ public class RecordActivity extends BaseActivity implements IRecordView {
         List<String> contentList = new ArrayList<>();
         if (record.getScoreFkType1() > 0) {
             keyList.add("For Sit");
-            contentList.add(record.getScoreFkType1() + "(" + record.getRateFkType1() + "%)");
+            contentList.add(record.getScoreFkType1() + "");
         }
         if (record.getScoreFkType2() > 0) {
             keyList.add("Back Sit");
-            contentList.add(record.getScoreFkType2() + "(" + record.getRateFkType2() + "%)");
+            contentList.add(record.getScoreFkType2() + " ");
         }
         if (record.getScoreFkType3() > 0) {
             keyList.add("For Stand");
-            contentList.add(record.getScoreFkType3() + "(" + record.getRateFkType3() + "%)");
+            contentList.add(record.getScoreFkType3() + " ");
         }
         if (record.getScoreFkType4() > 0) {
             keyList.add("Back Stand");
-            contentList.add(record.getScoreFkType4() + "(" + record.getRateFkType4() + "%)");
+            contentList.add(record.getScoreFkType4() + " ");
         }
         if (record.getScoreFkType5() > 0) {
             keyList.add("Side");
-            contentList.add(record.getScoreFkType5() + "(" + record.getRateFkType5() + "%)");
+            contentList.add(record.getScoreFkType5() + " ");
         }
         if (record.getScoreFkType6() > 0) {
             keyList.add("Special");
-            contentList.add(record.getScoreFkType6() + "(" + record.getRateFkType6() + "%)");
+            contentList.add(record.getScoreFkType6() + " ");
         }
         groupFk.addPoint(keyList, contentList);
     }

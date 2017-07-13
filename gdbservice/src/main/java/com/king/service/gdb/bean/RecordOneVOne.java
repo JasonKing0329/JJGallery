@@ -16,12 +16,6 @@ public class RecordOneVOne extends RecordSingleScene {
 	private int scoreFkType4;
 	private int scoreFkType5;
 	private int scoreFkType6;
-	private int rateFkType1;
-	private int rateFkType2;
-	private int rateFkType3;
-	private int rateFkType4;
-	private int rateFkType5;
-	private int rateFkType6;
 	public Star getStar1() {
 		return star1;
 	}
@@ -93,42 +87,6 @@ public class RecordOneVOne extends RecordSingleScene {
 	}
 	public void setScoreFkType6(int scoreFkType6) {
 		this.scoreFkType6 = scoreFkType6;
-	}
-	public int getRateFkType1() {
-		return rateFkType1;
-	}
-	public void setRateFkType1(int rateFkType1) {
-		this.rateFkType1 = rateFkType1;
-	}
-	public int getRateFkType2() {
-		return rateFkType2;
-	}
-	public void setRateFkType2(int rateFkType2) {
-		this.rateFkType2 = rateFkType2;
-	}
-	public int getRateFkType3() {
-		return rateFkType3;
-	}
-	public void setRateFkType3(int rateFkType3) {
-		this.rateFkType3 = rateFkType3;
-	}
-	public int getRateFkType4() {
-		return rateFkType4;
-	}
-	public void setRateFkType4(int rateFkType4) {
-		this.rateFkType4 = rateFkType4;
-	}
-	public int getRateFkType5() {
-		return rateFkType5;
-	}
-	public void setRateFkType5(int rateFkType5) {
-		this.rateFkType5 = rateFkType5;
-	}
-	public int getRateFkType6() {
-		return rateFkType6;
-	}
-	public void setRateFkType6(int rateFkType6) {
-		this.rateFkType6 = rateFkType6;
 	}
 	public int getScoreStar() {
 		return scoreStar;

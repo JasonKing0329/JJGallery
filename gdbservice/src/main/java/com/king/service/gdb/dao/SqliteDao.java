@@ -152,17 +152,11 @@ public class SqliteDao {
 			record.setScoreCShow(set.getInt(33));
 			record.setScoreRim(set.getInt(34));
 			record.setScoreSpeicial(set.getInt(35));
-			record.setRateFkType1(Integer.parseInt(set.getString(36)));
-			record.setRateFkType2(Integer.parseInt(set.getString(37)));
-			record.setRateFkType3(Integer.parseInt(set.getString(38)));
-			record.setRateFkType4(Integer.parseInt(set.getString(39)));
-			record.setRateFkType5(Integer.parseInt(set.getString(40)));
-			record.setRateFkType6(Integer.parseInt(set.getString(41)));
-			record.setLastModifyTime(set.getLong(44));
-			record.setSpecialDesc(set.getString(45));
-			record.setDeprecated(Integer.parseInt(set.getString(46)));
-			int star1Id = set.getInt(42);
-			int star2Id = set.getInt(43);
+			record.setLastModifyTime(set.getLong(38));
+			record.setSpecialDesc(set.getString(39));
+			record.setDeprecated(Integer.parseInt(set.getString(40)));
+			int star1Id = set.getInt(36);
+			int star2Id = set.getInt(37);
 			record.setStar1(queryStarById(connection, star1Id));
 			record.setStar2(queryStarById(connection, star2Id));
 			list.add(record);
@@ -176,10 +170,10 @@ public class SqliteDao {
 				.append(",scoreFeel,scoreStar1,scoreStar2,scoreStar,scoreStarC1,scoreStarC2,scoreStarC,scoreRhythm")
 				.append(",scoreForePlay,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
 				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreFk,scoreCum,scoreScene,scoreStory")
-				.append(",scoreNoCond,scoreCShow,scoreRim,scoreSpecial,rateFkType1,rateFkType2")
-				.append(",rateFkType3,rateFkType4,rateFkType5,rateFkType6,star1_id,star2_id,lastModifyDate,specialDesc,deprecated)")
+				.append(",scoreNoCond,scoreCShow,scoreRim,scoreSpecial")
+				.append(",star1_id,star2_id,lastModifyDate,specialDesc,deprecated)")
 				.append(" VALUES(?");
-		for (int i = 0; i < 44; i ++) {
+		for (int i = 0; i < 38; i ++) {
 			buffer.append(",?");
 		}
 		buffer.append(")");
@@ -221,17 +215,11 @@ public class SqliteDao {
 			stmt.setInt(32, record.getScoreCShow());
 			stmt.setInt(33, record.getScoreRim());
 			stmt.setInt(34, record.getScoreSpeicial());
-			stmt.setString(35, "" + record.getRateFkType1());
-			stmt.setString(36, "" + record.getRateFkType2());
-			stmt.setString(37, "" + record.getRateFkType3());
-			stmt.setString(38, "" + record.getRateFkType4());
-			stmt.setString(39, "" + record.getRateFkType5());
-			stmt.setString(40, "" + record.getRateFkType6());
-			stmt.setInt(41, record.getStar1().getId());
-			stmt.setInt(42, record.getStar2().getId());
-			stmt.setLong(43, record.getLastModifyTime());
-			stmt.setString(44, record.getSpecialDesc());
-			stmt.setInt(45, record.getDeprecated());
+			stmt.setInt(35, record.getStar1().getId());
+			stmt.setInt(36, record.getStar2().getId());
+			stmt.setLong(37, record.getLastModifyTime());
+			stmt.setString(38, record.getSpecialDesc());
+			stmt.setInt(39, record.getDeprecated());
 			stmt.executeUpdate();
 			return true;
 		} catch (SQLException e) {

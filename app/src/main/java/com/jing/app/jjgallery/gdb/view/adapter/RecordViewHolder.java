@@ -158,22 +158,22 @@ public class RecordViewHolder {
 
             StringBuffer buffer = new StringBuffer();
             if (record.getScoreFkType1() != 0) {
-                buffer.append("坐面(").append(record.getScoreFkType1()).append("/").append(record.getRateFkType1()).append("%)   ");
+                buffer.append("坐面(").append(record.getScoreFkType1()).append(")   ");
             }
             if (record.getScoreFkType2() != 0) {
-                buffer.append("坐背(").append(record.getScoreFkType2()).append("/").append(record.getRateFkType2()).append("%)   ");
+                buffer.append("坐背(").append(record.getScoreFkType2()).append(")   ");
             }
             if (record.getScoreFkType3() != 0) {
-                buffer.append("立面(").append(record.getScoreFkType3()).append("/").append(record.getRateFkType3()).append("%)   ");
+                buffer.append("立面(").append(record.getScoreFkType3()).append(")   ");
             }
             if (record.getScoreFkType4() != 0) {
-                buffer.append("立背(").append(record.getScoreFkType4()).append("/").append(record.getRateFkType4()).append("%)   ");
+                buffer.append("立背(").append(record.getScoreFkType4()).append(")   ");
             }
             if (record.getScoreFkType5() != 0) {
-                buffer.append("侧(").append(record.getScoreFkType5()).append("/").append(record.getRateFkType5()).append("%)   ");
+                buffer.append("侧(").append(record.getScoreFkType5()).append(")   ");
             }
             if (record.getScoreFkType6() != 0) {
-                buffer.append("特殊(").append(record.getScoreFkType6()).append("/").append(record.getRateFkType6()).append("%)   ");
+                buffer.append("特殊(").append(record.getScoreFkType6()).append(")   ");
             }
             String text = buffer.toString();
             if (text.length() > 0) {
@@ -214,27 +214,27 @@ public class RecordViewHolder {
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK1:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType1() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType1() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK2:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType2() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType2() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK3:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType3() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType3() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK4:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType4() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType4() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK5:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType5() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType5() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FK6:
                 sortScoreView.setVisibility(View.VISIBLE);
-                sortScoreView.setText(((RecordOneVOne) item).getRateFkType6() + "%");
+                sortScoreView.setText(((RecordOneVOne) item).getScoreFkType6() + "%");
                 break;
             case PreferenceValue.GDB_SR_ORDERBY_FOREPLAY:
                 sortScoreView.setVisibility(View.VISIBLE);
