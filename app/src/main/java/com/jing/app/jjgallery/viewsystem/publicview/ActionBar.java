@@ -70,7 +70,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	 * normal container包含的所有图标
 	 */
 	private ImageView backButton, menuLeftButton, addButton, homeButton
-		, surfButton, sortButton, searchButton, closeButton, refreshButton
+		, surfButton, sortButton, sortByNumButton, searchButton, closeButton, refreshButton
 		, changeButton, colorButton, randomSurfButton, coverButton
 		, showButton, hideButton, groupAddButton, favorButton, indexButton;
 
@@ -177,6 +177,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		refreshButton = (ImageView) view.findViewById(R.id.actionbar_refresh);
 		searchButton = (ImageView) view.findViewById(R.id.actionbar_search);
 		sortButton = (ImageView) view.findViewById(R.id.actionbar_sort);
+		sortByNumButton = (ImageView) view.findViewById(R.id.actionbar_sort_by_num);
 		favorButton = (ImageView) view.findViewById(R.id.actionbar_favor);
 		indexButton = (ImageView) view.findViewById(R.id.actionbar_index);
 		changeButton = (ImageView) view.findViewById(R.id.actionbar_change);
@@ -210,6 +211,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		addButton.setOnClickListener(this);
 		refreshButton.setOnClickListener(this);
 		sortButton.setOnClickListener(this);
+		sortByNumButton.setOnClickListener(this);
 		favorButton.setOnClickListener(this);
 		indexButton.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
@@ -459,11 +461,27 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	}
 
 	/**
+	 * sort by icon
+	 */
+	public void addSortByNumIcon() {
+		currentButtons.add(sortByNumButton);
+		sortByNumButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
 	 * index icon
 	 */
 	public void addIndexIcon() {
 		currentButtons.add(indexButton);
 		indexButton.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * index icon
+	 */
+	public void hideIndexIcon() {
+		currentButtons.remove(indexButton);
+		indexButton.setVisibility(View.GONE);
 	}
 
 	/**

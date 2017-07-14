@@ -414,13 +414,17 @@ public class ActivityManager {
         }
     }
 
-    public static void startStarActivity(Activity from, Star star) {
+    public static void startStarActivity(Activity from, int starId) {
         Bundle bundle = new Bundle();
-        bundle.putInt(StarActivity.KEY_STAR_ID, star.getId());
+        bundle.putInt(StarActivity.KEY_STAR_ID, starId);
         Intent intent = new Intent().setClass(from, StarActivity.class);
         intent.putExtras(bundle);
         from.startActivity(intent);
         applyAnimation(from);
+    }
+
+    public static void startStarActivity(Activity from, Star star) {
+        startStarActivity(from, star.getId());
     }
 
     public static void startGdbRecordActivity(Context from, Record record) {

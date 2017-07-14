@@ -21,6 +21,10 @@
         <item name="actionbar_ic_sort">@drawable/ic_sort_green_218676_36dp</item>
         <item name="actionbar_ic_index">@drawable/ic_sort_by_alpha_green_36dp</item>
         <item name="actionbar_ic_favor">@drawable/ic_favorite_border_green_218676_36dp</item>
+        <item name="actionbar_ic_sort_focus">@drawable/ic_sort_ff4081_36dp</item>
+        <item name="actionbar_ic_favor_focus">@drawable/ic_favorite_ff4081_36dp</item>
+        <item name="actionbar_ic_sort_by_num">@drawable/ic_looks_one_3f51b5_36dp</item>
+        <item name="actionbar_ic_sort_by_num_focus">@drawable/ic_looks_one_ff4081_36dp</item>
         <item name="actionbar_ic_cover">@drawable/ic_apps_green_36dp</item>
         <item name="actionbar_ic_refresh">@drawable/ic_refresh_green_36dp</item>
         <item name="actionbar_ic_search">@drawable/ic_search_green_36dp</item>
@@ -67,7 +71,11 @@
         <item name="actionbar_ic_color">@drawable/ic_color_lens_purple_200_36dp</item>
         <item name="actionbar_ic_sort">@drawable/ic_sort_purple_3f3a71_36dp</item>
         <item name="actionbar_ic_index">@drawable/ic_sort_by_alpha_purple_200_36dp</item>
-        <item name="actionbar_ic_favor">@drawable/ic_favorite_border_purple_300_36dp</item>
+        <item name="actionbar_ic_favor">@drawable/ic_favorite_border_3f51b5_36dp</item>
+        <item name="actionbar_ic_sort_focus">@drawable/ic_sort_ff4081_36dp</item>
+        <item name="actionbar_ic_favor_focus">@drawable/ic_favorite_ff4081_36dp</item>
+        <item name="actionbar_ic_sort_by_num">@drawable/ic_looks_one_3f51b5_36dp</item>
+        <item name="actionbar_ic_sort_by_num_focus">@drawable/ic_looks_one_ff4081_36dp</item>
         <item name="actionbar_ic_cover">@drawable/ic_apps_purple_200_36dp</item>
         <item name="actionbar_ic_refresh">@drawable/ic_refresh_purple_36dp</item>
         <item name="actionbar_ic_search">@drawable/ic_search_purple_36dp</item>
@@ -115,6 +123,10 @@
         <item name="actionbar_ic_sort">@drawable/ic_sort_white_36dp</item>
         <item name="actionbar_ic_index">@drawable/ic_sort_by_alpha_white_36dp</item>
         <item name="actionbar_ic_favor">@drawable/ic_favorite_border_white_36dp</item>
+        <item name="actionbar_ic_sort_focus">@drawable/ic_sort_ff4081_36dp</item>
+        <item name="actionbar_ic_favor_focus">@drawable/ic_favorite_ff4081_36dp</item>
+        <item name="actionbar_ic_sort_by_num">@drawable/ic_looks_one_3f51b5_36dp</item>
+        <item name="actionbar_ic_sort_by_num_focus">@drawable/ic_looks_one_ff4081_36dp</item>
         <item name="actionbar_ic_cover">@drawable/ic_apps_white_36dp</item>
         <item name="actionbar_ic_refresh">@drawable/ic_refresh_white_36dp</item>
         <item name="actionbar_ic_search">@drawable/ic_search_white_36dp</item>

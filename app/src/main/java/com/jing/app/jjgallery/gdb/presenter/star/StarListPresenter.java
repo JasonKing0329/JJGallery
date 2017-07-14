@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
@@ -19,13 +20,16 @@ import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -41,13 +45,20 @@ public class StarListPresenter extends ManageListPresenter {
     private GDBProvider favorProvider;
 
     private IStarListHeaderView starListHeaderView;
+    private List<FavorBean> favorList;
+    private Random random;
 
     public StarListPresenter(IManageListView view) {
         super(view);
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
         favorProvider = new GDBProvider(DBInfor.GDB_FAVOR_DB_PATH);
+        random = new Random();
     }
 
+    /**
+     * StarListActivity的主activity业务逻辑回调
+     * @param starListHeaderView
+     */
     public void setStarListHeaderView(IStarListHeaderView starListHeaderView) {
         this.starListHeaderView = starListHeaderView;
     }
@@ -97,19 +108,14 @@ public class StarListPresenter extends ManageListPresenter {
         return list;
     }
 
-    public void loadStarList(String starMode, IStarListView starListView) {
-        int orderBy = GdbConstants.STAR_SORT_NAME;
-        new LoadStarListTask(starListView).execute(orderBy, starMode);
-    }
-
-    public void loadStarListOrderByNumber(String starMode) {
-        int orderBy = GdbConstants.STAR_SORT_RECORDS;
-//        new LoadStarListTask(starListView).execute(orderBy, starMode);
-    }
-
-    public void loadStarListOrderByFavor(String starMode) {
-        int orderBy = GdbConstants.STAR_SORT_FAVOR;
-//        new LoadStarListTask(starListView).execute(orderBy, starMode);
+    /**
+     *
+     * @param starMode
+     * @param sortMode
+     * @param starListView StarListFragment的回调
+     */
+    public void loadStarList(String starMode, int sortMode, IStarListView starListView) {
+        new LoadStarListTask(starListView).execute(sortMode, starMode);
     }
 
     public void queryIndicatorData() {
@@ -118,6 +124,40 @@ public class StarListPresenter extends ManageListPresenter {
 
     public void saveFavor(FavorBean bean) {
         favorProvider.saveFavor(bean);
+    }
+
+    public void loadFavorList() {
+        Observable.create(new Observable.OnSubscribe<List<FavorBean>>() {
+            @Override
+            public void call(Subscriber<? super List<FavorBean>> subscriber) {
+                favorList = favorProvider.getFavors();
+                subscriber.onNext(favorList);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<FavorBean>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<FavorBean> favorList) {
+                        starListHeaderView.onFavorListLoaded();
+                    }
+                });
+    }
+
+    public FavorBean nextFavorStar() {
+        if (favorList != null && favorList.size() > 0) {
+            return favorList.get(Math.abs(random.nextInt() % favorList.size()));
+        }
+        return null;
     }
 
     private class LoadStarListTask extends AsyncTask<Object, Void, List<StarProxy>> {
@@ -172,7 +212,7 @@ public class StarListPresenter extends ManageListPresenter {
             orderBy = (int) params[0];
             String starMode = (String) params[1];
 
-            List<FavorBean> favorList = favorProvider.getFavors();
+            favorList = favorProvider.getFavors();
             Map<Integer, FavorBean> favorMap = new HashMap<>();
             for (FavorBean bean:favorList) {
                 favorMap.put(bean.getStarId(), bean);

@@ -406,6 +406,7 @@
     <string name="gdb_title_star" translatable="false">Stars</string>
     <string name="gdb_title_record" translatable="false">Records</string>
     <string name="gdb_title_scene" translatable="false">Scenes</string>
+    <string name="gdb_nav_setting" translatable="false">Navigation setting</string>
 
     <!--************************** transition **************************-->
     <string name="trans_surf_center" translatable="false">trans_surf_center</string>

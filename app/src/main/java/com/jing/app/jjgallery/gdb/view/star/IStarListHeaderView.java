@@ -9,4 +9,6 @@ import com.king.service.gdb.bean.StarCountBean;
  */
 public interface IStarListHeaderView {
     void onStarCountLoaded(StarCountBean bean);
+
+    void onFavorListLoaded();
 }

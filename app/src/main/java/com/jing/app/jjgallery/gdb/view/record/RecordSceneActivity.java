@@ -110,7 +110,7 @@ public class RecordSceneActivity extends GBaseActivity implements IRecordSceneHo
     @Override
     public void onBackPressed() {
         if (ftCurrent == ftList) {
-            if (actionBar.isSearchVisible()) {
+            if (actionBar != null && actionBar.isSearchVisible()) {
                 actionBar.closeSearch();
             }
             else {

@@ -154,4 +154,12 @@ public class PreferenceKey {
     public static final String PREF_GDB_SCENE_HSV_START = "pref_gdb_scene_hsv_start";
     // scene hsv angle
     public static final String PREF_GDB_SCENE_HSV_ANGLE = "pref_gdb_scene_hsv_angle";
+    // head path of gdb home nav header
+    public static final String PREF_GDB_NAV_HEAD_RANDOM = "pref_gdb_nav_head_random";
+    // random animation of recommend item
+    public static final String PREF_GDB_STAR_LIST_NAV_ANIM_RANDOM = "pref_gdb_star_list_nav_anim_random";
+    // fixed animation of star_list_navommend item
+    public static final String PREF_GDB_STAR_LIST_NAV_ANIM_TYPE = "pref_gdb_star_list_nav_anim_fix_type";
+    // animation time
+    public static final String PREF_GDB_STAR_LIST_NAV_ANIM_TIME = "pref_gdb_star_list_nav_anim_time";
 }

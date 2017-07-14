@@ -37,9 +37,15 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
 
     // see GDBProperties.STAR_MODE_XXX
     private String curStarMode;
+    // see GDBProperties.STAR_SORT_XXX
+    private int curSortMode;
 
     public void setStarMode(String curStarMode) {
         this.curStarMode = curStarMode;
+    }
+
+    public void setSortMode(int curSortMode) {
+        this.curSortMode = curSortMode;
     }
 
     @Override
@@ -67,8 +73,7 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         });
         rvStar.addItemDecoration(decoration);
 
-        showProgressCycler();
-        holder.getPresenter().loadStarList(curStarMode, this);
+        holder.getPresenter().loadStarList(curStarMode, curSortMode, this);
     }
 
     public void onLetterChange(String letter) {
@@ -77,28 +82,6 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         if (pos != -1) {
             rvStar.scrollToPosition(pos);
         }
-    }
-
-    private void loadStar() {
-        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-            sortByName();
-        } else if (mSortMode == GdbConstants.STAR_SORT_FAVOR) {
-            sortByFavor();
-        } else {
-            sortByRecordNumbers();
-        }
-    }
-
-    private void sortByName() {
-        holder.getPresenter().loadStarList(curStarMode, this);
-    }
-
-    private void sortByRecordNumbers() {
-        holder.getPresenter().loadStarListOrderByNumber(curStarMode);
-    }
-
-    private void sortByFavor() {
-        holder.getPresenter().loadStarListOrderByFavor(curStarMode);
     }
 
     @Override
@@ -114,7 +97,6 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
             mNameAdapter.setOnStarClickListener(this);
             rvStar.setAdapter(mNameAdapter);
         }
-        dismissProgressCycler();
     }
 
     @Override
@@ -132,33 +114,15 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
         }
     }
 
-    public void reloadStarList() {
-        holder.getPresenter().loadStarList(curStarMode, this);
-    }
-
-    /**
-     * change sort style
-     * switch between STAR_SORT_NAME and STAR_SORT_RECORDS
-     */
-    public void changeSortType() {
-        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-            mSortMode = GdbConstants.STAR_SORT_RECORDS;
-        } else {
-            mSortMode = GdbConstants.STAR_SORT_NAME;
+    public void reloadStarList(int sortMode) {
+        if (curSortMode != sortMode) {
+            curSortMode = sortMode;
+            holder.getPresenter().loadStarList(curStarMode, curSortMode, this);
         }
-        loadStar();
-    }
-
-    public void changeFavorList() {
-        if (mSortMode == GdbConstants.STAR_SORT_NAME) {
-            mSortMode = GdbConstants.STAR_SORT_FAVOR;
-        } else {
-            mSortMode = GdbConstants.STAR_SORT_NAME;
-        }
-        loadStar();
     }
 
     public void refreshList() {
         mNameAdapter.notifyDataSetChanged();
     }
+
 }

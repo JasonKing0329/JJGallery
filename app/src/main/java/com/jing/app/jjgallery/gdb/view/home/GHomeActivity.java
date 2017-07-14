@@ -1,5 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.home;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -8,9 +10,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
@@ -18,8 +23,14 @@ import com.jing.app.jjgallery.gdb.view.recommend.IRecommendHolder;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateManager;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.sub.thumb.ThumbActivity;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +43,8 @@ import butterknife.ButterKnife;
 public class GHomeActivity extends GBaseActivity implements NavigationView.OnNavigationItemSelectedListener
     , IHomeHolder, IRecommendHolder{
 
+    private final int REQUEST_IMAGE = 101;
+
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawer_layout)
@@ -40,6 +53,8 @@ public class GHomeActivity extends GBaseActivity implements NavigationView.OnNav
     Toolbar toolbar;
 
     private ImageView navHeaderView;
+    private ImageView ivFolder;
+    private ImageView ivFace;
 
     private GdbGuidePresenter mPresenter;
 
@@ -88,9 +103,41 @@ public class GHomeActivity extends GBaseActivity implements NavigationView.OnNav
         navView.setNavigationItemSelectedListener(this);
         navView.setItemIconTintList(null);
         navHeaderView = (ImageView) navView.getHeaderView(0).findViewById(R.id.nav_header_bg);
+        ivFolder = (ImageView) navView.getHeaderView(0).findViewById(R.id.iv_folder);
+        ivFace = (ImageView) navView.getHeaderView(0).findViewById(R.id.iv_face);
+        ivFace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingProperties.setGdbNavHeadRandom(true);
+                focusOnRandom();
+            }
+        });
+        ivFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
 
+        if (SettingProperties.isGdbNavHeadRandom()) {
+            focusOnRandom();
+        }
+        else {
+            focusOnFolder();
+        }
+    }
+
+    private void focusOnFolder() {
+        ivFolder.setSelected(true);
+        ivFace.setSelected(false);
         String path = SettingProperties.getPreference(this, PreferenceKey.PREF_GDB_NAV_HEADER_BG);
         SImageLoader.getInstance().displayImage(path, navHeaderView);
+    }
+
+    private void focusOnRandom() {
+        ivFace.setSelected(true);
+        ivFolder.setSelected(false);
+        SImageLoader.getInstance().displayImage(randomHeadImagePath(), navHeaderView);
     }
 
     private void initContent() {
@@ -157,4 +204,39 @@ public class GHomeActivity extends GBaseActivity implements NavigationView.OnNav
     public void onRecommendRecordsLoaded() {
 
     }
+
+    private void selectImage() {
+        Intent intent = new Intent().setClass(this, ThumbActivity.class);
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_IMAGE:
+                if (resultCode == Activity.RESULT_OK) {
+                    String imagePath = data.getStringExtra(Constants.KEY_THUMBFOLDER_CHOOSE_CONTENT);
+                    SettingProperties.setGdbNavHeadRandom(false);
+                    SettingProperties.savePreference(this, PreferenceKey.PREF_GDB_NAV_HEADER_BG, imagePath);
+                    focusOnFolder();
+                }
+                break;
+        }
+    }
+
+    public String randomHeadImagePath() {
+        File dir = new File(Configuration.GDB_IMG_RECORD);
+        File[] files = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getPath().endsWith(EncryptUtil.getFileExtra());
+            }
+        });
+        if (files != null && files.length > 0) {
+            return files[Math.abs(new Random().nextInt()) % files.length].getPath();
+        }
+        return null;
+    }
+
 }
