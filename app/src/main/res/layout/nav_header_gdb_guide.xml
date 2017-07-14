@@ -41,9 +41,9 @@
         android:background="@drawable/shape_oval_transgrey">
         <ImageView
             android:id="@+id/iv_face"
-            android:layout_width="@dimen/gdb_star_header_icon_size"
-            android:layout_height="@dimen/gdb_star_header_icon_size"
-            android:layout_margin="10dp"
+            android:layout_width="@dimen/gdb_home_nav_icon_size"
+            android:layout_height="@dimen/gdb_home_nav_icon_size"
+            android:layout_margin="5dp"
             android:src="@drawable/selector_ic_face"
             android:scaleType="fitCenter"/>
     </RelativeLayout>
