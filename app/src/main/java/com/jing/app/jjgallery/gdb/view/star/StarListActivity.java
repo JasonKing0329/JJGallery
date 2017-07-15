@@ -493,6 +493,8 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
             if (bean != null) {
                 ImageView imageView = (ImageView) view.findViewById(R.id.iv_star);
                 String path = Configuration.GDB_IMG_STAR + "/" + bean.getStarName() + EncryptUtil.getFileExtra();
+                // list 列表缓存了小图，这里需要先清除小图
+                SImageLoader.getInstance().removeCache(path);
                 SImageLoader.getInstance().displayImage(path, imageView);
 
                 RelativeLayout groupContainer = (RelativeLayout) view.findViewById(R.id.group_container);

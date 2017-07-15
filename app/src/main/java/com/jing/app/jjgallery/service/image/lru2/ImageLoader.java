@@ -42,6 +42,11 @@ public class ImageLoader implements ISImageLoader {
     }
 
     @Override
+    public void removeCache() {
+
+    }
+
+    @Override
     public void displayImage(String path, ImageView imageView) {
         // 首先检测是否已经有线程在加载同样的资源（如果则取消较早的），避免出现重复加载
         if (cancelPotentialLoad(path, imageView)) {

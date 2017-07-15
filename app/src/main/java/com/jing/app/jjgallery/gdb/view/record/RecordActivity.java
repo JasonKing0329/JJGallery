@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,9 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.siyamed.shapeimageview.CircularImageView;
-import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.record.RecordPresenter;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
  * Created by JingYang on 2016/8/17 0017.
  * Description:
  */
-public class RecordActivity extends BaseActivity implements IRecordView {
+public class RecordActivity extends GBaseActivity implements IRecordView {
 
     @BindView(R.id.iv_record)
     ImageView ivRecord;
@@ -105,11 +106,6 @@ public class RecordActivity extends BaseActivity implements IRecordView {
     private RecordPresenter mPresenter;
 
     @Override
-    public boolean isActionBarNeed() {
-        return false;
-    }
-
-    @Override
     public int getContentView() {
         return R.layout.gdb_record_1v1;
     }
@@ -124,6 +120,12 @@ public class RecordActivity extends BaseActivity implements IRecordView {
     public void initView() {
 
         ButterKnife.bind(this);
+
+        ActionBar mActionBar=getSupportActionBar();
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle("Record");
+
         initValue();
     }
 
@@ -131,6 +133,12 @@ public class RecordActivity extends BaseActivity implements IRecordView {
     public void initBackgroundWork() {
         mPresenter.loadStar(record.getStar1().getId());
         mPresenter.loadStar(record.getStar2().getId());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
     @Override

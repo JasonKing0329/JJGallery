@@ -121,6 +121,11 @@ public class ImageLoader implements ISImageLoader
 		}
 	}
 
+	@Override
+	public void removeCache() {
+		mLruCache.evictAll();
+	}
+
 	/**
 	 * 初始化后台轮询线程
 	 */

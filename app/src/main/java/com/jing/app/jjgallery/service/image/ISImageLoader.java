@@ -26,4 +26,9 @@ public interface ISImageLoader {
      * @param path
      */
     void removeCache(String path);
+
+    /**
+     * 强制从cache中删除所有缓存
+     */
+    void removeCache();
 }

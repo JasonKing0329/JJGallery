@@ -101,10 +101,6 @@ public class StarListFragment extends GBaseFragment implements OnStarClickListen
 
     @Override
     public void onStarClick(StarProxy star) {
-        // 由于当前界面加载的star图片都是50*50的小图，但是lru包里的ImageLoader会在缓存中保存图片实例
-        // 进入Star page后，加载的图片key没有变，就会从缓存读取，最后就只能显示很模糊的小图
-        // 因此，在这里要删除掉该图的缓存，迫使其重新加载
-        SImageLoader.getInstance().removeCache(star.getImagePath());
         ActivityManager.startStarActivity(getActivity(), star.getStar());
     }
 

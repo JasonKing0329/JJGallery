@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.jing.app.jjgallery.BaseActivity;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.service.image.SImageLoader;
 
 /**
  * 通过star page的 record list打开record设置为打开后保留StarActivity，为了防止在star page>record page(finish)>star page>record page(finish)...过程中
@@ -29,6 +30,7 @@ public class StarActivity extends BaseActivity {
 
     @Override
     public void initController() {
+        SImageLoader.getInstance().removeCache();
     }
 
     @Override

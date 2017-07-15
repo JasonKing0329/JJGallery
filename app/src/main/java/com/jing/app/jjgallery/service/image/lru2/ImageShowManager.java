@@ -108,4 +108,8 @@ public class ImageShowManager {
 		}
 	}
 
+	public void clearMemery() {
+		mMemoryCache.evictAll();
+	}
+
 }
