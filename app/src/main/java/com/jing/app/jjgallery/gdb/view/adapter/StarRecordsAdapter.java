@@ -11,8 +11,10 @@ import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.FormatUtil;
+import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.Star;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
 
     public interface OnRecordItemClickListener {
         void onClickRecordItem(Record record);
+        void onFavorStar(Star star, int score);
     }
 
     private PullZoomRecyclerView recyclerView;
@@ -33,6 +36,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     private OnRecordItemClickListener itemClickListener;
 
     private int sortMode;
+
+    private boolean isStarFavor;
 
     public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
         this.star = star;
@@ -57,6 +62,10 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             }
         });
 
+    }
+
+    public void setStarFavor(boolean starFavor) {
+        this.isStarFavor = starFavor;
     }
 
     public void setItemClickListener(OnRecordItemClickListener itemClickListener) {
@@ -112,6 +121,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
 
     private class PullZoomHeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
         private ImageView zoomView;
+        private ImageView ivFavor;
         private ViewGroup zoomHeaderContainer;
         private TextView nameView;
         private TextView numberView;
@@ -126,6 +136,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         public PullZoomHeaderHolder(View view) {
             super(view);
             zoomView = (ImageView) view.findViewById(R.id.gdb_star_header_image);
+            ivFavor = (ImageView) view.findViewById(R.id.iv_favor);
             zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.gdb_star_header_container);
             nameView = (TextView) view.findViewById(R.id.gdb_star_header_name);
             numberView = (TextView) view.findViewById(R.id.gdb_star_header_number);
@@ -163,6 +174,33 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
                     .append("  ").append("max(").append(star.getStar().getcMax()).append(")")
                     .append("  ").append("min(").append(star.getStar().getcMin()).append(")");
             cscoreView.setText(buffer.toString());
+
+            ivFavor.setSelected(isStarFavor);
+
+            ivFavor.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.isSelected()) {
+                        // cancel favor
+                        itemClickListener.onFavorStar(star.getStar(), 0);
+                        ivFavor.setSelected(false);
+                    }
+                    else {
+                        new DefaultDialogManager().openInputDialog(v.getContext(), new DefaultDialogManager.OnDialogActionListener() {
+                            @Override
+                            public void onOk(String name) {
+                                try {
+                                    int favor = Integer.parseInt(name);
+                                    itemClickListener.onFavorStar(star.getStar(), favor);
+                                    ivFavor.setSelected(true);
+                                } catch (Exception e) {
+
+                                }
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 }

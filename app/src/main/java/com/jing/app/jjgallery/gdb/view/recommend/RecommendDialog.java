@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/27 0027.
  */
-
+@Deprecated
 public class RecommendDialog extends Dialog implements IRecommend, View.OnClickListener {
 
     private WindowManager.LayoutParams windowParams;

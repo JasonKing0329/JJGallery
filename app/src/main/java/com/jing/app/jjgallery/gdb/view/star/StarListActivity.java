@@ -123,7 +123,7 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
         starPresenter.loadFavorList();
 
         // 查询tabLayout的数据，回调在onStarCountLoaded
-        starPresenter.queryIndicatorData();
+        starPresenter.queryIndicatorData(curSortMode);
 
         // 检查服务端新文件，回调在父类
         starPresenter.checkNewStarFile();
@@ -191,7 +191,16 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
      */
     @Override
     public void onStarCountLoaded(StarCountBean bean) {
-        initFragments(bean);
+        if (pagerAdapter == null) {
+            initFragments(bean);
+        }
+        else {
+            tabLayout.removeAllTabs();
+            tabLayout.addTab(tabLayout.newTab().setText(titles[0] + "(" + bean.getAllNumber() + ")"));
+            tabLayout.addTab(tabLayout.newTab().setText(titles[1] + "(" + bean.getTopNumber() + ")"));
+            tabLayout.addTab(tabLayout.newTab().setText(titles[2] + "(" + bean.getBottomNumber() + ")"));
+            tabLayout.addTab(tabLayout.newTab().setText(titles[3] + "(" + bean.getHalfNumber() + ")"));
+        }
     }
 
     private void initFragments(StarCountBean bean) {
@@ -268,6 +277,8 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
                         }
                     }
                     pagerAdapter.getItem(viewpager.getCurrentItem()).reloadStarList(curSortMode);
+                    // 更新tabLayout的数据，回调在onStarCountLoaded
+                    starPresenter.queryIndicatorData(curSortMode);
                     break;
                 case R.id.actionbar_index:
                     changeSideBarVisible();
@@ -287,6 +298,8 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
                         }
                     }
                     pagerAdapter.getItem(viewpager.getCurrentItem()).reloadStarList(curSortMode);
+                    // 更新tabLayout的数据，回调在onStarCountLoaded
+                    starPresenter.queryIndicatorData(curSortMode);
                     break;
             }
         }
@@ -313,9 +326,6 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
             switch (item.getItemId()) {
                 case R.id.menu_gdb_check_server:
                     starPresenter.checkNewStarFile();
-                    break;
-                case R.id.menu_gdb_recommend:
-                    showRecommendDialog();
                     break;
                 case R.id.menu_gdb_download:
                     showDownloadDialog();

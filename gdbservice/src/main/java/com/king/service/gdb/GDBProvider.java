@@ -209,6 +209,19 @@ public class GDBProvider {
         return null;
     }
 
+    public StarCountBean queryFavorStarCount() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            StarCountBean star = sqliteDao.queryFavorStarCount(SqlConnection.getInstance().getConnection());
+            return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
     /**
      * 随机查询record
      * @return
@@ -262,14 +275,40 @@ public class GDBProvider {
         return null;
     }
 
+    public boolean isStarFavor(int starId) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.isStarFavor(SqlConnection.getInstance().getConnection(), starId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
+    }
     /**
-     * 查询所有的favor数据
+     * 更新favor数据
      * @return
      */
     public void saveFavor(FavorBean bean) {
         try {
             SqlConnection.getInstance().connect(databasePath);
             sqliteDao.saveFavor(SqlConnection.getInstance().getConnection(), bean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+    }
+
+    /**
+     * 创建favor表数据
+     * @param favorList
+     */
+    public void saveFavorList(List<FavorBean> favorList) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            sqliteDao.saveFavorList(SqlConnection.getInstance().getConnection(), favorList);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -329,5 +368,28 @@ public class GDBProvider {
             SqlConnection.getInstance().close();
         }
         return null;
+    }
+
+    public boolean isFavorTableExist() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.isFavorTableExist(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return false;
+    }
+
+    public void createFavorTable() {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            sqliteDao.createFavorTable(SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
     }
 }

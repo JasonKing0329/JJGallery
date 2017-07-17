@@ -9,7 +9,6 @@ import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
 import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
-import com.jing.app.jjgallery.gdb.view.recommend.RecommendDialog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -21,7 +20,6 @@ import java.util.List;
 public abstract class GDBListActivity extends GBaseActivity implements IManageListView {
 
     private DownloadDialog downloadDialog;
-    private RecommendDialog recommendDialog;
 
     protected ManageListPresenter presenter;
 
@@ -69,13 +67,6 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
         if (downloadDialog != null) {
             downloadDialog.show();
         }
-    }
-
-    protected void showRecommendDialog() {
-        if (recommendDialog == null) {
-            recommendDialog = new RecommendDialog(this);
-        }
-        recommendDialog.show();
     }
 
     @Override

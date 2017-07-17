@@ -28,6 +28,10 @@ public class StarListPagerAdapter extends FragmentPagerAdapter {
         titleList.add(title);
     }
 
+    public void updateTitle(int index, String title) {
+        titleList.set(index, title);
+    }
+
     @Override
     public StarListFragment getItem(int position) {
         return fragmentList.get(position);

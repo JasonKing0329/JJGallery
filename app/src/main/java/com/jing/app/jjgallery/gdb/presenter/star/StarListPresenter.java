@@ -15,12 +15,12 @@ import com.jing.app.jjgallery.gdb.view.star.IStarListView;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -118,12 +118,13 @@ public class StarListPresenter extends ManageListPresenter {
         new LoadStarListTask(starListView).execute(sortMode, starMode);
     }
 
-    public void queryIndicatorData() {
-        new QueryIndicatorTask().execute();
+    public void queryIndicatorData(int starMode) {
+        new QueryIndicatorTask().execute(starMode);
     }
 
     public void saveFavor(FavorBean bean) {
         favorProvider.saveFavor(bean);
+        gdbProvider.saveFavor(bean);
     }
 
     public void loadFavorList() {
@@ -131,6 +132,11 @@ public class StarListPresenter extends ManageListPresenter {
             @Override
             public void call(Subscriber<? super List<FavorBean>> subscriber) {
                 favorList = favorProvider.getFavors();
+                if (!gdbProvider.isFavorTableExist()) {
+                    DebugLog.e("isFavorTableExist false");
+                    gdbProvider.createFavorTable();
+                    gdbProvider.saveFavorList(favorList);
+                }
                 subscriber.onNext(favorList);
             }
         }).subscribeOn(Schedulers.io())
@@ -242,9 +248,13 @@ public class StarListPresenter extends ManageListPresenter {
 
         @Override
         protected StarCountBean doInBackground(Object... params) {
-
-            StarCountBean bean = gdbProvider.queryStarCount();
-            return bean;
+            int sortMode = (int) params[0];
+            if (sortMode == GdbConstants.STAR_SORT_FAVOR) {
+                return gdbProvider.queryFavorStarCount();
+            }
+            else {
+                return gdbProvider.queryStarCount();
+            }
         }
     }
 

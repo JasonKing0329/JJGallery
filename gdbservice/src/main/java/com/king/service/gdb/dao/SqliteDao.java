@@ -591,7 +591,6 @@ public class SqliteDao {
 		return list;
 	}
 
-
 	public StarCountBean queryStarCount(Connection connection) {
 		StarCountBean bean = new StarCountBean();
 		Statement statement = null;
@@ -616,6 +615,49 @@ public class SqliteDao {
 			}
 			set.close();
 			sql = "SELECT COUNT(id) FROM " + TABLE_STAR + " WHERE bebottom>0 and betop>0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setHalfNumber(set.getInt(1));
+			}
+			set.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return bean;
+	}
+
+	public StarCountBean queryFavorStarCount(Connection connection) {
+		StarCountBean bean = new StarCountBean();
+		Statement statement = null;
+		try {
+			statement = connection.createStatement();
+			String sql = "SELECT COUNT(id) FROM " + TABLE_FAVOR;
+			ResultSet set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setAllNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(a.id) FROM " + TABLE_STAR + " a, " + TABLE_FAVOR + " b WHERE a.id=b.star_id AND a.betop>0 AND a.bebottom=0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setTopNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(a.id) FROM " + TABLE_STAR + " a, " + TABLE_FAVOR + " b WHERE a.id=b.star_id AND a.bebottom>0 AND a.betop=0";
+			set = statement.executeQuery(sql);
+			if (set.next()) {
+				bean.setBottomNumber(set.getInt(1));
+			}
+			set.close();
+			sql = "SELECT COUNT(a.id) FROM " + TABLE_STAR + " a, " + TABLE_FAVOR + " b WHERE a.id=b.star_id AND a.bebottom>0 AND a.betop>0";
 			set = statement.executeQuery(sql);
 			if (set.next()) {
 				bean.setHalfNumber(set.getInt(1));
@@ -690,20 +732,27 @@ public class SqliteDao {
 		}
 	}
 
-	public void saveFavor(Connection connection, FavorBean bean) {
-		String sql = "SELECT * FROM " + TABLE_FAVOR + " WHERE star_id=" + bean.getStarId();
+	public boolean isStarFavor(Connection connection, int starId) {
+		String sql = "SELECT favor FROM " + TABLE_FAVOR + " WHERE star_id=" + starId;
 		boolean isExist = false;
 		Statement stmt;
 		try {
 			stmt = connection.createStatement();
 			ResultSet set = stmt.executeQuery(sql);
 			if (set.next()) {
-				isExist = true;
+				if (set.getInt(1) > 0) {
+					isExist = true;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return isExist;
+	}
 
+	public void saveFavor(Connection connection, FavorBean bean) {
+		String sql;
+		boolean isExist = isStarFavor(connection, bean.getId());
 		if (isExist) {
 			sql = "UPDATE " + TABLE_FAVOR + " SET star_id=?, star_name=?, favor=? WHERE star_id=?";
 		}
@@ -720,6 +769,28 @@ public class SqliteDao {
 				pstmt.setInt(4, bean.getStarId());
 			}
 			pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void saveFavorList(Connection connection, List<FavorBean> favorList) {
+		String  sql = "INSERT INTO " + TABLE_FAVOR + "(star_id, star_name, favor) VALUES(?, ?, ?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = connection.prepareStatement(sql);
+			for (FavorBean bean:favorList) {
+				pstmt.setInt(1, bean.getStarId());
+				pstmt.setString(2, bean.getStarName());
+				pstmt.setInt(3, bean.getFavor());
+				pstmt.execute();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -855,6 +926,56 @@ public class SqliteDao {
 			}
 		}
 		return list;
+	}
+
+	public boolean isFavorTableExist(Connection connection) {
+		String sql = "SELECT COUNT(*) FROM sqlite_master where type='table' and name='" + TABLE_FAVOR + "'";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			if (set.next()) {
+				int count = set.getInt(1);
+				if (count != 0) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return false;
+	}
+
+	public void createFavorTable(Connection connection) {
+		String sql = "CREATE TABLE \"favor\" (\n" +
+				"    \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+				"    \"star_id\" INTEGER,\n" +
+				"    \"star_name\" TEXT,\n" +
+				"    \"favor\" INTEGER\n" +
+				")";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

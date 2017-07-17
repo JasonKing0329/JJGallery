@@ -20,7 +20,9 @@ import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.Star;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +108,9 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
         starProxy = star;
         mPresenter.sortRecords(star.getStar().getRecordList(), currentSortMode, currentSortDesc);
 
+        boolean isStarFavor = mPresenter.isStarFavor(star.getStar().getId());
         mAdapter = new StarRecordsAdapter(star, mRecyclerView);
+        mAdapter.setStarFavor(isStarFavor);
         mAdapter.setItemClickListener(this);
         mAdapter.setSortMode(currentSortMode);
         mRecyclerView.setAdapter(mAdapter);
@@ -155,5 +159,14 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     @Override
     public void onClickRecordItem(Record record) {
         ActivityManager.startGdbRecordActivity(getActivity(), record);
+    }
+
+    @Override
+    public void onFavorStar(Star star, int score) {
+        FavorBean bean = new FavorBean();
+        bean.setStarId(star.getId());
+        bean.setFavor(score);
+        bean.setStarName(star.getName());
+        mPresenter.saveFavor(bean);
     }
 }

@@ -118,9 +118,6 @@ public class RecordListActivity extends GDBListActivity implements IRecordListHo
                 case R.id.menu_gdb_check_server:
                     recordPresenter.checkNewRecordFile();
                     break;
-                case R.id.menu_gdb_recommend:
-                    showRecommendDialog();
-                    break;
                 case R.id.menu_gdb_download:
                     showDownloadDialog();
                     break;
