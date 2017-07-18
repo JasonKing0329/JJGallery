@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.pub.HeaderFooterRecyclerAdapter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -70,34 +72,45 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
 
     @Override
     protected void onBindItemView(RecyclerView.ViewHolder holder, int position) {
+        
+        Record record = list.get(position);
+        
         ItemHolder itemHolder = (ItemHolder) holder;
         itemHolder.groupItem.setTag(position);
         itemHolder.groupItem.setOnClickListener(itemListener);
         SImageLoader.getInstance().displayImage(
-                GdbGuidePresenter.getRecordPath(list.get(position).getName()), itemHolder.ivRecord);
-        if (list.get(position) instanceof RecordOneVOne) {
-            RecordOneVOne record = (RecordOneVOne) list.get(position);
-            itemHolder.tvStar.setText(record.getStar1().getName() + " & " + record.getStar2().getName());
+                GdbGuidePresenter.getRecordPath(record.getName()), itemHolder.ivRecord);
+        if (record instanceof RecordOneVOne) {
+            RecordOneVOne orecord = (RecordOneVOne) record;
+            itemHolder.tvStar.setText(orecord.getStar1().getName() + " & " + orecord.getStar2().getName());
         }
         else {
             itemHolder.tvStar.setText("");
         }
 
         // 第一个位置以及与上一个位置日期不同的，显示日期
-        if (position == 0 || isNotSameDay(list.get(position), list.get(position - 1))) {
+        if (position == 0 || isNotSameDay(record, list.get(position - 1))) {
             itemHolder.tvDate.setVisibility(View.VISIBLE);
-            itemHolder.tvDate.setText(dateFormat.format(new Date(list.get(position).getLastModifyTime())));
+            itemHolder.tvDate.setText(dateFormat.format(new Date(record.getLastModifyTime())));
         }
         else {
             itemHolder.tvDate.setVisibility(View.GONE);
         }
 
         // deprecated item
-        if (list.get(position).getDeprecated() == 1) {
+        if (record.getDeprecated() == 1) {
             itemHolder.tvDeprecated.setVisibility(View.VISIBLE);
         }
         else {
             itemHolder.tvDeprecated.setVisibility(View.GONE);
+        }
+
+        // can be played in device
+        if (VideoModel.getVideoPath(record.getName()) == null) {
+            itemHolder.ivPlay.setVisibility(View.GONE);
+        }
+        else {
+            itemHolder.ivPlay.setVisibility(View.VISIBLE);
         }
     }
 
@@ -155,6 +168,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         TextView tvDate;
         TextView tvStar;
         TextView tvDeprecated;
+        ImageView ivPlay;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -163,6 +177,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
             tvDate = (TextView) itemView.findViewById(R.id.tv_record_date);
             tvStar = (TextView) itemView.findViewById(R.id.tv_record_star);
             tvDeprecated = (TextView) itemView.findViewById(R.id.tv_deprecated);
+            ivPlay = (ImageView) itemView.findViewById(R.id.iv_play);
         }
     }
 

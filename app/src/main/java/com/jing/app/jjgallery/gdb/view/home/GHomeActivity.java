@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.config.PreferenceKey;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
+import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
 import com.jing.app.jjgallery.gdb.view.recommend.IRecommendHolder;
 import com.jing.app.jjgallery.gdb.view.update.GdbUpdateListener;
@@ -69,6 +70,7 @@ public class GHomeActivity extends GBaseActivity implements NavigationView.OnNav
     public void initController() {
         mPresenter = new GdbGuidePresenter();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.default_cover);
+        VideoModel.loadVideos(this);
     }
 
     @Override
@@ -97,6 +99,12 @@ public class GHomeActivity extends GBaseActivity implements NavigationView.OnNav
     @Override
     public void initBackgroundWork() {
         checkUpdate();
+    }
+
+    @Override
+    protected void onDestroy() {
+        VideoModel.clear();
+        super.onDestroy();
     }
 
     private void initDrawer() {

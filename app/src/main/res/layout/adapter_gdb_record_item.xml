@@ -16,11 +16,23 @@
             android:layout_width="@dimen/gdb_record_listitem_img_width"
             android:layout_height="@dimen/gdb_record_listitem_img_height"
             android:layout_marginLeft="10dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:layout_centerVertical="true"
             app:siArrowPosition="right"
             app:siSquare="false"
             android:scaleType="centerCrop"/>
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="@dimen/gdb_star_header_icon_size"
+            android:layout_height="@dimen/gdb_star_header_icon_size"
+            android:layout_alignRight="@id/record_thumb"
+            android:layout_alignBottom="@id/record_thumb"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_play_arrow_white_36dp"
+            android:background="@drawable/shape_oval_transgrey"
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/record_seq"

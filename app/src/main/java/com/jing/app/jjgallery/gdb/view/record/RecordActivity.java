@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
+import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.record.RecordPresenter;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
@@ -101,9 +103,13 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
     TextView tvCshow;
     @BindView(R.id.group_fk)
     PointDescLayout groupFk;
+    @BindView(R.id.group_play)
+    RelativeLayout groupPlay;
 
     private RecordOneVOne record;
     private RecordPresenter mPresenter;
+
+    private String videoPath;
 
     @Override
     public int getContentView() {
@@ -121,7 +127,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
         ButterKnife.bind(this);
 
-        ActionBar mActionBar=getSupportActionBar();
+        ActionBar mActionBar = getSupportActionBar();
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle("Record");
@@ -171,8 +177,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvSceneScore.setText("" + record.getScoreScene());
         if (record.getScoreNoCond() > 0) {
             groupBareback.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             groupBareback.setVisibility(View.GONE);
         }
         tvHd.setText("" + record.getHDLevel());
@@ -186,8 +191,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvSpecial.setText("" + record.getScoreSpeicial());
         if (TextUtils.isEmpty(record.getSpecialDesc())) {
             groupSpecial.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             groupSpecial.setVisibility(View.VISIBLE);
             tvSpecialContent.setText(record.getSpecialDesc());
         }
@@ -199,7 +203,16 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvBasic.setText("" + record.getScoreBasic());
         tvExtra.setText("" + record.getScoreExtra());
 
-        tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE:View.GONE);
+        tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE : View.GONE);
+
+        videoPath = VideoModel.getVideoPath(record.getName());
+//        videoPath = Configuration.getGdbVideoDir(this) + "/20170426_203942.mp4";
+        if (videoPath == null) {
+            groupPlay.setVisibility(View.GONE);
+        }
+        else {
+            groupPlay.setVisibility(View.VISIBLE);
+        }
 
         initFkDetails();
     }
@@ -262,4 +275,24 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
                 break;
         }
     }
+
+    private void playVideo(String path) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setPackage("com.king.app.video");
+            String type = "video/*";
+            Uri uri = Uri.parse("file://" + path);
+            intent.setDataAndType(uri, type);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showToastLong("Can't play this video: " + path);
+        }
+    }
+
+    @OnClick(R.id.group_play)
+    public void onViewClicked() {
+        playVideo(videoPath);
+    }
+
 }

@@ -8,6 +8,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
@@ -19,8 +20,6 @@ import com.king.service.gdb.bean.Star;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.R.attr.path;
 
 /**
  * Created by 景阳 on 2016/8/6 0006.
@@ -46,6 +45,7 @@ public class RecordViewHolder {
     private TextView scoreBasicView;
     private TextView scoreExtraView;
     private TextView actorView;
+    private ImageView ivPlay;
 
     private int nameColorNormal, nameColorBareback;
     private View.OnClickListener onClickListener;
@@ -60,6 +60,7 @@ public class RecordViewHolder {
 
     public void initView(View view) {
         container = view.findViewById(R.id.record_container);
+        ivPlay = (ImageView) view.findViewById(R.id.iv_play);
         imageView = (ImageView) view.findViewById(R.id.record_thumb);
         seqView = (TextView) view.findViewById(R.id.record_seq);
         nameView = (TextView) view.findViewById(R.id.record_name);
@@ -106,11 +107,19 @@ public class RecordViewHolder {
         // image
         String path = Configuration.GDB_IMG_RECORD + "/" + item.getName() + EncryptUtil.getFileExtra();
         if (path == null) {
-            imageView.setVisibility(View.GONE);
+            imageView.setVisibility(View.INVISIBLE);
         }
         else {
             imageView.setVisibility(View.VISIBLE);
             SImageLoader.getInstance().displayImage(path, imageView);
+        }
+
+        // can be played in device
+        if (VideoModel.getVideoPath(item.getName()) == null) {
+            ivPlay.setVisibility(View.INVISIBLE);
+        }
+        else {
+            ivPlay.setVisibility(View.VISIBLE);
         }
 
         seqView.setText("" + "" + (position + 1));

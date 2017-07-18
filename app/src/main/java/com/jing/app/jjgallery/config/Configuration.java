@@ -11,6 +11,7 @@ import com.jing.app.jjgallery.service.data.dao.VersionDao;
 import com.jing.app.jjgallery.service.data.impl.VersionDaoImpl;
 import com.jing.app.jjgallery.service.file.FileIO;
 import com.jing.app.jjgallery.util.ScreenUtils;
+import com.jing.app.jjgallery.util.StorageUtil;
 
 import java.io.File;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class Configuration {
 	public static final String TAG_AUTO_VIEW = "fe_autoview";
 	public static final String TAG_CONFIG = "fe_Configuration";
 	
-	public static final String SDCARD = Environment.getExternalStorageDirectory().getPath();
+	public static final String SDCARD = StorageUtil.getInnerStoragePath();
 	public static final String EXTERNAL_SDCARD_HTC = "/storage/ext_sd";
 	public static final String EXTERNAL_SDCARD_SAMSUNG = "/storage/extSdCard";
 	
@@ -215,5 +216,9 @@ public class Configuration {
 			}
 			dao.addFilesTable(connection);
 		}
+	}
+
+	public static String getGdbVideoDir(Context context) {
+		return StorageUtil.getOutterStoragePath(context) + "/video";
 	}
 }
