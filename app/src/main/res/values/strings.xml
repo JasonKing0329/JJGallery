@@ -437,4 +437,7 @@
     <string name="gdb_game_repeat_coach">Repeat coach selected, please re-select</string>
     <string name="gdb_game_delete_season" translatable="false">Delete operation will delete all data related to this season. Be careful to continue!</string>
     <string name="gdb_game_battle_result_exist">Battle results of coach %s are existed, continue to replace them?</string>
+
+    <string name="save_image">Save image</string>
+    <string name="show_time">Show time</string>
 </resources>

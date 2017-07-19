@@ -54,8 +54,12 @@ public class JDom4jPrefImpl implements JPrefAction {
                     editor.putBoolean(key, value);
                 }
                 else if (type.equals("int")) {
-                    int value = Integer.parseInt(item.getTextTrim());
-                    editor.putInt(key, value);
+                    try {
+                        int value = Integer.parseInt(item.getTextTrim());
+                        editor.putInt(key, value);
+                    } catch (Exception e) {
+
+                    }
                 }
                 else if (type.equals("long")) {
                     long value = Long.parseLong(item.getTextTrim());

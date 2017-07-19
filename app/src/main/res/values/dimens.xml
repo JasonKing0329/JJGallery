@@ -351,4 +351,6 @@
     <dimen name="home_scrim_visible_height">100dp</dimen>
     <dimen name="gdb_star_header_icon_size">30dp</dimen>
     <dimen name="gdb_home_nav_icon_size">30dp</dimen>
+    <dimen name="video_detail_thumb_item_width">80dp</dimen>
+    <dimen name="video_detail_thumb_item_height">60dp</dimen>
 </resources>

@@ -17,16 +17,19 @@ import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.record.RecordPresenter;
+import com.jing.app.jjgallery.gdb.view.pub.VideoDialog;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.PointDescLayout;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -276,23 +279,25 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         }
     }
 
-    private void playVideo(String path) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setPackage("com.king.app.video");
-            String type = "video/*";
-            Uri uri = Uri.parse("file://" + path);
-            intent.setDataAndType(uri, type);
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-            showToastLong("Can't play this video: " + path);
-        }
-    }
-
     @OnClick(R.id.group_play)
     public void onViewClicked() {
-        playVideo(videoPath);
+        new VideoDialog(RecordActivity.this, new CustomDialog.OnCustomDialogActionListener() {
+            @Override
+            public boolean onSave(Object object) {
+                return false;
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+                data.put(VideoDialog.KEY_PATH, videoPath);
+                data.put(VideoDialog.KEY_RECORD, record);
+            }
+        }).show();
     }
 
 }

@@ -313,5 +313,7 @@
     <dimen name="dlg_hsv_image_size">300dp</dimen>
     <dimen name="home_scrim_visible_height">100dp</dimen>
     <dimen name="gdb_star_header_icon_size">36dp</dimen>
+    <dimen name="video_detail_thumb_item_width">160dp</dimen>
+    <dimen name="video_detail_thumb_item_height">120dp</dimen>
 
 </resources>

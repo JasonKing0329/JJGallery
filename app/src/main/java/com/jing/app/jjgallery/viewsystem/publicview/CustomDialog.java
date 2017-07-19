@@ -28,7 +28,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 
 	private TextView titleView;
 	private View dividerView;
-	private TextView nullContentView;;
+	private TextView nullContentView;
 	private LinearLayout customView;
 	private LinearLayout customToolbar;
 	private View titleLayout;
@@ -36,6 +36,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 	private ImageView okButton, saveButton;
 	protected ImageView saveIcon, cancelIcon;
 	private ImageView closeButton, searchButton;
+	private ImageView playButton;
 	private EditText searchEdit;
 	private FrameLayout searchLayout;
 	protected Context context;
@@ -76,6 +77,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		customToolbar = (LinearLayout) findViewById(R.id.dialog_custom_toolbar);
 		searchButton = (ImageView) findViewById(R.id.dialog_custom_search);
 		closeButton = (ImageView) findViewById(R.id.order_chooser_search_close);
+		playButton = (ImageView) findViewById(R.id.dialog_custom_play);
 		searchEdit = (EditText) findViewById(R.id.order_chooser_search_edit);
 		searchLayout = (FrameLayout) findViewById(R.id.order_chooser_search_layout);
 		okButton.setOnClickListener(this);
@@ -83,6 +85,7 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		cancelIcon.setOnClickListener(this);
 		searchButton.setOnClickListener(this);
 		closeButton.setOnClickListener(this);
+		playButton.setOnClickListener(this);
 
 		titleLayout = findViewById(R.id.custom_dlg_title_layout);
 		if (Application.isLollipop()) {
@@ -230,6 +233,13 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		}
 	}
 
+	public void requestPlayAction(boolean need) {
+		playButton.setVisibility(need ? View.VISIBLE:View.GONE);
+		if (need) {
+			currentButtonList.add(playButton);
+		}
+	}
+
 	public void registTextChangeListener(TextWatcher textWatcher) {
 		searchEdit.addTextChangedListener(textWatcher);
 	}
@@ -302,9 +312,11 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 	@Override
 	public void onClick(View view) {
 		if (view == cancelIcon) {
+			onClickCancel();
 			dismiss();
 		}
 		else if (view == saveIcon) {
+			onClickOk();
 			dismiss();
 		}
 
@@ -314,6 +326,27 @@ public abstract class CustomDialog extends Dialog implements View.OnClickListene
 		else if (view == closeButton) {
 			searchLayout.setVisibility(View.GONE);
 		}
+		else if (view == playButton) {
+			onClickPlay();
+		}
+	}
+
+	/**
+	 * 由子类选择实现
+	 */
+	protected void onClickCancel() {
+	}
+
+	/**
+	 * 由子类选择实现
+	 */
+	protected void onClickOk() {
+	}
+
+	/**
+	 * 由子类选择实现
+	 */
+	protected void onClickPlay() {
 	}
 
 	public interface OnCustomDialogActionListener {

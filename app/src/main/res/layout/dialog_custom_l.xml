@@ -54,8 +54,18 @@
        		android:src="@drawable/ic_search_white_36dp"
        		android:visibility="gone"
 	        />
-	    
-	    <ImageView 
+
+		<ImageView
+			style="@style/CustomDialogIcon_L"
+			android:id="@+id/dialog_custom_play"
+			android:layout_width="@dimen/custom_dialog_toolbar_icon"
+			android:layout_height="@dimen/custom_dialog_toolbar_icon"
+			android:layout_marginRight="5dp"
+			android:src="@drawable/ic_play_arrow_white_36dp"
+			android:visibility="gone"
+			/>
+
+		<ImageView
 	        style="@style/CustomDialogIcon_L"
 		    android:id="@+id/dialog_custom_save"
 	        android:layout_width="@dimen/custom_dialog_toolbar_icon"
