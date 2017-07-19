@@ -89,6 +89,14 @@ public class VideoDialog extends CustomDialog {
 
         tvSize.setText(videoData.getSize());
         tvTime.setText(videoData.getDuration());
+
+        updateDialogWidth();
+    }
+
+    private void updateDialogWidth() {
+        int paddingHor = getContext().getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+        int width = itemWidth * 4 + paddingHor * 2;
+        setWidth(width);
     }
 
     @Override
@@ -160,25 +168,14 @@ public class VideoDialog extends CustomDialog {
 
     private class ItemHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
+        ImageView ivImage;
 
-        TextView textView;
+        TextView tvTime;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            LinearLayout layout = (LinearLayout) itemView;
-            layout.setOrientation(LinearLayout.VERTICAL);
-
-            imageView = new ImageView(getContext());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    itemWidth, itemHeight);
-            imageView.setLayoutParams(params);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            layout.addView(imageView);
-
-            textView = new TextView(getContext());
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            layout.addView(textView);
+            ivImage = (ImageView) itemView.findViewById(R.id.iv_image);
+            tvTime = (TextView) itemView.findViewById(R.id.tv_time);
         }
     }
 
@@ -186,24 +183,24 @@ public class VideoDialog extends CustomDialog {
 
         @Override
         public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ItemHolder(new LinearLayout(getContext()));
+            return new ItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_dlg_video_item, parent, false));
         }
 
         @Override
         public void onBindViewHolder(ItemHolder holder, int position) {
             if (position >= bitmapList.size() || bitmapList.get(position) == null) {
-                holder.imageView.setImageResource(R.drawable.icon_loading);
+                holder.ivImage.setImageResource(R.drawable.icon_loading);
             }
             else {
-                holder.imageView.setImageBitmap(bitmapList.get(position));
+                holder.ivImage.setImageBitmap(bitmapList.get(position));
             }
 
             if (cbShowTime.isChecked()) {
-                holder.textView.setText(FormatUtil.formatTime(timeList.get(position)));
-                holder.textView.setVisibility(View.VISIBLE);
+                holder.tvTime.setText(FormatUtil.formatTime(timeList.get(position)));
+                holder.tvTime.setVisibility(View.VISIBLE);
             }
             else {
-                holder.textView.setVisibility(View.GONE);
+                holder.tvTime.setVisibility(View.GONE);
             }
         }
 

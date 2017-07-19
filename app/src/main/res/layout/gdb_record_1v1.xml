@@ -32,10 +32,10 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/shape_oval_transgrey">
                     <ImageView
-                        android:layout_width="@dimen/gdb_star_header_icon_size"
-                        android:layout_height="@dimen/gdb_star_header_icon_size"
+                        android:layout_width="@dimen/gdb_list_icon_play_size"
+                        android:layout_height="@dimen/gdb_list_icon_play_size"
                         android:layout_margin="10dp"
-                        android:padding="5dp"
+                        android:padding="@dimen/gdb_list_icon_play_padding"
                         android:src="@drawable/ic_play_arrow_white_36dp"
                         android:scaleType="fitCenter"/>
                 </RelativeLayout>
