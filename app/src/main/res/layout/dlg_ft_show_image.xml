@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.jing.app.jjgallery.viewsystem.publicview.TouchImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            style="@style/IvTransDialogAction"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_close_white_36dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_set_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dlg_btn_round_height"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/selector_dlg_btn_round_white"
+        android:textColor="@color/colorPrimary"
+        android:text="Set as cover of record"
+        android:gravity="center"/>
+</RelativeLayout>

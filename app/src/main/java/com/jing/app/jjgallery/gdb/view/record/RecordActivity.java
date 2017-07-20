@@ -1,7 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,19 +16,18 @@ import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.record.RecordPresenter;
-import com.jing.app.jjgallery.gdb.view.pub.VideoDialog;
+import com.jing.app.jjgallery.gdb.view.pub.VideoDialogFragment;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.DraggableDialogFragment;
 import com.jing.app.jjgallery.viewsystem.publicview.PointDescLayout;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -209,7 +207,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE : View.GONE);
 
         videoPath = VideoModel.getVideoPath(record.getName());
-//        videoPath = Configuration.getGdbVideoDir(this) + "/20170426_203942.mp4";
+        videoPath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1489199749192.mp4";
         if (videoPath == null) {
             groupPlay.setVisibility(View.GONE);
         }
@@ -281,23 +279,10 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
     @OnClick(R.id.group_play)
     public void onViewClicked() {
-        new VideoDialog(RecordActivity.this, new CustomDialog.OnCustomDialogActionListener() {
-            @Override
-            public boolean onSave(Object object) {
-                return false;
-            }
-
-            @Override
-            public boolean onCancel() {
-                return false;
-            }
-
-            @Override
-            public void onLoadData(HashMap<String, Object> data) {
-                data.put(VideoDialog.KEY_PATH, videoPath);
-                data.put(VideoDialog.KEY_RECORD, record);
-            }
-        }).show();
+        VideoDialogFragment dialog = new VideoDialogFragment();
+        dialog.setRecord(record);
+        dialog.setVideoPath(videoPath);
+        dialog.show(getSupportFragmentManager(), "VideoDialogFragment");
     }
 
 }

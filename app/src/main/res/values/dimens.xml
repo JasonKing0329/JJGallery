@@ -355,4 +355,6 @@
     <dimen name="video_detail_thumb_item_height">46dp</dimen>
     <dimen name="gdb_list_icon_play_size">30dp</dimen>
     <dimen name="gdb_list_icon_play_padding">5dp</dimen>
+    <dimen name="dlg_btn_round_height">36dp</dimen>
+    <dimen name="dlg_btn_round_radius">18dp</dimen><!--dlg_btn_round_height的1/2-->
 </resources>

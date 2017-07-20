@@ -9,6 +9,7 @@ import android.provider.MediaStore.Video;
 
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.VideoData;
+import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.FormatUtil;
 
 import java.io.File;
@@ -81,15 +82,29 @@ public class VideoModel {
      * @param src
      * @param width
      * @param height
+     * @param scale if true, 按width*height的比例压缩, false 则压缩为width与height指定的大小
      * @return
      */
-    private Bitmap convertToThumbnail(Bitmap src, int width, int height) {
+    private Bitmap convertToThumbnail(Bitmap src, int width, int height, boolean scale) {
         Bitmap bitmap = null;
 
         Matrix matrix = new Matrix();
-        float dx = (float) width / (float) src.getWidth();
-        float dy = (float) height / (float) src.getHeight();
-        matrix.postScale(dx, dy);
+        // 按比例缩放，宽高比不变
+        if (scale) {
+            float totalRate = (float) width * height / (float) src.getWidth() * src.getHeight();
+            if (totalRate > 1) {
+                matrix.postScale(totalRate / 2, totalRate / 2);
+            }
+            else {
+                matrix.postScale(totalRate * 2, totalRate * 2);
+            }
+        }
+        // 缩放到指定大小
+        else {
+            float dx = (float) width / (float) src.getWidth();
+            float dy = (float) height / (float) src.getHeight();
+            matrix.postScale(dx, dy);
+        }
         try {
             bitmap = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true);
         } catch (Exception e) {
@@ -105,14 +120,20 @@ public class VideoModel {
      * @param minus 毫秒数
      * @param width
      * @param height
+     * @param scale if true, 按width*height的比例压缩, false 则压缩为width与height指定的大小
      * @return
      */
-    public Bitmap getVideoFrame(String filePath, int minus, int width, int height) {
+    public Bitmap getVideoFrame(String filePath, int minus, int width, int height, boolean scale) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(filePath);
         // 第一个参数是毫秒数再乘以1000
         Bitmap bitmap = retriever.getFrameAtTime(minus * 1000, MediaMetadataRetriever.OPTION_CLOSEST);
-        bitmap = convertToThumbnail(bitmap, width, height);
+        DebugLog.e("bitmap before convert[" + bitmap.getWidth() + "," + bitmap.getHeight() + "]");
+        if (bitmap.getWidth() * bitmap.getHeight() <= width * height) {
+            return bitmap;
+        }
+        bitmap = convertToThumbnail(bitmap, width, height, scale);
+        DebugLog.e("bitmap after convert[" + bitmap.getWidth() + "," + bitmap.getHeight() + "]");
         retriever.release();
         return bitmap;
     }
@@ -189,7 +210,7 @@ public class VideoModel {
      * @param callback
      */
     public void createThumbnails(final VideoData videoData, final List<Integer> timeList, final int updateNum
-        , final int width, final int height, final VideoThumbCallback callback) {
+        , final int width, final int height, final boolean scale, final VideoThumbCallback callback) {
         Observable.create(new Observable.OnSubscribe<List<Bitmap>>() {
             @Override
             public void call(Subscriber<? super List<Bitmap>> subscriber) {
@@ -198,7 +219,7 @@ public class VideoModel {
                     if (i % updateNum == 0) {
                         list = new ArrayList<>();
                     }
-                    list.add(getVideoFrame(videoData.getPath(), timeList.get(i), width, height));
+                    list.add(getVideoFrame(videoData.getPath(), timeList.get(i), width, height, scale));
                     if (i % updateNum == updateNum - 1) {
                         subscriber.onNext(list);
                     }

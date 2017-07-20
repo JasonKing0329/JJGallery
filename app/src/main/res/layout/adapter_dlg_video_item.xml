@@ -3,6 +3,7 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/group_item"
         android:layout_width="@dimen/video_detail_thumb_item_width"
         android:layout_height="wrap_content"
         android:orientation="vertical">
