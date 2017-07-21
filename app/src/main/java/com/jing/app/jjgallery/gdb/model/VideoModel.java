@@ -9,6 +9,9 @@ import android.provider.MediaStore.Video;
 
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.VideoData;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
+import com.jing.app.jjgallery.service.file.FileIO;
+import com.jing.app.jjgallery.service.image.CropHelper;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.FormatUtil;
 
@@ -243,5 +246,18 @@ public class VideoModel {
                         callback.onThumbnailCreated(bitmaps);
                     }
                 });
+    }
+
+    public void saveBitmap(Bitmap bitmap, String name) {
+        String folder = Configuration.GDB_IMG_RECORD + "/" + name;
+        File file = new File(folder);
+        if (!file.exists()) {
+            file.mkdir();
+            // 移动外部文件
+            File outFile = new File(folder + EncryptUtil.getFileExtra());
+            new FileIO().moveFile(outFile.getPath(), folder + "/" + outFile.getName());
+        }
+        String path = CropHelper.saveBitmap(bitmap, folder + "/" + System.currentTimeMillis() + ".png");
+        DebugLog.e("save image:" + path);
     }
 }

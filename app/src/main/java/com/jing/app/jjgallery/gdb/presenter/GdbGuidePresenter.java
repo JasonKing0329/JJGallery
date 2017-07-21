@@ -2,15 +2,14 @@ package com.jing.app.jjgallery.gdb.presenter;
 
 import android.os.AsyncTask;
 
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterBean;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.view.home.GHomeBean;
 import com.jing.app.jjgallery.gdb.view.home.IHomeView;
 import com.jing.app.jjgallery.gdb.view.recommend.IRecommend;
-import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.king.service.gdb.GDBProvider;
@@ -296,7 +295,7 @@ public class GdbGuidePresenter {
      * @return
      */
     public static String getRecordPath(String recordName) {
-        String result = Configuration.GDB_IMG_RECORD + "/" + recordName + EncryptUtil.getFileExtra();
+        String result = GdbImageProvider.getRecordRandomPath(recordName, null);
         return result;
     }
 
@@ -378,7 +377,7 @@ public class GdbGuidePresenter {
                 StarProxy proxy = new StarProxy();
                 Star star = gdbProvider.queryStarById(favorList.get(i).getStarId());
                 proxy.setStar(star);
-                proxy.setImagePath(Configuration.GDB_IMG_STAR + "/" + star.getName() + EncryptUtil.getFileExtra());
+                proxy.setImagePath(GdbImageProvider.getStarRandomPath(star.getName(), null));
                 proxy.setFavor(favorList.get(i).getFavor());
                 starList.add(proxy);
             }

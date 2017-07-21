@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- overwrite from library LMBanners-1.0.8/res/drawable/page_indicator_select -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="#77ff4081"></solid>
+</shape>

@@ -2,9 +2,12 @@ package com.jing.app.jjgallery.viewsystem.publicview;
 
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.gdb.GBaseFragment;
+import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.BaseDialogFragment;
 import com.king.lib.saveas.ScreenUtils;
@@ -301,4 +306,18 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
         }
     }
 
+    public static abstract class ContentFragment extends GBaseFragment {
+
+        @Override
+        protected void bindFragmentHolder(IFragmentHolder holder) {
+            // ContentFragment是嵌入到Fragment中的，而onAttach是把activity的context通知到bindFragmentHolder了
+            // 而这里的ContentFragment的holder是DialogFragment，所以要把正确的holder以getParentFragment()的形式绑定
+            if (getParentFragment() instanceof IFragmentHolder) {
+                bindChildFragmentHolder((IFragmentHolder) getParentFragment());
+            }
+        }
+
+        protected abstract void bindChildFragmentHolder(IFragmentHolder holder);
+
+    }
 }

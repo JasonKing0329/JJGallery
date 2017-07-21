@@ -1,14 +1,21 @@
 package com.jing.app.jjgallery.gdb.view.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.allure.lbanners.LMBanners;
+import com.allure.lbanners.adapter.LBaseAdapter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.controller.ThemeManager;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
+import com.jing.app.jjgallery.gdb.utils.LMBannerViewUtil;
+import com.jing.app.jjgallery.gdb.view.recommend.RecordFilterDialog;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.FormatUtil;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
@@ -17,6 +24,7 @@ import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
@@ -26,7 +34,10 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     public interface OnRecordItemClickListener {
         void onClickRecordItem(Record record);
         void onFavorStar(Star star, int score);
+        void showAnimSetting();
     }
+
+    private PullZoomHeaderHolder headerHolder;
 
     private PullZoomRecyclerView recyclerView;
     protected List<Record> listData;
@@ -38,6 +49,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     private int sortMode;
 
     private boolean isStarFavor;
+
+    private List<String> headPathList;
 
     public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
         this.star = star;
@@ -58,7 +71,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         addViewType(TYPE_HEADER, new ViewHolderFactory<PullZoomHeaderHolder>() {
             @Override
             public PullZoomHeaderHolder onCreateViewHolder(ViewGroup parent) {
-                return new PullZoomHeaderHolder(parent);
+                headerHolder = new PullZoomHeaderHolder(parent);
+                return headerHolder;
             }
         });
 
@@ -102,6 +116,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder instanceof PullZoomHeaderHolder) {
+            headerHolder = (PullZoomHeaderHolder) holder;
             super.onBindViewHolder(holder, position);
         }
         else {
@@ -119,15 +134,21 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         }
     }
 
+    public void refreshBanner() {
+        headerHolder.initBanner(headPathList);
+    }
+
     private class PullZoomHeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
         private ImageView zoomView;
         private ImageView ivFavor;
+        private ImageView ivSetting;
         private ViewGroup zoomHeaderContainer;
         private TextView nameView;
         private TextView numberView;
         private TextView typeView;
         private TextView scoreView;
         private TextView cscoreView;
+        private LMBanners lmBanners;
 
         public PullZoomHeaderHolder(ViewGroup parent) {
             this(LayoutInflater.from(recyclerView.getContext()).inflate(R.layout.adapter_gdb_star_header, parent, false));
@@ -136,6 +157,8 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         public PullZoomHeaderHolder(View view) {
             super(view);
             zoomView = (ImageView) view.findViewById(R.id.gdb_star_header_image);
+            ivSetting = (ImageView) view.findViewById(R.id.iv_setting);
+            lmBanners = (LMBanners) view.findViewById(R.id.lmbanner);
             ivFavor = (ImageView) view.findViewById(R.id.iv_favor);
             zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.gdb_star_header_container);
             nameView = (TextView) view.findViewById(R.id.gdb_star_header_name);
@@ -143,11 +166,65 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             typeView = (TextView) view.findViewById(R.id.gdb_star_header_type);
             scoreView = (TextView) view.findViewById(R.id.gdb_star_header_score);
             cscoreView = (TextView) view.findViewById(R.id.gdb_star_header_cscore);
+            initHeadPart();
+        }
+
+        private void initHeadPart() {
+            boolean showImage;
+            if (GdbImageProvider.hasStarFolder(star.getStar().getName())) {
+                headPathList = GdbImageProvider.getStarPathList(star.getStar().getName());
+                if (headPathList.size() <= 1) {
+                    showImage = true;
+                }
+                else {
+                    showImage = false;
+                    lmBanners.setVisibility(View.VISIBLE);
+                    ivSetting.setVisibility(View.VISIBLE);
+                    zoomView.setVisibility(View.GONE);
+                    recyclerView.setZoomView(lmBanners);
+                    initBanner(headPathList);
+                }
+            }
+            else {
+                showImage = true;
+            }
+
+            if (showImage) {
+                lmBanners.setVisibility(View.GONE);
+                ivSetting.setVisibility(View.GONE);
+                zoomView.setVisibility(View.VISIBLE);
+                recyclerView.setZoomView(zoomView);
+                String path = GdbImageProvider.getStarRandomPath(star.getStar().getName(), null);
+                SImageLoader.getInstance().displayImage(path, zoomView);
+            }
+        }
+
+        public void initBanner(List<String> pathList) {
+            // 禁用btnStart(只在onPageScroll触发后有效)
+            lmBanners.isGuide(false);
+            // 显示引导圆点
+//            lmBanners.hideIndicatorLayout();
+            lmBanners.setIndicatorPosition(LMBanners.IndicaTorPosition.BOTTOM_MID);
+            // 可以不写，因为文件名直接覆用的LMBanners-1.0.8里的res
+            lmBanners.setSelectIndicatorRes(R.drawable.page_indicator_select);
+            lmBanners.setUnSelectUnIndicatorRes(R.drawable.page_indicator_unselect);
+            // 轮播切换时间
+            lmBanners.setDurtion(SettingProperties.getGdbStarNavAnimTime(lmBanners.getContext()));
+            if (SettingProperties.isGdbStarNavAnimRandom(lmBanners.getContext())) {
+                Random random = new Random();
+                int type = Math.abs(random.nextInt()) % RecordFilterDialog.ANIM_TYPES.length;
+                LMBannerViewUtil.setScrollAnim(lmBanners, type);
+            }
+            else {
+                LMBannerViewUtil.setScrollAnim(lmBanners, SettingProperties.getGdbStarNavAnimType(lmBanners.getContext()));
+            }
+
+            HeadBannerAdapter adapter = new HeadBannerAdapter();
+            lmBanners.setAdapter(adapter, pathList);
         }
 
         @Override
         public void bind(Object item, int position) {
-            recyclerView.setZoomView(zoomView);
             recyclerView.setHeaderContainer(zoomHeaderContainer);
             SImageLoader.getInstance().displayImage(star.getImagePath(), zoomView);
             nameView.setText(star.getStar().getName());
@@ -201,6 +278,24 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
                     }
                 }
             });
+
+            ivSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.showAnimSetting();
+                }
+            });
+        }
+    }
+
+    private class HeadBannerAdapter implements LBaseAdapter<String> {
+
+        @Override
+        public View getView(LMBanners lBanners, Context context, int position, String path) {
+            View view = LayoutInflater.from(context).inflate(R.layout.adapter_gdb_star_list_banner, null);
+            ImageView imageView = (ImageView) view.findViewById(R.id.iv_star);
+            SImageLoader.getInstance().displayImage(path, imageView);
+            return view;
         }
     }
 }

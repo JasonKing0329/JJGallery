@@ -615,4 +615,116 @@ public class SettingProperties {
         return mode;
     }
 
+    /**
+     * animation random mode
+     */
+    public static void setGdbRecordNavAnimRandom(Context context, boolean isRandom) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_RANDOM, isRandom);
+        editor.commit();
+    }
+
+    /**
+     * animation random mode
+     */
+    public static boolean isGdbRecordNavAnimRandom(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_RANDOM, true);
+    }
+
+    /**
+     * animation type
+     */
+    public static void setGdbRecordNavAnimType(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_TYPE, mode);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbRecordNavAnimType(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_TYPE, 0);
+        return mode;
+    }
+
+    /**
+     * animation time
+     */
+    public static void setGdbRecordNavAnimTime(Context context, int time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_TIME, time);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbRecordNavAnimTime(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_RECORD_NAV_ANIM_TIME, 5000);
+        return mode;
+    }
+
+    /**
+     * animation random mode
+     */
+    public static void setGdbStarNavAnimRandom(Context context, boolean isRandom) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_RANDOM, isRandom);
+        editor.commit();
+    }
+
+    /**
+     * animation random mode
+     */
+    public static boolean isGdbStarNavAnimRandom(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_RANDOM, true);
+    }
+
+    /**
+     * animation type
+     */
+    public static void setGdbStarNavAnimType(Context context, int mode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_TYPE, mode);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbStarNavAnimType(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_TYPE, 0);
+        return mode;
+    }
+
+    /**
+     * animation time
+     */
+    public static void setGdbStarNavAnimTime(Context context, int time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_TIME, time);
+        editor.commit();
+    }
+
+    /**
+     * animation type
+     */
+    public static int getGdbStarNavAnimTime(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int mode = preferences.getInt(PreferenceKey.PREF_GDB_STAR_NAV_ANIM_TIME, 5000);
+        return mode;
+    }
+
 }

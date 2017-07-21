@@ -32,6 +32,6 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/selector_dlg_btn_round_white"
         android:textColor="@color/colorPrimary"
-        android:text="Set as cover of record"
+        android:text="@string/save_image"
         android:gravity="center"/>
 </RelativeLayout>

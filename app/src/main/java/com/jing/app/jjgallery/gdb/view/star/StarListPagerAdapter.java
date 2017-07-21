@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 

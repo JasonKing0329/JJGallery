@@ -162,4 +162,16 @@ public class PreferenceKey {
     public static final String PREF_GDB_STAR_LIST_NAV_ANIM_TYPE = "pref_gdb_star_list_nav_anim_fix_type";
     // animation time
     public static final String PREF_GDB_STAR_LIST_NAV_ANIM_TIME = "pref_gdb_star_list_nav_anim_time";
+    // random animation of record
+    public static final String PREF_GDB_RECORD_NAV_ANIM_RANDOM = "pref_gdb_record_nav_anim_random";
+    // fixed animation of record item
+    public static final String PREF_GDB_RECORD_NAV_ANIM_TYPE = "pref_gdb_record_nav_anim_fix_type";
+    // animation time
+    public static final String PREF_GDB_RECORD_NAV_ANIM_TIME = "pref_gdb_record_nav_anim_time";
+    // random animation of star
+    public static final String PREF_GDB_STAR_NAV_ANIM_RANDOM = "pref_gdb_star_nav_anim_random";
+    // fixed animation of star item
+    public static final String PREF_GDB_STAR_NAV_ANIM_TYPE = "pref_gdb_star_nav_anim_fix_type";
+    // animation time
+    public static final String PREF_GDB_STAR_NAV_ANIM_TIME = "pref_gdb_star_nav_anim_time";
 }

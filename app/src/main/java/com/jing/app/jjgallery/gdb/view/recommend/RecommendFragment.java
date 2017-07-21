@@ -18,6 +18,7 @@ import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
+import com.jing.app.jjgallery.gdb.utils.LMBannerViewUtil;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
@@ -249,65 +250,10 @@ public class RecommendFragment extends GBaseFragment implements IRecommend, View
         if (SettingProperties.isGdbRecmmendAnimRandom(getActivity())) {
             Random random = new Random();
             int type = Math.abs(random.nextInt()) % RecordFilterDialog.ANIM_TYPES.length;
-            setScrollAnim(type);
+            LMBannerViewUtil.setScrollAnim(lmBanners, type);
         }
         else {
-            setScrollAnim(SettingProperties.getGdbRecommendAnimType(getActivity()));
-        }
-    }
-
-    /**
-     * 切换时的动画模式
-     * @param position
-     */
-    private void setScrollAnim(int position){
-        switch (position) {
-            case 0:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Default);//Default
-                break;
-            case 1:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Alpha);//Alpha
-                break;
-            case 2:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Rotate);//Rotate
-                break;
-            case 3:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Cube);//Cube
-                break;
-            case 4:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Flip);//Flip
-                break;
-            case 5:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Accordion);//Accordion
-                break;
-            case 6:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomFade);//ZoomFade
-                break;
-            case 7:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Fade);//Fade
-                break;
-            case 8:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomCenter);//ZoomCenter
-                break;
-            case 9:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomStack);//ZoomStack
-                break;
-            case 10:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Stack);//Stack
-                break;
-            case 11:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Depth);//Depth
-                break;
-            case 12:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Zoom);//Zoom
-                break;
-            case 13:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomOut);//ZoomOut
-                break;
-//            case 14:
-//                lmBanners.setHoriZontalCustomTransformer(new ParallaxTransformer(R.id.id_image));//Parallax
-//                break;
-
+            LMBannerViewUtil.setScrollAnim(lmBanners, SettingProperties.getGdbRecommendAnimType(getActivity()));
         }
     }
 

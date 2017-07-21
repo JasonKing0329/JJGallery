@@ -4,10 +4,10 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
 import com.jing.app.jjgallery.gdb.view.list.IManageListView;
 import com.jing.app.jjgallery.gdb.view.star.IStarListHeaderView;
@@ -229,7 +229,7 @@ public class StarListPresenter extends ManageListPresenter {
             for (Star star:list) {
                 StarProxy proxy = new StarProxy();
                 proxy.setStar(star);
-                proxy.setImagePath(EncryptUtil.getEncryptStarPath(star.getName()));
+                proxy.setImagePath(GdbImageProvider.getStarRandomPath(star.getName(), null));
                 FavorBean favor = favorMap.get(star.getId());
                 proxy.setFavor(favor == null ? 0:favor.getFavor());
                 proxyList.add(proxy);

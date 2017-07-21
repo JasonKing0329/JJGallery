@@ -34,7 +34,7 @@
                     app:canLoop="true"
                     app:durtion="5000"
                     app:horizontal_transitionEffect="accordion"
-                    app:indicatorBottomPadding="100"
+                    app:indicatorBottomPadding="10"
                     app:indicator_position="bottom_mid"
                     app:isVertical="false"
                     app:scroll_duration="1000"/>

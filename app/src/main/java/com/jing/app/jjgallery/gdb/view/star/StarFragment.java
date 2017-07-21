@@ -12,6 +12,8 @@ import com.jing.app.jjgallery.BaseSlidingActivity;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.star.StarPresenter;
+import com.jing.app.jjgallery.gdb.view.pub.BannerAnimDialogFragment;
+import com.jing.app.jjgallery.gdb.view.record.RecordActivity;
 import com.jing.app.jjgallery.gdb.view.record.SortDialog;
 import com.jing.app.jjgallery.gdb.view.adapter.StarRecordsAdapter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
@@ -43,6 +45,8 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     private boolean currentSortDesc = true;
     private StarProxy starProxy;
 
+    private BannerAnimDialogFragment bannerSettingDialog;
+    
     public void setStarId(int starId) {
         this.starId = starId;
     }
@@ -169,4 +173,49 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
         bean.setStarName(star.getName());
         mPresenter.saveFavor(bean);
     }
+
+    @Override
+    public void showAnimSetting() {
+        if (bannerSettingDialog == null) {
+            bannerSettingDialog = new BannerAnimDialogFragment();
+            bannerSettingDialog.setOnAnimSettingListener(new BannerAnimDialogFragment.OnAnimSettingListener() {
+                @Override
+                public void onRandomAnim(boolean random) {
+                    SettingProperties.setGdbStarNavAnimRandom(getActivity(), random);
+                }
+
+                @Override
+                public boolean isRandomAnim() {
+                    return SettingProperties.isGdbStarNavAnimRandom(getActivity());
+                }
+
+                @Override
+                public int getAnimType() {
+                    return SettingProperties.getGdbStarNavAnimType(getActivity());
+                }
+
+                @Override
+                public void onSaveAnimType(int type) {
+                    SettingProperties.setGdbStarNavAnimType(getActivity(), type);
+                }
+
+                @Override
+                public int getAnimTime() {
+                    return SettingProperties.getGdbStarNavAnimTime(getActivity());
+                }
+
+                @Override
+                public void onSaveAnimTime(int time) {
+                    SettingProperties.setGdbStarNavAnimTime(getActivity(), time);
+                }
+
+                @Override
+                public void onParamsSaved() {
+                    mAdapter.refreshBanner();
+                }
+            });
+        }
+        bannerSettingDialog.show(getChildFragmentManager(), "BannerAnimDialogFragment");
+    }
+
 }

@@ -14,28 +14,27 @@ import android.widget.RelativeLayout;
 
 import com.allure.lbanners.LMBanners;
 import com.allure.lbanners.adapter.LBaseAdapter;
-import com.allure.lbanners.transformer.TransitionEffect;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GdbConstants;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.presenter.star.StarListPresenter;
+import com.jing.app.jjgallery.gdb.utils.LMBannerViewUtil;
 import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;
+import com.jing.app.jjgallery.gdb.view.pub.BannerAnimDialogFragment;
 import com.jing.app.jjgallery.gdb.view.recommend.RecordFilterDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.StarCountBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -69,7 +68,7 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
     private StarListPagerAdapter pagerAdapter;
 
     private ActionBar actionBar;
-    private StarListSettingDialog settingDialog;
+    private BannerAnimDialogFragment bannerSettingDialog;
 
     private int curSortMode;
 
@@ -154,10 +153,10 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
         if (SettingProperties.isGdbStarListNavAnimRandom(this)) {
             Random random = new Random();
             int type = Math.abs(random.nextInt()) % RecordFilterDialog.ANIM_TYPES.length;
-            setScrollAnim(type);
+            LMBannerViewUtil.setScrollAnim(lmBanners, type);
         }
         else {
-            setScrollAnim(SettingProperties.getGdbStarListNavAnimType(this));
+            LMBannerViewUtil.setScrollAnim(lmBanners, SettingProperties.getGdbStarListNavAnimType(this));
         }
     }
 
@@ -412,85 +411,51 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
     }
 
     private void showSettingDialog() {
-        if (settingDialog == null) {
-            settingDialog = new StarListSettingDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+        if (bannerSettingDialog == null) {
+            bannerSettingDialog = new BannerAnimDialogFragment();
+            bannerSettingDialog.setOnAnimSettingListener(new BannerAnimDialogFragment.OnAnimSettingListener() {
+
                 @Override
-                public boolean onSave(Object object) {
+                public void onRandomAnim(boolean random) {
+                    SettingProperties.setGdbStarListNavAnimRandom(StarListActivity.this, random);
+                }
+
+                @Override
+                public boolean isRandomAnim() {
+                    return SettingProperties.isGdbStarListNavAnimRandom(StarListActivity.this);
+                }
+
+                @Override
+                public int getAnimType() {
+                    return SettingProperties.getGdbStarListNavAnimType(StarListActivity.this);
+                }
+
+                @Override
+                public void onSaveAnimType(int type) {
+                    SettingProperties.setGdbStarListNavAnimType(StarListActivity.this, type);
+                }
+
+                @Override
+                public int getAnimTime() {
+                    return SettingProperties.getGdbStarListNavAnimTime(StarListActivity.this);
+                }
+
+                @Override
+                public void onSaveAnimTime(int time) {
+                    SettingProperties.setGdbStarListNavAnimTime(StarListActivity.this, time);
+                }
+
+                @Override
+                public void onParamsSaved() {
                     initBanner();
-                    return false;
-                }
-
-                @Override
-                public boolean onCancel() {
-                    return false;
-                }
-
-                @Override
-                public void onLoadData(HashMap<String, Object> data) {
-
                 }
             });
         }
-        settingDialog.show();
+        bannerSettingDialog.show(getSupportFragmentManager(), "BannerAnimDialogFragment");
     }
 
     private void onClickBannerItem(FavorBean bean) {
         ActivityManager.startStarActivity(this, bean.getStarId());
-    }
-
-    /**
-     * 切换时的动画模式
-     * @param position
-     */
-    private void setScrollAnim(int position){
-        switch (position) {
-            case 0:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Default);//Default
-                break;
-            case 1:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Alpha);//Alpha
-                break;
-            case 2:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Rotate);//Rotate
-                break;
-            case 3:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Cube);//Cube
-                break;
-            case 4:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Flip);//Flip
-                break;
-            case 5:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Accordion);//Accordion
-                break;
-            case 6:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomFade);//ZoomFade
-                break;
-            case 7:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Fade);//Fade
-                break;
-            case 8:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomCenter);//ZoomCenter
-                break;
-            case 9:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomStack);//ZoomStack
-                break;
-            case 10:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Stack);//Stack
-                break;
-            case 11:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Depth);//Depth
-                break;
-            case 12:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.Zoom);//Zoom
-                break;
-            case 13:
-                lmBanners.setHoriZontalTransitionEffect(TransitionEffect.ZoomOut);//ZoomOut
-                break;
-//            case 14:
-//                lmBanners.setHoriZontalCustomTransformer(new ParallaxTransformer(R.id.id_image));//Parallax
-//                break;
-
-        }
     }
 
     private class HeadBannerAdapter implements LBaseAdapter<FavorBean>, View.OnClickListener {
@@ -502,7 +467,7 @@ public class StarListActivity extends GDBListActivity implements IStarListHolder
             bean = starPresenter.nextFavorStar();
             if (bean != null) {
                 ImageView imageView = (ImageView) view.findViewById(R.id.iv_star);
-                String path = Configuration.GDB_IMG_STAR + "/" + bean.getStarName() + EncryptUtil.getFileExtra();
+                String path = GdbImageProvider.getStarRandomPath(bean.getStarName(), null);
                 // list 列表缓存了小图，这里需要先清除小图
                 SImageLoader.getInstance().removeCache(path);
                 SImageLoader.getInstance().displayImage(path, imageView);

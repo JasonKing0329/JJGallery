@@ -2,6 +2,8 @@ package com.jing.app.jjgallery.service.file;
 
 import android.content.Context;
 
+import com.jing.app.jjgallery.util.DebugLog;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,6 +17,7 @@ public class FileIO {
 		File srcfFile = new File(src);
 		copyFile(srcfFile, new File(target));
 		srcfFile.delete();
+		DebugLog.e("src[" + src + "], target[" + target + "]");
 	}
 
 	public void copyFile(File src, File target) {

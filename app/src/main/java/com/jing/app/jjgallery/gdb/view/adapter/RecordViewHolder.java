@@ -5,11 +5,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.RecordProxy;
 import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
-import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.king.service.gdb.bean.GDBProperites;
@@ -49,6 +48,11 @@ public class RecordViewHolder {
 
     private int nameColorNormal, nameColorBareback;
     private View.OnClickListener onClickListener;
+
+    /**
+     * 防止刷新后加载的图片变化
+     */
+    private GdbImageProvider.IndexPackage indexPackage;
 
     public void setParameters(int nameColorNormal, int nameColorBareback, View.OnClickListener onClickListener) {
         this.nameColorNormal = nameColorNormal;
@@ -105,7 +109,19 @@ public class RecordViewHolder {
         }
 
         // image
-        String path = Configuration.GDB_IMG_RECORD + "/" + item.getName() + EncryptUtil.getFileExtra();
+        String path;
+        if (indexPackage == null) {
+            indexPackage = new GdbImageProvider.IndexPackage();
+            path = GdbImageProvider.getRecordRandomPath(item.getName(), indexPackage);
+        }
+        else {
+            try {
+                path = GdbImageProvider.getRecordPath(item.getName(), indexPackage.index);
+            } catch (Exception e) {
+                path = GdbImageProvider.getRecordRandomPath(item.getName(), indexPackage);
+            }
+        }
+
         if (path == null) {
             imageView.setVisibility(View.INVISIBLE);
         }

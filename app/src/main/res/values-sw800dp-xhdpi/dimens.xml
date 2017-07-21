@@ -317,6 +317,8 @@
     <dimen name="video_detail_thumb_item_height">102dp</dimen>
     <dimen name="gdb_list_icon_play_size">50dp</dimen>
     <dimen name="gdb_list_icon_play_padding">10dp</dimen>
+    <dimen name="gdb_record_icon_size">60dp</dimen>
+    <dimen name="gdb_record_icon_padding">15dp</dimen>
     <dimen name="dlg_btn_round_height">60dp</dimen>
     <dimen name="dlg_btn_round_radius">30dp</dimen><!--dlg_btn_round_height的1/2-->
 </resources>

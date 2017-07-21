@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
+import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.model.RecordComparator;
 import com.jing.app.jjgallery.gdb.view.star.IStarView;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
@@ -69,7 +70,7 @@ public class StarPresenter {
             proxy.setStar(star);
 
             // load image path of star
-            String headPath = EncryptUtil.getEncryptStarPath(star.getName());
+            String headPath = GdbImageProvider.getStarRandomPath(star.getName(), null);
             proxy.setImagePath(headPath);
             return proxy;
         }

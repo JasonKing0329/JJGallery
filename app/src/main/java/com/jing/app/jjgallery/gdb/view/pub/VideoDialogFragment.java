@@ -16,15 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.VideoData;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.model.VideoThumbCallback;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
-import com.jing.app.jjgallery.service.image.CropHelper;
-import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.util.FormatUtil;
 import com.jing.app.jjgallery.viewsystem.publicview.DraggableDialogFragment;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.VideoImageDialogFragment;
@@ -45,10 +41,7 @@ import butterknife.OnClick;
  */
 public class VideoDialogFragment extends DraggableDialogFragment implements IVideoContentHolder {
 
-    public static final String KEY_PATH = "path";
-    public static final String KEY_RECORD = "record";
-
-    private ContentFragment ftContent;
+    private VideoContentFragment ftContent;
 
     private String videoPath;
     private Record record;
@@ -90,7 +83,7 @@ public class VideoDialogFragment extends DraggableDialogFragment implements IVid
 
     @Override
     protected Fragment getContentViewFragment() {
-        ftContent = new ContentFragment();
+        ftContent = new VideoContentFragment();
         return ftContent;
     }
 
@@ -100,7 +93,7 @@ public class VideoDialogFragment extends DraggableDialogFragment implements IVid
         dismiss();
     }
 
-    public static class ContentFragment extends GBaseFragment {
+    public static class VideoContentFragment extends ContentFragment {
 
         private final int NUM_LOAD_THUMB_PUBLISH = 4;
         private final int NUM_THUMBNAIL = 16;
@@ -132,8 +125,7 @@ public class VideoDialogFragment extends DraggableDialogFragment implements IVid
         private VideoModel videoModel;
 
         @Override
-        protected void bindFragmentHolder(IFragmentHolder holder) {
-            // 嵌套在activity，activity实现IVideoContentHolder
+        protected void bindChildFragmentHolder(IFragmentHolder holder) {
             if (holder instanceof IVideoContentHolder) {
                 this.holder = (IVideoContentHolder) holder;
             }
@@ -235,8 +227,7 @@ public class VideoDialogFragment extends DraggableDialogFragment implements IVid
             dialog.setOnShowImageListener(new VideoImageDialogFragment.OnShowImageListener() {
                 @Override
                 public void onSetAsCover() {
-                    String path = CropHelper.saveBitmap(bitmap, Configuration.GDB_IMG_RECORD + "/" + holder.getRecord().getName() + ".png");
-                    DebugLog.e("save image:" + path);
+                    videoModel.saveBitmap(bitmap, holder.getRecord().getName());
                 }
             });
             dialog.show(getChildFragmentManager(), "VideoImageDialogFragment");
