@@ -95,6 +95,7 @@ public class RecordSceneActivity extends GBaseActivity implements IRecordSceneHo
         actionBar.addSortIcon();
         actionBar.addSearchIcon();
         actionBar.addBackIcon();
+        actionBar.addPlayIcon();
     }
 
     @Override
@@ -142,6 +143,16 @@ public class RecordSceneActivity extends GBaseActivity implements IRecordSceneHo
                 case R.id.actionbar_color:
                     if (ftCurrent == ftScene) {
                         ftScene.editColor();
+                    }
+                    break;
+                case R.id.actionbar_play:
+                    if (view.isSelected()) {
+                        view.setSelected(false);
+                        ftList.showCanPlayList(false);
+                    }
+                    else {
+                        view.setSelected(true);
+                        ftList.showCanPlayList(true);
                     }
                     break;
             }

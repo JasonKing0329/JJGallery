@@ -8,6 +8,7 @@ import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.model.RecordComparator;
+import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
 import com.jing.app.jjgallery.gdb.view.list.IManageListView;
 import com.jing.app.jjgallery.gdb.view.record.IRecordListView;
@@ -115,25 +116,29 @@ public class RecordListPresenter extends ManageListPresenter {
      *
      * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
      * @param desc
+     * @param showDeprecated deprecated attribute in Record
+     * @param showCanBePlayed there is video in specific disk path
      * @param limitFrom (Limit from, num)
      * @param limitNum
      * @param like name like %like%
      * @param whereScene scene=whereScene
      */
-    public void loadRecordList(int sortMode, boolean desc, boolean showDeprecated, int limitFrom, int limitNum, String like, String whereScene) {
-        new LoadRecordListTask().execute(sortMode, desc, showDeprecated, limitFrom, limitNum, like, whereScene);
+    public void loadRecordList(int sortMode, boolean desc, boolean showDeprecated, boolean showCanBePlayed, int limitFrom, int limitNum, String like, String whereScene) {
+        new LoadRecordListTask().execute(sortMode, desc, showDeprecated, showCanBePlayed, limitFrom, limitNum, like, whereScene);
     }
     /**
      *
      * @param sortMode see PreferenceValue.GDB_SR_ORDERBY_XXX
      * @param desc
+     * @param showDeprecated deprecated attribute in Record
+     * @param showCanBePlayed there is video in specific disk path
      * @param limitFrom (Limit from, num)
      * @param limitNum
      * @param like name like %like%
      * @param whereScene scene=whereScene
      */
-    public void loadMoreRecords(int sortMode, boolean desc, int limitFrom, int limitNum, String like, String whereScene) {
-        new LoadMoreRecordsTask().execute(sortMode, desc, limitFrom, limitNum, like, whereScene);
+    public void loadMoreRecords(int sortMode, boolean desc, boolean showDeprecated, boolean showCanBePlayed, int limitFrom, int limitNum, String like, String whereScene) {
+        new LoadMoreRecordsTask().execute(sortMode, desc, showDeprecated, showCanBePlayed, limitFrom, limitNum, like, whereScene);
     }
 
     /**
@@ -155,11 +160,16 @@ public class RecordListPresenter extends ManageListPresenter {
                 int sortMode = (Integer) params[0];
                 boolean desc = (Boolean) params[1];
                 boolean includeDeprecated = (Boolean) params[2];
-                int from = (Integer) params[3];
-                int number = (Integer) params[4];
-                String like = (String) params[5];
-                String scene = (String) params[6];
+                boolean showCanBePlayed = (Boolean) params[3];
+                int from = (Integer) params[4];
+                int number = (Integer) params[5];
+                String like = (String) params[6];
+                String scene = (String) params[7];
                 List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, includeDeprecated, from, number, like, scene);
+
+                if (showCanBePlayed) {
+                    list = pickCanBePlayedRecord(list);
+                }
                 return list;
             }
             // load all records
@@ -169,6 +179,16 @@ public class RecordListPresenter extends ManageListPresenter {
                 return list;
             }
         }
+    }
+
+    private List<Record> pickCanBePlayedRecord(List<Record> list) {
+        List<Record> rList = new ArrayList<>();
+        for (Record record:list) {
+            if (VideoModel.getVideoPath(record.getName()) != null) {
+                rList.add(record);
+            }
+        }
+        return rList;
     }
 
     /**
@@ -187,11 +207,17 @@ public class RecordListPresenter extends ManageListPresenter {
         protected List<Record> doInBackground(Object... params) {
             int sortMode = (Integer) params[0];
             boolean desc = (Boolean) params[1];
-            int from = (Integer) params[2];
-            int number = (Integer) params[3];
-            String like = (String) params[4];
-            String scene = (String) params[5];
-            List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, true, from, number, like, scene);
+            boolean includeDeprecated = (Boolean) params[2];
+            boolean showCanBePlayed = (Boolean) params[3];
+            int from = (Integer) params[4];
+            int number = (Integer) params[5];
+            String like = (String) params[6];
+            String scene = (String) params[7];
+            List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, includeDeprecated, from, number, like, scene);
+
+            if (showCanBePlayed) {
+                list = pickCanBePlayedRecord(list);
+            }
             return list;
         }
     }

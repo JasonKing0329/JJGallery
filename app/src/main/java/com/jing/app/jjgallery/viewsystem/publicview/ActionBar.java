@@ -72,7 +72,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 	private ImageView backButton, menuLeftButton, addButton, homeButton
 		, surfButton, sortButton, sortByNumButton, searchButton, closeButton, refreshButton
 		, changeButton, colorButton, randomSurfButton, coverButton
-		, showButton, hideButton, groupAddButton, favorButton, indexButton;
+		, showButton, hideButton, groupAddButton, favorButton, indexButton, playButton;
 
 	/**
 	 * 最右侧菜单图标，固定位置
@@ -188,6 +188,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		showButton = (ImageView) view.findViewById(R.id.actionbar_show);
 		hideButton = (ImageView) view.findViewById(R.id.actionbar_hide);
 		groupAddButton = (ImageView) view.findViewById(R.id.actionbar_group_add);
+		playButton = (ImageView) view.findViewById(R.id.actionbar_play);
 
 		addToButton = (ImageView) view.findViewById(R.id.actionbar_addto);
 		deleteButton = (ImageView) view.findViewById(R.id.actionbar_delete);
@@ -224,6 +225,7 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		showButton.setOnClickListener(this);
 		hideButton.setOnClickListener(this);
 		groupAddButton.setOnClickListener(this);
+		playButton.setOnClickListener(this);
 
 		// 设置图标监听事件--selection icons
 		addToButton.setOnClickListener(this);
@@ -541,6 +543,14 @@ public class ActionBar implements OnClickListener, TextWatcher, OnMenuItemClickL
 		if (listener != null) {
 			groupAddButton.setOnClickListener(listener);
 		}
+	}
+
+	/**
+	 * play icon
+	 */
+	public void addPlayIcon() {
+		currentButtons.add(playButton);
+		playButton.setVisibility(View.VISIBLE);
 	}
 
 	public boolean isSearchVisible() {

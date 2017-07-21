@@ -39,6 +39,7 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
     private int currentSortMode = -1;
     private boolean currentSortDesc = true;
     private boolean showDeprecated = true;
+    private boolean showCanBePlayed;
 
     private List<Record> recordList;
     /**
@@ -95,7 +96,8 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
      */
     private void loadNewRecords() {
         // 重新加载records
-        holder.getPresenter().loadRecordList(currentSortMode, currentSortDesc, showDeprecated, 0, DEFAULT_LOAD_MORE, keywords, keyScene);
+        holder.getPresenter().loadRecordList(currentSortMode, currentSortDesc, showDeprecated, showCanBePlayed
+                , 0, DEFAULT_LOAD_MORE, keywords, keyScene);
     }
 
     /**
@@ -130,7 +132,8 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
      */
     private void loadMoreRecords() {
         // 加到当前size后
-        holder.getPresenter().loadMoreRecords(currentSortMode, currentSortDesc, recordList.size(), DEFAULT_LOAD_MORE, keywords, keyScene);
+        holder.getPresenter().loadMoreRecords(currentSortMode, currentSortDesc, showDeprecated, showCanBePlayed
+                , recordList.size(), DEFAULT_LOAD_MORE, keywords, keyScene);
     }
 
     /**
@@ -179,6 +182,13 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
         mAdapter.notifyDataSetChanged();
     }
 
+    public void showCanPlayList(boolean canPlay) {
+        if (canPlay != showCanBePlayed) {
+            showCanBePlayed = canPlay;
+            loadNewRecords();
+        }
+    }
+
     @Override
     public void onClickRecordItem(Record record) {
         ActivityManager.startGdbRecordActivity(getActivity(), record);
@@ -193,4 +203,5 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
     public void setScene(String scene) {
         this.keyScene = scene;
     }
+
 }

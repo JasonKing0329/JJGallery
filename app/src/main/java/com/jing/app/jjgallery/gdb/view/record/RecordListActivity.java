@@ -63,6 +63,7 @@ public class RecordListActivity extends GDBListActivity implements IRecordListHo
         actionBar.addShowIcon();
         actionBar.addMenuIcon();
         actionBar.addBackIcon();
+        actionBar.addPlayIcon();
         actionBar.setTitle(getString(R.string.gdb_title_record));
     }
 
@@ -91,6 +92,16 @@ public class RecordListActivity extends GDBListActivity implements IRecordListHo
                 case R.id.actionbar_show:
                     startActivity(new Intent(RecordListActivity.this, RecordSceneActivity.class));
                     finish();
+                    break;
+                case R.id.actionbar_play:
+                    if (view.isSelected()) {
+                        view.setSelected(false);
+                        recordFragment.showCanPlayList(false);
+                    }
+                    else {
+                        view.setSelected(true);
+                        recordFragment.showCanPlayList(true);
+                    }
                     break;
             }
         }

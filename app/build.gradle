@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
-ext.appVersionName = "4.3"
-ext.appVersionCode = 140
+ext.appVersionName = "4.3.1"
+ext.appVersionCode = 141
 ext.appReleaseDir = "E:/temp/release/jjgallery"
 
 android {
