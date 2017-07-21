@@ -220,7 +220,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE : View.GONE);
 
         videoPath = VideoModel.getVideoPath(record.getName());
-        videoPath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1489199749192.mp4";
+//        videoPath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1489199749192.mp4";
         if (videoPath == null) {
             ivPlay.setVisibility(View.GONE);
         }

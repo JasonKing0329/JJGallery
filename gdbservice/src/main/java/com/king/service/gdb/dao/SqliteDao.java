@@ -828,6 +828,7 @@ public class SqliteDao {
 	 * name符合关键词nameLike，按sortColumn desc/asc 排序，从第from条记录开始取number条记录
 	 * @param sortColumn
 	 * @param desc
+	 * @param includeDeprecated
 	 * @param from
 	 * @param number
 	 * @param connection
@@ -850,8 +851,10 @@ public class SqliteDao {
 		if (!TextUtils.isEmpty(sortColumn)) {
 			buffer.append(" ORDER BY ").append(sortColumn);
 		}
-		buffer.append(" ").append(desc ? "DESC":"ASC")
-				.append(" limit ").append(from).append(",").append(number);
+		buffer.append(" ").append(desc ? "DESC":"ASC");
+		if (from != -1 && number != -1) {
+			buffer.append(" LIMIT ").append(from).append(",").append(number);
+		}
 		String sql = buffer.toString();
 		Log.e("SqliteDao", "getRecords " + sql);
 		Statement stmt = null;

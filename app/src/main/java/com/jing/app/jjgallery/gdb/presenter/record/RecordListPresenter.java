@@ -165,6 +165,11 @@ public class RecordListPresenter extends ManageListPresenter {
                 int number = (Integer) params[5];
                 String like = (String) params[6];
                 String scene = (String) params[7];
+                // 磁盘上文件不多，加载全部供挑选
+                if (showCanBePlayed) {
+                    from = -1;
+                    number = -1;
+                }
                 List<Record> list = gdbProvider.getRecords(RecordComparator.getSortColumn(sortMode), desc, includeDeprecated, from, number, like, scene);
 
                 if (showCanBePlayed) {

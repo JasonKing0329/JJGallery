@@ -94,13 +94,8 @@ public class VideoModel {
         Matrix matrix = new Matrix();
         // 按比例缩放，宽高比不变
         if (scale) {
-            float totalRate = (float) width * height / (float) src.getWidth() * src.getHeight();
-            if (totalRate > 1) {
-                matrix.postScale(totalRate / 2, totalRate / 2);
-            }
-            else {
-                matrix.postScale(totalRate * 2, totalRate * 2);
-            }
+            float totalRate = ((float) width * height) / ((float) src.getWidth() * src.getHeight());
+            matrix.postScale((float) Math.sqrt(totalRate), (float) Math.sqrt(totalRate));
         }
         // 缩放到指定大小
         else {

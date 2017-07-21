@@ -77,7 +77,10 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
     private AutoLoadMoreRecyclerView.OnLoadMoreListener loadMoreListener = new AutoLoadMoreRecyclerView.OnLoadMoreListener() {
         @Override
         public void onLoadMore() {
-            loadMoreRecords();
+            // showCanBePlayed情况下已加载全部
+            if (!showCanBePlayed) {
+                loadMoreRecords();
+            }
         }
     };
 
@@ -183,10 +186,8 @@ public class RecordsListFragment extends GBaseFragment implements IRecordListVie
     }
 
     public void showCanPlayList(boolean canPlay) {
-        if (canPlay != showCanBePlayed) {
-            showCanBePlayed = canPlay;
-            loadNewRecords();
-        }
+        showCanBePlayed = canPlay;
+        loadNewRecords();
     }
 
     @Override
