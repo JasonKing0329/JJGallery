@@ -6,6 +6,8 @@ package com.jing.app.jjgallery.bean.http;
 public class DownloadItem {
     /**
      * 用于服务端识别下载内容的关键信息，可以是url
+     * 在star与record下载中，key充当parent目录（没有parent则为null）
+     * gdb和app update中，key为null
      */
     private String key;
     /**

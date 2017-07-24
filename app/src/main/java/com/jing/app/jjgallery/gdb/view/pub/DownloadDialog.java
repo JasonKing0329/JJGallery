@@ -265,9 +265,6 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     @Override
     public void onDownloadFinish(DownloadItem item) {
         if (onDownloadListener != null) {
-
-            // 下载完成后才设置文件路径
-            item.setPath(savePath + "/" + item.getName());
             onDownloadListener.onDownloadFinish(item);
         }
     }
@@ -280,9 +277,6 @@ public class DownloadDialog extends CustomDialog implements DownloadCallback, Ha
     @Override
     public void onDownloadAllFinish() {
         if (onDownloadListener != null) {
-            for (DownloadItem item:downloadList) {
-                item.setPath(savePath + "/" + item.getName());
-            }
             onDownloadListener.onDownloadFinish(downloadList);
         }
     }

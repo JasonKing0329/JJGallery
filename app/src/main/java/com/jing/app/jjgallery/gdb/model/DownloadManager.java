@@ -1,9 +1,12 @@
 package com.jing.app.jjgallery.gdb.model;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
+import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.DownloadClient;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.util.FileUtil;
 
 import android.os.Handler;
 import android.os.Message;
@@ -58,21 +61,40 @@ public class DownloadManager {
     }
 
     public void downloadFile(DownloadItem item, ProgressListener progressListener) {
-        DebugLog.e(item.getKey());
+        DebugLog.e(item.getName());
         // 检查正在执行的任务，如果已经在执行则放弃重复执行，没有则新建下载任务
         for (DownloadPack pack:executingdList) {
-            if (pack.item.getKey().equals(item.getKey()) && pack.item.getFlag().equals(item.getFlag())) {
-                return;
+            if (pack.item.getName().equals(item.getName()) && pack.item.getFlag().equals(item.getFlag())) {
+                if (pack.item.getKey() != null) {
+                    if (pack.item.getKey().equals(item.getKey())) {
+                        DebugLog.e("return");
+                        return;
+                    }
+                }
+                else {
+                    DebugLog.e("return");
+                    return;
+                }
             }
         }
 
         // 新建下载任务
-        DebugLog.e("new pack:" + item.getKey());
+        if (item.getKey() == null) {
+            DebugLog.e("new pack：" + item.getName());
+        }
+        else {
+            DebugLog.e("new pack：" + item.getKey() + "/" + item.getName());
+        }
         DownloadPack pack = new DownloadPack(item, progressListener);
 
         // 如果正在执行的任务已经达到MAX_TASK，则进入下载队列进行排队
         if (executingdList.size() >= MAX_TASK) {
-            DebugLog.e("进入排队:" + item.getKey());
+            if (pack.item.getKey() == null) {
+                DebugLog.e("进入排队：" + pack.item.getName());
+            }
+            else {
+                DebugLog.e("进入排队：" + pack.item.getKey() + "/" + pack.item.getName());
+            }
             downloadQueue.offer(pack);
             return;
         }
@@ -88,19 +110,31 @@ public class DownloadManager {
             return false;
         }
         // 任务可执行，加入到正在执行列表中
-        DebugLog.e("开始执行任务：" + pack.item.getKey());
+        if (pack.item.getKey() == null) {
+            DebugLog.e("开始执行任务：" + pack.item.getName());
+        }
+        else {
+            DebugLog.e("开始执行任务：" + pack.item.getKey() + "/" + pack.item.getName());
+        }
         executingdList.add(pack);
 
         final DownloadHandler handler = new DownloadHandler(pack);
+
+        DebugLog.e("download name：" + pack.item.getName() + ", key:" + pack.item.getKey());
         // 开始网络请求下载
-        new DownloadClient(pack.progressListener).getDownloadService().download(pack.item.getKey(), pack.item.getFlag())
+        new DownloadClient(pack.progressListener).getDownloadService().download(pack.item.getFlag(), pack.item.getName(), pack.item.getKey())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
-                        DebugLog.e("任务完成：" + pack.item.getKey());
+                        if (pack.item.getKey() == null) {
+                            DebugLog.e("任务完成：" + pack.item.getName());
+                        }
+                        else {
+                            DebugLog.e("任务完成：" + pack.item.getKey() + "/" + pack.item.getName());
+                        }
                         handler.sendEmptyMessage(MSG_COMPLETE);
                     }
 
@@ -116,7 +150,7 @@ public class DownloadManager {
                     @Override
                     public void onNext(final ResponseBody responseBody) {
                         DebugLog.e("");
-                        saveFile(pack.item.getName(), responseBody.byteStream());
+                        saveFile(pack.item, responseBody.byteStream());
                         handler.sendEmptyMessage(MSG_NEXT);
                     }
                 });
@@ -173,18 +207,23 @@ public class DownloadManager {
      *
      * @param input  输入流
      */
-    private File saveFile(String filename, InputStream input) {
-        File file = new File(savePath + "/" + filename);
-        if (file.exists()) {
-            file.delete();
+    private File saveFile(DownloadItem item, InputStream input) {
+        File file;
+        // star, record支持保存多文件
+        if (Command.TYPE_STAR.equals(item.getFlag())
+                || Command.TYPE_RECORD.equals(item.getFlag())) {
+            file = getStarRecordFile(item);
         }
+        else {
+            file = new File(savePath + "/" + item.getName());
+        }
+        DebugLog.e("save file:" + file.getPath());
         FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(file);
             byte[] buf = new byte[1024];
             int ch;
             while ((ch = input.read(buf)) != -1) {
-                DebugLog.e("read " + ch);
                 fileOutputStream.write(buf, 0, ch);
             }
             fileOutputStream.flush();
@@ -192,6 +231,58 @@ public class DownloadManager {
             input.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // 设置实际path，用于后续加密操作
+        item.setPath(file.getPath());
+
+        return file;
+    }
+
+    private File getStarRecordFile(DownloadItem item) {
+        File file;
+        String key = item.getKey();
+        if (key == null) {
+            key = item.getName().substring(0, item.getName().lastIndexOf("."));
+        }
+        String parent = savePath + "/" + key;
+        String out = savePath + "/" + key + EncryptUtil.getFileExtra();
+        File outFile = new File(out);
+        File dir = new File(parent);
+        // key不为null（服务端文件存在于二级目录），本地必须存在相应key目录下
+        if (item.getKey() != null) {
+            file = saveInFolder(item, dir, outFile);
+        }
+        else {
+            // key为null（服务端文件存在于一级目录），out file与parent都不存在，直接存在根目录中
+            if (!outFile.exists() && !dir.exists()) {
+                file = new File(savePath + "/" + item.getName());
+            }
+            else {
+                file = saveInFolder(item, dir, outFile);
+            }
+        }
+        return file;
+    }
+
+    private File saveInFolder(DownloadItem item, File parent, File outFile) {
+        File file;
+        // 创建文件夹
+        if (!parent.exists()) {
+            parent.mkdir();
+        }
+
+        // 移动out file
+        if (outFile.exists()) {
+            FileUtil.moveFile(outFile.getPath(), parent.getPath() + "/" + outFile.getName());
+        }
+
+        // 待下载的文件存入到parent目录中
+        file = new File(parent.getPath() + "/" + item.getName());
+        // 重名文件重命名
+        if (new File(parent.getPath() + "/" + item.getName().substring(0, item.getName().lastIndexOf(".")) + EncryptUtil.getFileExtra()).exists()) {
+            String newName = parent.getPath() + "/" + System.currentTimeMillis() + "_" + item.getName();
+            file = new File(newName);
         }
         return file;
     }

@@ -10,9 +10,9 @@ import android.provider.MediaStore.Video;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.VideoData;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
-import com.jing.app.jjgallery.service.file.FileIO;
 import com.jing.app.jjgallery.service.image.CropHelper;
 import com.jing.app.jjgallery.util.DebugLog;
+import com.jing.app.jjgallery.util.FileUtil;
 import com.jing.app.jjgallery.util.FormatUtil;
 
 import java.io.File;
@@ -250,7 +250,7 @@ public class VideoModel {
             file.mkdir();
             // 移动外部文件
             File outFile = new File(folder + EncryptUtil.getFileExtra());
-            new FileIO().moveFile(outFile.getPath(), folder + "/" + outFile.getName());
+            FileUtil.moveFile(outFile.getPath(), folder + "/" + outFile.getName());
         }
         String path = CropHelper.saveBitmap(bitmap, folder + "/" + System.currentTimeMillis() + ".png");
         DebugLog.e("save image:" + path);

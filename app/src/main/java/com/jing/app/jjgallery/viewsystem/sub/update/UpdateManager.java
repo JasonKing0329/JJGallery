@@ -130,7 +130,6 @@ public class UpdateManager implements IUpdateView {
             @Override
             public void onLoadData(HashMap<String, Object> data) {
                 DownloadItem item = new DownloadItem();
-                item.setKey(bean.getAppName());
                 item.setFlag(Command.TYPE_APP);
                 item.setSize(bean.getAppSize());
                 item.setName(bean.getAppName());

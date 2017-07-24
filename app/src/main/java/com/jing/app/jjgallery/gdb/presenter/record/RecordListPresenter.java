@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
+import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GdbConstants;
@@ -20,6 +21,7 @@ import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.SceneBean;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -91,13 +93,31 @@ public class RecordListPresenter extends ManageListPresenter {
     public List<DownloadItem> pickRecordToDownload(List<DownloadItem> downloadList, List<DownloadItem> existedList) {
         List<DownloadItem> list = new ArrayList<>();
         for (DownloadItem item:downloadList) {
+            // name 格式为 XXX.png
             String name = item.getName().substring(0, item.getName().lastIndexOf("."));
-            String path = EncryptUtil.getEncryptRecordPath(name);
-            if (path == null) {
-                list.add(item);
+
+            String path;
+            // 服务端文件处于一级目录
+            if (item.getKey() == null) {
+                // 检查本地一级目录是否存在
+                path = Configuration.GDB_IMG_RECORD + "/" + name + EncryptUtil.getFileExtra();
+                if (!new File(path).exists()) {
+                    // 检查本地二级目录是否存在
+                    path = Configuration.GDB_IMG_RECORD + "/" + name + "/" + name + EncryptUtil.getFileExtra();
+                }
             }
+            // 服务端文件处于二级目录
             else {
+                // 只检查本地二级目录是否存在
+                path = Configuration.GDB_IMG_RECORD + "/" + item.getKey() + "/" + name + EncryptUtil.getFileExtra();
+            }
+
+            // 检查本地一级目录是否存在
+            if (new File(path).exists()) {
+                item.setPath(path);
                 existedList.add(item);
+            } else {
+                list.add(item);
             }
         }
         return list;

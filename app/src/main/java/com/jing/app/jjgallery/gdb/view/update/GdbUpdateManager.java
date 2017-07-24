@@ -148,7 +148,6 @@ public class GdbUpdateManager implements IUpdateView {
             @Override
             public void onLoadData(HashMap<String, Object> data) {
                 DownloadItem item = new DownloadItem();
-                item.setKey(bean.getGdbDabaseName());
                 item.setFlag(Command.TYPE_GDB_DATABASE);
                 item.setSize(bean.getGdbDabaseSize());
                 item.setName(bean.getGdbDabaseName());
