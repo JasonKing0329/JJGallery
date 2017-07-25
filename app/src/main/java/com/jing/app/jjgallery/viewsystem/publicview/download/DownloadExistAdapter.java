@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.publicview.download;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -47,12 +47,30 @@ public class DownloadExistAdapter extends RecyclerView.Adapter<DownloadExistAdap
 
     public List<DownloadItem> getCheckedItems() {
         List<DownloadItem> list = new ArrayList<>();
-        for (int i = 0; i < itemList.size(); i ++) {
-            if (checkMap.get(i)) {
-                list.add(itemList.get(i));
+        if (itemList != null) {
+            for (int i = 0; i < itemList.size(); i ++) {
+                if (checkMap.get(i)) {
+                    list.add(itemList.get(i));
+                }
             }
         }
         return list;
+    }
+
+    public void selectAll() {
+        if (itemList != null) {
+            for (int i = 0; i < itemList.size(); i ++) {
+                checkMap.put(i, true);
+            }
+        }
+    }
+
+    public void unSelectAll() {
+        if (itemList != null) {
+            for (int i = 0; i < itemList.size(); i ++) {
+                checkMap.put(i, false);
+            }
+        }
     }
 
     class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -74,7 +92,13 @@ public class DownloadExistAdapter extends RecyclerView.Adapter<DownloadExistAdap
         public void bind(int position) {
             this.position = position;
             group.setOnClickListener(this);
-            name.setText(itemList.get(position).getName());
+            if (itemList.get(position).getKey() != null) {
+                name.setText(itemList.get(position).getKey() + "/" + itemList.get(position).getName());
+            }
+            else {
+                name.setText(itemList.get(position).getName());
+            }
+            check.setChecked(checkMap.get(position));
             SImageLoader.getInstance().displayImage(itemList.get(position).getPath(), image);
         }
 
@@ -82,12 +106,11 @@ public class DownloadExistAdapter extends RecyclerView.Adapter<DownloadExistAdap
         public void onClick(View v) {
             if (checkMap.get(position)) {
                 checkMap.put(position, false);
-                check.setChecked(false);
             }
             else {
                 checkMap.put(position, true);
-                check.setChecked(true);
             }
+            notifyItemChanged(position);
         }
     }
 }

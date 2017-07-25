@@ -277,7 +277,7 @@ public class GdbGuideActivity extends AppCompatActivity
      * check gdb database update
      */
     private void checkUpdate() {
-        GdbUpdateManager manager = new GdbUpdateManager(this, new GdbUpdateListener() {
+        GdbUpdateManager manager = new GdbUpdateManager(this, getSupportFragmentManager(), new GdbUpdateListener() {
             @Override
             public void onUpdateFinish() {
                 ActivityManager.reload(GdbGuideActivity.this);

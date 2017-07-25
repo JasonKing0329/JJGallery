@@ -282,12 +282,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         @Override
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE)) {
-                UpdateManager manager = new UpdateManager(mContext);
+                UpdateManager manager = new UpdateManager(mContext, null);
                 manager.showMessageWarning();
                 manager.startCheck();
             }
             else if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE_GDB)) {
-                GdbUpdateManager manager = new GdbUpdateManager(mContext, null);
+                GdbUpdateManager manager = new GdbUpdateManager(mContext, null, null);
                 manager.showMessageWarning();
                 manager.startCheck();
             }

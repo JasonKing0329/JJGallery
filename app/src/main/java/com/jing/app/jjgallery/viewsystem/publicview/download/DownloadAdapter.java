@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.publicview.download;
 
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.DownloadItemProxy;
 import com.jing.app.jjgallery.util.FileSizeUtil;
+import com.jing.app.jjgallery.viewsystem.publicview.NumberProgressBar;
 
 import java.util.List;
 
@@ -57,7 +58,12 @@ public class DownloadAdapter extends RecyclerView.Adapter<DownloadAdapter.ItemHo
         }
 
         public void bind(int position) {
-            name.setText(itemList.get(position).getItem().getName());
+            if (itemList.get(position).getItem().getKey() != null) {
+                name.setText(itemList.get(position).getItem().getKey() + "/" + itemList.get(position).getItem().getName());
+            }
+            else {
+                name.setText(itemList.get(position).getItem().getName());
+            }
             size.setText(FileSizeUtil.convertFileSize(itemList.get(position).getItem().getSize()));
             progressBar.setProgress(itemList.get(position).getProgress());
         }

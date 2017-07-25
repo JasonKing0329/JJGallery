@@ -22,15 +22,15 @@ import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DownloadAdapter;
-import com.jing.app.jjgallery.viewsystem.publicview.DownloadExistAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadExistAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/9/2.
+ * FIXME SettingActivity改为继承至support包后废弃掉
  */
 public class DownloadDialog extends CustomDialog implements DownloadCallback, Handler.Callback {
 

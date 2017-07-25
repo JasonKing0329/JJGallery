@@ -94,11 +94,11 @@ public class UpdatePresenter {
     /**
      * 安装应用
      */
-    public void installApp(Activity activity, String path) {
+    public void installApp(Context context, String path) {
         Uri uri = Uri.fromFile(new File(path));
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void clearAppFolder() {

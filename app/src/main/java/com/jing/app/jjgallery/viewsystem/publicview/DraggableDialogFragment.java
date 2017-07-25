@@ -99,11 +99,7 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
         }
 
         Fragment content = getContentViewFragment();
-        if (content != null) {
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(R.id.group_ft_content, content, "ContentView");
-            ft.commit();
-        }
+        replaceContentFragment( content, "ContentView");
 
         groupFtContent.post(new Runnable() {
             @Override
@@ -112,6 +108,14 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
                 limitMaxHeihgt();
             }
         });
+    }
+
+    protected void replaceContentFragment(Fragment target, String tag) {
+        if (target != null) {
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(R.id.group_ft_content, target, tag);
+            ft.commit();
+        }
     }
 
     private void limitMaxHeihgt() {
@@ -306,6 +310,13 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
         }
     }
 
+    /**
+     * 标志专属ContentFragment的holder
+     */
+    public interface IDialogContentHolder extends IFragmentHolder {
+
+    }
+
     public static abstract class ContentFragment extends GBaseFragment {
 
         @Override
@@ -319,5 +330,14 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
 
         protected abstract void bindChildFragmentHolder(IFragmentHolder holder);
 
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            // 从LoginActivity启动的DownloadDialogFragment不知为何sub fragment没有第二次onAttach就执行onCreateView了，导致holder为null
+            if (getParentFragment() instanceof IFragmentHolder) {
+                bindChildFragmentHolder((IFragmentHolder) getParentFragment());
+            }
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
     }
 }

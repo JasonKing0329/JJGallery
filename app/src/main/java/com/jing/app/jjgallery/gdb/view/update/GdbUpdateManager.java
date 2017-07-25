@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.gdb.view.update;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
 import com.jing.app.jjgallery.R;
@@ -9,14 +10,16 @@ import com.jing.app.jjgallery.bean.http.AppCheckBean;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
 import com.jing.app.jjgallery.gdb.presenter.GdbUpdatePresenter;
+import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
-import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadDialogFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class GdbUpdateManager implements IUpdateView {
 
     private GdbUpdatePresenter mPresenter;
     private Context mContext;
+    private FragmentManager fragmentManager;
     private GdbUpdateListener updateListener;
 
     private boolean isUpdating;
@@ -37,8 +41,9 @@ public class GdbUpdateManager implements IUpdateView {
 
     private boolean showMessageWarning;
 
-    public GdbUpdateManager(Context context, GdbUpdateListener listener) {
+    public GdbUpdateManager(Context context, FragmentManager fragmentManager, GdbUpdateListener listener) {
         mContext = context;
+        this.fragmentManager = fragmentManager;
         this.updateListener = listener;
         mPresenter = new GdbUpdatePresenter(this);
     }
@@ -133,7 +138,21 @@ public class GdbUpdateManager implements IUpdateView {
         return isShowing;
     }
 
-    private void startDownloadNewApp(final AppCheckBean bean) {
+    private void startDownloadNewApp(AppCheckBean bean) {
+
+        if (fragmentManager == null) {
+            showDownloadDialog(bean);
+        }
+        else {
+            showDownloadDialogFragment(bean);
+        }
+    }
+
+    /**
+     * FIXME SettingActivity改为继承至support包后废弃调该方法同时废弃掉DownloadDialog
+     * @param bean
+     */
+    private void showDownloadDialog(final AppCheckBean bean) {
         final DownloadDialog dialog = new DownloadDialog(mContext, new CustomDialog.OnCustomDialogActionListener() {
             @Override
             public boolean onSave(Object object) {
@@ -177,5 +196,40 @@ public class GdbUpdateManager implements IUpdateView {
             }
         });
         dialog.show();
+    }
+
+    private void showDownloadDialogFragment(AppCheckBean bean) {
+        final DownloadDialogFragment dialog = new DownloadDialogFragment();
+
+        DownloadDialogBean dialogBean = new DownloadDialogBean();
+        dialogBean.setShowPreview(false);
+        dialogBean.setSavePath(Configuration.APP_DIR_CONF);
+        DownloadItem item = new DownloadItem();
+        item.setFlag(Command.TYPE_GDB_DATABASE);
+        item.setSize(bean.getGdbDabaseSize());
+        item.setName(bean.getGdbDabaseName());
+        List<DownloadItem> list = new ArrayList<>();
+        list.add(item);
+        dialogBean.setDownloadList(list);
+        dialog.setDialogBean(dialogBean);
+        dialog.setOnDownloadListener(new DownloadDialogFragment.OnDownloadListener() {
+            @Override
+            public void onDownloadFinish(DownloadItem item) {
+                new File(ConfManager.GDB_DB_JOURNAL).delete();
+                isUpdating = false;
+                dialog.dismiss();
+                if (updateListener != null) {
+                    // 采用自动更新替代gdata.db的方法，因为jornal的存在，会使重新使用这个db出现问题。需要删掉这个文件。
+                    updateListener.onUpdateFinish();
+                }
+            }
+
+            @Override
+            public void onDownloadFinish(List<DownloadItem> downloadList) {
+
+            }
+        });
+
+        dialog.show(fragmentManager, "DownloadDialogFragment");
     }
 }

@@ -396,7 +396,7 @@
     <string name="gdb_server_online">Connect to server successfully!</string>
     <string name="gdb_server_offline">Can\'t connect to server!</string>
     <string name="gdb_request_fail">Rquest failed!</string>
-    <string name="gdb_option_download">Find %d images, click ok to download all.</string>
+    <string name="gdb_option_download">Click ok to download %d files</string>
     <string name="gdb_download_done">Images received, request server to move them?</string>
     <string name="gdb_no_new_images">No new images found.</string>
     <string name="gdb_rec_filter_min">min</string>
@@ -418,7 +418,7 @@
     <!--************************** download **************************-->
     <string name="download_title">Download</string>
     <string name="download_empty">No items to download.</string>
-    <string name="download_option_exist">Files below are already existed in file system, select to overwrite: </string>
+    <string name="download_option_exist">Files below are already existed in file system, select to continue: </string>
     <string name="download_continue">Continue</string>
 
     <!--************************** update **************************-->

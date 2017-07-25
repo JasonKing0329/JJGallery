@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -186,6 +187,34 @@ public class DefaultDialogManager {
 		builder.setNegativeButton(negativeText, clickListener);
 		builder.setOnDismissListener(dismissListener);
 		builder.show();
+	}
+
+	/**
+	 *
+	 * @param fragmentManager
+	 * @param msg
+	 * @param positiveText
+	 * @param neutralText can be null
+	 * @param negativeText
+	 * @param positiveListener
+	 * @param neutralListener
+	 * @param negativeListener
+	 * @param dismissListener
+	 */
+	public void showOptionDialogFragment(FragmentManager fragmentManager, String title, String msg, String positiveText
+			, String neutralText, String negativeText, OnClickListener positiveListener
+			, OnClickListener neutralListener, OnClickListener negativeListener, DialogInterface.OnDismissListener dismissListener) {
+		AlertDialogFragment fragment = new AlertDialogFragment();
+		fragment.setTitle(title);
+		fragment.setMessage(msg);
+		fragment.setPositiveText(positiveText);
+		fragment.setNegativeText(negativeText);
+		fragment.setNeutralText(neutralText);
+		fragment.setPositiveListener(positiveListener);
+		fragment.setNegativeListener(negativeListener);
+		fragment.setNeutralListener(neutralListener);
+		fragment.setDismissListener(dismissListener);
+		fragment.show(fragmentManager, "AlertDialogFragment");
 	}
 
 }

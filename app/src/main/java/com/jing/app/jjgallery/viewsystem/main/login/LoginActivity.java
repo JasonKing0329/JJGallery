@@ -233,7 +233,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
             showLoginForm();
         }
 
-        updateManager = new UpdateManager(this);
+        updateManager = new UpdateManager(this, getSupportFragmentManager());
         updateManager.setUpdateListener(new UpdateListener() {
             @Override
             public void onUpdateDialogShow() {

@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.viewsystem.sub.update;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
 import com.jing.app.jjgallery.JJApplication;
@@ -10,6 +11,8 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.AppCheckBean;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
+import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
+import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.sub.UpdatePresenter;
 import com.jing.app.jjgallery.service.http.Command;
@@ -17,7 +20,7 @@ import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
-import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +33,7 @@ public class UpdateManager implements IUpdateView {
 
     private UpdatePresenter mPresenter;
     private Context mContext;
+    private FragmentManager fragmentManager;
     private UpdateListener updateListener;
 
     private boolean isUpdating;
@@ -37,8 +41,9 @@ public class UpdateManager implements IUpdateView {
 
     private boolean showMessageWarning;
 
-    public UpdateManager(Context context) {
+    public UpdateManager(Context context, FragmentManager fragmentManager) {
         mContext = context;
+        this.fragmentManager = fragmentManager;
         mPresenter = new UpdatePresenter(this);
     }
 
@@ -115,7 +120,25 @@ public class UpdateManager implements IUpdateView {
         return isShowing;
     }
 
-    private void startDownloadNewApp(final AppCheckBean bean) {
+    private void startDownloadNewApp(AppCheckBean bean) {
+
+        // 下载之前删掉以前下载的APK
+        mPresenter.clearAppFolder();
+
+        if (fragmentManager == null) {
+            showDownloadDialog(bean);
+        }
+        else {
+            showDownloadDialogFragment(bean);
+        }
+
+    }
+
+    /**
+     * FIXME SettingActivity改为继承至support包后废弃调该方法同时废弃掉DownloadDialog
+     * @param bean
+     */
+    private void showDownloadDialog(final AppCheckBean bean) {
         final DownloadDialog dialog = new DownloadDialog(mContext, new CustomDialog.OnCustomDialogActionListener() {
             @Override
             public boolean onSave(Object object) {
@@ -139,9 +162,6 @@ public class UpdateManager implements IUpdateView {
                 data.put("items", list);
                 data.put("savePath", Configuration.APP_DIR_CONF_APP);
                 data.put("noOption", true);
-
-                // 下载之前删掉以前下载的APK
-                mPresenter.clearAppFolder();
             }
         });
         dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
@@ -159,6 +179,38 @@ public class UpdateManager implements IUpdateView {
             }
         });
         dialog.show();
+    }
+
+    private void showDownloadDialogFragment(AppCheckBean bean) {
+        final DownloadDialogFragment dialog = new DownloadDialogFragment();
+
+        DownloadDialogBean dialogBean = new DownloadDialogBean();
+        dialogBean.setShowPreview(false);
+        dialogBean.setSavePath(Configuration.APP_DIR_CONF_APP);
+        DownloadItem item = new DownloadItem();
+        item.setFlag(Command.TYPE_APP);
+        item.setSize(bean.getAppSize());
+        item.setName(bean.getAppName());
+        List<DownloadItem> list = new ArrayList<>();
+        list.add(item);
+        dialogBean.setDownloadList(list);
+        dialog.setDialogBean(dialogBean);
+        dialog.setOnDownloadListener(new DownloadDialogFragment.OnDownloadListener() {
+            @Override
+            public void onDownloadFinish(DownloadItem item) {
+                isUpdating = false;
+                mPresenter.installApp(mContext, item.getPath());
+                dialog.dismiss();
+                JJApplication.closeAll();
+            }
+
+            @Override
+            public void onDownloadFinish(List<DownloadItem> downloadList) {
+
+            }
+        });
+
+        dialog.show(fragmentManager, "DownloadDialogFragment");
     }
 
     public boolean isUpdating() {
