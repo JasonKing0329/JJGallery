@@ -13,7 +13,7 @@ import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.star.StarListPresenter;
 import com.jing.app.jjgallery.gdb.view.star.OnStarClickListener;
 import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.king.service.gdb.bean.FavorBean;
 
 import java.util.List;

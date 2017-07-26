@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
-import com.jing.app.jjgallery.controller.ThemeManager;
 import com.jing.app.jjgallery.model.main.order.PriorityController;
 import com.jing.app.jjgallery.model.main.order.SOrderCallback;
 import com.jing.app.jjgallery.model.main.order.SOrderChooserController;
@@ -31,7 +30,7 @@ import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.util.ScreenUtils;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.WaveSideBarView;
 import com.king.lib.colorpicker.ColorPicker;
 import com.king.lib.colorpicker.ColorPickerSelectionData;

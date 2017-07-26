@@ -16,7 +16,7 @@ import butterknife.OnClick;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/20 11:16
  */
-public class VideoImageDialogFragment extends BaseDialogFragment {
+public class VideoImageDialogFragment extends BaseDialogFragmentV4 {
 
     @BindView(R.id.iv_image)
     TouchImageView ivImage;

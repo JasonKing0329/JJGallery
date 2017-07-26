@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;

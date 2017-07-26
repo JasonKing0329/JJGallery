@@ -18,7 +18,7 @@ import com.jing.app.jjgallery.gdb.view.game.view.BaseResultDialog;
 import com.jing.app.jjgallery.gdb.view.game.view.BaseRoundManager;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.game.bean.PlayerBean;
 

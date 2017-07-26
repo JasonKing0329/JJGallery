@@ -1,13 +1,14 @@
-package com.jing.app.jjgallery.viewsystem.publicview.download;
+package com.jing.app.jjgallery.viewsystem.publicview.download.v4;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
-import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragment;
+import com.jing.app.jjgallery.viewsystem.publicview.download.IDownloadContentHolder;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragmentV4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/24 17:18
  */
-public class DownloadDialogFragment extends DraggableDialogFragment implements IDownloadContentHolder {
+public class DownloadDialogFragmentV4 extends DraggableDialogFragmentV4 implements IDownloadContentHolder {
 
     private OnDownloadListener onDownloadListener;
 
@@ -26,12 +27,12 @@ public class DownloadDialogFragment extends DraggableDialogFragment implements I
     /**
      * preview page, could be not shown or show only once
      */
-    private DownloadPreviewFragment ftPreview;
+    private DownloadPreviewFragmentV4 ftPreview;
 
     /**
      * download list page
      */
-    private DownloadListFragment ftList;
+    private DownloadListFragmentV4 ftList;
 
     @Override
     protected View getToolbarView(ViewGroup groupToolbar) {
@@ -47,7 +48,7 @@ public class DownloadDialogFragment extends DraggableDialogFragment implements I
         setCancelable(false);
 
         if (dialogBean.isShowPreview()) {
-            ftPreview = new DownloadPreviewFragment();
+            ftPreview = new DownloadPreviewFragmentV4();
             return ftPreview;
         }
         else {
@@ -58,7 +59,7 @@ public class DownloadDialogFragment extends DraggableDialogFragment implements I
 
     private void initListFragment() {
         if (ftList == null) {
-            ftList = new DownloadListFragment();
+            ftList = new DownloadListFragmentV4();
             ftList.setOnDownloadListener(onDownloadListener);
         }
     }

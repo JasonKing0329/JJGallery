@@ -12,8 +12,6 @@ import com.jing.app.jjgallery.config.Constants;
 import com.jing.app.jjgallery.model.main.file.FolderManager;
 import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 
 import java.io.File;
 import java.util.ArrayList;

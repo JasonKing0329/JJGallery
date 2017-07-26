@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
 import android.content.Context;
 import android.view.LayoutInflater;

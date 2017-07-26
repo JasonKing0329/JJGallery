@@ -1,10 +1,10 @@
 package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import com.jing.app.jjgallery.R;
  *
  * <br/>创建时间: 2017/4/19
  */
-public abstract class BaseDialogFragment extends DialogFragment {
+public abstract class BaseDialogFragmentV4 extends DialogFragment {
 
     private WindowManager.LayoutParams windowParams;
 

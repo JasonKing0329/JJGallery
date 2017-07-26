@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -204,7 +204,7 @@ public class DefaultDialogManager {
 	public void showOptionDialogFragment(FragmentManager fragmentManager, String title, String msg, String positiveText
 			, String neutralText, String negativeText, OnClickListener positiveListener
 			, OnClickListener neutralListener, OnClickListener negativeListener, DialogInterface.OnDismissListener dismissListener) {
-		AlertDialogFragment fragment = new AlertDialogFragment();
+		AlertDialogFragmentV4 fragment = new AlertDialogFragmentV4();
 		fragment.setTitle(title);
 		fragment.setMessage(msg);
 		fragment.setPositiveText(positiveText);
@@ -214,7 +214,7 @@ public class DefaultDialogManager {
 		fragment.setNegativeListener(negativeListener);
 		fragment.setNeutralListener(neutralListener);
 		fragment.setDismissListener(dismissListener);
-		fragment.show(fragmentManager, "AlertDialogFragment");
+		fragment.show(fragmentManager, "AlertDialogFragmentV4");
 	}
 
 }

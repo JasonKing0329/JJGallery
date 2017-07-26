@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import android.support.v7.app.AlertDialog;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/25 15:28
  */
-public class AlertDialogFragment extends DialogFragment {
+public class AlertDialogFragmentV4 extends DialogFragment {
 
     private String title;
 

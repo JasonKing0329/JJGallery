@@ -5,8 +5,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.jing.app.jjgallery.BaseFragmentV4;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
@@ -41,7 +41,7 @@ import butterknife.OnClick;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/5/19 13:48
  */
-public class GHomeFragment extends GBaseFragment implements IHomeView, GHomeRecordListAdapter.OnListListener
+public class GHomeFragment extends BaseFragmentV4 implements IHomeView, GHomeRecordListAdapter.OnListListener
     , SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.sr_refresh)

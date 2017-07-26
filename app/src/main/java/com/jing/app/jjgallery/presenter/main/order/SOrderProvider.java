@@ -24,8 +24,8 @@ import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.bg.BackgroundSelector;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderChooserUpdate;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.FolderDialog;
 
 import java.io.File;

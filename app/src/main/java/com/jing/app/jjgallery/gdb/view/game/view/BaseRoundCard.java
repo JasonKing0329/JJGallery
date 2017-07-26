@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.publicview.StretchListView;
 import com.king.service.gdb.game.bean.BattleBean;
 import com.king.service.gdb.game.bean.PlayerBean;

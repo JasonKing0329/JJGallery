@@ -12,7 +12,7 @@ import com.jing.app.jjgallery.gdb.view.game.adapter.FolderItemManager;
 import com.jing.app.jjgallery.gdb.view.game.adapter.SeasonListAdapter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.king.service.gdb.game.bean.SeasonBean;
 
 import java.util.ArrayList;

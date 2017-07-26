@@ -22,7 +22,7 @@ import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.gdb.model.VideoThumbCallback;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.util.FormatUtil;
-import com.jing.app.jjgallery.viewsystem.publicview.DraggableDialogFragment;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragmentV4;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.VideoImageDialogFragment;
 import com.king.lib.saveas.ScreenUtils;
 import com.king.service.gdb.bean.Record;
@@ -39,7 +39,7 @@ import butterknife.OnClick;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/20 15:23
  */
-public class VideoDialogFragment extends DraggableDialogFragment implements IVideoContentHolder {
+public class VideoDialogFragment extends DraggableDialogFragmentV4 implements IVideoContentHolder {
 
     private VideoContentFragment ftContent;
 
@@ -93,7 +93,7 @@ public class VideoDialogFragment extends DraggableDialogFragment implements IVid
         dismiss();
     }
 
-    public static class VideoContentFragment extends ContentFragment {
+    public static class VideoContentFragment extends ContentFragmentV4 {
 
         private final int NUM_LOAD_THUMB_PUBLISH = 4;
         private final int NUM_THUMBNAIL = 16;

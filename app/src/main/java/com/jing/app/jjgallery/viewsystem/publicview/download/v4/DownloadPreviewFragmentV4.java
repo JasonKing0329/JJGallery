@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview.download;
+package com.jing.app.jjgallery.viewsystem.publicview.download.v4;
 
 import android.content.DialogInterface;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,8 +11,10 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.util.DisplayHelper;
-import com.jing.app.jjgallery.viewsystem.sub.dialog.AlertDialogFragment;
-import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragment;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.AlertDialogFragmentV4;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadExistAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.download.IDownloadContentHolder;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragmentV4;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ import butterknife.OnClick;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/25 11:48
  */
-public class DownloadPreviewFragment extends DraggableDialogFragment.ContentFragment {
+public class DownloadPreviewFragmentV4 extends DraggableDialogFragmentV4.ContentFragmentV4 {
 
     @BindView(R.id.rv_existed)
     RecyclerView rvExisted;
@@ -83,7 +85,7 @@ public class DownloadPreviewFragment extends DraggableDialogFragment.ContentFrag
             items += existAdapter.getCheckedItems().size();
         }
         String message = String.format(getString(R.string.gdb_option_download), items);
-        AlertDialogFragment dialog = new AlertDialogFragment();
+        AlertDialogFragmentV4 dialog = new AlertDialogFragmentV4();
         dialog.setMessage(message);
         dialog.setPositiveText(getString(R.string.ok));
         dialog.setPositiveListener(new DialogInterface.OnClickListener() {

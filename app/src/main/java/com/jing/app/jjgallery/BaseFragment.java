@@ -1,15 +1,14 @@
-package com.jing.app.jjgallery.gdb;
+package com.jing.app.jjgallery;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 
 /**
@@ -17,7 +16,7 @@ import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/5/19 14:24
  */
-public abstract class GBaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     private ProgressDialog progressDialog;
 

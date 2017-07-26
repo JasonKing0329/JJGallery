@@ -9,8 +9,8 @@ import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
 import com.jing.app.jjgallery.gdb.presenter.ManageListPresenter;
-import com.jing.app.jjgallery.viewsystem.publicview.AlertDialogFragment;
-import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadDialogFragment;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.AlertDialogFragmentV4;
+import com.jing.app.jjgallery.viewsystem.publicview.download.v4.DownloadDialogFragmentV4;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
 
     protected ManageListPresenter presenter;
 
-    private DownloadDialogFragment downloadDialogFragment;
+    private DownloadDialogFragmentV4 downloadDialogFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,14 +64,14 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
 
     protected void showDownloadDialog() {
 //        if (downloadDialogFragment != null) {
-//            downloadDialogFragment.show(getSupportFragmentManager(), "DownloadDialogFragment");
+//            downloadDialogFragment.show(getSupportFragmentManager(), "DownloadDialogFragmentV4");
 //        }
     }
 
     @Override
     public void onCheckPass(boolean hasNew, final List<DownloadItem> downloadList) {
         if (hasNew) {
-            downloadDialogFragment = new DownloadDialogFragment();
+            downloadDialogFragment = new DownloadDialogFragmentV4();
             DownloadDialogBean bean = new DownloadDialogBean();
             List<DownloadItem> repeatList = new ArrayList<>();
             bean.setDownloadList(getListToDownload(downloadList, repeatList));
@@ -79,7 +79,7 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
             bean.setSavePath(getSavePath());
             bean.setShowPreview(true);
             downloadDialogFragment.setDialogBean(bean);
-            downloadDialogFragment.setOnDownloadListener(new DownloadDialogFragment.OnDownloadListener() {
+            downloadDialogFragment.setOnDownloadListener(new DownloadDialogFragmentV4.OnDownloadListener() {
                 @Override
                 public void onDownloadFinish(DownloadItem item) {
 
@@ -92,7 +92,7 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
                     optionServerAction(downloadList);
                 }
             });
-            downloadDialogFragment.show(getSupportFragmentManager(), "DownloadDialogFragment");
+            downloadDialogFragment.show(getSupportFragmentManager(), "DownloadDialogFragmentV4");
         } else {
             showToastLong(getString(R.string.gdb_no_new_images), ProgressProvider.TOAST_INFOR);
         }
@@ -110,7 +110,7 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
      * @param downloadList
      */
     private void optionServerAction(final List<DownloadItem> downloadList) {
-        AlertDialogFragment dialog = new AlertDialogFragment();
+        AlertDialogFragmentV4 dialog = new AlertDialogFragmentV4();
         dialog.setMessage(getString(R.string.gdb_download_done));
         dialog.setPositiveText(getString(R.string.yes));
         dialog.setPositiveListener(new DialogInterface.OnClickListener() {
@@ -120,7 +120,7 @@ public abstract class GDBListActivity extends GBaseActivity implements IManageLi
             }
         });
         dialog.setNegativeText(getString(R.string.no));
-        dialog.show(getSupportFragmentManager(), "AlertDialogFragment");
+        dialog.show(getSupportFragmentManager(), "AlertDialogFragmentV4");
     }
 
 

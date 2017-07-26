@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.allure.lbanners.LMBanners;
 import com.allure.lbanners.adapter.LBaseAdapter;
-import com.allure.lbanners.transformer.TransitionEffect;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
+import com.jing.app.jjgallery.BaseFragmentV4;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
@@ -23,7 +22,7 @@ import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
@@ -37,7 +36,7 @@ import java.util.Random;
  * Created by Administrator on 2016/12/26 0026.
  */
 
-public class RecommendFragment extends GBaseFragment implements IRecommend, View.OnClickListener {
+public class RecommendFragment extends BaseFragmentV4 implements IRecommend, View.OnClickListener {
 
     private ProgressBar progressBar;
     private LMBanners lmBanners;

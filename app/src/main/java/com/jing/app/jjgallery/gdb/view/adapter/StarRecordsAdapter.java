@@ -18,7 +18,7 @@ import com.jing.app.jjgallery.gdb.view.recommend.RecordFilterDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.FormatUtil;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.PullZoomRecyclerView;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;

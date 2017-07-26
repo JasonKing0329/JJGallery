@@ -1,11 +1,11 @@
-package com.jing.app.jjgallery.viewsystem.publicview;
+package com.jing.app.jjgallery.viewsystem.sub.dialog;
 
+import android.app.Fragment;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,11 +17,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.Application;
+import com.jing.app.jjgallery.BaseFragment;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.util.DebugLog;
-import com.jing.app.jjgallery.viewsystem.sub.dialog.BaseDialogFragment;
 import com.king.lib.saveas.ScreenUtils;
 
 import java.util.ArrayList;
@@ -181,7 +180,7 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
 
     public void updateTitleBorderColor(int color) {
         GradientDrawable drawable = (GradientDrawable) groupTitle.getBackground();
-        drawable.setStroke(getContext().getResources()
+        drawable.setStroke(getActivity().getResources()
                         .getDimensionPixelSize(R.dimen.custom_dialog_icon_frame_width)
                 , color);
     }
@@ -310,14 +309,7 @@ public abstract class DraggableDialogFragment extends BaseDialogFragment {
         }
     }
 
-    /**
-     * 标志专属ContentFragment的holder
-     */
-    public interface IDialogContentHolder extends IFragmentHolder {
-
-    }
-
-    public static abstract class ContentFragment extends GBaseFragment {
+    public static abstract class ContentFragment extends BaseFragment {
 
         @Override
         protected void bindFragmentHolder(IFragmentHolder holder) {

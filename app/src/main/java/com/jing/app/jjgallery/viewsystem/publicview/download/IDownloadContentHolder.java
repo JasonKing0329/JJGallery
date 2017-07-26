@@ -1,7 +1,7 @@
 package com.jing.app.jjgallery.viewsystem.publicview.download;
 
 import com.jing.app.jjgallery.bean.http.DownloadItem;
-import com.jing.app.jjgallery.viewsystem.publicview.DraggableDialogFragment;
+import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/25 11:50
  */
-public interface IDownloadContentHolder extends DraggableDialogFragment.IDialogContentHolder {
+public interface IDownloadContentHolder extends IFragmentHolder {
 
     List<DownloadItem> getDownloadList();
 

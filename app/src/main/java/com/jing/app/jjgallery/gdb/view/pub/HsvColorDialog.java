@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 
 import java.util.HashMap;
 import java.util.Map;

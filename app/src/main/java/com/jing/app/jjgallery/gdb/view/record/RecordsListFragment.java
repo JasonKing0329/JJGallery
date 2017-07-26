@@ -3,15 +3,15 @@ package com.jing.app.jjgallery.gdb.view.record;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.jing.app.jjgallery.BaseFragmentV4;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordsListAdapter;
 import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.Record;
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/5/24 9:59
  */
-public class RecordsListFragment extends GBaseFragment implements IRecordListView, RecordsListAdapter.OnRecordItemClickListener {
+public class RecordsListFragment extends BaseFragmentV4 implements IRecordListView, RecordsListAdapter.OnRecordItemClickListener {
 
     private final int DEFAULT_LOAD_MORE = 20;
 

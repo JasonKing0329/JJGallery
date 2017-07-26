@@ -12,8 +12,6 @@ import android.widget.ListView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.config.Configuration;
-import com.jing.app.jjgallery.controller.ThemeManager;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
 
 import java.io.File;
 import java.io.FilenameFilter;

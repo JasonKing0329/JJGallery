@@ -1,6 +1,5 @@
 package com.jing.app.jjgallery.viewsystem.sub.update;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
@@ -12,18 +11,16 @@ import com.jing.app.jjgallery.bean.http.AppCheckBean;
 import com.jing.app.jjgallery.bean.http.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
-import com.jing.app.jjgallery.gdb.view.pub.DownloadDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.presenter.sub.UpdatePresenter;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadDialogFragment;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.publicview.download.v4.DownloadDialogFragmentV4;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,7 +30,8 @@ public class UpdateManager implements IUpdateView {
 
     private UpdatePresenter mPresenter;
     private Context mContext;
-    private FragmentManager fragmentManager;
+    private FragmentManager fragmentManagerV4;
+    private android.app.FragmentManager fragmentManager;
     private UpdateListener updateListener;
 
     private boolean isUpdating;
@@ -41,14 +39,21 @@ public class UpdateManager implements IUpdateView {
 
     private boolean showMessageWarning;
 
-    public UpdateManager(Context context, FragmentManager fragmentManager) {
+    public UpdateManager(Context context) {
         mContext = context;
-        this.fragmentManager = fragmentManager;
         mPresenter = new UpdatePresenter(this);
     }
 
     public void setUpdateListener(UpdateListener updateListener) {
         this.updateListener = updateListener;
+    }
+
+    public void setFragmentManagerV4(FragmentManager fragmentManagerV4) {
+        this.fragmentManagerV4 = fragmentManagerV4;
+    }
+
+    public void setFragmentManager(android.app.FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
 
     public void showMessageWarning() {
@@ -125,60 +130,13 @@ public class UpdateManager implements IUpdateView {
         // 下载之前删掉以前下载的APK
         mPresenter.clearAppFolder();
 
-        if (fragmentManager == null) {
-            showDownloadDialog(bean);
-        }
-        else {
+        if (fragmentManager != null) {
             showDownloadDialogFragment(bean);
         }
+        else if (fragmentManagerV4 != null) {
+            showDownloadDialogFragmentV4(bean);
+        }
 
-    }
-
-    /**
-     * FIXME SettingActivity改为继承至support包后废弃调该方法同时废弃掉DownloadDialog
-     * @param bean
-     */
-    private void showDownloadDialog(final AppCheckBean bean) {
-        final DownloadDialog dialog = new DownloadDialog(mContext, new CustomDialog.OnCustomDialogActionListener() {
-            @Override
-            public boolean onSave(Object object) {
-                return false;
-            }
-
-            @Override
-            public boolean onCancel() {
-                return false;
-            }
-
-            @Override
-            public void onLoadData(HashMap<String, Object> data) {
-                DownloadItem item = new DownloadItem();
-                item.setFlag(Command.TYPE_APP);
-                item.setSize(bean.getAppSize());
-                item.setName(bean.getAppName());
-                List<DownloadItem> list = new ArrayList<>();
-                list.add(item);
-
-                data.put("items", list);
-                data.put("savePath", Configuration.APP_DIR_CONF_APP);
-                data.put("noOption", true);
-            }
-        });
-        dialog.setOnDownloadListener(new DownloadDialog.OnDownloadListener() {
-            @Override
-            public void onDownloadFinish(DownloadItem item) {
-                isUpdating = false;
-                mPresenter.installApp((Activity) mContext, item.getPath());
-                dialog.dismiss();
-                ((JJApplication) ((Activity) mContext).getApplication()).closeAll();
-            }
-
-            @Override
-            public void onDownloadFinish(List<DownloadItem> downloadList) {
-
-            }
-        });
-        dialog.show();
     }
 
     private void showDownloadDialogFragment(AppCheckBean bean) {
@@ -213,7 +171,40 @@ public class UpdateManager implements IUpdateView {
         dialog.show(fragmentManager, "DownloadDialogFragment");
     }
 
+    private void showDownloadDialogFragmentV4(AppCheckBean bean) {
+        final DownloadDialogFragmentV4 dialog = new DownloadDialogFragmentV4();
+
+        DownloadDialogBean dialogBean = new DownloadDialogBean();
+        dialogBean.setShowPreview(false);
+        dialogBean.setSavePath(Configuration.APP_DIR_CONF_APP);
+        DownloadItem item = new DownloadItem();
+        item.setFlag(Command.TYPE_APP);
+        item.setSize(bean.getAppSize());
+        item.setName(bean.getAppName());
+        List<DownloadItem> list = new ArrayList<>();
+        list.add(item);
+        dialogBean.setDownloadList(list);
+        dialog.setDialogBean(dialogBean);
+        dialog.setOnDownloadListener(new DownloadDialogFragmentV4.OnDownloadListener() {
+            @Override
+            public void onDownloadFinish(DownloadItem item) {
+                isUpdating = false;
+                mPresenter.installApp(mContext, item.getPath());
+                dialog.dismiss();
+                JJApplication.closeAll();
+            }
+
+            @Override
+            public void onDownloadFinish(List<DownloadItem> downloadList) {
+
+            }
+        });
+
+        dialog.show(fragmentManagerV4, "DownloadDialogFragmentV4");
+    }
+
     public boolean isUpdating() {
         return isUpdating;
     }
+
 }

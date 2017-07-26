@@ -18,7 +18,7 @@ import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.gdb.presenter.recommend.FilterPresenter;
 import com.jing.app.jjgallery.gdb.presenter.GdbGuidePresenter;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;

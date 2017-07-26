@@ -16,7 +16,7 @@ import android.widget.RadioButton;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.bean.recommend.FilterModel;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 
 import java.util.HashMap;
 

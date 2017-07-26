@@ -33,7 +33,7 @@ import com.jing.app.jjgallery.viewsystem.HomeSelecter;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.main.settings.SettingsActivity;
-import com.jing.app.jjgallery.viewsystem.publicview.DefaultDialogManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.publicview.ProgressButton;
 import com.jing.app.jjgallery.viewsystem.sub.update.UpdateListener;
 import com.jing.app.jjgallery.viewsystem.sub.update.UpdateManager;
@@ -233,7 +233,8 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
             showLoginForm();
         }
 
-        updateManager = new UpdateManager(this, getSupportFragmentManager());
+        updateManager = new UpdateManager(this);
+        updateManager.setFragmentManagerV4(getSupportFragmentManager());
         updateManager.setUpdateListener(new UpdateListener() {
             @Override
             public void onUpdateDialogShow() {

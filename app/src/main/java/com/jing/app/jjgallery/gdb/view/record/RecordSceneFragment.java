@@ -6,13 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
+import com.jing.app.jjgallery.BaseFragmentV4;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordSceneNameAdapter;
 import com.jing.app.jjgallery.gdb.view.pub.HsvColorDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.SceneBean;
 
 import java.util.HashMap;
@@ -22,14 +22,12 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.R.attr.angle;
-
 /**
  * 描述:
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/12 16:12
  */
-public class RecordSceneFragment extends GBaseFragment implements IRecordSceneView {
+public class RecordSceneFragment extends BaseFragmentV4 implements IRecordSceneView {
 
     private IRecordSceneHolder holder;
 

@@ -11,7 +11,7 @@ import android.widget.RadioButton;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
-import com.jing.app.jjgallery.viewsystem.publicview.DraggableDialogFragment;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragmentV4;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/21 14:14
  */
-public class BannerAnimDialogFragment extends DraggableDialogFragment {
+public class BannerAnimDialogFragment extends DraggableDialogFragmentV4 {
 
     private EditFragment ftContent;
     private OnAnimSettingListener onAnimSettingListener;
@@ -51,7 +51,7 @@ public class BannerAnimDialogFragment extends DraggableDialogFragment {
         this.onAnimSettingListener = onAnimSettingListener;
     }
 
-    public static class EditFragment extends ContentFragment {
+    public static class EditFragment extends ContentFragmentV4 {
 
         @BindView(R.id.rb_random)
         RadioButton rbRandom;

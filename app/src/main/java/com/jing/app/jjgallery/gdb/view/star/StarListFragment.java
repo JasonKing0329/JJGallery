@@ -4,15 +4,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.jing.app.jjgallery.BaseFragmentV4;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.gdb.GBaseFragment;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.StarListNumAdapter;
 import com.jing.app.jjgallery.gdb.view.pub.PinnedHeaderDecoration;
-import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Administrator on 2016/7/30 0030.
  */
-public class StarListFragment extends GBaseFragment implements OnStarClickListener, IStarListView {
+public class StarListFragment extends BaseFragmentV4 implements OnStarClickListener, IStarListView {
 
     @BindView(R.id.rv_star)
     RecyclerView rvStar;

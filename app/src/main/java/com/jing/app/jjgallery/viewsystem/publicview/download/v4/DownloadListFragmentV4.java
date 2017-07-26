@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.viewsystem.publicview.download;
+package com.jing.app.jjgallery.viewsystem.publicview.download.v4;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +17,9 @@ import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.http.progress.ProgressListener;
 import com.jing.app.jjgallery.util.DebugLog;
-import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragment;
+import com.jing.app.jjgallery.viewsystem.publicview.download.DownloadAdapter;
+import com.jing.app.jjgallery.viewsystem.publicview.download.IDownloadContentHolder;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DraggableDialogFragmentV4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ import butterknife.ButterKnife;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/25 11:49
  */
-public class DownloadListFragment extends DraggableDialogFragment.ContentFragment {
+public class DownloadListFragmentV4 extends DraggableDialogFragmentV4.ContentFragmentV4 {
 
     @BindView(R.id.tv_empty)
     TextView tvEmpty;
@@ -39,7 +41,7 @@ public class DownloadListFragment extends DraggableDialogFragment.ContentFragmen
 
     private DownloadManager downloadManager;
 
-    private DownloadDialogFragment.OnDownloadListener onDownloadListener;
+    private DownloadDialogFragmentV4.OnDownloadListener onDownloadListener;
 
     private IDownloadContentHolder contentHolder;
 
@@ -83,7 +85,7 @@ public class DownloadListFragment extends DraggableDialogFragment.ContentFragmen
         contentHolder = (IDownloadContentHolder) holder;
     }
 
-    public void setOnDownloadListener(DownloadDialogFragment.OnDownloadListener onDownloadListener) {
+    public void setOnDownloadListener(DownloadDialogFragmentV4.OnDownloadListener onDownloadListener) {
         this.onDownloadListener = onDownloadListener;
     }
 

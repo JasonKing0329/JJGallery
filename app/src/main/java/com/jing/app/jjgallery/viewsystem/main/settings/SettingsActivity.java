@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main.settings;
 
 
 import android.annotation.TargetApi;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -258,7 +259,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
         bindPreferenceSummaryToValue(edt);
         limitEditRange(edt.getEditText(), 1, PreferenceValue.HTTP_MAX_DOWNLOAD_UPLIMIT);
 
-        PrefClickListener listener = new PrefClickListener(this);
+        PrefClickListener listener = new PrefClickListener(this, getFragmentManager());
         Preference updatePref = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
         updatePref.setSummary("v" + UpdatePresenter.getAppVersionName(this));
         updatePref.setOnPreferenceClickListener(listener);
@@ -276,18 +277,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
     private static class PrefClickListener implements Preference.OnPreferenceClickListener {
 
         private Context mContext;
-        public PrefClickListener(Context context) {
+        private FragmentManager fragmentManager;
+        public PrefClickListener(Context context, FragmentManager fragmentManager) {
             mContext = context;
+            this.fragmentManager = fragmentManager;
         }
+
         @Override
         public boolean onPreferenceClick(Preference preference) {
             if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE)) {
-                UpdateManager manager = new UpdateManager(mContext, null);
+                UpdateManager manager = new UpdateManager(mContext);
+                manager.setFragmentManager(fragmentManager);
                 manager.showMessageWarning();
                 manager.startCheck();
             }
             else if (preference.getKey().equals(PreferenceKey.PREF_CHECK_UPDATE_GDB)) {
-                GdbUpdateManager manager = new GdbUpdateManager(mContext, null, null);
+                GdbUpdateManager manager = new GdbUpdateManager(mContext, null);
+                manager.setFragmentManager(fragmentManager);
                 manager.showMessageWarning();
                 manager.startCheck();
             }
@@ -490,7 +496,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Pro
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_HTTP_SERVER));
             bindPreferenceSummaryToValue(findPreference(PreferenceKey.PREF_MAX_DOWNLOAD));
 
-            PrefClickListener listener = new PrefClickListener(getActivity());
+            PrefClickListener listener = new PrefClickListener(getActivity(), getFragmentManager());
             Preference preference = findPreference(PreferenceKey.PREF_CHECK_UPDATE);
             preference.setSummary("v" + UpdatePresenter.getAppVersionName(getActivity()));
             preference.setOnPreferenceClickListener(listener);

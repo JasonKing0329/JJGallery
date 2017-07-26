@@ -25,7 +25,7 @@ import com.jing.app.jjgallery.res.AppResManager;
 import com.jing.app.jjgallery.res.AppResProvider;
 import com.jing.app.jjgallery.res.ColorRes;
 import com.jing.app.jjgallery.res.JResource;
-import com.jing.app.jjgallery.viewsystem.publicview.CustomDialog;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.lib.colorpicker.ColorPicker;
 import com.king.lib.colorpicker.ColorPicker.OnColorPickerListener;
 import com.king.lib.colorpicker.ColorPickerSelectionData;
