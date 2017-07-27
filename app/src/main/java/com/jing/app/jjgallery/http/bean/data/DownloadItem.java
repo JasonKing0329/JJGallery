@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.bean.http;
+package com.jing.app.jjgallery.http.bean.data;
 
 /**
  * Created by Administrator on 2016/9/2.

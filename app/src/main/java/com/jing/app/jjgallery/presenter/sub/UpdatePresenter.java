@@ -1,13 +1,12 @@
 package com.jing.app.jjgallery.presenter.sub;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.jing.app.jjgallery.bean.http.AppCheckBean;
-import com.jing.app.jjgallery.bean.http.GdbRespBean;
+import com.jing.app.jjgallery.http.bean.response.AppCheckBean;
+import com.jing.app.jjgallery.http.bean.response.GdbRespBean;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;

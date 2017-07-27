@@ -2,8 +2,8 @@ package com.jing.app.jjgallery.gdb.presenter.record;
 
 import android.os.AsyncTask;
 
-import com.jing.app.jjgallery.bean.http.DownloadItem;
-import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
+import com.jing.app.jjgallery.http.bean.request.GdbCheckNewFileBean;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.config.PreferenceValue;

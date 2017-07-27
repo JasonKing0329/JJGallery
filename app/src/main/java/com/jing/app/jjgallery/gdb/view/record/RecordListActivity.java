@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.presenter.record.RecordListPresenter;
 import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;

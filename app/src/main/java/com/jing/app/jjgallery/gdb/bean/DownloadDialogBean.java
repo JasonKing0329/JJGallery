@@ -1,6 +1,6 @@
 package com.jing.app.jjgallery.gdb.bean;
 
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 
 import java.util.List;
 

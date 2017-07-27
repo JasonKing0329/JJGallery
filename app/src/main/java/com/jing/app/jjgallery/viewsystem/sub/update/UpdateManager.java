@@ -7,8 +7,8 @@ import android.text.TextUtils;
 
 import com.jing.app.jjgallery.JJApplication;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.http.AppCheckBean;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.response.AppCheckBean;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.bean.DownloadDialogBean;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;

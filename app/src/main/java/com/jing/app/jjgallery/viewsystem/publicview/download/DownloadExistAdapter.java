@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 
 import java.util.ArrayList;

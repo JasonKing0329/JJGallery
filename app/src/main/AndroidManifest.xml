@@ -95,7 +95,9 @@
             android:name=".gdb.view.record.RecordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".gdb.view.surf.SurfActivity"
+            android:screenOrientation="portrait"/>
         <service
             android:name=".gdb.model.FileService"
             android:enabled="true"

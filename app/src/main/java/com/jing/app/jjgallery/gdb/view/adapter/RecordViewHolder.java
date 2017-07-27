@@ -45,6 +45,7 @@ public class RecordViewHolder {
     private TextView scoreExtraView;
     private TextView actorView;
     private ImageView ivPlay;
+    private TextView tvNameSimplify;
 
     private int nameColorNormal, nameColorBareback;
     private View.OnClickListener onClickListener;
@@ -81,6 +82,7 @@ public class RecordViewHolder {
         scoreBasicView = (TextView) view.findViewById(R.id.record_score_basic);
         scoreExtraView = (TextView) view.findViewById(R.id.record_score_extra);
         actorView = (TextView) view.findViewById(R.id.record_score_actor);
+        tvNameSimplify = (TextView) view.findViewById(R.id.tv_name_simplify);
 
         if (!DisplayHelper.isTabModel(view.getContext())) {
             view.findViewById(R.id.record_show_tablet).setVisibility(View.GONE);
@@ -96,16 +98,10 @@ public class RecordViewHolder {
     }
 
     public void bind(Record item, int position, int sortMode) {
+
         container.setTag(item);
         if (onClickListener != null) {
             container.setOnClickListener(onClickListener);
-        }
-        // deprecated item
-        if (item.getDeprecated() == 1) {
-            container.setBackgroundColor(container.getContext().getResources().getColor(R.color.record_deprecated_bg));
-        }
-        else {
-            container.setBackground(container.getContext().getResources().getDrawable(R.drawable.ripple_rect_grey));
         }
 
         // image
@@ -122,12 +118,22 @@ public class RecordViewHolder {
             }
         }
 
-        if (path == null) {
-            imageView.setVisibility(View.INVISIBLE);
+        SImageLoader.getInstance().displayImage(path, imageView);
+
+        // record未关联数据库，只显示文件名和图片
+        if (item.getId() == 0) {
+            tvNameSimplify.setText(item.getName());
+            ivPlay.setVisibility(View.INVISIBLE);
+            seqView.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        // deprecated item
+        if (item.getDeprecated() == 1) {
+            container.setBackgroundColor(container.getContext().getResources().getColor(R.color.record_deprecated_bg));
         }
         else {
-            imageView.setVisibility(View.VISIBLE);
-            SImageLoader.getInstance().displayImage(path, imageView);
+            container.setBackground(container.getContext().getResources().getDrawable(R.drawable.ripple_rect_grey));
         }
 
         // can be played in device

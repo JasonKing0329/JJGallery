@@ -16,7 +16,6 @@
             android:layout_width="@dimen/gdb_record_listitem_img_width"
             android:layout_height="@dimen/gdb_record_listitem_img_height"
             android:layout_marginLeft="10dp"
-            android:visibility="invisible"
             android:layout_centerVertical="true"
             app:siArrowPosition="right"
             app:siSquare="false"
@@ -170,5 +169,14 @@
             android:layout_marginRight="15dp"
             android:visibility="gone"
             android:layout_toLeftOf="@id/record_score"/>
+
+        <TextView
+            android:id="@+id/tv_name_simplify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/gdb_record_name_left"
+            android:layout_toRightOf="@id/record_thumb"
+            android:layout_centerVertical="true"/>
+
     </RelativeLayout>
 </RelativeLayout>

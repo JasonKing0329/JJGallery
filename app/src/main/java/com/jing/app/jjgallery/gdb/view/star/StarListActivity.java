@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import com.allure.lbanners.LMBanners;
 import com.allure.lbanners.adapter.LBaseAdapter;
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.config.Configuration;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.jing.app.jjgallery.gdb.model.GdbImageProvider;

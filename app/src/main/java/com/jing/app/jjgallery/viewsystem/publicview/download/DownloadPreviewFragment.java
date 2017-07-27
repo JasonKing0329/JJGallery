@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.jing.app.jjgallery.R;
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 import com.jing.app.jjgallery.util.DisplayHelper;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.AlertDialogFragment;

@@ -1,6 +1,6 @@
 package com.jing.app.jjgallery.viewsystem.publicview.download;
 
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
 
 import java.util.List;

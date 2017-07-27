@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.jing.app.jjgallery.bean.http.AppCheckBean;
-import com.jing.app.jjgallery.bean.http.GdbRespBean;
+import com.jing.app.jjgallery.http.bean.response.AppCheckBean;
+import com.jing.app.jjgallery.http.bean.response.GdbRespBean;
 import com.jing.app.jjgallery.config.DBInfor;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;

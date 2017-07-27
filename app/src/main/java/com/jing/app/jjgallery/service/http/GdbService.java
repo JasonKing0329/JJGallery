@@ -1,8 +1,10 @@
 package com.jing.app.jjgallery.service.http;
 
-import com.jing.app.jjgallery.bean.http.GdbCheckNewFileBean;
-import com.jing.app.jjgallery.bean.http.GdbMoveResponse;
-import com.jing.app.jjgallery.bean.http.GdbRequestMoveBean;
+import com.jing.app.jjgallery.http.bean.request.FolderRequest;
+import com.jing.app.jjgallery.http.bean.response.FolderResponse;
+import com.jing.app.jjgallery.http.bean.request.GdbCheckNewFileBean;
+import com.jing.app.jjgallery.http.bean.response.GdbMoveResponse;
+import com.jing.app.jjgallery.http.bean.request.GdbRequestMoveBean;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,4 +22,7 @@ public interface GdbService {
 
     @POST("requestMove")
     Observable<GdbMoveResponse> requestMoveImages(@Body GdbRequestMoveBean data);
+
+    @POST("surfFolder")
+    Observable<FolderResponse> requestSurf(@Body FolderRequest data);
 }

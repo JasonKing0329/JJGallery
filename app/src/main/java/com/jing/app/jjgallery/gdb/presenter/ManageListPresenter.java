@@ -2,21 +2,17 @@ package com.jing.app.jjgallery.gdb.presenter;
 
 import android.os.AsyncTask;
 
-import com.jing.app.jjgallery.bean.http.DownloadItem;
-import com.jing.app.jjgallery.bean.http.GdbMoveResponse;
-import com.jing.app.jjgallery.bean.http.GdbRequestMoveBean;
-import com.jing.app.jjgallery.bean.http.GdbRespBean;
-import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.model.RecordComparator;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
+import com.jing.app.jjgallery.http.bean.response.GdbMoveResponse;
+import com.jing.app.jjgallery.http.bean.request.GdbRequestMoveBean;
+import com.jing.app.jjgallery.http.bean.response.GdbRespBean;
 import com.jing.app.jjgallery.gdb.view.list.IManageListView;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.GdbHttpClient;
 import com.jing.app.jjgallery.service.http.progress.AppHttpClient;
-import com.king.service.gdb.bean.Record;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 import rx.Subscriber;

@@ -440,7 +440,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, SeasonActivity.class);
+        Intent intent = new Intent().setClass(from, com.jing.app.jjgallery.gdb.view.surf.SurfActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

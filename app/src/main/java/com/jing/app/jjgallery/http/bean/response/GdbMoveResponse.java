@@ -1,4 +1,4 @@
-package com.jing.app.jjgallery.bean.http;
+package com.jing.app.jjgallery.http.bean.response;
 
 import com.google.gson.annotations.SerializedName;
 

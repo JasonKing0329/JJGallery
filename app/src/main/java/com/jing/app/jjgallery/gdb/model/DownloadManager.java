@@ -1,6 +1,6 @@
 package com.jing.app.jjgallery.gdb.model;
 
-import com.jing.app.jjgallery.bean.http.DownloadItem;
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 import com.jing.app.jjgallery.service.encrypt.EncryptUtil;
 import com.jing.app.jjgallery.service.http.Command;
 import com.jing.app.jjgallery.service.http.DownloadClient;

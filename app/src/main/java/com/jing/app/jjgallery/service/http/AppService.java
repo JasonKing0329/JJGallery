@@ -1,7 +1,7 @@
 package com.jing.app.jjgallery.service.http;
 
-import com.jing.app.jjgallery.bean.http.AppCheckBean;
-import com.jing.app.jjgallery.bean.http.GdbRespBean;
+import com.jing.app.jjgallery.http.bean.response.AppCheckBean;
+import com.jing.app.jjgallery.http.bean.response.GdbRespBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

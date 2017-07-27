@@ -1,4 +1,6 @@
-package com.jing.app.jjgallery.bean.http;
+package com.jing.app.jjgallery.http.bean.request;
+
+import com.jing.app.jjgallery.http.bean.data.DownloadItem;
 
 import java.util.List;
 
