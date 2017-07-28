@@ -90,7 +90,7 @@ public class GHomeHeader extends RecyclerView.ViewHolder {
         }
     }
 
-    @OnClick({R.id.group_recommend, R.id.group_starlist, R.id.group_game})
+    @OnClick({R.id.group_recommend, R.id.group_starlist, R.id.group_game, R.id.group_surf})
     public void onViewClicked(View view) {
             switch (view.getId()) {
                 case R.id.group_recommend:
@@ -101,6 +101,9 @@ public class GHomeHeader extends RecyclerView.ViewHolder {
                     break;
                 case R.id.group_game:
                     ActivityManager.startGDBGameActivity((Activity) view.getContext(), null);
+                    break;
+                case R.id.group_surf:
+                    ActivityManager.startGdbSurfActivity((Activity) view.getContext(), null);
                     break;
             }
     }

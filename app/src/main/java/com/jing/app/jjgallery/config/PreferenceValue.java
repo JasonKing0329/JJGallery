@@ -89,4 +89,6 @@ public class PreferenceValue {
     public static final int GDB_SR_ORDERBY_STAR =29;
     public static final int GDB_SR_ORDERBY_STARC =30;
 
+    public static final int GDB_SR_ORDERBY_TIME =31;
+    public static final int GDB_SR_ORDERBY_SIZE =32;
 }

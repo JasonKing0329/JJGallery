@@ -10,6 +10,10 @@ public class FileBean {
 
     private boolean isFolder;
 
+    private long lastModifyTime;
+
+    private long size;
+
     /**
      * server端不赋值，client端记录parent
      */
@@ -53,5 +57,21 @@ public class FileBean {
 
     public void setParentBean(FileBean parentBean) {
         this.parentBean = parentBean;
+    }
+
+    public long getLastModifyTime() {
+        return lastModifyTime;
+    }
+
+    public void setLastModifyTime(long lastModifyTime) {
+        this.lastModifyTime = lastModifyTime;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 }

@@ -123,6 +123,8 @@
     <string name="menu_gdb_download">Open download manager</string>
     <string name="menu_gdb_check_server">Check update</string>
     <string name="menu_gdb_recommend">See movies</string>
+    <string name="menu_gdb_surf_relate" translatable="false">Relate</string>
+    <string name="menu_gdb_surf_refresh">Refresh</string>
 
     <string name="menu_waterfall_random">Random sequence</string>
     <string name="menu_waterfall_origin">Origin sequence</string>
@@ -306,6 +308,7 @@
 
     <string name="setting_gdb_latest_num">Latest records number</string>
     <string name="setting_gdb_no_image">No image mode</string>
+    <string name="pref_gdb_surf_relate" translatable="false">Auto-relate surf files to record</string>
 
     <string name="login_finger_not_support">Fingerprint is not supported on current device!</string>
     <!--************************** thumb folder **************************-->

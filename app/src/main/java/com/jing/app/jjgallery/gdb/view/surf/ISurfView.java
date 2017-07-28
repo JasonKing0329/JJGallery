@@ -1,6 +1,8 @@
 package com.jing.app.jjgallery.gdb.view.surf;
 
-import com.jing.app.jjgallery.http.bean.response.FolderResponse;
+import com.king.service.gdb.bean.Record;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -10,5 +12,9 @@ import com.jing.app.jjgallery.http.bean.response.FolderResponse;
 public interface ISurfView {
     void onRequestFail();
 
-    void onFolderReceived(FolderResponse bean);
+    void onFolderReceived(List<SurfFileBean> list);
+
+    void onRecordRelated(int index);
+
+    void onSortFinished();
 }

@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
+import com.jing.app.jjgallery.gdb.view.game.GameActivity;
 import com.jing.app.jjgallery.gdb.view.home.GHomeActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
@@ -440,7 +441,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, com.jing.app.jjgallery.gdb.view.surf.SurfActivity.class);
+        Intent intent = new Intent().setClass(from, GameActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);
@@ -449,6 +450,17 @@ public class ActivityManager {
             ActivityCompat.startActivity(from, intent, bundle);
         }
         return true;
+    }
+
+    public static void startGdbSurfActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, com.jing.app.jjgallery.gdb.view.surf.SurfActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
     }
 
     public static void startGdbGameGroupActivity(Activity from, int seasonId) {

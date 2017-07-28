@@ -174,4 +174,6 @@ public class PreferenceKey {
     public static final String PREF_GDB_STAR_NAV_ANIM_TYPE = "pref_gdb_star_nav_anim_fix_type";
     // animation time
     public static final String PREF_GDB_STAR_NAV_ANIM_TIME = "pref_gdb_star_nav_anim_time";
+    // relate surf to record
+    public static final String PREF_GDB_SURF_RELATE = "pref_gdb_surf_relate";
 }

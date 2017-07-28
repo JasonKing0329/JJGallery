@@ -370,6 +370,23 @@ public class GDBProvider {
         return null;
     }
 
+    /**
+     * get record by name
+     * @param name
+     * @return
+     */
+    public Record getRecordByName(String name) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.getRecordByName(name, SqlConnection.getInstance().getConnection());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
     public boolean isFavorTableExist() {
         try {
             SqlConnection.getInstance().connect(databasePath);

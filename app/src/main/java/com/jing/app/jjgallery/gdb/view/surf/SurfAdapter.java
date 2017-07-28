@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordHolder;
 import com.jing.app.jjgallery.http.bean.data.FileBean;
+import com.jing.app.jjgallery.util.FormatUtil;
 import com.king.service.gdb.bean.Record;
-import com.king.service.gdb.bean.RecordOneVOne;
 
 import java.util.List;
 
@@ -26,15 +26,15 @@ public class SurfAdapter extends RecyclerView.Adapter {
 
     private final int TYPE_FILE = 2;
 
-    private List<FileBean> list;
+    private List<SurfFileBean> list;
 
     private OnSurfItemActionListener onSurfItemActionListener;
 
-    public SurfAdapter(List<FileBean> list) {
+    public SurfAdapter(List<SurfFileBean> list) {
         this.list = list;
     }
 
-    public void setList(List<FileBean> list) {
+    public void setList(List<SurfFileBean> list) {
         this.list = list;
     }
 
@@ -67,17 +67,27 @@ public class SurfAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        SurfFileBean bean = list.get(position);
         if (holder instanceof FolderHolder) {
             FolderHolder fHolder = (FolderHolder) holder;
-            fHolder.tvName.setText(list.get(position).getName());
-            fHolder.groupFolder.setTag(list.get(position));
+            fHolder.tvName.setText(bean.getName());
+            fHolder.tvSize.setText(FormatUtil.formatSize(bean.getSize()));
+            fHolder.tvDate.setText(FormatUtil.formatDate(bean.getLastModifyTime()));
+            fHolder.tvName.setText(bean.getName());
+            fHolder.groupFolder.setTag(bean);
             fHolder.groupFolder.setOnClickListener(folderListener);
         }
         else {
             RecordHolder rHolder = (RecordHolder) holder;
-            Record record = new RecordOneVOne();
-            record.setName(list.get(position).getName());
-            rHolder.bind(record, position);
+            rHolder.hideIndexView();
+            Record record = bean.getRecord();
+            if (record == null) {
+                rHolder.bind(bean.getName(), bean.getLastModifyTime(), bean.getSize());
+            }
+            else {
+                rHolder.bind(record, position);
+                rHolder.bindExtra(bean.getLastModifyTime(), bean.getSize());
+            }
         }
     }
 
@@ -110,12 +120,16 @@ public class SurfAdapter extends RecyclerView.Adapter {
 
         LinearLayout groupFolder;
         TextView tvName;
+        TextView tvSize;
+        TextView tvDate;
 
         public FolderHolder(View itemView) {
             super(itemView);
 
             groupFolder = (LinearLayout) itemView.findViewById(R.id.group_folder);
             tvName = (TextView) itemView.findViewById(R.id.tv_name);
+            tvSize = (TextView) itemView.findViewById(R.id.tv_size);
+            tvDate = (TextView) itemView.findViewById(R.id.tv_date);
         }
     }
 

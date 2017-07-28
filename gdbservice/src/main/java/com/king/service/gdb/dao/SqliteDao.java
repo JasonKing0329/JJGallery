@@ -931,6 +931,31 @@ public class SqliteDao {
 		return list;
 	}
 
+	public Record getRecordByName(String name, Connection connection) {
+		List<Record> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " WHERE name='" + name + "'";
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parseOneVOneRecords(connection, set, list);
+			return list.get(0);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			return null;
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean isFavorTableExist(Connection connection) {
 		String sql = "SELECT COUNT(*) FROM sqlite_master where type='table' and name='" + TABLE_FAVOR + "'";
 		Statement stmt = null;

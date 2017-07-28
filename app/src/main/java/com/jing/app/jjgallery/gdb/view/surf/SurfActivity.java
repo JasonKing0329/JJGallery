@@ -1,12 +1,12 @@
 package com.jing.app.jjgallery.gdb.view.surf;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -16,15 +16,19 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.presenter.surf.SurfPresenter;
 import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
+import com.jing.app.jjgallery.gdb.view.record.SortDialog;
 import com.jing.app.jjgallery.http.HttpConstants;
 import com.jing.app.jjgallery.http.bean.data.FileBean;
-import com.jing.app.jjgallery.http.bean.response.FolderResponse;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.Record;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,8 +43,6 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     @BindView(R.id.rv_files)
     AutoLoadMoreRecyclerView rvFiles;
-    @BindView(R.id.sr_refresh)
-    SwipeRefreshLayout srRefresh;
     @BindView(R.id.fab_top)
     FloatingActionButton fabTop;
     @BindView(R.id.tv_parent)
@@ -52,6 +54,9 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     private FileBean currentFileBean;
     private SurfAdapter surfAdapter;
+    private List<SurfFileBean> surfFileList;
+    private int currentSortMode;
+    private boolean currentSortDesc;
 
     @Override
     protected int getContentView() {
@@ -87,13 +92,6 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
             }
         });
 
-        srRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadCurrentFolder();
-            }
-        });
-
         fabTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,25 +117,90 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
     }
 
     @Override
-    public void onRequestFail() {
-        if (srRefresh.isRefreshing()) {
-            srRefresh.setRefreshing(false);
+    public void onBackPressed() {
+        if (currentFileBean != null && currentFileBean.getParentBean() != null) {
+            onBackClicked();
         }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.gdb_surf, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_gdb_surf_relate:
+                presenter.relateToDatabase(surfFileList);
+                break;
+            case R.id.menu_gdb_surf_sort:
+                showSortDialog();
+                break;
+            case R.id.menu_gdb_surf_refresh:
+                loadCurrentFolder();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSortDialog() {
+        SortDialog sortDialog = new SortDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+
+            @Override
+            public boolean onSave(Object object) {
+                Map<String, Object> map = (Map<String, Object>) object;
+                currentSortMode = (int) map.get("sortMode");
+                currentSortDesc = (Boolean) map.get("desc");
+                presenter.sortFileList(surfFileList, currentSortMode, currentSortDesc);
+                return true;
+            }
+
+            @Override
+            public boolean onCancel() {
+                return false;
+            }
+
+            @Override
+            public void onLoadData(HashMap<String, Object> data) {
+                data.put("sortMode", currentSortMode);
+                data.put("desc", currentSortDesc);
+            }
+        });
+        sortDialog.show();
+    }
+
+    @Override
+    public void onRequestFail() {
         dismissProgress();
         showToastLong(getString(R.string.gdb_request_fail));
     }
 
     @Override
-    public void onFolderReceived(FolderResponse bean) {
-        updateSurfList(bean.getFileList());
-        if (srRefresh.isRefreshing()) {
-            srRefresh.setRefreshing(false);
-        }
+    public void onFolderReceived(List<SurfFileBean> list) {
+        surfFileList = list;
+        updateSurfList(list);
         dismissProgress();
     }
 
+    @Override
+    public void onRecordRelated(int index) {
+        if (!isDestroyed()) {
+            surfAdapter.notifyItemChanged(index);
+        }
+    }
+
+    @Override
+    public void onSortFinished() {
+        surfAdapter.notifyDataSetChanged();
+    }
+
     @OnClick(R.id.group_folder)
-    public void onViewClicked() {
+    public void onBackClicked() {
         currentFileBean = currentFileBean.getParentBean();
         loadCurrentFolder();
     }
@@ -146,10 +209,10 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
         showProgress(getString(R.string.loading));
         DebugLog.e(currentFileBean.getPath());
         if (HttpConstants.FOLDER_TYPE_CONTENT.equals(currentFileBean.getPath())) {
-            presenter.surf(HttpConstants.FOLDER_TYPE_CONTENT, null);
+            presenter.surf(HttpConstants.FOLDER_TYPE_CONTENT, null, SettingProperties.isGdbSurfRelated());
         }
         else {
-            presenter.surf(HttpConstants.FOLDER_TYPE_FOLDER, currentFileBean.getPath());
+            presenter.surf(HttpConstants.FOLDER_TYPE_FOLDER, currentFileBean.getPath(), SettingProperties.isGdbSurfRelated());
         }
 
         if (currentFileBean.getParentBean() == null) {
@@ -211,13 +274,13 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
         return anim;
     }
 
-    public void updateSurfList(List<FileBean> fileList) {
+    public void updateSurfList(List<SurfFileBean> list) {
         if (surfAdapter == null) {
-            surfAdapter = new SurfAdapter(fileList);
+            surfAdapter = new SurfAdapter(list);
             surfAdapter.setOnSurfItemActionListener(this);
             rvFiles.setAdapter(surfAdapter);
         } else {
-            surfAdapter.setList(fileList);
+            surfAdapter.setList(list);
             surfAdapter.notifyDataSetChanged();
         }
     }
@@ -232,7 +295,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     @Override
     public void onClickSurfRecord(Record record) {
-        if (record.getId() != 0) {
+        if (record != null) {
             ActivityManager.startGdbRecordActivity(this, record);
         }
     }

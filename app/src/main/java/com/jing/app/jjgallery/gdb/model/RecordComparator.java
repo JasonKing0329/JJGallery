@@ -13,8 +13,8 @@ import java.util.Comparator;
 
 public class RecordComparator implements Comparator<Record> {
 
-    private int sortMode;
-    private boolean desc;
+    private static int sortMode;
+    private static boolean desc;
     public RecordComparator(int sortMode, boolean desc) {
         this.sortMode = sortMode;
         this.desc = desc;
@@ -22,6 +22,24 @@ public class RecordComparator implements Comparator<Record> {
 
     @Override
     public int compare(Record lhs, Record rhs) {
+        return compareRecord(lhs, rhs);
+    }
+
+    public static void setSortMode(int sortMode) {
+        RecordComparator.sortMode = sortMode;
+    }
+
+    public static void setDesc(boolean desc) {
+        RecordComparator.desc = desc;
+    }
+
+    /**
+     * make this static to support be called by other program
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    public static int compareRecord(Record lhs, Record rhs) {
         RecordOneVOne left = null;
         RecordOneVOne right = null;
         if (lhs instanceof RecordOneVOne) {

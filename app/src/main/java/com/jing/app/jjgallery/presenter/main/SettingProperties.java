@@ -727,4 +727,22 @@ public class SettingProperties {
         return mode;
     }
 
+    /**
+     * relate surf to record
+     */
+    public static void setGdbSurfRelated(boolean isRandom) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_SURF_RELATE, isRandom);
+        editor.commit();
+    }
+
+    /**
+     * relate surf to record
+     */
+    public static boolean isGdbSurfRelated() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_SURF_RELATE, true);
+    }
+
 }

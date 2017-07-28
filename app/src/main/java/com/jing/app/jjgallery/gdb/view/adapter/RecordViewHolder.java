@@ -1,7 +1,9 @@
 package com.jing.app.jjgallery.gdb.view.adapter;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
@@ -11,6 +13,7 @@ import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.util.DisplayHelper;
+import com.jing.app.jjgallery.util.FormatUtil;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
@@ -19,6 +22,8 @@ import com.king.service.gdb.bean.Star;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static android.R.attr.name;
 
 /**
  * Created by 景阳 on 2016/8/6 0006.
@@ -46,6 +51,13 @@ public class RecordViewHolder {
     private TextView actorView;
     private ImageView ivPlay;
     private TextView tvNameSimplify;
+    private ViewGroup groupDetails;
+    private ViewGroup groupSimplify;
+    private TextView tvFileSize;
+    private TextView tvFileDate;
+    private ViewGroup groupFileInfo;
+    private TextView tvImgSize;
+    private TextView tvImgDate;
 
     private int nameColorNormal, nameColorBareback;
     private View.OnClickListener onClickListener;
@@ -83,6 +95,13 @@ public class RecordViewHolder {
         scoreExtraView = (TextView) view.findViewById(R.id.record_score_extra);
         actorView = (TextView) view.findViewById(R.id.record_score_actor);
         tvNameSimplify = (TextView) view.findViewById(R.id.tv_name_simplify);
+        groupDetails = (ViewGroup) view.findViewById(R.id.group_details);
+        groupSimplify = (ViewGroup) view.findViewById(R.id.group_simplify);
+        tvFileSize = (TextView) view.findViewById(R.id.tv_file_size);
+        tvFileDate = (TextView) view.findViewById(R.id.tv_file_date);
+        groupFileInfo = (ViewGroup) view.findViewById(R.id.group_file_info);
+        tvImgSize = (TextView) view.findViewById(R.id.tv_img_size);
+        tvImgDate = (TextView) view.findViewById(R.id.tv_img_date);
 
         if (!DisplayHelper.isTabModel(view.getContext())) {
             view.findViewById(R.id.record_show_tablet).setVisibility(View.GONE);
@@ -93,40 +112,49 @@ public class RecordViewHolder {
         return container;
     }
 
+    /**
+     * surf模式下record为null，显示文件名、本地图片、文件大小、last modify time
+     * @param name
+     * @param lastModifyTime
+     * @param size
+     */
+    public void bind(String name, long lastModifyTime, long size) {
+        groupDetails.setVisibility(View.GONE);
+        groupSimplify.setVisibility(View.VISIBLE);
+        groupFileInfo.setVisibility(View.GONE);
+
+        tvNameSimplify.setText(name);
+        ivPlay.setVisibility(View.INVISIBLE);
+        seqView.setVisibility(View.INVISIBLE);
+        tvFileDate.setText(FormatUtil.formatDate(lastModifyTime));
+        tvFileSize.setText(FormatUtil.formatSize(size));
+        bindCommon(null, name);
+    }
+
+    /**
+     * 在图片底部显示size, last modify time
+     * surf模式下record不为空，显示文件大小、last modify time
+     * call this before call bind(Record item, int position, int sortMode)
+     * @param lastModifyTime
+     * @param size
+     */
+    public void bindExtra(long lastModifyTime, long size) {
+        groupFileInfo.setVisibility(View.VISIBLE);
+        tvImgDate.setText(FormatUtil.formatDate(lastModifyTime));
+        tvImgSize.setText(FormatUtil.formatSize(size));
+    }
+
     public void bind(RecordProxy item, int sortMode) {
         bind(item.getRecord(), item.getPositionInHeader(), sortMode);
     }
 
     public void bind(Record item, int position, int sortMode) {
 
-        container.setTag(item);
-        if (onClickListener != null) {
-            container.setOnClickListener(onClickListener);
-        }
+        groupDetails.setVisibility(View.VISIBLE);
+        groupSimplify.setVisibility(View.GONE);
+        groupFileInfo.setVisibility(View.GONE);
 
-        // image
-        String path;
-        if (indexPackage == null) {
-            indexPackage = new GdbImageProvider.IndexPackage();
-            path = GdbImageProvider.getRecordRandomPath(item.getName(), indexPackage);
-        }
-        else {
-            try {
-                path = GdbImageProvider.getRecordPath(item.getName(), indexPackage.index);
-            } catch (Exception e) {
-                path = GdbImageProvider.getRecordRandomPath(item.getName(), indexPackage);
-            }
-        }
-
-        SImageLoader.getInstance().displayImage(path, imageView);
-
-        // record未关联数据库，只显示文件名和图片
-        if (item.getId() == 0) {
-            tvNameSimplify.setText(item.getName());
-            ivPlay.setVisibility(View.INVISIBLE);
-            seqView.setVisibility(View.INVISIBLE);
-            return;
-        }
+        bindCommon(item, item.getName());
 
         // deprecated item
         if (item.getDeprecated() == 1) {
@@ -213,6 +241,29 @@ public class RecordViewHolder {
         }
 
         showSortScore(item, sortMode);
+    }
+
+    private void bindCommon(Record item, String name) {
+        container.setTag(item);
+        if (onClickListener != null) {
+            container.setOnClickListener(onClickListener);
+        }
+
+        // image
+        String path;
+        if (indexPackage == null) {
+            indexPackage = new GdbImageProvider.IndexPackage();
+            path = GdbImageProvider.getRecordRandomPath(name, indexPackage);
+        }
+        else {
+            try {
+                path = GdbImageProvider.getRecordPath(name, indexPackage.index);
+            } catch (Exception e) {
+                path = GdbImageProvider.getRecordRandomPath(name, indexPackage);
+            }
+        }
+
+        SImageLoader.getInstance().displayImage(path, imageView);
     }
 
     private void showSortScore(Record item, int sortMode) {
@@ -342,5 +393,9 @@ public class RecordViewHolder {
         else {
             scoreView.setTextColor(nameColorNormal);
         }
+    }
+
+    public void hideIndexView() {
+        seqView.setVisibility(View.INVISIBLE);
     }
 }

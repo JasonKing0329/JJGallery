@@ -66,6 +66,8 @@ public class SortDialog extends CustomDialog implements AdapterView.OnItemClickL
             , new SortItem("ScoreExtra", PreferenceValue.GDB_SR_ORDERBY_SCORE_EXTRA)
             , new SortItem("Star", PreferenceValue.GDB_SR_ORDERBY_STAR)
             , new SortItem("StarC", PreferenceValue.GDB_SR_ORDERBY_STARC)
+            , new SortItem("File date", PreferenceValue.GDB_SR_ORDERBY_TIME)
+            , new SortItem("File Size", PreferenceValue.GDB_SR_ORDERBY_SIZE)
     };
 
     public SortDialog(Context context, OnCustomDialogActionListener actionListener) {
