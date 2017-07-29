@@ -932,6 +932,10 @@ public class SqliteDao {
 	}
 
 	public Record getRecordByName(String name, Connection connection) {
+		// name里带单引号在sqlite中要作为特殊符号转化
+		if (name.contains("'")) {
+			name = name.replace("'", "''");
+		}
 		List<Record> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " WHERE name='" + name + "'";
 		Statement stmt = null;
