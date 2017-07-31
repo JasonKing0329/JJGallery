@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.viewsystem.main.filesystem;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +25,7 @@ public class FilePathIndicatorView extends HorizontalScrollView
 
 	public interface PathIndicatorListener {
 
-		public void onClickPath(String path);
+		public void onClickPath(int index, String path);
 	}
 
 	private PathIndicatorListener indicatorListener;
@@ -62,7 +63,6 @@ public class FilePathIndicatorView extends HorizontalScrollView
 		addView(container);
 
 		textColor = getResources().getColor(R.color.white);
-		textSize = getResources().getDimensionPixelSize(R.dimen.path_indicator_text_size);
 		indicatorHeight = getResources().getDimensionPixelSize(R.dimen.path_indicator_height);
 	}
 
@@ -134,7 +134,7 @@ public class FilePathIndicatorView extends HorizontalScrollView
 		textView.setGravity(Gravity.CENTER_VERTICAL);
 		textView.setPadding(indicatorPadding, 0, indicatorPadding, 0);
 		textView.setTag(node);
-		textView.setTextSize(textSize);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 		textView.setOnClickListener(this);
 		if (node.getIndex() == 0) {
 			container.addView(textView);
@@ -186,7 +186,7 @@ public class FilePathIndicatorView extends HorizontalScrollView
 		}
 
 		if (indicatorListener != null) {
-			indicatorListener.onClickPath(node.getPath());
+			indicatorListener.onClickPath(node.getIndex(), node.getPath());
 		}
 	}
 

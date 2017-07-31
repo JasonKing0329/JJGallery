@@ -91,8 +91,6 @@ public class SurfFragment extends BaseFragmentV4 {
         else {
             holder.getPresenter().surf(HttpConstants.FOLDER_TYPE_FOLDER, folderBean.getPath(), SettingProperties.isGdbSurfRelated());
         }
-
-        holder.onFolderLoaded(folderBean);
     }
 
     /**

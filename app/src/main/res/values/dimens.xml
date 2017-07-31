@@ -16,8 +16,8 @@
     <dimen name="folderdlg_level_space">36dp</dimen>
     <dimen name="folderdlg_text_left_space">10dp</dimen>
     <dimen name="folderdlg_space_top">50dp</dimen>
-    <dimen name="path_indicator_height">30dp</dimen>
-    <dimen name="path_indicator_text_size">5dp</dimen>
+    <dimen name="path_indicator_height">36dp</dimen>
+    <dimen name="path_indicator_text_size">14dp</dimen>
 
     <!-- spicturepage  -->
     <dimen name="spicture_chooser_item_width">220px</dimen>
@@ -359,4 +359,6 @@
     <dimen name="gdb_record_icon_padding">10dp</dimen>
     <dimen name="dlg_btn_round_height">36dp</dimen>
     <dimen name="dlg_btn_round_radius">18dp</dimen><!--dlg_btn_round_height的1/2-->
+    <dimen name="gdb_path_ind_text">14dp</dimen><!--dlg_btn_round_height的1/2-->
+    <dimen name="gdb_path_ind_padding">15dp</dimen><!--dlg_btn_round_height的1/2-->
 </resources>

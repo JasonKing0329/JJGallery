@@ -2,7 +2,6 @@ package com.jing.app.jjgallery.gdb.view.surf;
 
 import com.jing.app.jjgallery.gdb.presenter.surf.SurfPresenter;
 import com.jing.app.jjgallery.gdb.view.IFragmentHolder;
-import com.jing.app.jjgallery.http.bean.data.FileBean;
 
 /**
  * 描述:
@@ -16,6 +15,4 @@ public interface ISurfHolder extends IFragmentHolder {
     void startProgress();
 
     void endProgress();
-
-    void onFolderLoaded(FileBean fileBean);
 }

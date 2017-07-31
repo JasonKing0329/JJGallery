@@ -7,28 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
-            android:id="@+id/group_folder"
+        <com.jing.app.jjgallery.viewsystem.main.filesystem.FilePathIndicatorView
+            android:id="@+id/path_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:background="?android:attr/selectableItemBackground">
-            <TextView
-                android:id="@+id/tv_parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Content"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_keyboard_return_grey_700_36dp"/>
-        </RelativeLayout>
+            android:background="@color/white_bg"/>
         <RelativeLayout
             android:id="@+id/group_ft_container"
             android:layout_width="match_parent"

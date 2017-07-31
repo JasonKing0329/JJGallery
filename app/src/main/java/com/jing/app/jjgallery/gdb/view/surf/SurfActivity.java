@@ -6,11 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.TextView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
@@ -20,6 +15,7 @@ import com.jing.app.jjgallery.http.HttpConstants;
 import com.jing.app.jjgallery.http.bean.data.FileBean;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
+import com.jing.app.jjgallery.viewsystem.main.filesystem.FilePathIndicatorView;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.Record;
 
@@ -40,10 +36,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
 
     @BindView(R.id.fab_top)
     FloatingActionButton fabTop;
-    @BindView(R.id.tv_parent)
-    TextView tvParent;
-    @BindView(R.id.group_folder)
-    ViewGroup groupFolder;
+    @BindView(R.id.path_indicator)
+    FilePathIndicatorView pathIndicator;
 
     private SurfPresenter presenter;
 
@@ -69,7 +63,15 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     protected void initView() {
         ButterKnife.bind(this);
 
-        groupFolder.setVisibility(View.GONE);
+        pathIndicator.addPath("Content");
+        pathIndicator.setPathIndicatorListener(new FilePathIndicatorView.PathIndicatorListener() {
+            @Override
+            public void onClickPath(int index, String path) {
+                if (index != ftTree.level) {
+                    backToFragment(index);
+                }
+            }
+        });
 
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setHomeButtonEnabled(true);
@@ -89,7 +91,6 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     @Override
     protected void initBackgroundWork() {
 
-
     }
 
     @Override
@@ -101,7 +102,10 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     @Override
     public void onBackPressed() {
         if (ftTree.parent != null) {
-            onBackClicked();
+            if (pathIndicator.isBackable()) {
+                pathIndicator.backToUpper();
+            }
+            backToUpperFragment();
         }
         else {
             super.onBackPressed();
@@ -179,11 +183,6 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
         ftTree.fragment.notifyDataSetChanged();
     }
 
-    @OnClick(R.id.group_folder)
-    public void onBackClicked() {
-        backToUpperFragment();
-    }
-
     @Override
     public void startProgress() {
         showProgress(getString(R.string.loading));
@@ -195,68 +194,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     }
 
     @Override
-    public void onFolderLoaded(FileBean fileBean) {
-        if (fileBean.getParentBean() == null) {
-            if (groupFolder.getVisibility() == View.VISIBLE) {
-                groupFolder.startAnimation(getFollowDisappearAnim());
-            }
-        }
-        else {
-            tvParent.setText(fileBean.getParentBean().getName());
-            if (groupFolder.getVisibility() == View.GONE) {
-                groupFolder.startAnimation(getFollowAppearAnim());
-            }
-        }
-
-    }
-
-    /**
-     * AccelerateDecelerateInterpolator 在动画开始与结束的地方速率改变比较慢，在中间的时候加速
-     AccelerateInterpolator  在动画开始的地方速率改变比较慢，然后开始加速
-     AnticipateInterpolator 开始的时候向后然后向前甩
-     AnticipateOvershootInterpolator 开始的时候向后然后向前甩一定值后返回最后的值
-     BounceInterpolator   动画结束的时候弹起
-     CycleInterpolator 动画循环播放特定的次数，速率改变沿着正弦曲线
-     DecelerateInterpolator 在动画开始的地方快然后慢
-     LinearInterpolator   以常量速率改变
-     OvershootInterpolator    向前甩一定值后再回到原来位置
-     * @return
-     */
-    private Animation getFollowAppearAnim() {
-        groupFolder.setVisibility(View.VISIBLE);
-        Animation anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, -1.0f, Animation.RELATIVE_TO_SELF, 0
-                , Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-        anim.setDuration(1000);
-        anim.setInterpolator(new DecelerateInterpolator());
-        return anim;
-    }
-
-    private Animation getFollowDisappearAnim() {
-        Animation anim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, -1.0f
-                , Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0);
-        anim.setDuration(1000);
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                groupFolder.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        return anim;
-    }
-
-    @Override
     public void onClickSurfFolder(FileBean fileBean) {
+        pathIndicator.addPath(fileBean.getName());
         showNewFragment(fileBean);
     }
 
@@ -288,6 +227,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
         node.fragment.setOnSurfItemActionListener(this);
         node.level = ftTree.level + 1;
         node.parent = ftTree;
+        ftTree.child = node;
         ft.add(R.id.group_ft_container, node.fragment, "SurfFragment_" + node.level).hide(ftTree.fragment);
         ft.commit();
 
@@ -302,8 +242,28 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.show(ftTree.parent.fragment).remove(ftTree.fragment);
             ft.commit();
+            ftTree.child = null;
             ftTree = ftTree.parent;
         }
+    }
+
+    /**
+     * back to fragment at target level
+     * @param level target level should less than current level
+     */
+    private void backToFragment(int level) {
+        SurfFragmentTree tree = ftTree;
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        while (tree != null && level != tree.level) {
+            tree.child = null;
+            ft.hide(tree.fragment);
+            ft.remove(tree.fragment);
+            tree = tree.parent;
+        }
+        tree.child = null;
+        ft.show(tree.fragment);
+
+        ft.commit();
     }
 
     @Override

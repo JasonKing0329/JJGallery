@@ -657,7 +657,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 			}
 		}
 		@Override
-		public void onClickPath(String path) {
+		public void onClickPath(int index, String path) {
 			listController.setCurrentPath(path);
 			showParentItem();
 			listController.findFile();
