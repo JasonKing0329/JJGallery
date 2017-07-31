@@ -29,12 +29,10 @@
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_keyboard_return_grey_700_36dp"/>
         </RelativeLayout>
-        <com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView
-            android:id="@+id/rv_files"
+        <RelativeLayout
+            android:id="@+id/group_ft_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

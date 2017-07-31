@@ -1,8 +1,8 @@
 package com.jing.app.jjgallery.gdb.view.surf;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,13 +15,10 @@ import android.widget.TextView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.presenter.surf.SurfPresenter;
-import com.jing.app.jjgallery.gdb.view.pub.AutoLoadMoreRecyclerView;
 import com.jing.app.jjgallery.gdb.view.record.SortDialog;
 import com.jing.app.jjgallery.http.HttpConstants;
 import com.jing.app.jjgallery.http.bean.data.FileBean;
-import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageLoader;
-import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.king.service.gdb.bean.Record;
@@ -39,10 +36,8 @@ import butterknife.OnClick;
  * <p/>作者：景阳
  * <p/>创建时间: 2017/7/27 10:57
  */
-public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapter.OnSurfItemActionListener {
+public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolder, SurfAdapter.OnSurfItemActionListener {
 
-    @BindView(R.id.rv_files)
-    AutoLoadMoreRecyclerView rvFiles;
     @BindView(R.id.fab_top)
     FloatingActionButton fabTop;
     @BindView(R.id.tv_parent)
@@ -52,11 +47,10 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     private SurfPresenter presenter;
 
-    private FileBean currentFileBean;
-    private SurfAdapter surfAdapter;
-    private List<SurfFileBean> surfFileList;
     private int currentSortMode;
     private boolean currentSortDesc;
+
+    private SurfFragmentTree ftTree;
 
     @Override
     protected int getContentView() {
@@ -67,6 +61,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
     protected void initController() {
         presenter = new SurfPresenter(this);
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.default_cover);
+
+        ftTree = new SurfFragmentTree();
     }
 
     @Override
@@ -80,34 +76,20 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setTitle("Surf");
 
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvFiles.setLayoutManager(manager);
-
-        rvFiles.setEnableLoadMore(true);
-        rvFiles.setOnLoadMoreListener(new AutoLoadMoreRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-
-            }
-        });
-
         fabTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvFiles.scrollToPosition(0);
+                ftTree.fragment.goTop();
             }
         });
+
+        initFragment();
     }
 
     @Override
     protected void initBackgroundWork() {
 
-        currentFileBean = new FileBean();
-        currentFileBean.setPath(HttpConstants.FOLDER_TYPE_CONTENT);
-        currentFileBean.setName(HttpConstants.FOLDER_TYPE_CONTENT);
 
-        loadCurrentFolder();
     }
 
     @Override
@@ -118,7 +100,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     @Override
     public void onBackPressed() {
-        if (currentFileBean != null && currentFileBean.getParentBean() != null) {
+        if (ftTree.parent != null) {
             onBackClicked();
         }
         else {
@@ -136,13 +118,13 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_gdb_surf_relate:
-                presenter.relateToDatabase(surfFileList);
+                presenter.relateToDatabase(ftTree.fragment.getSurfFileList());
                 break;
             case R.id.menu_gdb_surf_sort:
                 showSortDialog();
                 break;
             case R.id.menu_gdb_surf_refresh:
-                loadCurrentFolder();
+                ftTree.fragment.loadFolder();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -156,7 +138,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
                 Map<String, Object> map = (Map<String, Object>) object;
                 currentSortMode = (int) map.get("sortMode");
                 currentSortDesc = (Boolean) map.get("desc");
-                presenter.sortFileList(surfFileList, currentSortMode, currentSortDesc);
+                presenter.sortFileList(ftTree.fragment.getSurfFileList(), currentSortMode, currentSortDesc);
                 return true;
             }
 
@@ -182,46 +164,45 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
 
     @Override
     public void onFolderReceived(List<SurfFileBean> list) {
-        surfFileList = list;
-        updateSurfList(list);
-        dismissProgress();
+        ftTree.fragment.onFolderReceived(list);
     }
 
     @Override
     public void onRecordRelated(int index) {
         if (!isDestroyed()) {
-            surfAdapter.notifyItemChanged(index);
+            ftTree.fragment.notifyItemChanged(index);
         }
     }
 
     @Override
     public void onSortFinished() {
-        surfAdapter.notifyDataSetChanged();
+        ftTree.fragment.notifyDataSetChanged();
     }
 
     @OnClick(R.id.group_folder)
     public void onBackClicked() {
-        currentFileBean = currentFileBean.getParentBean();
-        loadCurrentFolder();
+        backToUpperFragment();
     }
 
-    private void loadCurrentFolder() {
+    @Override
+    public void startProgress() {
         showProgress(getString(R.string.loading));
-        DebugLog.e(currentFileBean.getPath());
-        if (HttpConstants.FOLDER_TYPE_CONTENT.equals(currentFileBean.getPath())) {
-            presenter.surf(HttpConstants.FOLDER_TYPE_CONTENT, null, SettingProperties.isGdbSurfRelated());
-        }
-        else {
-            presenter.surf(HttpConstants.FOLDER_TYPE_FOLDER, currentFileBean.getPath(), SettingProperties.isGdbSurfRelated());
-        }
+    }
 
-        if (currentFileBean.getParentBean() == null) {
+    @Override
+    public void endProgress() {
+        dismissProgress();
+    }
+
+    @Override
+    public void onFolderLoaded(FileBean fileBean) {
+        if (fileBean.getParentBean() == null) {
             if (groupFolder.getVisibility() == View.VISIBLE) {
                 groupFolder.startAnimation(getFollowDisappearAnim());
             }
         }
         else {
-            tvParent.setText(currentFileBean.getParentBean().getName());
+            tvParent.setText(fileBean.getParentBean().getName());
             if (groupFolder.getVisibility() == View.GONE) {
                 groupFolder.startAnimation(getFollowAppearAnim());
             }
@@ -274,23 +255,55 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
         return anim;
     }
 
-    public void updateSurfList(List<SurfFileBean> list) {
-        if (surfAdapter == null) {
-            surfAdapter = new SurfAdapter(list);
-            surfAdapter.setOnSurfItemActionListener(this);
-            rvFiles.setAdapter(surfAdapter);
-        } else {
-            surfAdapter.setList(list);
-            surfAdapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     public void onClickSurfFolder(FileBean fileBean) {
-        fileBean.setParentBean(currentFileBean);
-        currentFileBean = fileBean;
+        showNewFragment(fileBean);
+    }
 
-        loadCurrentFolder();
+    /**
+     * initialize root directory
+     */
+    private void initFragment() {
+        FileBean bean = new FileBean();
+        bean.setPath(HttpConstants.FOLDER_TYPE_CONTENT);
+        bean.setName(HttpConstants.FOLDER_TYPE_CONTENT);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ftTree.fragment = new SurfFragment();
+        ftTree.fragment.setFolder(bean);
+        ftTree.fragment.setOnSurfItemActionListener(this);
+        ft.add(R.id.group_ft_container, ftTree.fragment, "SurfFragment_" + ftTree.level);
+        ft.commit();
+    }
+
+    /**
+     * click sub folder to start a sub-level folder by new fragment
+     * @param fileBean
+     */
+    private void showNewFragment(FileBean fileBean) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        SurfFragmentTree node = new SurfFragmentTree();
+        node.fragment = new SurfFragment();
+        node.fragment.setFolder(fileBean);
+        node.fragment.setOnSurfItemActionListener(this);
+        node.level = ftTree.level + 1;
+        node.parent = ftTree;
+        ft.add(R.id.group_ft_container, node.fragment, "SurfFragment_" + node.level).hide(ftTree.fragment);
+        ft.commit();
+
+        ftTree = node;
+    }
+
+    /**
+     * back to upper folder
+     */
+    private void backToUpperFragment() {
+        if (ftTree.parent != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.show(ftTree.parent.fragment).remove(ftTree.fragment);
+            ft.commit();
+            ftTree = ftTree.parent;
+        }
     }
 
     @Override
@@ -300,4 +313,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, SurfAdapte
         }
     }
 
+    @Override
+    public SurfPresenter getPresenter() {
+        return presenter;
+    }
 }
