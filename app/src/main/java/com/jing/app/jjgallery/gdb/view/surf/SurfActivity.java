@@ -231,6 +231,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
         ft.add(R.id.group_ft_container, node.fragment, "SurfFragment_" + node.level).hide(ftTree.fragment);
         ft.commit();
 
+        // update current node
         ftTree = node;
     }
 
@@ -243,6 +244,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
             ft.show(ftTree.parent.fragment).remove(ftTree.fragment);
             ft.commit();
             ftTree.child = null;
+            // update current node
             ftTree = ftTree.parent;
         }
     }
@@ -264,6 +266,9 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
         ft.show(tree.fragment);
 
         ft.commit();
+
+        // update current node
+        ftTree = tree;
     }
 
     @Override
