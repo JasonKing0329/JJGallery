@@ -15,8 +15,8 @@ import com.jing.app.jjgallery.http.HttpConstants;
 import com.jing.app.jjgallery.http.bean.data.FileBean;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
-import com.jing.app.jjgallery.viewsystem.main.filesystem.FilePathIndicatorView;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
+import com.king.lib.jindicator.IndicatorView;
 import com.king.service.gdb.bean.Record;
 
 import java.util.HashMap;
@@ -27,6 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.R.attr.path;
+
 /**
  * 描述:
  * <p/>作者：景阳
@@ -36,8 +38,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
 
     @BindView(R.id.fab_top)
     FloatingActionButton fabTop;
-    @BindView(R.id.path_indicator)
-    FilePathIndicatorView pathIndicator;
+    @BindView(R.id.indicator)
+    IndicatorView indicatorView;
 
     private SurfPresenter presenter;
 
@@ -63,8 +65,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     protected void initView() {
         ButterKnife.bind(this);
 
-        pathIndicator.addPath("Content");
-        pathIndicator.setPathIndicatorListener(new FilePathIndicatorView.PathIndicatorListener() {
+        indicatorView.addPath("Content");
+        indicatorView.setPathIndicatorListener(new IndicatorView.PathIndicatorListener() {
             @Override
             public void onClickPath(int index, String path) {
                 if (index != ftTree.level) {
@@ -102,8 +104,8 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
     @Override
     public void onBackPressed() {
         if (ftTree.parent != null) {
-            if (pathIndicator.isBackable()) {
-                pathIndicator.backToUpper();
+            if (indicatorView.isBackable()) {
+                indicatorView.backToUpper();
             }
             backToUpperFragment();
         }
@@ -195,7 +197,7 @@ public class SurfActivity extends GBaseActivity implements ISurfView, ISurfHolde
 
     @Override
     public void onClickSurfFolder(FileBean fileBean) {
-        pathIndicator.addPath(fileBean.getName());
+        indicatorView.addPath(fileBean.getName());
         showNewFragment(fileBean);
     }
 

@@ -30,7 +30,6 @@ import com.jing.app.jjgallery.Application;
 import com.jing.app.jjgallery.BasePresenter;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.filesystem.FilePageItem;
-import com.jing.app.jjgallery.bean.filesystem.PathIndicatorNode;
 import com.jing.app.jjgallery.controller.AccessController;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileChangeListener;
 import com.jing.app.jjgallery.presenter.main.filesystem.FileListController;
@@ -42,6 +41,8 @@ import com.jing.app.jjgallery.viewsystem.ProgressProvider;
 import com.jing.app.jjgallery.viewsystem.publicview.ActionBar;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.ShowImageDialog;
+import com.king.lib.jindicator.IndicatorNode;
+import com.king.lib.jindicator.IndicatorView;
 
 import java.io.File;
 import java.util.List;
@@ -53,7 +54,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	private Context context;
 	private View view;
 
-	private FilePathIndicatorView indicatorView;
+	private IndicatorView indicatorView;
 	private ImageView parentView;
 	private TextView nameTagView, timeTagView, imageWHView;
 	private ImageView nameSortIconView, timeSortIconView;
@@ -121,22 +122,22 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 	}
 
 	private void showCurPathView() {
-		List<PathIndicatorNode> pathList = null;
+		List<IndicatorNode> pathList = null;
 		if (indicatorView != null) {
 			indicatorView.setVisibility(View.GONE);
 			pathList = indicatorView.getPathList();//转屏时取出之前的pathList，转屏后新的indicatorView以此初始化indicator
 		}
 
 		if (DisplayHelper.isTabModel(context)) {
-			indicatorView = (FilePathIndicatorView) view.findViewById(R.id.filelist_current_dir_hor);
+			indicatorView = (IndicatorView) view.findViewById(R.id.filelist_current_dir_hor);
 		}
 		else {
 			if (context.getResources().getConfiguration().orientation
 					== android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
-				indicatorView = (FilePathIndicatorView) view.findViewById(R.id.filelist_current_dir_hor);
+				indicatorView = (IndicatorView) view.findViewById(R.id.filelist_current_dir_hor);
 			}
 			else {
-				indicatorView = (FilePathIndicatorView) view.findViewById(R.id.filelist_current_dir);
+				indicatorView = (IndicatorView) view.findViewById(R.id.filelist_current_dir);
 			}
 		}
 		indicatorView.setVisibility(View.VISIBLE);
@@ -375,7 +376,7 @@ public class FileManagerListPage implements IPage, FileChangeListener {
 
 	private class FileListAction implements Callback, OnItemClickListener
 			, OnItemLongClickListener, OnClickListener, OnCheckedChangeListener
-			, FilePathIndicatorView.PathIndicatorListener {
+			, IndicatorView.PathIndicatorListener {
 
 		private Handler handler = null;
 

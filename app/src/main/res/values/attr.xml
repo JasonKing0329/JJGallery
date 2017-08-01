@@ -7,8 +7,6 @@
     <!-- file manager -->
     <attr name="file_manager_upper" format="reference"/>
     <attr name="default_folder" format="reference"/>
-    <attr name="path_indicator_bk" format="reference"/>
-    <attr name="path_indicator_press" format="reference"/>
 
     <!-- file manager -->
     <attr name="circlemenu_color_normal" format="reference"/>

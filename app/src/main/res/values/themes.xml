@@ -7,8 +7,6 @@
 
         <item name="file_manager_upper">@drawable/ic_backup_white_36dp</item>
         <item name="default_folder">@drawable/ic_folder_parent</item>
-        <item name="path_indicator_bk">@drawable/indicator_blue</item>
-        <item name="path_indicator_press">@drawable/indicator_orange</item>
 
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal_dark</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
@@ -58,8 +56,6 @@
 
         <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
         <item name="default_folder">@drawable/default_folder</item>
-        <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
-        <item name="path_indicator_press">@drawable/indicator_orange</item>
 
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal_light</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
@@ -109,8 +105,6 @@
 
         <item name="file_manager_upper">@drawable/ic_backup_black_36dp</item>
         <item name="default_folder">@drawable/default_folder</item>
-        <item name="path_indicator_bk">@drawable/indicator_lightgreen</item>
-        <item name="path_indicator_press">@drawable/indicator_orange</item>
 
         <item name="circlemenu_color_normal">@color/circlemenu_color_normal</item>
         <item name="circlemenu_color_press">@color/custom_dialog_icon_bk_pressed</item>
