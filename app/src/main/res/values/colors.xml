@@ -4,6 +4,22 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="actionbar_dark">#243447</color>
+    <color name="bg_main_dark">#1b2836</color>
+    <color name="text_focus_dark">#1da1f2</color>
+    <color name="text_normal_dark">#ffffff</color>
+    <color name="text_dim_dark">#8899a6</color>
+    <color name="action_icon_dark">#8899a6</color>
+    <color name="action_icon_focus_dark">#1da1f2</color>
+
+    <color name="actionbar">#ffffff</color>
+    <color name="bg_main">#ffffff</color>
+    <color name="text_focus">#1da1f2</color>
+    <color name="text_normal">#14171a</color>
+    <color name="text_dim">#657786</color>
+    <color name="action_icon">#657786</color>
+    <color name="action_icon_focus">#1da1f2</color>
+
     <color name="material_grey_900">#ff212121</color>
     <color name="material_grey_100">#fff5f5f5</color>
 

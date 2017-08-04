@@ -92,6 +92,10 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".gdb.view.star.StarSwipeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".gdb.view.record.RecordActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

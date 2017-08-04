@@ -1,1 +1,1 @@
-include ':app', ':swipebacklayout', ':slidingmenu', ':libcolorpicker', ':prjcolorpicker', ':libresmanager', ':prjsaveasdialog', ':libgifimageview', ':libstickygridheaders', ':flipview', ':gdbservice', ':cardstack', ':shapimageview', ':indicator', ':libtool', ':boommenu'
+include ':app', ':swipebacklayout', ':slidingmenu', ':libcolorpicker', ':prjcolorpicker', ':libresmanager', ':prjsaveasdialog', ':libgifimageview', ':libstickygridheaders', ':flipview', ':gdbservice', ':cardstack', ':shapimageview', ':indicator', ':libtool', ':boommenu', ':jindicator'

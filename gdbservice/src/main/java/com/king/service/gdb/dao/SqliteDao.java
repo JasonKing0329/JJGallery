@@ -802,6 +802,31 @@ public class SqliteDao {
 		}
 	}
 
+	public List<Star> getRandomStars(int number, Connection connection) {
+		List<Star> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_STAR + " ORDER BY RANDOM() limit " + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			while (set.next()) {
+				Star star = parseStar(set);
+				list.add(star);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
     public List<RecordOneVOne> getRandomRecords(int number, Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1 + " ORDER BY RANDOM() limit " + number;

@@ -103,7 +103,7 @@ public class GHomeFragment extends BaseFragmentV4 implements IHomeView, GHomeRec
             listAdapter.setOnStarListener(new GHomeHeader.OnStarListener() {
                 @Override
                 public void onStarGroupClicked() {
-                    ActivityManager.startGDBStarListActivity(getActivity(), null);
+                    ActivityManager.startGDBStarSwipeActivity(getActivity(), null);
                 }
 
                 @Override

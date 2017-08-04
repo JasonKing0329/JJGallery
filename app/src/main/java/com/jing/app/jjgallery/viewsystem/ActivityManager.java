@@ -21,6 +21,7 @@ import com.jing.app.jjgallery.gdb.view.game.SeasonActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.CrossActivity;
 import com.jing.app.jjgallery.gdb.view.record.RecordListActivity;
 import com.jing.app.jjgallery.gdb.view.star.StarListActivity;
+import com.jing.app.jjgallery.gdb.view.star.StarSwipeActivity;
 import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageConstants;
@@ -94,11 +95,19 @@ public class ActivityManager {
     }
 
     public static boolean startGDBStarListActivity(Activity from, Bundle bundle) {
-        if (!new File(ConfManager.GDB_DB_PATH).exists()) {
-            ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
-            return false;
-        }
         Intent intent = new Intent().setClass(from, StarListActivity.class);
+        if (bundle == null) {
+            from.startActivity(intent);
+            applyAnimation(from);
+        }
+        else {
+            ActivityCompat.startActivity(from, intent, bundle);
+        }
+        return true;
+    }
+
+    public static boolean startGDBStarSwipeActivity(Activity from, Bundle bundle) {
+        Intent intent = new Intent().setClass(from, StarSwipeActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

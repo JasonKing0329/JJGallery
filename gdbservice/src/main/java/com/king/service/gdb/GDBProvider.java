@@ -185,10 +185,10 @@ public class GDBProvider {
      * 加载star对应的record数量
      * @param star
      */
-    public void loadStarRecordNumber(Star star) {
+    public void loadStarRecords(Star star) {
         try {
             SqlConnection.getInstance().connect(databasePath);
-            sqliteDao.loadStarRecordNumber(SqlConnection.getInstance().getConnection(), star);
+            sqliteDao.loadStarRecords(SqlConnection.getInstance().getConnection(), star);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -214,6 +214,22 @@ public class GDBProvider {
             SqlConnection.getInstance().connect(databasePath);
             StarCountBean star = sqliteDao.queryFavorStarCount(SqlConnection.getInstance().getConnection());
             return star;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * 随机查询star
+     * @return
+     */
+    public List<Star> getRandomStars(int number) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            return sqliteDao.getRandomStars(number, SqlConnection.getInstance().getConnection());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
