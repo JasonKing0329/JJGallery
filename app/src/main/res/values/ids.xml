@@ -8,4 +8,6 @@
     <item type="id" name="card_menu_item_viewholder"></item>
 
     <item type="id" name="starmap_child_tag_region"></item>
+
+    <item type="id" name="gdb_swipe_star_tag"></item>
 </resources>

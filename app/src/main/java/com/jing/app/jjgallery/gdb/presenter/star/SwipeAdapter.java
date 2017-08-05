@@ -25,9 +25,14 @@ public class SwipeAdapter extends BaseAdapter {
 
     private List<StarProxy> list;
     private Random random;
+    private OnSwipeItemListener onSwipeItemListener;
 
     public SwipeAdapter() {
         random = new Random();
+    }
+
+    public void setOnSwipeItemListener(OnSwipeItemListener onSwipeItemListener) {
+        this.onSwipeItemListener = onSwipeItemListener;
     }
 
     public void setList(List<StarProxy> list) {
@@ -58,6 +63,7 @@ public class SwipeAdapter extends BaseAdapter {
             holder.ivRecord = (ImageView) convertView.findViewById(R.id.iv_record);
             holder.ivStar = (ImageView) convertView.findViewById(R.id.iv_star);
             holder.tvStarName = (TextView) convertView.findViewById(R.id.tv_star_name);
+            holder.ivFavor = (ImageView) convertView.findViewById(R.id.iv_favor);
             convertView.setTag(holder);
         }
         else {
@@ -73,13 +79,38 @@ public class SwipeAdapter extends BaseAdapter {
             String path = GdbImageProvider.getRecordRandomPath(list.get(index).getName(), null);
             SImageLoader.getInstance().displayImage(path, holder.ivRecord);
         }
-        
+
+        if (star.getFavorBean() != null) {
+            holder.ivFavor.setVisibility(View.VISIBLE);
+            holder.ivFavor.setSelected(true);
+        }
+        else {
+            holder.ivFavor.setVisibility(View.GONE);
+        }
+
+        holder.ivStar.setTag(R.id.gdb_swipe_star_tag, star);
+        holder.ivStar.setOnClickListener(starListener);
         return convertView;
     }
+
+    private View.OnClickListener starListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onSwipeItemListener != null) {
+                StarProxy star = (StarProxy) view.getTag(R.id.gdb_swipe_star_tag);
+                onSwipeItemListener.onClickStar(star);
+            }
+        }
+    };
 
     private class ViewHolder {
         ImageView ivRecord;
         ImageView ivStar;
         TextView tvStarName;
+        ImageView ivFavor;
+    }
+
+    public interface OnSwipeItemListener {
+        void onClickStar(StarProxy star);
     }
 }

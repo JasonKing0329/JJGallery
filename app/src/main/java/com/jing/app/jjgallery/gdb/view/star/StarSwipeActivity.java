@@ -1,5 +1,6 @@
 package com.jing.app.jjgallery.gdb.view.star;
 
+import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.jing.app.jjgallery.gdb.presenter.star.SwipeAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordsListAdapter;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.swipeview.SwipeFlingAdapterView;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
+import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
@@ -70,13 +73,57 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                 adapter.notifyDataSetChanged();
             }
 
+            /**
+             * not favor or cancel favor
+             * @param dataObject
+             */
             @Override
             public void onLeftCardExit(Object dataObject) {
+                final StarProxy star = (StarProxy) dataObject;
+                if (star.getFavorBean() != null) {
+                    new DefaultDialogManager().showOptionDialog(StarSwipeActivity.this, null, "Are you sure to make " + star.getStar().getName() + " unfavor?"
+                            , getString(R.string.ok), null, getString(R.string.cancel)
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (i == DialogInterface.BUTTON_POSITIVE) {
+                                        FavorBean bean = new FavorBean();
+                                        bean.setStarId(star.getStar().getId());
+                                        bean.setFavor(0);
+                                        bean.setStarName(star.getStar().getName());
+                                        presenter.saveFavor(bean);
+                                    }
+                                }
+                            }, null);
+                }
                 updateRecords();
             }
 
+            /**
+             * mark favor if not already be favored
+             * @param dataObject
+             */
             @Override
             public void onRightCardExit(Object dataObject) {
+                final StarProxy star = (StarProxy) dataObject;
+                if (star.getFavorBean() == null) {
+                    new DefaultDialogManager().openInputDialog(StarSwipeActivity.this, "Mark favor to " + star.getStar().getName()
+                            , new DefaultDialogManager.OnDialogActionListener() {
+                                @Override
+                                public void onOk(String name) {
+                                    try {
+                                        int favor = Integer.parseInt(name);
+                                        FavorBean bean = new FavorBean();
+                                        bean.setStarId(star.getStar().getId());
+                                        bean.setFavor(favor);
+                                        bean.setStarName(star.getStar().getName());
+                                        presenter.saveFavor(bean);
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                    });
+                }
                 updateRecords();
             }
 
@@ -103,6 +150,12 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         if (adapter == null) {
             adapter = new SwipeAdapter();
             adapter.setList(list);
+            adapter.setOnSwipeItemListener(new SwipeAdapter.OnSwipeItemListener() {
+                @Override
+                public void onClickStar(StarProxy star) {
+                    ActivityManager.startStarActivity(StarSwipeActivity.this, star.getStar());
+                }
+            });
             sfvStars.setAdapter(adapter);
 
             updateRecords();
@@ -127,7 +180,7 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
             recordsListAdapter.notifyDataSetChanged();
         }
 
-        if (star.getRecordList().size() == 0) {
+        if (star.getRecordList() == null || star.getRecordList().size() == 0) {
             rvRecords.setVisibility(View.GONE);
         } else {
             rvRecords.setVisibility(View.VISIBLE);

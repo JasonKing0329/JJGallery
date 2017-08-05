@@ -6,7 +6,6 @@ import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.view.star.IStarSwipeView;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.FavorBean;
-import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
@@ -102,7 +101,9 @@ public class StarSwipePresenter {
                 });
     }
 
-    public void loadRecordList(Star star) {
-        gdbProvider.loadStarRecords(star);
+    public void saveFavor(FavorBean bean) {
+        favorProvider.saveFavor(bean);
+        gdbProvider.saveFavor(bean);
     }
+
 }

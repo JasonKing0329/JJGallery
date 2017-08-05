@@ -321,4 +321,10 @@
     <dimen name="gdb_record_icon_padding">15dp</dimen>
     <dimen name="dlg_btn_round_height">60dp</dimen>
     <dimen name="dlg_btn_round_radius">30dp</dimen><!--dlg_btn_round_height的1/2-->
+    <dimen name="gdb_swipe_star_circle_size">200dp</dimen>
+    <dimen name="gdb_swipe_star_circle_top">280dp</dimen><!--gdb_star_header_height - gdb_swipe_star_circle_size + 30-->
+    <dimen name="gdb_swipe_star_name_top">180dp</dimen>
+    <dimen name="gdb_swipe_star_name_text">30dp</dimen>
+    <dimen name="gdb_swipe_action_height">70dp</dimen>
+    <dimen name="gdb_swipe_head_height">520dp</dimen><!--gdb_star_header_height + gdb_swipe_action_height-->
 </resources>

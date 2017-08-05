@@ -6,7 +6,7 @@
     <com.jing.app.jjgallery.viewsystem.publicview.swipeview.SwipeFlingAdapterView
         android:id="@+id/sfv_stars"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="@dimen/gdb_swipe_head_height"
         android:background="@color/transparent"
         app:rotation_degrees="16"
         app:max_visible="1"
@@ -21,13 +21,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/gdb_swipe_action_height"
         android:layout_alignBottom="@id/sfv_stars">
         <ImageView
             android:id="@+id/iv_list"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="13dp"
+            android:layout_width="@dimen/actionbar_icon_width"
+            android:layout_height="@dimen/actionbar_icon_width"
+            android:padding="@dimen/actionbar_icon_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_apps_purple_200_36dp"
             android:layout_alignParentRight="true"
@@ -36,9 +36,9 @@
             android:layout_centerVertical="true"/>
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="13dp"
+            android:layout_width="@dimen/actionbar_icon_width"
+            android:layout_height="@dimen/actionbar_icon_width"
+            android:padding="@dimen/actionbar_icon_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_arrow_back_purple_36dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
