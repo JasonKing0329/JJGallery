@@ -4,13 +4,16 @@ import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.star.StarSwipePresenter;
 import com.jing.app.jjgallery.gdb.presenter.star.SwipeAdapter;
+import com.jing.app.jjgallery.gdb.view.adapter.RecordCardAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordsListAdapter;
+import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.swipeview.SwipeFlingAdapterView;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
@@ -34,14 +37,19 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
 
     @BindView(R.id.rv_records)
     RecyclerView rvRecords;
+    @BindView(R.id.rv_records_hor)
+    RecyclerView rvRecordsHor;
     @BindView(R.id.sfv_stars)
     SwipeFlingAdapterView sfvStars;
+    @BindView(R.id.iv_orientation)
+    ImageView ivOrientation;
 
     private StarSwipePresenter presenter;
     private SwipeAdapter adapter;
     private List<StarProxy> starList;
 
     private RecordsListAdapter recordsListAdapter;
+    private RecordCardAdapter recordCardAdapter;
 
     @Override
     protected int getContentView() {
@@ -64,6 +72,14 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         rvRecords.setLayoutManager(manager);
 
+        manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvRecordsHor.setLayoutManager(manager);
+
+        boolean isHorizontal = SettingProperties.isGdbSwipeListHorizontal();
+        rvRecordsHor.setVisibility(isHorizontal ? View.VISIBLE:View.GONE);
+        rvRecords.setVisibility(isHorizontal ? View.GONE:View.VISIBLE);
+        
         sfvStars.setMinStackInAdapter(3);
         sfvStars.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
@@ -166,6 +182,43 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
 
     private void updateRecords() {
         Star star = starList.get(0).getStar();
+        if (SettingProperties.isGdbSwipeListHorizontal()) {
+            rvRecords.setVisibility(View.GONE);
+            updateHorizontalList(star);
+        }
+        else {
+            rvRecordsHor.setVisibility(View.GONE);
+            updateVerticalList(star);
+        }
+        sfvStars.invalidate();
+        sfvStars.requestLayout();
+    }
+
+    private void updateHorizontalList(Star star) {
+        if (recordCardAdapter == null) {
+            recordCardAdapter = new RecordCardAdapter();
+            recordCardAdapter.setOnCardActionListener(new RecordCardAdapter.OnCardActionListener() {
+                @Override
+                public void onClickCardItem(Record record) {
+                    ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record);
+                }
+            });
+            recordCardAdapter.setRecordList(star.getRecordList());
+            recordCardAdapter.setCurrentStar(star);
+            rvRecordsHor.setAdapter(recordCardAdapter);
+        } else {
+            recordCardAdapter.setRecordList(star.getRecordList());
+            recordCardAdapter.notifyDataSetChanged();
+        }
+
+        if (star.getRecordList() == null || star.getRecordList().size() == 0) {
+            rvRecordsHor.setVisibility(View.GONE);
+        } else {
+            rvRecordsHor.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateVerticalList(Star star) {
         if (recordsListAdapter == null) {
             recordsListAdapter = new RecordsListAdapter(this, star.getRecordList());
             recordsListAdapter.setItemClickListener(new RecordsListAdapter.OnRecordItemClickListener() {
@@ -185,11 +238,9 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         } else {
             rvRecords.setVisibility(View.VISIBLE);
         }
-        sfvStars.invalidate();
-        sfvStars.requestLayout();
     }
 
-    @OnClick({R.id.iv_list, R.id.iv_back})
+    @OnClick({R.id.iv_list, R.id.iv_back, R.id.iv_orientation})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_list:
@@ -198,6 +249,18 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                 break;
             case R.id.iv_back:
                 finish();
+                break;
+            case R.id.iv_orientation:
+                boolean isHorizontal = SettingProperties.isGdbSwipeListHorizontal();
+                if (isHorizontal) {
+                    SettingProperties.setGdbSwipeListOrientation(false);
+                    ivOrientation.setImageResource(R.drawable.ic_panorama_horizontal_3f51b5_36dp);
+                }
+                else {
+                    SettingProperties.setGdbSwipeListOrientation(true);
+                    ivOrientation.setImageResource(R.drawable.ic_panorama_vertical_3f51b5_36dp);
+                }
+                updateRecords();
                 break;
         }
     }

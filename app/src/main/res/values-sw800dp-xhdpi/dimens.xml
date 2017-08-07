@@ -15,19 +15,19 @@
     <dimen name="folderdlg_space_top">200dp</dimen>
     <dimen name="path_indicator_height">48dp</dimen>
     <dimen name="path_indicator_text_size">10dp</dimen>
-    
+
     <!-- spicturepage  -->
     <dimen name="spicture_chooser_item_width">150dp</dimen>
     <dimen name="spicture_chooser_view_width">800px</dimen>
     <dimen name="spicture_chooser_view_height">1000px</dimen>
-    
+
     <!-- login  -->
     <dimen name="login_user_text_width">200dp</dimen>
     <dimen name="login_user_edit_width">400dp</dimen>
     <dimen name="login_ok_width">400dp</dimen>
     <dimen name="login_first_marginTop">200dp</dimen>
     <dimen name="login_row_marginLeft">100dp</dimen>
-    
+
     <!-- mode init  -->
     <dimen name="mode_init_next_padding">7dp</dimen>
     <dimen name="mode_init_next_width">200dp</dimen>
@@ -37,7 +37,7 @@
     <dimen name="mode_init_radio_marginTop">30dp</dimen>
     <dimen name="mode_init_title_marginTop">50dp</dimen>
     <dimen name="mode_init_hide_marginTop">30dp</dimen>
-    
+
     <!-- soderpage  -->
     <dimen name="sorder_grid_space_x">20dp</dimen>
     <dimen name="sorder_grid_space_y">20dp</dimen>
@@ -54,17 +54,17 @@
     <dimen name="sorder_expan_item_cover_size">60dp</dimen>
     <dimen name="sorder_expan_item_image_size">50dp</dimen>
     <dimen name="sorder_expan_preview_size">60dp</dimen><!-- just a little bigger than sorder_expan_item_image_size -->
-    
+
     <dimen name="sorder_preview_width">70dp</dimen>
     <dimen name="sorder_preview_space">2dp</dimen>
-    
+
     <dimen name="sorder_cover_menu_width">110dp</dimen>
     <dimen name="sorder_cover_menu_width_small">110dp</dimen>
     <dimen name="sorder_cover_menu_textSize">10dp</dimen>
     <dimen name="sorder_cover_menu_padding">7dp</dimen>
     <!-- soderpage  -->
     <dimen name="rgame_image_thread_width">250dp</dimen>
-    
+
     <dimen name="thumbfolder_image_width">170dp</dimen>
     <dimen name="thumbfolder_cbox_width">40dp</dimen>
     <dimen name="thumbfolder_grid_item_width">140dp</dimen>
@@ -77,12 +77,12 @@
     <dimen name="thumbfolder_index_control_width">40dp</dimen>
     <dimen name="thumbfolder_upper_height">70dp</dimen>
     <dimen name="thumbfolder_upper_icon_size">50dp</dimen>
-    
+
     <dimen name="spicture_view_height">1001dp</dimen>
-    
+
     <dimen name="fullscreen_toolbar_height">70dp</dimen>
     <dimen name="fullscreen_toolbar_more_popup_width">300dp</dimen>
-    
+
     <dimen name="page_index_layout_width">50dp</dimen>
     <dimen name="page_index_padding">5dp</dimen>
     <dimen name="page_index_bk_size">40dp</dimen>
@@ -92,7 +92,7 @@
     <dimen name="page_index_fixgrid_item_width_large">50dp</dimen>
     <dimen name="page_index_padding_hor">20dp</dimen>
     <dimen name="page_index_padding_ver">10dp</dimen>
-    
+
     <dimen name="sorder_chooser_title_size">35dp</dimen>
     <dimen name="sorder_chooser_title_magin_left">20dp</dimen>
     <dimen name="sorder_chooser_add_size">50dp</dimen>
@@ -100,7 +100,7 @@
     <dimen name="sorder_chooser_search_width">300dp</dimen>
     <dimen name="sorder_chooser_search_height">56dp</dimen>
     <dimen name="sorder_chooser_close_size">50dp</dimen>
-    
+
     <dimen name="sorder_multicover_cascade_width">130dp</dimen>
     <dimen name="sorder_multicover_cascade_height">130dp</dimen>
 
@@ -130,13 +130,13 @@
     <dimen name="tabactionbar_icon_max_width">350dp</dimen><!-- actionbar_icon_width * 5 -->
     <dimen name="actionbar_icon_max_width">350dp</dimen><!-- actionbar_icon_width * 5 -->
     <dimen name="showimagedialog_icon_width">70dp</dimen>
-    
+
     <dimen name="custom_dialog_toolbar_icon">50dp</dimen>
     <dimen name="custom_dialog_title_frame_radius">12dp</dimen>
     <dimen name="custom_dialog_icon_frame_radius">25dp</dimen>
     <dimen name="custom_dialog_search_height">50dp</dimen>
     <dimen name="custom_dialog_title_text_size">35dp</dimen>
-    
+
     <!-- wall -->
     <dimen name="wall_item_image_width">320dp</dimen>
     <dimen name="wall_item_image_height">190dp</dimen>
@@ -183,7 +183,7 @@
     <dimen name="game_team_turndata_title_edit_width">180dp</dimen>
     <dimen name="game_team_turndata_item_margin_hor">20dp</dimen>
     <dimen name="game_team_turndata_item_margin_ver">20dp</dimen>
-    
+
     <dimen name="mainview_browser_icon_size">70dp</dimen>
     <!-- time line -->
     <dimen name="timeline_indicator_padding">10dp</dimen>
@@ -199,7 +199,7 @@
     <dimen name="timeline_indicator_text_num_size">18sp</dimen>
     <dimen name="timeline_menu_text_size">20sp</dimen>
     <dimen name="timeline_indicator_height">160dp</dimen>
-    
+
     <!-- guide -->
     <dimen name="guide_line1_left_width">340dp</dimen>
     <dimen name="guide_line1_left_height">540dp</dimen>
@@ -211,7 +211,7 @@
     <dimen name="guide_line3_width">400dp</dimen>
     <dimen name="guide_line3_height">240dp</dimen>
     <dimen name="guide_side_width">30dp</dimen>
-    
+
     <!-- surf -->
     <dimen name="surf_toobar_icon_size">56dp</dimen>
     <dimen name="surf_toobar_icon_padding">8dp</dimen>
@@ -327,4 +327,16 @@
     <dimen name="gdb_swipe_star_name_text">30dp</dimen>
     <dimen name="gdb_swipe_action_height">70dp</dimen>
     <dimen name="gdb_swipe_head_height">520dp</dimen><!--gdb_star_header_height + gdb_swipe_action_height-->
+    <dimen name="gdb_record_card_width">460dp</dimen>
+    <!--1280 - gdb_swipe_head_height - 20 = gdb_record_card_height-->
+    <dimen name="gdb_record_card_height">740dp</dimen>
+    <!--gdb_record_card_width * 9/16 = gdb_record_card_record_height-->
+    <dimen name="gdb_record_card_record_height">258dp</dimen>
+    <dimen name="gdb_record_card_icon_size">160dp</dimen>
+    <!--gdb_record_card_record_height - (gdb_record_card_icon_size - 30) = gdb_record_card_icon_top-->
+    <dimen name="gdb_record_card_icon_top">128dp</dimen>
+    <!--gdb_record_card_bottom_margin_hor*2 + gdb_record_card_bottom_gap*2 + gdb_record_card_bottom_image_size*3 = gdb_record_card_width-->
+    <dimen name="gdb_record_card_bottom_margin_hor">18dp</dimen>
+    <dimen name="gdb_record_card_bottom_gap">2dp</dimen>
+    <dimen name="gdb_record_card_bottom_image_size">140dp</dimen>
 </resources>

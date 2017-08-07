@@ -104,10 +104,12 @@ public class GdbImageProvider {
         List<String> list = new ArrayList<>();
         File file = new File(parent + "/" + name);
         File[] files = file.listFiles();
-        for (File f:files) {
-            list.add(f.getPath());
+        if (files != null) {
+            for (File f:files) {
+                list.add(f.getPath());
+            }
+            Collections.shuffle(list);
         }
-        Collections.shuffle(list);
         return list;
     }
 

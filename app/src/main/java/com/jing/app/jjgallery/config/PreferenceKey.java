@@ -176,4 +176,6 @@ public class PreferenceKey {
     public static final String PREF_GDB_STAR_NAV_ANIM_TIME = "pref_gdb_star_nav_anim_time";
     // relate surf to record
     public static final String PREF_GDB_SURF_RELATE = "pref_gdb_surf_relate";
+    // list orientation of swipe view
+    public static final String PREF_GDB_SWIPE_LIST_ORIENTATION = "pref_gdb_swipe_list_orientation";
 }

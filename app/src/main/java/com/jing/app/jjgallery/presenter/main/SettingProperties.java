@@ -745,4 +745,23 @@ public class SettingProperties {
         return preferences.getBoolean(PreferenceKey.PREF_GDB_SURF_RELATE, true);
     }
 
+    /**
+     * relate surf to record
+     * @param isHorizontal
+     */
+    public static void setGdbSwipeListOrientation(boolean isHorizontal) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_SWIPE_LIST_ORIENTATION, isHorizontal);
+        editor.commit();
+    }
+
+    /**
+     * relate surf to record
+     */
+    public static boolean isGdbSwipeListHorizontal() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_SWIPE_LIST_ORIENTATION, false);
+    }
+
 }

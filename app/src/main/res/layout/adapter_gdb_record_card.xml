@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content" android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/group_card"
+        android:layout_width="@dimen/gdb_record_card_width"
+        android:layout_height="@dimen/gdb_record_card_height"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+        <ImageView
+            android:id="@+id/iv_record"
+            android:layout_width="@dimen/gdb_record_card_width"
+            android:layout_height="@dimen/gdb_record_card_record_height"
+            android:src="@drawable/wall_bk1"
+            android:scaleType="fitXY"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/gdb_record_card_bottom_margin_hor"
+            android:paddingRight="@dimen/gdb_record_card_bottom_margin_hor">
+
+            <com.jing.app.jjgallery.viewsystem.publicview.CircleImageView
+                android:id="@+id/iv_star"
+                android:layout_width="@dimen/gdb_record_card_icon_size"
+                android:layout_height="@dimen/gdb_record_card_icon_size"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/gdb_record_card_icon_top"
+                android:src="@drawable/icon_download"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="4dp"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/iv_star"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="12dp"
+                android:textColor="@color/gray"
+                android:text="sasadlkjgl kjewoaijgoijawjasd sajglkajioewjoit goqiklsad gadsnlkvnasdjkl gjweioaiota saljgijweaiogiuioweq"/>
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="3dp"
+                android:text="534"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/tv_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_score"
+                android:layout_marginTop="3dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="D:/dasg/wefa/dsage/zsd/eegeg"
+                android:textSize="12dp"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tv_scene"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_path"
+                android:layout_marginTop="3dp"
+                android:text="parlour"
+                android:textSize="14dp"
+                android:textColor="@color/gray"/>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_scene"
+                android:layout_marginTop="3dp"
+                android:text="2017-07-31"
+                android:textSize="14dp"
+                android:textColor="@color/gray"/>
+
+            <LinearLayout
+                android:id="@+id/group_frames"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal">
+                <com.github.siyamed.shapeimageview.RoundedImageView
+                    android:id="@+id/iv_frame1"
+                    android:layout_width="@dimen/gdb_record_card_bottom_image_size"
+                    android:layout_height="@dimen/gdb_record_card_bottom_image_size"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_coach"
+                    app:siRadius="5dp"/>
+                <com.github.siyamed.shapeimageview.RoundedImageView
+                    android:id="@+id/iv_frame2"
+                    android:layout_width="@dimen/gdb_record_card_bottom_image_size"
+                    android:layout_height="@dimen/gdb_record_card_bottom_image_size"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="@dimen/gdb_record_card_bottom_gap"
+                    android:src="@drawable/default_coach"
+                    app:siRadius="5dp"/>
+                <com.github.siyamed.shapeimageview.RoundedImageView
+                    android:id="@+id/iv_frame3"
+                    android:layout_width="@dimen/gdb_record_card_bottom_image_size"
+                    android:layout_height="@dimen/gdb_record_card_bottom_image_size"
+                    android:scaleType="fitXY"
+                    android:layout_marginLeft="@dimen/gdb_record_card_bottom_gap"
+                    android:src="@drawable/default_coach"
+                    app:siRadius="5dp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
