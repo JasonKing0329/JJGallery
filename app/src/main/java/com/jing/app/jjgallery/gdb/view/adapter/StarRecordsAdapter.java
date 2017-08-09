@@ -1,6 +1,9 @@
 package com.jing.app.jjgallery.gdb.view.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +31,24 @@ import java.util.Random;
 
 /**
  * Created by Administrator on 2016/7/30 0030.
+ * 采用PullZoomRecyclerView的适配方式
+ * 实际上是基于RecyclerView.Adapter的模式，
+ * PullZoomHeaderHolder作为header部分
+ * RecordHolder作为列表视图的records适配器
+ * CardHolder作为卡片视图的records适配器
+ * 由于所使用的第三方PullZoomRecyclerView只能适配其RecyclerListAdapter方式，并且同意设置了纵向布局
+ * 而UI上是保持header固定，点击header上的按钮进行header下方的卡片/列表模式的切换，卡片是横向布局的，列表是纵向布局的
+ * 因此，只能从adapter的另外两个holder上作切换
+ * 增加isCardMode变量标记当前是否为卡片模式
  */
-public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnClickListener {
+public class StarRecordsAdapter extends RecyclerListAdapter {
+
+    /**
+     * 父类RecyclerListAdapter是靠class来区别view type的，卡片模式下采用了横向recyclerView作为item，这里用这个类作为标记，没有实际功能
+     */
+    private class CardItem {
+
+    }
 
     public interface OnRecordItemClickListener {
         void onClickRecordItem(Record record);
@@ -50,6 +69,11 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
 
     private boolean isStarFavor;
 
+    /**
+     * true卡片模式，false列表模式
+     */
+    private boolean isCardMode;
+
     private List<String> headPathList;
 
     public StarRecordsAdapter(StarProxy star, PullZoomRecyclerView recyclerView) {
@@ -60,19 +84,37 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
         nameColorBareback = recyclerView.getContext().getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(recyclerView.getContext(), true));
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
 
-        addViewType(Record.class, new ViewHolderFactory<RecordHolder>() {
-            @Override
-            public RecordHolder onCreateViewHolder(ViewGroup parent) {
-                RecordHolder holder = new RecordHolder(parent);
-                holder.setParameters(nameColorNormal, nameColorBareback, StarRecordsAdapter.this);
-                return holder;
-            }
-        });
+        isCardMode = SettingProperties.isGdbSwipeListHorizontal();
+
+        /**
+         * header
+         */
         addViewType(TYPE_HEADER, new ViewHolderFactory<PullZoomHeaderHolder>() {
             @Override
             public PullZoomHeaderHolder onCreateViewHolder(ViewGroup parent) {
                 headerHolder = new PullZoomHeaderHolder(parent);
                 return headerHolder;
+            }
+        });
+        /**
+         * 纵向列表
+         */
+        addViewType(Record.class, new ViewHolderFactory<RecordHolder>() {
+            @Override
+            public RecordHolder onCreateViewHolder(ViewGroup parent) {
+                RecordHolder holder = new RecordHolder(parent);
+                holder.setParameters(nameColorNormal, nameColorBareback, recordItemListener);
+                return holder;
+            }
+        });
+        /**
+         * 横向卡片
+         */
+        addViewType(CardItem.class, new ViewHolderFactory<CardHolder>() {
+            @Override
+            public CardHolder onCreateViewHolder(ViewGroup parent) {
+                CardHolder holder = new CardHolder(parent);
+                return holder;
             }
         });
 
@@ -92,15 +134,32 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
 
     @Override
     public Object getItem(int position) {
+        // 第0个item固定为header
         if (position == 0) {
             return ITEM_HEADER;
         }
-        return listData.get(--position);
+        // 卡片模式下一共只有2个item，第2个即为横向卡片布局，父类的getItemViewType是通过对象.getClass来判断ViewHolder类型的
+        // 返回CardItem对象
+        if (isCardMode) {
+            return new CardItem();
+        }
+        // 列表模式下返回Record对象
+        else {
+            return listData.get(--position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return listData.size() + 1;
+
+        // 卡片模式下一共只有2个item，第一个为header，第2个即为横向卡片布局
+        if (isCardMode) {
+            return 2;
+        }
+        // 列表模式下第一个为header，后面的是纵向的record item
+        else {
+            return listData.size() + 1;
+        }
     }
 
     /**
@@ -119,20 +178,28 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             headerHolder = (PullZoomHeaderHolder) holder;
             super.onBindViewHolder(holder, position);
         }
-        else {
+        // 列表模式item
+        else if (holder instanceof RecordHolder) {
             RecordHolder vh = (RecordHolder) holder;
             vh.setSortMode(sortMode);
             vh.bind(listData.get(position - 1), position - 1);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (itemClickListener != null) {
-            Record record = (Record) v.getTag();
-            itemClickListener.onClickRecordItem(record);
+        // 卡片模式item，刷新整个横向recyclerView
+        else if (holder instanceof CardHolder) {
+            CardHolder ch = (CardHolder) holder;
+            ch.bind(null, 1);
         }
     }
+
+    private View.OnClickListener recordItemListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (itemClickListener != null) {
+                Record record = (Record) v.getTag();
+                itemClickListener.onClickRecordItem(record);
+            }
+        }
+    };
 
     public void refreshBanner() {
         headerHolder.initBanner(headPathList);
@@ -141,6 +208,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
     private class PullZoomHeaderHolder extends RecyclerListAdapter.ViewHolder<Object> {
         private ImageView zoomView;
         private ImageView ivFavor;
+        private ImageView ivCardMode;
         private ImageView ivSetting;
         private ViewGroup zoomHeaderContainer;
         private TextView nameView;
@@ -158,6 +226,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             super(view);
             zoomView = (ImageView) view.findViewById(R.id.gdb_star_header_image);
             ivSetting = (ImageView) view.findViewById(R.id.iv_setting);
+            ivCardMode = (ImageView) view.findViewById(R.id.iv_card_mode);
             lmBanners = (LMBanners) view.findViewById(R.id.lmbanner);
             ivFavor = (ImageView) view.findViewById(R.id.iv_favor);
             zoomHeaderContainer = (ViewGroup) view.findViewById(R.id.gdb_star_header_container);
@@ -166,6 +235,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             typeView = (TextView) view.findViewById(R.id.gdb_star_header_type);
             scoreView = (TextView) view.findViewById(R.id.gdb_star_header_score);
             cscoreView = (TextView) view.findViewById(R.id.gdb_star_header_cscore);
+            updateCardModeIcon();
             initHeadPart();
         }
 
@@ -285,6 +355,32 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
                     itemClickListener.showAnimSetting();
                 }
             });
+
+            ivCardMode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (SettingProperties.isGdbSwipeListHorizontal()) {
+                        SettingProperties.setGdbSwipeListOrientation(false);
+                        isCardMode = false;
+                    }
+                    else {
+                        SettingProperties.setGdbSwipeListOrientation(true);
+                        isCardMode = true;
+                    }
+                    updateCardModeIcon();
+                    notifyDataSetChanged();
+                }
+            });
+        }
+
+        private void updateCardModeIcon() {
+            boolean isHorizontal = SettingProperties.isGdbSwipeListHorizontal();
+            if (isHorizontal) {
+                ivCardMode.setImageResource(R.drawable.ic_panorama_vertical_white_36dp);
+            }
+            else {
+                ivCardMode.setImageResource(R.drawable.ic_panorama_horizontal_white_36dp);
+            }
         }
     }
 
@@ -296,6 +392,43 @@ public class StarRecordsAdapter extends RecyclerListAdapter implements View.OnCl
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_star);
             SImageLoader.getInstance().displayImage(path, imageView);
             return view;
+        }
+    }
+
+    private class CardHolder extends RecyclerListAdapter.ViewHolder {
+
+        RecyclerView recyclerView;
+        private RecordCardAdapter adapter;
+
+        public CardHolder(@NonNull ViewGroup parent) {
+            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_gdb_star_record_card_parent, parent, false));
+            recyclerView = (RecyclerView) getRootView().findViewById(R.id.rv_records);
+            LinearLayoutManager manager = new LinearLayoutManager(parent.getContext());
+            manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView.setLayoutManager(manager);
+        }
+
+        @Override
+        public void bind(Object item, int position) {
+            if (adapter == null) {
+                adapter = new RecordCardAdapter();
+                adapter.setOnCardActionListener(new RecordCardAdapter.OnCardActionListener() {
+                    @Override
+                    public void onClickCardItem(Record record) {
+                        if (itemClickListener != null) {
+                            itemClickListener.onClickRecordItem(record);
+                        }
+                    }
+                });
+                adapter.setCurrentStar(star.getStar());
+                adapter.setRecordList(listData);
+                recyclerView.setAdapter(adapter);
+            }
+            else {
+                adapter.setCurrentStar(star.getStar());
+                adapter.setRecordList(listData);
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }

@@ -7,22 +7,27 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jing.app.jjgallery.R;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.presenter.star.StarSwipePresenter;
 import com.jing.app.jjgallery.gdb.presenter.star.SwipeAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordCardAdapter;
 import com.jing.app.jjgallery.gdb.view.adapter.RecordsListAdapter;
+import com.jing.app.jjgallery.gdb.view.record.SortDialog;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.swipeview.SwipeFlingAdapterView;
+import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +55,9 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
 
     private RecordsListAdapter recordsListAdapter;
     private RecordCardAdapter recordCardAdapter;
+
+    private int currentSortMode = PreferenceValue.GDB_SR_ORDERBY_NONE;
+    private boolean currentSortDesc = true;
 
     @Override
     protected int getContentView() {
@@ -180,8 +188,17 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         }
     }
 
+    private StarProxy getCurrentStar() {
+        try {
+            return starList.get(0);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private void updateRecords() {
-        Star star = starList.get(0).getStar();
+        Star star = getCurrentStar().getStar();
+        presenter.sortRecords(star.getRecordList(), currentSortMode, currentSortDesc);
         if (SettingProperties.isGdbSwipeListHorizontal()) {
             rvRecords.setVisibility(View.GONE);
             updateHorizontalList(star);
@@ -215,6 +232,7 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
             rvRecordsHor.setVisibility(View.GONE);
         } else {
             rvRecordsHor.setVisibility(View.VISIBLE);
+            rvRecordsHor.scrollToPosition(0);
         }
     }
 
@@ -240,7 +258,7 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         }
     }
 
-    @OnClick({R.id.iv_list, R.id.iv_back, R.id.iv_orientation})
+    @OnClick({R.id.iv_list, R.id.iv_back, R.id.iv_orientation, R.id.iv_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_list:
@@ -262,6 +280,43 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                 }
                 updateRecords();
                 break;
+            case R.id.iv_sort:
+                new SortDialog(this, new CustomDialog.OnCustomDialogActionListener() {
+                    @Override
+                    public boolean onSave(Object object) {
+                        Map<String, Object> map = (Map<String, Object>) object;
+                        int sortMode = (int) map.get("sortMode");
+                        boolean desc = (Boolean) map.get("desc");
+                        if (currentSortMode != sortMode || currentSortDesc != desc) {
+                            currentSortMode = sortMode;
+                            currentSortDesc = desc;
+                            refreshRecordList();
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onCancel() {
+                        return false;
+                    }
+
+                    @Override
+                    public void onLoadData(HashMap<String, Object> data) {
+                        data.put("sortMode", currentSortMode);
+                        data.put("desc", currentSortDesc);
+                    }
+                }).show();
+                break;
+        }
+    }
+
+    private void refreshRecordList() {
+        presenter.sortRecords(getCurrentStar().getStar().getRecordList(), currentSortMode, currentSortDesc);
+        if (recordCardAdapter != null) {
+            recordCardAdapter.notifyDataSetChanged();
+        }
+        if (recordsListAdapter != null) {
+            recordsListAdapter.notifyDataSetChanged();
         }
     }
 }

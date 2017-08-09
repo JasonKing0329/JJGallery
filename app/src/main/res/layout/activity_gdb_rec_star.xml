@@ -50,6 +50,14 @@
             style="@style/IvGdpSwipeIcon"
             android:layout_marginLeft="20dp"
             android:src="@drawable/ic_arrow_back_purple_36dp" />
+
+        <ImageView
+            android:id="@+id/iv_sort"
+            style="@style/IvGdpSwipeIcon"
+            android:layout_toRightOf="@id/iv_back"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_sort_by_alpha_purple_200_36dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>

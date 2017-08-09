@@ -1,14 +1,18 @@
 package com.jing.app.jjgallery.gdb.presenter.star;
 
 import com.jing.app.jjgallery.config.DBInfor;
+import com.jing.app.jjgallery.config.PreferenceValue;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
+import com.jing.app.jjgallery.gdb.model.RecordComparator;
 import com.jing.app.jjgallery.gdb.view.star.IStarSwipeView;
 import com.king.service.gdb.GDBProvider;
 import com.king.service.gdb.bean.FavorBean;
+import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +108,12 @@ public class StarSwipePresenter {
     public void saveFavor(FavorBean bean) {
         favorProvider.saveFavor(bean);
         gdbProvider.saveFavor(bean);
+    }
+
+    public void sortRecords(List<Record> recordList, int sortMode, boolean desc) {
+        if (sortMode != PreferenceValue.GDB_SR_ORDERBY_NONE) {
+            Collections.sort(recordList, new RecordComparator(sortMode, desc));
+        }
     }
 
 }
