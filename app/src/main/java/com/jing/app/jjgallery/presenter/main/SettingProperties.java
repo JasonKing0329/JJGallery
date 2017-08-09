@@ -764,4 +764,23 @@ public class SettingProperties {
         return preferences.getBoolean(PreferenceKey.PREF_GDB_SWIPE_LIST_ORIENTATION, false);
     }
 
+    /**
+     * star record list, card mode
+     * @param cardMode
+     */
+    public static void setGdbStarRecordsCardMode(boolean cardMode) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PreferenceKey.PREF_GDB_STAR_RECORDS_CARD, cardMode);
+        editor.commit();
+    }
+
+    /**
+     * star record list, card mode
+     */
+    public static boolean isGdbStarRecordsCardMode() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(JJApplication.getInstance());
+        return preferences.getBoolean(PreferenceKey.PREF_GDB_STAR_RECORDS_CARD, false);
+    }
+
 }

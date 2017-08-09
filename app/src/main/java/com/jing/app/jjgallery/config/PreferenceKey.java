@@ -178,4 +178,6 @@ public class PreferenceKey {
     public static final String PREF_GDB_SURF_RELATE = "pref_gdb_surf_relate";
     // list orientation of swipe view
     public static final String PREF_GDB_SWIPE_LIST_ORIENTATION = "pref_gdb_swipe_list_orientation";
+    // star record list, card mode
+    public static final String PREF_GDB_STAR_RECORDS_CARD = "pref_gdb_star_records_card";
 }

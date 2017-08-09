@@ -84,7 +84,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
         nameColorBareback = recyclerView.getContext().getResources().getColor(ThemeManager.getInstance().getGdbSRTextColorId(recyclerView.getContext(), true));
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.wall_bk1);
 
-        isCardMode = SettingProperties.isGdbSwipeListHorizontal();
+        isCardMode = SettingProperties.isGdbStarRecordsCardMode();
 
         /**
          * header
@@ -359,12 +359,12 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
             ivCardMode.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (SettingProperties.isGdbSwipeListHorizontal()) {
-                        SettingProperties.setGdbSwipeListOrientation(false);
+                    if (SettingProperties.isGdbStarRecordsCardMode()) {
+                        SettingProperties.setGdbStarRecordsCardMode(false);
                         isCardMode = false;
                     }
                     else {
-                        SettingProperties.setGdbSwipeListOrientation(true);
+                        SettingProperties.setGdbStarRecordsCardMode(true);
                         isCardMode = true;
                     }
                     updateCardModeIcon();
@@ -374,7 +374,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
         }
 
         private void updateCardModeIcon() {
-            boolean isHorizontal = SettingProperties.isGdbSwipeListHorizontal();
+            boolean isHorizontal = SettingProperties.isGdbStarRecordsCardMode();
             if (isHorizontal) {
                 ivCardMode.setImageResource(R.drawable.ic_panorama_vertical_white_36dp);
             }
