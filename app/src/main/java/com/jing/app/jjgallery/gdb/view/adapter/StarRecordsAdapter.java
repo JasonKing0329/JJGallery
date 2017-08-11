@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
     }
 
     public interface OnRecordItemClickListener {
-        void onClickRecordItem(Record record);
+        void onClickRecordItem(Pair<View, String>[] pairs, Record record);
         void onFavorStar(Star star, int score);
         void showAnimSetting();
     }
@@ -196,7 +197,13 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
         public void onClick(View v) {
             if (itemClickListener != null) {
                 Record record = (Record) v.getTag();
-                itemClickListener.onClickRecordItem(record);
+
+                // set anchor views of transition animation
+                Pair<View, String>[] pairs = new Pair[3];
+                pairs[0] = Pair.create(v.findViewById(R.id.record_thumb), v.getContext().getString(R.string.anim_record_page_img));
+                pairs[1] = Pair.create(v.findViewById(R.id.record_score), v.getContext().getString(R.string.anim_record_page_score));
+                pairs[2] = Pair.create(v.findViewById(R.id.record_scene), v.getContext().getString(R.string.anim_record_page_scene));
+                itemClickListener.onClickRecordItem(pairs, record);
             }
         }
     };
@@ -414,9 +421,14 @@ public class StarRecordsAdapter extends RecyclerListAdapter {
                 adapter = new RecordCardAdapter();
                 adapter.setOnCardActionListener(new RecordCardAdapter.OnCardActionListener() {
                     @Override
-                    public void onClickCardItem(Record record) {
+                    public void onClickCardItem(View v, Record record) {
                         if (itemClickListener != null) {
-                            itemClickListener.onClickRecordItem(record);
+                            // set anchor views of transition animation
+                            Pair<View, String>[] pairs = new Pair[3];
+                            pairs[0] = Pair.create(v.findViewById(R.id.iv_record), v.getContext().getString(R.string.anim_record_page_img));
+                            pairs[1] = Pair.create(v.findViewById(R.id.tv_score), v.getContext().getString(R.string.anim_record_page_score));
+                            pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), v.getContext().getString(R.string.anim_record_page_scene));
+                            itemClickListener.onClickRecordItem(pairs, record);
                         }
                     }
                 });

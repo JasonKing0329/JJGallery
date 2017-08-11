@@ -443,4 +443,13 @@
 
     <string name="save_image">Save image</string>
     <string name="show_time">Show time</string>
+
+    <!--************************** transition anim **************************-->
+    <string name="anim_record_page_img" translatable="false">anim_record_page_img</string>
+    <string name="anim_record_page_star1_name" translatable="false">anim_record_page_star1_name</string>
+    <string name="anim_record_page_star2_name" translatable="false">anim_record_page_star2_name</string>
+    <string name="anim_record_page_score" translatable="false">anim_record_page_score</string>
+    <string name="anim_record_page_scene" translatable="false">anim_record_page_scene</string>
+    <string name="anim_record_page_star1_img" translatable="false">anim_record_page_star1_img</string>
+    <string name="anim_record_page_star2_img" translatable="false">anim_record_page_star2_img</string>
 </resources>

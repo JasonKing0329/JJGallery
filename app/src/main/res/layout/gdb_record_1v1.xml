@@ -27,6 +27,7 @@
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:visibility="invisible"
+                        android:transitionName="@string/anim_record_page_img"
                         app:isGuide="false"
                         app:auto_play="true"
                         app:canLoop="true"
@@ -41,7 +42,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/gdb_star_header_height"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/default_cover" />
+                        android:src="@drawable/default_cover"
+                        android:transitionName="@string/anim_record_page_img" />
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -92,7 +94,8 @@
                         android:layout_width="@dimen/gdb_record_page_star1_img_height"
                         android:layout_height="@dimen/gdb_record_page_star1_img_height"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/default_coach" />
+                        android:src="@drawable/default_coach"
+                        android:transitionName="@string/anim_record_page_star1_img" />
 
                     <TextView
                         android:id="@+id/tv_star1"
@@ -100,7 +103,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="Nixon" />
+                        android:text="Nixon"
+                        android:transitionName="@string/anim_record_page_star1_name" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -118,7 +122,8 @@
                         android:layout_width="@dimen/gdb_record_page_star1_img_height"
                         android:layout_height="@dimen/gdb_record_page_star1_img_height"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/default_coach" />
+                        android:src="@drawable/default_coach"
+                        android:transitionName="@string/anim_record_page_star2_img" />
 
                     <TextView
                         android:id="@+id/tv_star2"
@@ -126,7 +131,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:text="Robbie Rojo" />
+                        android:text="Robbie Rojo"
+                        android:transitionName="@string/anim_record_page_star2_name" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -143,7 +149,8 @@
                     android:text="518"
                     android:textColor="@color/colorPrimary"
                     android:textSize="46dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:transitionName="@string/anim_record_page_score" />
 
                 <TextView
                     android:id="@+id/tv_deprecated"
@@ -170,7 +177,8 @@
                         android:id="@+id/tv_scene"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:transitionName="@string/anim_record_page_scene" />
 
                     <TextView
                         android:id="@+id/tv_scene_score"

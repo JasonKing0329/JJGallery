@@ -54,13 +54,13 @@ public class RecordCardAdapter extends RecyclerView.Adapter<RecordCardNormalHold
         @Override
         public void onClick(View v) {
             if (onCardActionListener != null) {
-                onCardActionListener.onClickCardItem((Record) v.getTag());
+                onCardActionListener.onClickCardItem(v, (Record) v.getTag());
             }
         }
     };
 
     public interface OnCardActionListener {
-        void onClickCardItem(Record record);
+        void onClickCardItem(View v, Record record);
     }
 
 }

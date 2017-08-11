@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.viewsystem;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.bean.order.SOrder;
 import com.jing.app.jjgallery.config.ConfManager;
 import com.jing.app.jjgallery.config.PreferenceValue;
-import com.jing.app.jjgallery.gdb.view.game.GameActivity;
 import com.jing.app.jjgallery.gdb.view.home.GHomeActivity;
 import com.jing.app.jjgallery.gdb.view.game.battlecross.BattleActivity;
 import com.jing.app.jjgallery.gdb.view.game.GroupActivity;
@@ -26,7 +26,6 @@ import com.jing.app.jjgallery.model.pub.ObjectCache;
 import com.jing.app.jjgallery.presenter.main.SettingProperties;
 import com.jing.app.jjgallery.service.image.SImageConstants;
 import com.jing.app.jjgallery.viewsystem.main.filesystem.FileManagerActivity;
-import com.jing.app.jjgallery.gdb.view.list.GDBListActivity;
 import com.jing.app.jjgallery.gdb.view.record.RecordActivity;
 import com.jing.app.jjgallery.gdb.view.star.StarActivity;
 import com.jing.app.jjgallery.viewsystem.main.order.SOrderActivity;
@@ -438,10 +437,27 @@ public class ActivityManager {
     }
 
     public static void startGdbRecordActivity(Context from, Record record) {
+        startGdbRecordActivity(from, record, null);
+    }
+
+    /**
+     * support transition animation
+     * @param from
+     * @param record
+     * @param pairs transition转场动画
+     */
+    public static void startGdbRecordActivity(Context from, Record record, android.util.Pair<View, String>[] pairs) {
         ObjectCache.putData(record);
-        from.startActivity(new Intent().setClass(from, RecordActivity.class));
+        Intent intent = new Intent().setClass(from, RecordActivity.class);
         if (from instanceof Activity) {
-            applyAnimation((Activity) from);
+            if (pairs == null) {
+                from.startActivity(intent);
+                applyAnimation((Activity) from);
+            }
+            else {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) from, pairs);
+                from.startActivity(intent, options.toBundle());
+            }
         }
     }
 
@@ -450,7 +466,7 @@ public class ActivityManager {
             ((ProgressProvider) from).showToastLong(from.getString(R.string.gdb_no_conf), ProgressProvider.TOAST_WARNING);
             return false;
         }
-        Intent intent = new Intent().setClass(from, GameActivity.class);
+        Intent intent = new Intent().setClass(from, SeasonActivity.class);
         if (bundle == null) {
             from.startActivity(intent);
             applyAnimation(from);

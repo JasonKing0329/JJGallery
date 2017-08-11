@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.gdb.view.star;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,8 +161,9 @@ public class StarFragment extends Fragment implements IStarView, StarRecordsAdap
     }
 
     @Override
-    public void onClickRecordItem(Record record) {
-        ActivityManager.startGdbRecordActivity(getActivity(), record);
+    public void onClickRecordItem(Pair<View, String>[] pairs, Record record) {
+        // set anchor views of transition animation
+        ActivityManager.startGdbRecordActivity(getActivity(), record, pairs);
     }
 
     @Override

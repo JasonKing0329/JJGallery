@@ -17,7 +17,7 @@ import java.util.List;
 public class RecordsListAdapter extends RecyclerView.Adapter<RecordHolder> implements View.OnClickListener {
 
     public interface OnRecordItemClickListener {
-        void onClickRecordItem(Record record);
+        void onClickRecordItem(View v, Record record);
     }
 
     private List<Record> recordList;
@@ -66,7 +66,7 @@ public class RecordsListAdapter extends RecyclerView.Adapter<RecordHolder> imple
     public void onClick(View v) {
         if (itemClickListener != null) {
             Record record = (Record) v.getTag();
-            itemClickListener.onClickRecordItem(record);
+            itemClickListener.onClickRecordItem(v, record);
         }
     }
 

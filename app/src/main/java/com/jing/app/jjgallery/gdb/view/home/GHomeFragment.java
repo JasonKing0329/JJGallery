@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.gdb.view.home;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Pair;
 import android.view.View;
 
 import com.jing.app.jjgallery.BaseFragmentV4;
@@ -137,8 +138,13 @@ public class GHomeFragment extends BaseFragmentV4 implements IHomeView, GHomeRec
     }
 
     @Override
-    public void onClickItem(Record record) {
-        ActivityManager.startGdbRecordActivity(getActivity(), record);
+    public void onClickItem(View view, Record record) {
+        // set anchor views of transition animation
+        Pair<View, String>[] pairs = new Pair[3];
+        pairs[0] = Pair.create(view.findViewById(R.id.iv_record_image), getString(R.string.anim_record_page_img));
+        pairs[1] = Pair.create(view.findViewById(R.id.tv_record_star1), getString(R.string.anim_record_page_star1_name));
+        pairs[2] = Pair.create(view.findViewById(R.id.tv_record_star2), getString(R.string.anim_record_page_star2_name));
+        ActivityManager.startGdbRecordActivity(getActivity(), record, pairs);
     }
 
     @Override

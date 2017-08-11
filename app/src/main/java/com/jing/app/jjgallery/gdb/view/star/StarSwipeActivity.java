@@ -3,6 +3,7 @@ package com.jing.app.jjgallery.gdb.view.star;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -22,6 +23,7 @@ import com.jing.app.jjgallery.viewsystem.sub.dialog.CustomDialog;
 import com.jing.app.jjgallery.viewsystem.sub.dialog.DefaultDialogManager;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
+import com.king.service.gdb.bean.RecordOneVOne;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
@@ -196,6 +198,7 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         }
     }
 
+
     private void updateRecords() {
         Star star = getCurrentStar().getStar();
         presenter.sortRecords(star.getRecordList(), currentSortMode, currentSortDesc);
@@ -211,13 +214,44 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         sfvStars.requestLayout();
     }
 
+    /**
+     * horizontal card list
+     * @param star
+     */
     private void updateHorizontalList(Star star) {
         if (recordCardAdapter == null) {
             recordCardAdapter = new RecordCardAdapter();
             recordCardAdapter.setOnCardActionListener(new RecordCardAdapter.OnCardActionListener() {
                 @Override
-                public void onClickCardItem(Record record) {
-                    ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record);
+                public void onClickCardItem(View v, Record record) {
+                    Pair<View, String>[] pairs;
+                    if (record instanceof RecordOneVOne) {
+                        // set anchor views of transition animation
+                        // in card view type, add two more view than list type
+                        pairs = new Pair[5];
+                        pairs[0] = Pair.create(v.findViewById(R.id.iv_record), getString(R.string.anim_record_page_img));
+                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_star1_name));
+                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_star2_name));
+
+                        RecordOneVOne ovo = (RecordOneVOne) record;
+                        // current star is star1
+                        if (currentIsStar1(ovo)) {
+                            pairs[3] = Pair.create(getCurrentStarView(), v.getContext().getString(R.string.anim_record_page_star1_img));
+                            pairs[4] = Pair.create(v.findViewById(R.id.iv_star), v.getContext().getString(R.string.anim_record_page_star2_img));
+                        }
+                        // current star is star2
+                        else {
+                            pairs[3] = Pair.create(v.findViewById(R.id.iv_star), v.getContext().getString(R.string.anim_record_page_star1_img));
+                            pairs[4] = Pair.create(getCurrentStarView(), v.getContext().getString(R.string.anim_record_page_star2_img));
+                        }
+                    }
+                    else {
+                        pairs = new Pair[3];
+                        pairs[0] = Pair.create(v.findViewById(R.id.iv_record), getString(R.string.anim_record_page_img));
+                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_star1_name));
+                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_star2_name));
+                    }
+                    ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record, pairs);
                 }
             });
             recordCardAdapter.setRecordList(star.getRecordList());
@@ -236,13 +270,48 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
         }
     }
 
+    /**
+     * get top star image view of sfvStars
+     * @return
+     */
+    private View getCurrentStarView() {
+        // SwipeFlingAdapterView is extended from AdapterView, which is similar with FrameLayout in layout method.
+        // That means, the view will be put by layer from bottom to top, the top child is the last array index child
+        View topView = sfvStars.getChildAt(sfvStars.getChildCount() - 1);
+        return topView.findViewById(R.id.iv_star);
+    }
+
+    /**
+     * define whether current star is star1 or star2 to apply in different style during transition animation
+     * @param record
+     * @return
+     */
+    private boolean currentIsStar1(RecordOneVOne record) {
+        Star star = getCurrentStar().getStar();
+        if (star != null) {
+            if (record.getStar1() != null && record.getStar1().getId() == star.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * vertical normal list
+     * @param star
+     */
     private void updateVerticalList(Star star) {
         if (recordsListAdapter == null) {
             recordsListAdapter = new RecordsListAdapter(this, star.getRecordList());
             recordsListAdapter.setItemClickListener(new RecordsListAdapter.OnRecordItemClickListener() {
                 @Override
-                public void onClickRecordItem(Record record) {
-                    ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record);
+                public void onClickRecordItem(View v, Record record) {
+                    // set anchor views of transition animation
+                    Pair<View, String>[] pairs = new Pair[3];
+                    pairs[0] = Pair.create(v.findViewById(R.id.record_thumb), getString(R.string.anim_record_page_img));
+                    pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_star1_name));
+                    pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_star2_name));
+                    ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record, pairs);
                 }
             });
             rvRecords.setAdapter(recordsListAdapter);

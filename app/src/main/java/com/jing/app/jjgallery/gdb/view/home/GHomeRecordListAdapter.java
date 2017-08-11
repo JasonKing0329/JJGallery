@@ -82,10 +82,12 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
                 GdbGuidePresenter.getRecordPath(record.getName()), itemHolder.ivRecord);
         if (record instanceof RecordOneVOne) {
             RecordOneVOne orecord = (RecordOneVOne) record;
-            itemHolder.tvStar.setText(orecord.getStar1().getName() + " & " + orecord.getStar2().getName());
+            itemHolder.tvStar1.setText(orecord.getStar1().getName());
+            itemHolder.tvStar2.setText(orecord.getStar2().getName());
         }
         else {
-            itemHolder.tvStar.setText("");
+            itemHolder.tvStar1.setText("");
+            itemHolder.tvStar2.setText("");
         }
 
         // 第一个位置以及与上一个位置日期不同的，显示日期
@@ -134,7 +136,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         public void onClick(View view) {
             if (onListListener != null) {
                 int position = (int) view.getTag();
-                onListListener.onClickItem(list.get(position));
+                onListListener.onClickItem(view, list.get(position));
             }
         }
     };
@@ -166,7 +168,8 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         ViewGroup groupItem;
         RoundedImageView ivRecord;
         TextView tvDate;
-        TextView tvStar;
+        TextView tvStar1;
+        TextView tvStar2;
         TextView tvDeprecated;
         ImageView ivPlay;
 
@@ -175,7 +178,8 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
             ivRecord = (RoundedImageView) itemView.findViewById(R.id.iv_record_image);
             groupItem = (ViewGroup) itemView.findViewById(R.id.group_item);
             tvDate = (TextView) itemView.findViewById(R.id.tv_record_date);
-            tvStar = (TextView) itemView.findViewById(R.id.tv_record_star);
+            tvStar1 = (TextView) itemView.findViewById(R.id.tv_record_star1);
+            tvStar2 = (TextView) itemView.findViewById(R.id.tv_record_star2);
             tvDeprecated = (TextView) itemView.findViewById(R.id.tv_deprecated);
             ivPlay = (ImageView) itemView.findViewById(R.id.iv_play);
         }
@@ -183,6 +187,6 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
 
     public interface OnListListener {
         void onLoadMore();
-        void onClickItem(Record record);
+        void onClickItem(View view, Record record);
     }
 }

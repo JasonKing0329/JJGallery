@@ -158,7 +158,8 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        // don't use finish(), transition animation will be executed only by onBackPressed()
+        onBackPressed();
         return super.onSupportNavigateUp();
     }
 

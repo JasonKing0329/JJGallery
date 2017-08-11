@@ -1,6 +1,7 @@
 package com.jing.app.jjgallery.gdb.view.record;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Pair;
 import android.view.View;
 
 import com.jing.app.jjgallery.BaseFragmentV4;
@@ -191,8 +192,13 @@ public class RecordsListFragment extends BaseFragmentV4 implements IRecordListVi
     }
 
     @Override
-    public void onClickRecordItem(Record record) {
-        ActivityManager.startGdbRecordActivity(getActivity(), record);
+    public void onClickRecordItem(View v, Record record) {
+        // set anchor views of transition animation
+        Pair<View, String>[] pairs = new Pair[3];
+        pairs[0] = Pair.create(v.findViewById(R.id.record_thumb), getString(R.string.anim_record_page_img));
+        pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_star1_name));
+        pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_star2_name));
+        ActivityManager.startGdbRecordActivity(getActivity(), record, pairs);
     }
 
     @Override
