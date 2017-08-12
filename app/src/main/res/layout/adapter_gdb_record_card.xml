@@ -48,24 +48,40 @@
                 android:textColor="@color/gray"
                 android:text="sasadlkjgl kjewoaijgoijawjasd sajglkajioewjoit goqiklsad gadsnlkvnasdjkl gjweioaiota saljgijweaiogiuioweq"/>
 
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/group_score"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/tv_name"
                 android:layout_marginTop="3dp"
-                android:text="534"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"/>
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="534"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"/>
+                <TextView
+                    android:id="@+id/tv_deprecated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Deprecated"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/darkgrey"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/tv_score"
+                android:layout_below="@id/group_score"
                 android:layout_marginTop="3dp"
                 android:maxLines="1"
                 android:ellipsize="end"

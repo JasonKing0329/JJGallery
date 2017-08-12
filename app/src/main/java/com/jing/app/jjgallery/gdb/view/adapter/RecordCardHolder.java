@@ -33,6 +33,7 @@ public class RecordCardHolder {
     private TextView tvPath;
     private TextView tvScene;
     private TextView tvDate;
+    private TextView tvDeprecated;
     private LinearLayout groupFrames;
     private RoundedImageView ivFrame1;
     private RoundedImageView ivFrame2;
@@ -49,6 +50,7 @@ public class RecordCardHolder {
         tvPath = (TextView) itemView.findViewById(R.id.tv_path);
         tvScene = (TextView) itemView.findViewById(R.id.tv_scene);
         tvDate = (TextView) itemView.findViewById(R.id.tv_date);
+        tvDeprecated = (TextView) itemView.findViewById(R.id.tv_deprecated);
         groupFrames = (LinearLayout) itemView.findViewById(R.id.group_frames);
         ivFrame1 = (RoundedImageView) itemView.findViewById(R.id.iv_frame1);
         ivFrame2 = (RoundedImageView) itemView.findViewById(R.id.iv_frame2);
@@ -65,6 +67,14 @@ public class RecordCardHolder {
         tvName.setText(record.getName());
         tvPath.setText(record.getDirectory());
         tvScore.setText(String.valueOf(record.getScore()));
+
+        if (record.getDeprecated() == 1) {
+            tvDeprecated.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvDeprecated.setVisibility(View.GONE);
+        }
+
         if (record instanceof RecordOneVOne) {
             RecordOneVOne rRecord = (RecordOneVOne) record;
             tvScene.setText(rRecord.getSceneName());

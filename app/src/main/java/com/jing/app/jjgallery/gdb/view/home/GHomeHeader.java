@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.siyamed.shapeimageview.RoundedImageView;
@@ -41,6 +42,8 @@ public class GHomeHeader extends RecyclerView.ViewHolder {
     TextView tvStarName3;
     @BindView(R.id.tv_star_name4)
     TextView tvStarName4;
+    @BindView(R.id.group_star4)
+    ViewGroup groupStar4;
 
     private OnStarListener onStarListener;
     private GHomeBean homeBean;
@@ -81,8 +84,7 @@ public class GHomeHeader extends RecyclerView.ViewHolder {
         // 平板显示4个
         if (DisplayHelper.isTabModel(ivStar4.getContext())) {
             if (bean.getStarList().size() > 3) {
-                tvStarName4.setVisibility(View.VISIBLE);
-                ivStar4.setVisibility(View.VISIBLE);
+                groupStar4.setVisibility(View.VISIBLE);
                 tvStarName4.setText(bean.getStarList().get(3).getStar().getName());
                 SImageLoader.getInstance().displayImage(
                         bean.getStarList().get(3).getImagePath(), ivStar4);
