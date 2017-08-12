@@ -230,8 +230,8 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                         // in card view type, add two more view than list type
                         pairs = new Pair[5];
                         pairs[0] = Pair.create(v.findViewById(R.id.iv_record), getString(R.string.anim_record_page_img));
-                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_star1_name));
-                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_star2_name));
+                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_score));
+                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_scene));
 
                         RecordOneVOne ovo = (RecordOneVOne) record;
                         // current star is star1
@@ -248,8 +248,8 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                     else {
                         pairs = new Pair[3];
                         pairs[0] = Pair.create(v.findViewById(R.id.iv_record), getString(R.string.anim_record_page_img));
-                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_star1_name));
-                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_star2_name));
+                        pairs[1] = Pair.create(v.findViewById(R.id.tv_score), getString(R.string.anim_record_page_score));
+                        pairs[2] = Pair.create(v.findViewById(R.id.tv_scene), getString(R.string.anim_record_page_scene));
                     }
                     ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record, pairs);
                 }
@@ -259,6 +259,7 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
             rvRecordsHor.setAdapter(recordCardAdapter);
         } else {
             recordCardAdapter.setRecordList(star.getRecordList());
+            recordCardAdapter.setCurrentStar(star);
             recordCardAdapter.notifyDataSetChanged();
         }
 
@@ -309,8 +310,8 @@ public class StarSwipeActivity extends GBaseActivity implements IStarSwipeView {
                     // set anchor views of transition animation
                     Pair<View, String>[] pairs = new Pair[3];
                     pairs[0] = Pair.create(v.findViewById(R.id.record_thumb), getString(R.string.anim_record_page_img));
-                    pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_star1_name));
-                    pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_star2_name));
+                    pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_score));
+                    pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_scene));
                     ActivityManager.startGdbRecordActivity(StarSwipeActivity.this, record, pairs);
                 }
             });

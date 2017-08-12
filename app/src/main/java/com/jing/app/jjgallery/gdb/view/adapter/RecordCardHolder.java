@@ -71,7 +71,8 @@ public class RecordCardHolder {
 
             // show star different with current star
             String name = rRecord.getStar1().getName();
-            if (!currentStar.getName().equals(name)) {
+            int id = rRecord.getStar1().getId();
+            if (id == currentStar.getId()) {
                 name = rRecord.getStar2().getName();
             }
             SImageLoader.getInstance().displayImage(GdbImageProvider.getStarRandomPath(name, null), ivStar);

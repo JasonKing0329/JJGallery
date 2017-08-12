@@ -196,8 +196,8 @@ public class RecordsListFragment extends BaseFragmentV4 implements IRecordListVi
         // set anchor views of transition animation
         Pair<View, String>[] pairs = new Pair[3];
         pairs[0] = Pair.create(v.findViewById(R.id.record_thumb), getString(R.string.anim_record_page_img));
-        pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_star1_name));
-        pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_star2_name));
+        pairs[1] = Pair.create(v.findViewById(R.id.record_score), getString(R.string.anim_record_page_score));
+        pairs[2] = Pair.create(v.findViewById(R.id.record_scene), getString(R.string.anim_record_page_scene));
         ActivityManager.startGdbRecordActivity(getActivity(), record, pairs);
     }
 
