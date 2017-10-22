@@ -70,30 +70,6 @@ public class SqliteDao {
 		return version;
 	}
 
-	public boolean updateVersion(Connection connection, String version) {
-		String sql = "UPDATE " + TABLE_CONF + " SET value='" + version
-				+ "' WHERE key='version'";
-		Statement stmt = null;
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(sql);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
 	public List<RecordOneVOne> queryOneVOneRecords(Connection connection) {
 		List<RecordOneVOne> list = new ArrayList<>();
 		String sql = "SELECT * FROM " + TABLE_RECORD_1V1;
@@ -163,81 +139,6 @@ public class SqliteDao {
 		}
 	}
 
-	public boolean insertRecord(Connection connection, RecordOneVOne record) {
-		StringBuffer buffer = new StringBuffer("INSERT INTO ");
-		buffer.append(TABLE_RECORD_1V1)
-				.append("(sequence,scene,directory,partner1,partner2,name,HDLevel,score,scoreBasic,scoreExtra")
-				.append(",scoreFeel,scoreStar1,scoreStar2,scoreStar,scoreStarC1,scoreStarC2,scoreStarC,scoreRhythm")
-				.append(",scoreForePlay,scoreBJob,scoreFkType1,scoreFkType2,scoreFkType3")
-				.append(",scoreFkType4,scoreFkType5,scoreFkType6,scoreFk,scoreCum,scoreScene,scoreStory")
-				.append(",scoreNoCond,scoreCShow,scoreRim,scoreSpecial")
-				.append(",star1_id,star2_id,lastModifyDate,specialDesc,deprecated)")
-				.append(" VALUES(?");
-		for (int i = 0; i < 38; i ++) {
-			buffer.append(",?");
-		}
-		buffer.append(")");
-		String sql = buffer.toString();
-		PreparedStatement stmt = null;
-		try {
-			stmt = connection.prepareStatement(sql);
-			stmt.setInt(1, record.getSequence());
-			stmt.setString(2, record.getSceneName());
-			stmt.setString(3, record.getDirectory());
-			stmt.setString(4, record.getStar1().getName());
-			stmt.setString(5, record.getStar2().getName());
-			stmt.setString(6, record.getName());
-			stmt.setInt(7, record.getHDLevel());
-			stmt.setInt(8, record.getScore());
-			stmt.setInt(9, record.getScoreBasic());
-			stmt.setInt(10, record.getScoreExtra());
-			stmt.setInt(11, record.getScoreFeel());
-			stmt.setInt(12, record.getScoreStar1());
-			stmt.setInt(13, record.getScoreStar2());
-			stmt.setInt(14, record.getScoreStar());
-			stmt.setInt(15, record.getScoreStarC1());
-			stmt.setInt(16, record.getScoreStarC2());
-			stmt.setInt(17, record.getScoreStarC());
-			stmt.setInt(18, record.getScoreRhythm());
-			stmt.setInt(19, record.getScoreForePlay());
-			stmt.setInt(20, record.getScoreBJob());
-			stmt.setInt(21, record.getScoreFkType1());
-			stmt.setInt(22, record.getScoreFkType2());
-			stmt.setInt(23, record.getScoreFkType3());
-			stmt.setInt(24, record.getScoreFkType4());
-			stmt.setInt(25, record.getScoreFkType5());
-			stmt.setInt(26, record.getScoreFkType6());
-			stmt.setInt(27, record.getScoreFk());
-			stmt.setInt(28, record.getScoreCum());
-			stmt.setInt(29, record.getScoreScene());
-			stmt.setInt(30, record.getScoreStory());
-			stmt.setInt(31, record.getScoreNoCond());
-			stmt.setInt(32, record.getScoreCShow());
-			stmt.setInt(33, record.getScoreRim());
-			stmt.setInt(34, record.getScoreSpeicial());
-			stmt.setInt(35, record.getStar1().getId());
-			stmt.setInt(36, record.getStar2().getId());
-			stmt.setLong(37, record.getLastModifyTime());
-			stmt.setString(38, record.getSpecialDesc());
-			stmt.setInt(39, record.getDeprecated());
-			stmt.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
 	private Star parseStar(ResultSet set) throws SQLException {
 
 		Star star = new Star();
@@ -283,69 +184,6 @@ public class SqliteDao {
 		return star;
 	}
 
-	public boolean insertStar(Connection connection, Star star) {
-		String sql = "INSERT INTO " + TABLE_STAR + "(name) VALUES(?)";
-		PreparedStatement stmt = null;
-		try {
-			stmt = connection.prepareStatement(sql);
-			stmt.setString(1, star.getName());
-			stmt.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	public boolean updateStar(Connection connection, Star star) {
-		// 带"'"号的要特殊处理
-		String name = star.getName();
-		if (name.contains("'")) {
-			name = name.replace("'", "''");
-		}
-		StringBuffer buffer = new StringBuffer("UPDATE ");
-		buffer.append(TABLE_STAR).append(" SET name='").append(name)
-				.append("' ,records=").append(star.getRecordList().size())
-				.append(", betop=").append(star.getBeTop())
-				.append(", bebottom=").append(star.getBeBottom())
-				.append(", average=").append(star.getAverage())
-				.append(", max=").append(star.getMax())
-				.append(", min=").append(star.getMin())
-				.append(", caverage=").append(star.getcAverage())
-				.append(", cmax=").append(star.getcMax())
-				.append(", cmin=").append(star.getcMin())
-				.append(" WHERE id=").append(star.getId());
-		Statement stmt = null;
-		try {
-			stmt = connection.createStatement();
-			stmt.executeUpdate(buffer.toString());
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
 	public Star queryStarById(Connection connection, int id) {
 		String sql = "SELECT * FROM " + TABLE_STAR + " WHERE id=" + id;
 		Statement statement = null;
@@ -368,10 +206,6 @@ public class SqliteDao {
 			}
 		}
 		return star;
-	}
-
-	public List<Star> queryAllStars(Connection connection) {
-		return queryAllStars(connection, null);
 	}
 
 	public List<Star> queryAllStars(Connection connection, String where) {
@@ -403,54 +237,6 @@ public class SqliteDao {
 		return list;
 	}
 
-	public int queryLastStarSequence(Connection connection) {
-		String sql = "SELECT * FROM " + TABLE_SEQUENCE + " WHERE name='" + TABLE_STAR + "'";
-		Statement statement = null;
-		int id = 0;
-		try {
-			statement = connection.createStatement();
-			ResultSet set = statement.executeQuery(sql);
-			if (set.next()) {
-				id = set.getInt(2);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return id;
-	}
-
-	public int queryLastRecordSequence(Connection connection) {
-		String sql = "SELECT * FROM " + TABLE_SEQUENCE + " WHERE name='" + TABLE_RECORD_1V1 + "'";
-		Statement statement = null;
-		int id = 0;
-		try {
-			statement = connection.createStatement();
-			ResultSet set = statement.executeQuery(sql);
-			if (set.next()) {
-				id = set.getInt(2);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return id;
-	}
-
 	public void loadStarRecords(Connection connection, Star star) {
 		Statement stmt = null;
 		List<Record> rList = new ArrayList<>();
@@ -480,93 +266,6 @@ public class SqliteDao {
 		}
 
 		star.setRecordList(rList);
-	}
-
-	/**
-	 * 加载star对应的record数量
-	 * @param connection
-	 * @param star
-     */
-	public void loadStarRecordNumber(Connection connection, Star star) {
-		if (star == null) {
-			return;
-		}
-		String sql = "SELECT COUNT(id) FROM " + TABLE_RECORD_1V1 + " WHERE star1_id=" + star.getId() + " OR star2_id=" + star.getId();
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			ResultSet set = statement.executeQuery(sql);
-			if (set.next()) {
-				star.setRecordNumber(set.getInt(1));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void clearTableRecord1v1(Connection connection) {
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			statement.executeUpdate("DELETE FROM " + TABLE_RECORD_1V1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	/**
-	 * 作为保留项目，star每次只更新
-	 * @param connection
-	 */
-	@Deprecated
-	public void clearTableStar(Connection connection) {
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			statement.executeUpdate("DELETE FROM " + TABLE_STAR);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	public void clearTableSequence(Connection connection) {
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			statement.executeUpdate("DELETE FROM " + TABLE_SEQUENCE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	public List<RecordOneVOne> queryLatestRecords(int from, int number, Connection connection) {
