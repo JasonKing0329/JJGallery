@@ -73,68 +73,183 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:id="@+id/group_star1"
-                    android:layout_width="0dp"
+                    android:id="@+id/group_star_1v1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                    <com.github.siyamed.shapeimageview.CircularImageView
-                        android:id="@+id/iv_star1"
-                        android:layout_width="@dimen/gdb_record_page_star1_img_height"
-                        android:layout_height="@dimen/gdb_record_page_star1_img_height"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/default_coach"
-                        android:transitionName="@string/anim_record_page_star1_img" />
-
-                    <TextView
-                        android:id="@+id/tv_star1"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:id="@+id/group_star1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Nixon"
-                        android:transitionName="@string/anim_record_page_star1_name" />
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.github.siyamed.shapeimageview.CircularImageView
+                            android:id="@+id/iv_star1"
+                            android:layout_width="@dimen/gdb_record_page_star1_img_height"
+                            android:layout_height="@dimen/gdb_record_page_star1_img_height"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_coach"
+                            android:transitionName="@string/anim_record_page_star1_img" />
+
+                        <TextView
+                            android:id="@+id/tv_star1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Nixon"
+                            android:transitionName="@string/anim_record_page_star1_name" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/group_star2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.github.siyamed.shapeimageview.CircularImageView
+                            android:id="@+id/iv_star2"
+                            android:layout_width="@dimen/gdb_record_page_star1_img_height"
+                            android:layout_height="@dimen/gdb_record_page_star1_img_height"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_coach"
+                            android:transitionName="@string/anim_record_page_star2_img" />
+
+                        <TextView
+                            android:id="@+id/tv_star2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="Robbie Rojo"
+                            android:transitionName="@string/anim_record_page_star2_name" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/group_star2"
-                    android:layout_width="0dp"
+                    android:id="@+id/group_star_3w"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                    <com.github.siyamed.shapeimageview.CircularImageView
-                        android:id="@+id/iv_star2"
-                        android:layout_width="@dimen/gdb_record_page_star1_img_height"
-                        android:layout_height="@dimen/gdb_record_page_star1_img_height"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/default_coach"
-                        android:transitionName="@string/anim_record_page_star2_img" />
-
-                    <TextView
-                        android:id="@+id/tv_star2"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:id="@+id/group_3w_star1"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Robbie Rojo"
-                        android:transitionName="@string/anim_record_page_star2_name" />
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.github.siyamed.shapeimageview.CircularImageView
+                            android:id="@+id/iv_3w_star1"
+                            android:layout_width="@dimen/gdb_record_page_star3w_img_height"
+                            android:layout_height="@dimen/gdb_record_page_star3w_img_height"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_coach" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_flag1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="top" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_star1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center"
+                            android:text="Nixon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/group_3w_star2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.github.siyamed.shapeimageview.CircularImageView
+                            android:id="@+id/iv_3w_star2"
+                            android:layout_width="@dimen/gdb_record_page_star3w_img_height"
+                            android:layout_height="@dimen/gdb_record_page_star3w_img_height"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_coach" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_flag2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="top" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_star2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center"
+                            android:text="Robbie Rojo" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/group_3w_star3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
+
+                        <com.github.siyamed.shapeimageview.CircularImageView
+                            android:id="@+id/iv_3w_star3"
+                            android:layout_width="@dimen/gdb_record_page_star3w_img_height"
+                            android:layout_height="@dimen/gdb_record_page_star3w_img_height"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/default_coach" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_flag3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:text="top" />
+
+                        <TextView
+                            android:id="@+id/tv_3w_star3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:gravity="center"
+                            android:text="Robbie Rojo" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

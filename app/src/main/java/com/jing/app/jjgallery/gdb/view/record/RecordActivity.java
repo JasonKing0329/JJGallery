@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.gdb.view.record;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.allure.lbanners.adapter.LBaseAdapter;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.jing.app.jjgallery.R;
 import com.jing.app.jjgallery.gdb.GBaseActivity;
+import com.jing.app.jjgallery.gdb.bean.Star3W;
 import com.jing.app.jjgallery.gdb.bean.StarProxy;
 import com.jing.app.jjgallery.gdb.model.GdbImageProvider;
 import com.jing.app.jjgallery.gdb.model.VideoModel;
@@ -30,11 +32,16 @@ import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.jing.app.jjgallery.viewsystem.ActivityManager;
 import com.jing.app.jjgallery.viewsystem.publicview.PointDescLayout;
 import com.king.service.gdb.bean.GDBProperites;
+import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.RecordSingleScene;
+import com.king.service.gdb.bean.RecordThree;
 import com.king.service.gdb.bean.Star;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -117,14 +124,47 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
     TextView tvCshow;
     @BindView(R.id.group_fk)
     PointDescLayout groupFk;
+    @BindView(R.id.group_record)
+    RelativeLayout groupRecord;
 
-    private RecordOneVOne record;
+    @BindView(R.id.group_star_1v1)
+    LinearLayout groupStar1v1;
+    @BindView(R.id.iv_3w_star1)
+    CircularImageView iv3wStar1;
+    @BindView(R.id.tv_3w_star1)
+    TextView tv3wStar1;
+    @BindView(R.id.group_3w_star1)
+    LinearLayout group3wStar1;
+    @BindView(R.id.iv_3w_star2)
+    CircularImageView iv3wStar2;
+    @BindView(R.id.tv_3w_star2)
+    TextView tv3wStar2;
+    @BindView(R.id.group_3w_star2)
+    LinearLayout group3wStar2;
+    @BindView(R.id.iv_3w_star3)
+    CircularImageView iv3wStar3;
+    @BindView(R.id.tv_3w_star3)
+    TextView tv3wStar3;
+    @BindView(R.id.group_3w_star3)
+    LinearLayout group3wStar3;
+    @BindView(R.id.group_star_3w)
+    LinearLayout groupStar3w;
+    @BindView(R.id.tv_3w_flag1)
+    TextView tv3wFlag1;
+    @BindView(R.id.tv_3w_flag2)
+    TextView tv3wFlag2;
+    @BindView(R.id.tv_3w_flag3)
+    TextView tv3wFlag3;
+
+    private Record record;
     private RecordPresenter mPresenter;
 
     private String videoPath;
 
     private List<String> headPathList;
     private BannerAnimDialogFragment bannerSettingDialog;
+
+    private Map<Integer, ImageView> starImageViewMap;
 
     @Override
     public int getContentView() {
@@ -133,6 +173,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
     @Override
     public void initController() {
+        starImageViewMap = new HashMap<>();
         SImageLoader.getInstance().setDefaultImgRes(R.drawable.gdb_record_default);
         mPresenter = new RecordPresenter(this);
     }
@@ -152,8 +193,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
     @Override
     public void initBackgroundWork() {
-        mPresenter.loadStar(record.getStar1().getId());
-        mPresenter.loadStar(record.getStar2().getId());
+
     }
 
     @Override
@@ -171,23 +211,51 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
     }
 
     private void initValue() {
-        record = (RecordOneVOne) ObjectCache.getData();
+        Object obj = ObjectCache.getData();
+        if (obj instanceof RecordOneVOne) {
+            record = (RecordOneVOne) ObjectCache.getData();
+        } else if (obj instanceof RecordThree) {
+            record = (RecordThree) ObjectCache.getData();
+        }
 
         initHeadPart();
 
-        Star star1 = record.getStar1();
-        if (star1 == null) {
-            tvStar1.setText(GDBProperites.STAR_UNKNOWN + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
-        } else {
-            tvStar1.setText(record.getStar1().getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
+        // RecordOneVOne和RecordThree都是继承于RecordSingleScene
+        if (record instanceof RecordSingleScene) {
+            initRecordSingleScene((RecordSingleScene) record);
+
+            if (record instanceof RecordOneVOne) {
+                groupStar3w.setVisibility(View.GONE);
+                groupStar1v1.setVisibility(View.VISIBLE);
+                initRecordOneVOne((RecordOneVOne) record);
+            } else if (record instanceof RecordThree) {
+                groupStar3w.setVisibility(View.VISIBLE);
+                groupStar1v1.setVisibility(View.GONE);
+                initRecordThree((RecordThree) record);
+            }
         }
-        Star star2 = record.getStar2();
-        if (star2 == null) {
-            tvStar2.setText(GDBProperites.STAR_UNKNOWN + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
-        } else {
-            tvStar2.setText(record.getStar2().getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
-        }
+
+        // Record公共部分
         tvPath.setText(record.getDirectory() + "/" + record.getName());
+        tvHd.setText("" + record.getHDLevel());
+        tvScoreTotal.setText("" + record.getScore());
+        tvFeel.setText("" + record.getScoreFeel());
+        tvStory.setText("" + record.getScoreStory());
+        tvBasic.setText("" + record.getScoreBasic());
+        tvExtra.setText("" + record.getScoreExtra());
+
+        tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE : View.GONE);
+
+        videoPath = VideoModel.getVideoPath(record.getName());
+//        videoPath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1489199749192.mp4";
+        if (videoPath == null) {
+            ivPlay.setVisibility(View.GONE);
+        } else {
+            ivPlay.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void initRecordSingleScene(RecordSingleScene record) {
         tvScene.setText(record.getSceneName());
         tvSceneScore.setText("" + record.getScoreScene());
         if (record.getScoreNoCond() > 0) {
@@ -195,14 +263,10 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         } else {
             groupBareback.setVisibility(View.GONE);
         }
-        tvHd.setText("" + record.getHDLevel());
-        tvScoreTotal.setText("" + record.getScore());
-        tvFeel.setText("" + record.getScoreFeel());
         tvBjob.setText("" + record.getScoreBJob());
         tvCum.setText("" + record.getScoreCum());
         tvRhythm.setText("" + record.getScoreRhythm());
         tvForeplay.setText("" + record.getScoreForePlay());
-        tvStory.setText("" + record.getScoreStory());
         tvSpecial.setText("" + record.getScoreSpeicial());
         if (TextUtils.isEmpty(record.getSpecialDesc())) {
             groupSpecial.setVisibility(View.GONE);
@@ -213,23 +277,72 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         tvRim.setText("" + record.getScoreRim());
         tvCshow.setText("" + record.getScoreCShow());
         tvFk.setText("FK(" + record.getScoreFk() + ")");
+    }
+
+    private void initRecordOneVOne(RecordOneVOne record) {
+        Star star1 = record.getStar1();
+        if (star1 == null) {
+            tvStar1.setText(GDBProperites.STAR_UNKNOWN + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
+        } else {
+            starImageViewMap.put(star1.getId(), ivStar1);
+            tvStar1.setText(record.getStar1().getName() + "(" + record.getScoreStar1() + "/" + record.getScoreStarC1() + ")");
+        }
+        Star star2 = record.getStar2();
+        if (star2 == null) {
+            tvStar2.setText(GDBProperites.STAR_UNKNOWN + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
+        } else {
+            starImageViewMap.put(star2.getId(), ivStar2);
+            tvStar2.setText(record.getStar2().getName() + "(" + record.getScoreStar2() + "/" + record.getScoreStarC2() + ")");
+        }
         tvStar.setText("" + record.getScoreStar());
         tvStarC.setText("" + record.getScoreStarC());
-        tvBasic.setText("" + record.getScoreBasic());
-        tvExtra.setText("" + record.getScoreExtra());
 
-        tvDeprecated.setVisibility(record.getDeprecated() == 1 ? View.VISIBLE : View.GONE);
+        mPresenter.loadStar(record.getStar1().getId());
+        mPresenter.loadStar(record.getStar2().getId());
+        
+        initFkDetails(record);
+    }
 
-        videoPath = VideoModel.getVideoPath(record.getName());
-//        videoPath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/wx_camera_1489199749192.mp4";
-        if (videoPath == null) {
-            ivPlay.setVisibility(View.GONE);
+    private void initRecordThree(RecordThree record) {
+        List<Star3W> starList = mPresenter.getStar3WList(record);
+
+        // load star
+        if (starList.size() > 0) {
+            Star3W star = starList.get(0);
+            tv3wFlag1.setText(star.getFlag());
+            tv3wStar1.setText(star.getStar().getName() + "(" + star.getScore() + "/" + star.getScoreC() + ")");
+
+            starImageViewMap.put(star.getStar().getId(), iv3wStar1);
+            mPresenter.loadStar(star.getStar().getId());
+        } else {
+            tv3wFlag1.setText(GDBProperites.STAR_UNKNOWN);
+            tv3wStar1.setText(GDBProperites.STAR_UNKNOWN);
         }
-        else {
-            ivPlay.setVisibility(View.VISIBLE);
+        if (starList.size() > 1) {
+            Star3W star = starList.get(1);
+            tv3wFlag2.setText(star.getFlag());
+            tv3wStar2.setText(star.getStar().getName() + "(" + star.getScore() + "/" + star.getScoreC() + ")");
+
+            starImageViewMap.put(star.getStar().getId(), iv3wStar2);
+            mPresenter.loadStar(star.getStar().getId());
+        } else {
+            tv3wFlag2.setText(GDBProperites.STAR_UNKNOWN);
+            tv3wStar2.setText(GDBProperites.STAR_UNKNOWN);
+        }
+        if (starList.size() > 2) {
+            Star3W star = starList.get(2);
+            tv3wFlag3.setText(star.getFlag());
+            tv3wStar3.setText(star.getStar().getName() + "(" + star.getScore() + "/" + star.getScoreC() + ")");
+
+            starImageViewMap.put(star.getStar().getId(), iv3wStar3);
+            mPresenter.loadStar(star.getStar().getId());
+        } else {
+            tv3wFlag3.setText(GDBProperites.STAR_UNKNOWN);
+            tv3wStar3.setText(GDBProperites.STAR_UNKNOWN);
         }
 
-        initFkDetails();
+        tvStar.setText("" + record.getScoreStar());
+        tvStarC.setText("" + record.getScoreStarC());
     }
 
     private void initHeadPart() {
@@ -238,16 +351,14 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
             headPathList = GdbImageProvider.getRecordPathList(record.getName());
             if (headPathList.size() <= 1) {
                 showImage = true;
-            }
-            else {
+            } else {
                 showImage = false;
                 lmBanners.setVisibility(View.VISIBLE);
                 ivSetting.setVisibility(View.VISIBLE);
                 ivRecord.setVisibility(View.GONE);
                 initBanner(headPathList);
             }
-        }
-        else {
+        } else {
             showImage = true;
         }
 
@@ -275,8 +386,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
             Random random = new Random();
             int type = Math.abs(random.nextInt()) % RecordFilterDialog.ANIM_TYPES.length;
             LMBannerViewUtil.setScrollAnim(lmBanners, type);
-        }
-        else {
+        } else {
             LMBannerViewUtil.setScrollAnim(lmBanners, SettingProperties.getGdbRecordNavAnimType(this));
         }
 
@@ -284,7 +394,7 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         lmBanners.setAdapter(adapter, pathList);
     }
 
-    private void initFkDetails() {
+    private void initFkDetails(RecordOneVOne record) {
         List<String> keyList = new ArrayList<>();
         List<String> contentList = new ArrayList<>();
         if (record.getScoreFkType1() > 0) {
@@ -314,31 +424,86 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
         groupFk.addPoint(keyList, contentList);
     }
 
+    private void initFkDetails(RecordThree record) {
+        List<String> keyList = new ArrayList<>();
+        List<String> contentList = new ArrayList<>();
+        if (record.getScoreFkType1() > 0) {
+            keyList.add("For Sit");
+            contentList.add(record.getScoreFkType1() + "");
+        }
+        if (record.getScoreFkType2() > 0) {
+            keyList.add("Back Sit");
+            contentList.add(record.getScoreFkType2() + " ");
+        }
+        if (record.getScoreFkType3() > 0) {
+            keyList.add("For");
+            contentList.add(record.getScoreFkType3() + " ");
+        }
+        if (record.getScoreFkType4() > 0) {
+            keyList.add("Back");
+            contentList.add(record.getScoreFkType4() + " ");
+        }
+        if (record.getScoreFkType5() > 0) {
+            keyList.add("Side");
+            contentList.add(record.getScoreFkType5() + " ");
+        }
+        if (record.getScoreFkType6() > 0) {
+            keyList.add("Double");
+            contentList.add(record.getScoreFkType6() + " ");
+        }
+        if (record.getScoreFkType7() > 0) {
+            keyList.add("Sequence");
+            contentList.add(record.getScoreFkType6() + " ");
+        }
+        if (record.getScoreFkType8() > 0) {
+            keyList.add("Special");
+            contentList.add(record.getScoreFkType6() + " ");
+        }
+        groupFk.addPoint(keyList, contentList);
+    }
+
     @Override
     public void onStarLoaded(StarProxy star) {
-        if (record.getStar1() != null) {
-            if (star.getStar().getId() == record.getStar1().getId()) {
-                SImageLoader.getInstance().displayImage(star.getImagePath(), ivStar1);
-                return;
-            }
-        }
-        if (record.getStar2() != null) {
-            if (star.getStar().getId() == record.getStar2().getId()) {
-                SImageLoader.getInstance().displayImage(star.getImagePath(), ivStar2);
-            }
+        if (starImageViewMap.get(star.getStar().getId()) != null) {
+            SImageLoader.getInstance().displayImage(star.getImagePath(), starImageViewMap.get(star.getStar().getId()));
         }
     }
 
-    @OnClick({R.id.group_star1, R.id.group_star2, R.id.group_scene})
+    @OnClick({R.id.group_star1, R.id.group_star2, R.id.group_scene
+        , R.id.group_3w_star1, R.id.group_3w_star2, R.id.group_3w_star3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.group_star1:
-                ActivityManager.startStarActivity(RecordActivity.this, record.getStar1());
+                ActivityManager.startStarActivity(RecordActivity.this, ((RecordOneVOne) record).getStar1());
                 break;
             case R.id.group_star2:
-                ActivityManager.startStarActivity(RecordActivity.this, record.getStar2());
+                ActivityManager.startStarActivity(RecordActivity.this, ((RecordOneVOne) record).getStar2());
                 break;
             case R.id.group_scene:
+                break;
+            case R.id.group_3w_star1:
+                List<Star3W> starList = mPresenter.getStar3WList((RecordThree) record);
+                if (starList != null) {
+                    if (starList.size() > 0) {
+                        ActivityManager.startStarActivity(RecordActivity.this, starList.get(0).getStar());
+                    }
+                }
+                break;
+            case R.id.group_3w_star2:
+                starList = mPresenter.getStar3WList((RecordThree) record);
+                if (starList != null) {
+                    if (starList.size() > 1) {
+                        ActivityManager.startStarActivity(RecordActivity.this, starList.get(1).getStar());
+                    }
+                }
+                break;
+            case R.id.group_3w_star3:
+                starList = mPresenter.getStar3WList((RecordThree) record);
+                if (starList != null) {
+                    if (starList.size() > 2) {
+                        ActivityManager.startStarActivity(RecordActivity.this, starList.get(2).getStar());
+                    }
+                }
                 break;
         }
     }
@@ -421,6 +586,13 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
             });
         }
         bannerSettingDialog.show(getSupportFragmentManager(), "BannerAnimDialogFragment");
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     private class HeadBannerAdapter implements LBaseAdapter<String> {

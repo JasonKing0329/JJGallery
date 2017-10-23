@@ -75,7 +75,7 @@ public class GHomeFragment extends BaseFragmentV4 implements IHomeView, GHomeRec
         rvRecords.setOnLoadMoreListener(new AutoLoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                homeHolder.getPresenter().loadMore(homeBean.getRecordList().size(), GHomeFragment.this);
+                homeHolder.getPresenter().loadMore(GHomeFragment.this);
             }
         });
 
@@ -134,16 +134,14 @@ public class GHomeFragment extends BaseFragmentV4 implements IHomeView, GHomeRec
 
     @Override
     public void onLoadMore() {
-        homeHolder.getPresenter().loadMore(homeBean.getRecordList().size(), this);
+        homeHolder.getPresenter().loadMore(this);
     }
 
     @Override
     public void onClickItem(View view, Record record) {
         // set anchor views of transition animation
-        Pair<View, String>[] pairs = new Pair[3];
+        Pair<View, String>[] pairs = new Pair[1];
         pairs[0] = Pair.create(view.findViewById(R.id.iv_record_image), getString(R.string.anim_record_page_img));
-        pairs[1] = Pair.create(view.findViewById(R.id.tv_record_star1), getString(R.string.anim_record_page_star1_name));
-        pairs[2] = Pair.create(view.findViewById(R.id.tv_record_star2), getString(R.string.anim_record_page_star2_name));
         ActivityManager.startGdbRecordActivity(getActivity(), record, pairs);
     }
 

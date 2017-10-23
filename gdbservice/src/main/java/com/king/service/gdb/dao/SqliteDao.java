@@ -15,6 +15,7 @@ import java.util.List;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.RecordThree;
 import com.king.service.gdb.bean.SceneBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
@@ -26,6 +27,7 @@ public class SqliteDao {
 	private final String TABLE_CONF = "conf";
 	private final String TABLE_STAR = "star";
 	private final String TABLE_RECORD_1V1 = "record_1v1";
+	private final String TABLE_RECORD_3W = "record_3w";
 	private final String TABLE_FAVOR = "favor";
 
 	public SqliteDao() {
@@ -276,6 +278,28 @@ public class SqliteDao {
 			stmt = connection.createStatement();
 			ResultSet set = stmt.executeQuery(sql);
 			parseOneVOneRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	public List<RecordThree> queryLatest3WRecords(int from, int number, Connection connection) {
+		List<RecordThree> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_3W + " ORDER BY lastModifyDate DESC LIMIT " + from + "," + number;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parse3WRecords(connection, set, list);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -731,6 +755,114 @@ public class SqliteDao {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public List<RecordThree> query3WRecords(Connection connection) {
+		List<RecordThree> list = new ArrayList<>();
+		String sql = "SELECT * FROM " + TABLE_RECORD_1V1;
+		Statement stmt = null;
+		try {
+			stmt = connection.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			parse3WRecords(connection, set, list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
+	private void parse3WRecords(Connection connection, ResultSet set, List list) throws SQLException {
+		while (set.next()) {
+			RecordThree record = new RecordThree();
+			record.setId(set.getInt(1));
+			record.setSequence(set.getInt(2));
+			record.setSceneName(set.getString(3));
+			record.setDirectory(set.getString(4));
+			record.setStarTopName(set.getString(5));
+			record.setStarBottomName(set.getString(6));
+			record.setStarMixName(set.getString(7));
+			record.setName(set.getString(8));
+			record.setHDLevel(set.getInt(9));
+			record.setScore(set.getInt(10));
+			record.setScoreFeel(set.getInt(11));
+			record.setScoreTop(set.getString(12));
+			record.setScoreBottom(set.getString(13));
+			record.setScoreMix(set.getString(14));
+			record.setScoreStar(set.getInt(15));
+			record.setScoreTopC(set.getString(16));
+			record.setScoreBottomC(set.getString(17));
+			record.setScoreMixC(set.getString(18));
+			record.setScoreStarC(set.getInt(19));
+			record.setScoreRhythm(set.getInt(20));
+			record.setScoreForePlay(set.getInt(21));
+			record.setScoreBJob(set.getInt(22));
+			record.setScoreFkType1(set.getInt(23));
+			record.setScoreFkType2(set.getInt(24));
+			record.setScoreFkType3(set.getInt(25));
+			record.setScoreFkType4(set.getInt(26));
+			record.setScoreFkType5(set.getInt(27));
+			record.setScoreFkType6(set.getInt(28));
+			record.setScoreFkType7(set.getInt(29));
+			record.setScoreFkType8(set.getInt(30));
+			record.setScoreFk(set.getInt(31));
+			record.setScoreCum(set.getInt(32));
+			record.setScoreScene(set.getInt(33));
+			record.setScoreStory(set.getInt(34));
+			record.setScoreNoCond(set.getInt(35));
+			record.setScoreCShow(set.getInt(36));
+			record.setScoreRim(set.getInt(37));
+			record.setScoreSpeicial(set.getInt(38));
+			record.setStarTopId(set.getString(39));
+			record.setStarBottomId(set.getString(40));
+			record.setStarMixId(set.getString(41));
+			record.setLastModifyTime(set.getLong(42));
+			record.setSpecialDesc(set.getString(43));
+			record.setDeprecated(set.getInt(44));
+
+			String ids = record.getStarTopId();
+			if (!TextUtils.isEmpty(ids)) {
+				String[] starIds = ids.split(",");
+				for (String startId:starIds) {
+					Star star = queryStarById(connection, Integer.parseInt(startId));
+					if (record.getStarTopList() == null) {
+						record.setStarTopList(new ArrayList<Star>());
+					}
+					record.getStarTopList().add(star);
+				}
+			}
+			ids = record.getStarBottomId();
+			if (!TextUtils.isEmpty(ids)) {
+				String[] starIds = ids.split(",");
+				for (String startId:starIds) {
+					Star star = queryStarById(connection, Integer.parseInt(startId));
+					if (record.getStarBottomList() == null) {
+						record.setStarBottomList(new ArrayList<Star>());
+					}
+					record.getStarBottomList().add(star);
+				}
+			}
+			ids = record.getStarMixId();
+			if (!TextUtils.isEmpty(ids)) {
+				String[] starIds = ids.split(",");
+				for (String startId:starIds) {
+					Star star = queryStarById(connection, Integer.parseInt(startId));
+					if (record.getStarMixList() == null) {
+						record.setStarMixList(new ArrayList<Star>());
+					}
+					record.getStarMixList().add(star);
+				}
+			}
+
+			list.add(record);
 		}
 	}
 

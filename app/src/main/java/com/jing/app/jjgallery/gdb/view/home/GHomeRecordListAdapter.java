@@ -2,6 +2,7 @@ package com.jing.app.jjgallery.gdb.view.home;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.jing.app.jjgallery.gdb.view.pub.HeaderFooterRecyclerAdapter;
 import com.jing.app.jjgallery.service.image.SImageLoader;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.RecordThree;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static android.text.TextUtils.concat;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -82,12 +86,34 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
                 GdbGuidePresenter.getRecordPath(record.getName()), itemHolder.ivRecord);
         if (record instanceof RecordOneVOne) {
             RecordOneVOne orecord = (RecordOneVOne) record;
-            itemHolder.tvStar1.setText(orecord.getStar1().getName());
-            itemHolder.tvStar2.setText(orecord.getStar2().getName());
+            itemHolder.tvStar.setText(orecord.getStar1().getName() + " & " + orecord.getStar2().getName());
+        }
+        else if (record instanceof RecordThree) {
+            RecordThree trecord = (RecordThree) record;
+            String text = null;
+            if (!TextUtils.isEmpty(trecord.getStarTopName())) {
+                text = trecord.getStarTopName();
+            }
+            if (!TextUtils.isEmpty(trecord.getStarBottomName())) {
+                if (text == null) {
+                    text = trecord.getStarBottomName();
+                }
+                else {
+                    text = text.concat("&").concat(trecord.getStarBottomName());
+                }
+            }
+            if (!TextUtils.isEmpty(trecord.getStarMixName())) {
+                if (text == null) {
+                    text = trecord.getStarMixName();
+                }
+                else {
+                    text = text.concat("&").concat(trecord.getStarMixName());
+                }
+            }
+            itemHolder.tvStar.setText(text);
         }
         else {
-            itemHolder.tvStar1.setText("");
-            itemHolder.tvStar2.setText("");
+            itemHolder.tvStar.setText("");
         }
 
         // 第一个位置以及与上一个位置日期不同的，显示日期
@@ -168,8 +194,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
         ViewGroup groupItem;
         RoundedImageView ivRecord;
         TextView tvDate;
-        TextView tvStar1;
-        TextView tvStar2;
+        TextView tvStar;
         TextView tvDeprecated;
         ImageView ivPlay;
 
@@ -178,8 +203,7 @@ public class GHomeRecordListAdapter extends HeaderFooterRecyclerAdapter<Record> 
             ivRecord = (RoundedImageView) itemView.findViewById(R.id.iv_record_image);
             groupItem = (ViewGroup) itemView.findViewById(R.id.group_item);
             tvDate = (TextView) itemView.findViewById(R.id.tv_record_date);
-            tvStar1 = (TextView) itemView.findViewById(R.id.tv_record_star1);
-            tvStar2 = (TextView) itemView.findViewById(R.id.tv_record_star2);
+            tvStar = (TextView) itemView.findViewById(R.id.tv_record_star);
             tvDeprecated = (TextView) itemView.findViewById(R.id.tv_deprecated);
             ivPlay = (ImageView) itemView.findViewById(R.id.iv_play);
         }

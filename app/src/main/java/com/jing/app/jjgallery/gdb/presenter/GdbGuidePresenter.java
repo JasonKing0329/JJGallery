@@ -13,6 +13,7 @@ import com.jing.app.jjgallery.gdb.view.recommend.IRecommend;
 import com.jing.app.jjgallery.util.DebugLog;
 import com.jing.app.jjgallery.gdb.GdbConstants;
 import com.king.service.gdb.GDBProvider;
+import com.king.service.gdb.RecordCursor;
 import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
@@ -48,6 +49,11 @@ public class GdbGuidePresenter {
      * 过滤器
      */
     private FilterModel filterModel;
+
+    /**
+     * 记录record加载的游标
+     */
+    private RecordCursor recordCursor;
 
     public GdbGuidePresenter() {
         gdbProvider = new GDBProvider(DBInfor.GDB_DB_PATH);
@@ -300,7 +306,11 @@ public class GdbGuidePresenter {
     }
 
     public List<Record> getLatestRecord(int number) {
-        return gdbProvider.getLatestRecords(0, number);
+        recordCursor = new RecordCursor();
+        recordCursor.from1v1 = 0;
+        recordCursor.from3w = 0;
+        recordCursor.number = number;
+        return gdbProvider.getLatestRecords(recordCursor);
     }
 
     /**
@@ -312,27 +322,25 @@ public class GdbGuidePresenter {
 
     /**
      * home 主页列表加载更多数据
-     * @param from 数据库结果集limit from, number
      * @param homeView
      */
-    public void loadMore(int from, IHomeView homeView) {
+    public void loadMore(IHomeView homeView) {
         LoadMoreTask task = new LoadMoreTask(homeView);
         // 采用任务队列保证单位时间内只执行一次loadMore
-        addToTask(task, from);
+        addToTask(task);
     }
 
     /**
      * 丢弃快速到达的相同task，保证一次只load限定的数量
      * @param task
-     * @param from
      */
-    private synchronized void addToTask(LoadMoreTask task, int from) {
+    private synchronized void addToTask(LoadMoreTask task) {
         // 队列为空方可执行
         if (executeQueue.size() == 0) {
             // 入队
             executeQueue.offer(task);
             // 执行结束后出队
-            task.execute(from);
+            task.execute();
         }
     }
 
@@ -411,7 +419,7 @@ public class GdbGuidePresenter {
 
         @Override
         protected List<Record> doInBackground(Integer... params) {
-            List<Record> list = gdbProvider.getLatestRecords(params[0], NUM_LOAD_MORE);
+            List<Record> list = gdbProvider.getLatestRecords(recordCursor);
             return list;
         }
     }

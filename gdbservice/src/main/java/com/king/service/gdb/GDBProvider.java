@@ -4,12 +4,15 @@ import com.king.service.gdb.bean.FavorBean;
 import com.king.service.gdb.bean.GDBProperites;
 import com.king.service.gdb.bean.Record;
 import com.king.service.gdb.bean.RecordOneVOne;
+import com.king.service.gdb.bean.RecordThree;
 import com.king.service.gdb.bean.SceneBean;
 import com.king.service.gdb.bean.Star;
 import com.king.service.gdb.bean.StarCountBean;
 import com.king.service.gdb.dao.SqliteDao;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -161,18 +164,75 @@ public class GDBProvider {
     }
 
     /**
-     * 查询所有的record
+     * 查询所有的record_3w
      * @return
      */
-    public List<Record> getLatestRecords(int from, int number) {
+    public List<Record> getAll3WRecords() {
         try {
             SqlConnection.getInstance().connect(databasePath);
             List<Record> list = new ArrayList<>();
-            List<RecordOneVOne> oList = sqliteDao.queryLatestRecords(from, number, SqlConnection.getInstance().getConnection());
-            for (RecordOneVOne record:oList) {
+            List<RecordThree> oList = sqliteDao.query3WRecords(SqlConnection.getInstance().getConnection());
+            for (RecordThree record:oList) {
                 list.add(record);
             }
             return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            SqlConnection.getInstance().close();
+        }
+        return null;
+    }
+
+    /**
+     * 查询cursor指定的最近记录
+     * @param cursor 定义record_1v1/record_3w的起始位置，以及总的record数量
+     * @return
+     */
+    public List<Record> getLatestRecords(RecordCursor cursor) {
+        try {
+            SqlConnection.getInstance().connect(databasePath);
+            List<Record> list = new ArrayList<>();
+
+            // 加载两张表的前number条数据，进行排序筛选出最终的number条数据
+            List<RecordOneVOne> oList = sqliteDao.queryLatestRecords(cursor.from1v1, cursor.number, SqlConnection.getInstance().getConnection());
+            List<RecordThree> tList = sqliteDao.queryLatest3WRecords(cursor.from3w, cursor.number, SqlConnection.getInstance().getConnection());
+            for (RecordOneVOne record:oList) {
+                list.add(record);
+            }
+            for (RecordThree record:tList) {
+                list.add(record);
+            }
+            Collections.sort(list, new Comparator<Record>() {
+                @Override
+                public int compare(Record o1, Record o2) {
+                    long num = o2.getLastModifyTime() - o1.getLastModifyTime();
+                    if (num > 0) {
+                        return 1;
+                    }
+                    else if (num < 0) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
+
+            // 更新cursor的位置
+            List<Record> finalList = new ArrayList<>();
+            int count1v1 = 0, count3w = 0;
+            for (int i = 0; i < cursor.number && i < list.size(); i ++) {
+                Record record = list.get(i);
+                if (record instanceof RecordOneVOne) {
+                    count1v1 ++;
+                }
+                else if (record instanceof RecordThree) {
+                    count3w ++;
+                }
+                finalList.add(record);
+            }
+            cursor.from1v1 += count1v1;
+            cursor.from3w += count3w;
+            return finalList;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

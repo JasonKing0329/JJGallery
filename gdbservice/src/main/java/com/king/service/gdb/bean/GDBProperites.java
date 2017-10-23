@@ -20,4 +20,8 @@ public class GDBProperites {
 
     public static final String RECORD_NR = "NR";
     public static final int RECORD_HD_NR = 0;
+
+    public static final String STAR_3W_FLAG_TOP = "top";
+    public static final String STAR_3W_FLAG_BOTTOM = "bottom";
+    public static final String STAR_3W_FLAG_MIX = "mix";
 }
