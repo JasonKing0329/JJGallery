@@ -14,6 +14,7 @@ import com.jing.app.jjgallery.util.ScreenUtils;
 import com.jing.app.jjgallery.util.StorageUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 
 public class Configuration {
@@ -126,9 +127,33 @@ public class Configuration {
 			if (!file.exists()) {
 				file.mkdir();
 			}
+
+			createNoMedia();
 			return true;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	private static void createNoMedia() {
+		File file = new File(APP_ROOT);
+		accessFile(file);
+	}
+
+	private static void accessFile(File file) {
+		File[] files = file.listFiles();
+		for (File f:files) {
+			if (f.isDirectory()) {
+				accessFile(f);
+			}
+		}
+		File nomediaFile = new File(file.getPath() + "/.nomedia");
+		if (!nomediaFile.exists()) {
+			try {
+				new File(file.getPath(), ".nomedia").createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

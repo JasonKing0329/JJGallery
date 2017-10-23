@@ -31,15 +31,23 @@ public class EncryptUtil {
 
     public static boolean decipherFile(File file, String target) {
         boolean result = false;
-        // only '.jfe' file can be deciphered
-        if (file.getName().endsWith(encrypter.getFileExtra())) {
-            String path = file.getPath();
-            // encrypt files under gdb directory with original name
-            if (path.startsWith(Configuration.GDB_IMG)) {
-                result = encrypter.restore(file, target, true);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f:files) {
+                decipherFile(f, null);
             }
-            else {
-                result = encrypter.restore(file, target);
+        }
+        else {
+            // only '.jfe' file can be deciphered
+            if (file.getName().endsWith(encrypter.getFileExtra())) {
+                String path = file.getPath();
+                // encrypt files under gdb directory with original name
+                if (path.startsWith(Configuration.GDB_IMG)) {
+                    result = encrypter.restore(file, target, true);
+                }
+                else {
+                    result = encrypter.restore(file, target);
+                }
             }
         }
         return result;

@@ -192,11 +192,14 @@ public class FileListController {
 		new Thread() {
 
 			public void run() {
-				File files[] = new File(currentPath).listFiles();
-				for (File file:files) {
-					if (!file.isDirectory()) {
-						EncryptUtil.decipherFile(file, null);
+				File files[] = new File(currentPath).listFiles(new FileFilter() {
+					@Override
+					public boolean accept(File file) {
+						return file.isDirectory();
 					}
+				});
+				for (File file:files) {
+					EncryptUtil.decipherFile(file, null);
 				}
 				Message message = new Message();
 				message.what = FILE_TYPE_UNENCRYPTED;

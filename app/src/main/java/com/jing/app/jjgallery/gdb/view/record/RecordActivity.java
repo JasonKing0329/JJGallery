@@ -343,6 +343,8 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
 
         tvStar.setText("" + record.getScoreStar());
         tvStarC.setText("" + record.getScoreStarC());
+
+        initFkDetails(record);
     }
 
     private void initHeadPart() {
@@ -586,13 +588,6 @@ public class RecordActivity extends GBaseActivity implements IRecordView {
             });
         }
         bannerSettingDialog.show(getSupportFragmentManager(), "BannerAnimDialogFragment");
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     private class HeadBannerAdapter implements LBaseAdapter<String> {
